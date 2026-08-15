@@ -25,3 +25,8 @@ export function isGated(route: string) {
 }
 
 export const SITE_URL = "https://onduu.ke";
+
+// Turnstile site key for the "Onduu.ke" widget. Site keys are public by design
+// — they are served to every visitor in the page. The matching secret lives
+// only in the Worker's TURNSTILE_SECRET binding and is never in this repo.
+export const TURNSTILE_SITE_KEY = "0x4AAAAAABgay5gLqOlJAaa7";

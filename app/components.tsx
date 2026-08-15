@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
 import { SubmissionForm } from "./forms";
+import { TURNSTILE_SITE_KEY } from "./route-policy";
 
 // Managed operations is omitted until the employment and HOSTAFRICA boundaries
 // are approved — see app/route-policy.ts.
@@ -18,7 +19,7 @@ export function StandardPage({page}:{page:PageContent}){return <><Header/><main>
 function Form({type}:{type:"readiness"|"contact"}){
   // Field lists, copy and microcopy come from the definitive brief, sections
   // 10 and 24. TURNSTILE_SITE_KEY is a public key, so it is safe in the bundle.
-  const siteKey = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
+  const siteKey = TURNSTILE_SITE_KEY;
   return <section className="form-section" id="request">
     <div>
       <p className="section-number">REQUEST FORM</p>
