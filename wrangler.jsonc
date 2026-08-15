@@ -1,6 +1,8 @@
 {
   "$schema": "./node_modules/wrangler/config-schema.json",
-  "name": "onduu-ke",
+  // Must match the Worker that owns onduu.ke, or a local `wrangler deploy`
+  // silently creates a second Worker instead of updating production.
+  "name": "onduudotke",
   "main": "./worker/index.ts",
   "compatibility_date": "2026-05-15",
   "compatibility_flags": ["nodejs_compat"],
