@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v1.2.0 — 2348hrs:15th August2026
+CURRENT VERSION: v1.3.0 — 0006hrs:16th August2026
+
+## v1.3.0 — 0006hrs:16th August2026
+
+Page content built out against the brief, and the site-wide link audit.
+
+### Added
+
+- `app/pages-brief.ts` — exact approved copy from brief sections 10, 11, 12,
+  13 and 25, merged over the prototype copy by `app/site-pages.ts`.
+  `/readiness` and `/how-it-works` had no sections at all; they now carry the
+  evidence labels, output list, process, stages, deliverables and boundaries
+  the brief specifies.
+- Legal routes now carry the coverage list from section 25, clearly marked as
+  drafts awaiting professional review, with a direct route for data questions.
+  No legal conclusions are invented.
+- 301 redirects for `/email-security` and `/email-security/glossary`, the v8.8
+  URLs still linked from two migrated articles and indexed by search engines.
+  `/email-security` was the checker, so `/check` is its successor.
+
+### Verified
+
+- **Contact form end to end in production**: submitted, Turnstile passed,
+  row written with all contact-specific fields, confirmation rendered,
+  test row deleted. Both forms are now proven, not just the assessment one.
+- **Every internal link on the site resolves** — 26 pages crawled, no
+  non-200s. The only external non-200 is LinkedIn returning 999, which is
+  its standard bot response, not a broken link.
+- Gated routes remain reachable by direct URL for review but are noindex,
+  robots-disallowed and unlinked.
 
 ## v1.2.0 — 2348hrs:15th August2026
 

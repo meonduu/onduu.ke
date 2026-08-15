@@ -26,6 +26,16 @@ const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
 
+    // v8.8 URLs that the migrated articles still link to, and that search
+    // engines have indexed. /email-security was the checker, so /check is its
+    // direct successor.
+    const REDIRECTS: Record<string, string> = {
+      "/email-security": "/check",
+      "/email-security/glossary": "/check",
+    };
+    const redirectTo = REDIRECTS[url.pathname.replace(/\/$/, "")];
+    if (redirectTo) return Response.redirect(new URL(redirectTo, url).toString(), 301);
+
     if (url.pathname === "/api/submit") return handleSubmit(request, env);
 
     if (url.pathname === "/sitemap.xml") return sitemap();

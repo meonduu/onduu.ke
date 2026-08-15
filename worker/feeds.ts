@@ -8,7 +8,7 @@
  */
 import { articles } from "../app/insights-data";
 import { GATED_ROUTES, SITE_URL } from "../app/route-policy";
-import { pages } from "../app/site-data";
+import { pages } from "../app/site-pages";
 
 const escape = (s: string) =>
   s

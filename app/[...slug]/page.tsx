@@ -4,7 +4,7 @@ import { StandardPage } from "../components";
 import { ArticlePage, InsightsIndex } from "../article";
 import { articles, articlesBySlug } from "../insights-data";
 import { isGated, SITE_URL } from "../route-policy";
-import { pages } from "../site-data";
+import { pages } from "../site-pages";
 
 export function generateStaticParams() {
   return [
