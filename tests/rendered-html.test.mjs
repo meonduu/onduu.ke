@@ -89,6 +89,41 @@ test("external article links are safely attributed", async () => {
   }
 });
 
+test("the checker page renders with its limits stated", async () => {
+  const response = await render("/check");
+  assert.equal(response.status, 200);
+
+  const html = await response.text();
+  assert.match(html, /Can someone send email pretending to be you\?/);
+  assert.match(html, /id="domain"/);
+  // The README forbids implying that a public scan proves security.
+  assert.match(html, /does not prove your domain, your mailboxes or your business are secure/);
+  assert.match(html, /published DNS only|already public/i);
+});
+
+test("the check API rejects bad input without touching DNS", async () => {
+  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
+  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-api`);
+  const { default: worker } = await import(workerUrl.href);
+  const call = (qs) =>
+    worker.fetch(new Request(`http://localhost/api/check${qs}`), {}, { waitUntil() {}, passThroughOnException() {} });
+
+  const empty = await call("");
+  assert.equal(empty.status, 400);
+  assert.match((await empty.json()).error, /enter a domain/i);
+
+  const invalid = await call("?domain=not-a-domain");
+  assert.equal(invalid.status, 400);
+  assert.match((await invalid.json()).error, /valid domain name/i);
+
+  const wrongMethod = await worker.fetch(
+    new Request("http://localhost/api/check?domain=example.ke", { method: "POST" }),
+    {},
+    { waitUntil() {}, passThroughOnException() {} },
+  );
+  assert.equal(wrongMethod.status, 405);
+});
+
 test("unknown routes return 404", async () => {
   const response = await render("/insights/this-does-not-exist");
   assert.equal(response.status, 404);

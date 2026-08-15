@@ -1,6 +1,7 @@
 /** Cloudflare Worker entry point for the vinext-starter template. */
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
+import { handleCheck } from "./email-check.js";
 
 interface Env {
   ASSETS: Fetcher;
@@ -22,6 +23,15 @@ interface Env {
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    // Public-DNS email security check. Reads only published records, so it
+    // needs no bindings and no stored state.
+    if (url.pathname === "/api/check") {
+      if (request.method !== "GET") {
+        return new Response("Method not allowed", { status: 405, headers: { Allow: "GET" } });
+      }
+      return handleCheck(request);
+    }
 
     if (url.pathname === "/_vinext/image") {
       const allowedWidths = [...DEFAULT_DEVICE_SIZES, ...DEFAULT_IMAGE_SIZES];
