@@ -1,0 +1,19 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "onduu-ke",
+  "main": "./worker/index.ts",
+  "compatibility_date": "2026-05-15",
+  "compatibility_flags": ["nodejs_compat"],
+  // The Vite plugin points `assets.directory` at the client build itself; only
+  // the binding is declared here, since worker/index.ts reads env.ASSETS.
+  "assets": {
+    "binding": "ASSETS"
+  },
+  // Backs the /_vinext/image optimisation endpoint.
+  "images": {
+    "binding": "IMAGES"
+  },
+  "observability": {
+    "enabled": true
+  }
+}
