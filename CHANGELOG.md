@@ -1,6 +1,50 @@
 # Changelog
 
-CURRENT VERSION: v1.1.0 — 2303hrs:15th August2026
+CURRENT VERSION: v1.2.0 — 2348hrs:15th August2026
+
+## v1.2.0 — 2348hrs:15th August2026
+
+Implements the outstanding items from the definitive brief
+(ONDUU_DEFINITIVE_WEBSITE_CONTENT_AND_LLM_BUILD_BRIEF_2026_08_15.pdf).
+
+### Added
+
+- Working assessment and contact forms, replacing the non-submitting
+  prototypes. Field lists and copy are taken from brief sections 10 and 24;
+  confirmation and error wording from section 8.
+- `POST /api/submit` with server-side schema validation, allowlists, field
+  length limits, server-side Turnstile Siteverify, hourly per-client rate
+  limiting, prepared D1 statements and a generic success response carrying a
+  reference ID. **Fails closed** (503) when Turnstile is unconfigured.
+- `onduu-leads` D1 database and migration `0001_leads.sql`. Consent is stored
+  as text plus version and timestamp, not a bare boolean, with a
+  `retain_until` column so retention can be enforced.
+- `sitemap.xml`, `rss.xml` and `robots.txt` (brief section 26, and the
+  minimum viable release). Canonical URLs and Open Graph tags on every page.
+- 16 further tests covering validation, allowlists, references, feeds and the
+  publication gates. 46 total.
+
+### Changed
+
+- Publication gates now **hide** rather than label: Managed Website
+  Operations, Agent Workflow Pilot, Infrastructure and its two children, and
+  Results are noindex, disallowed in robots, absent from the sitemap and
+  removed from navigation and the homepage. Legal routes stay public as
+  marked drafts because the forms must link to a privacy notice.
+- Removed the orphaned 02:23 cron trigger. The Worker exports no scheduled
+  handler, so every nightly run would have failed.
+
+### Notes
+
+- **The forms cannot accept submissions until a Turnstile widget exists.**
+  Create one for onduu.ke, then set `TURNSTILE_SECRET` as a Worker secret and
+  `NEXT_PUBLIC_TURNSTILE_SITE_KEY` at build time. Until then the form shows a
+  notice and the endpoint returns 503 rather than accepting unprotected data.
+- Email notification reuses the existing `ZEPTOMAIL_TOKEN` and needs
+  `NOTIFY_EMAIL`. The notification carries only the reference and form type —
+  no personal data.
+- The brief states the site must not be publicly deployed until the approval
+  gates are resolved. It is deployed, at the owner's direction.
 
 ## v1.1.0 — 2303hrs:15th August2026
 

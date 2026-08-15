@@ -2,8 +2,10 @@
 import { handleImageOptimization, DEFAULT_DEVICE_SIZES, DEFAULT_IMAGE_SIZES } from "vinext/server/image-optimization";
 import handler from "vinext/server/app-router-entry";
 import { handleCheck } from "./email-check.js";
+import { sitemap, rss, robots } from "./feeds";
+import { handleSubmit, type SubmissionEnv } from "./submissions";
 
-interface Env {
+interface Env extends SubmissionEnv {
   ASSETS: Fetcher;
   IMAGES: {
     input(stream: ReadableStream): {
@@ -23,6 +25,12 @@ interface Env {
 const worker = {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
     const url = new URL(request.url);
+
+    if (url.pathname === "/api/submit") return handleSubmit(request, env);
+
+    if (url.pathname === "/sitemap.xml") return sitemap();
+    if (url.pathname === "/rss.xml") return rss();
+    if (url.pathname === "/robots.txt") return robots();
 
     // Public-DNS email security check. Reads only published records, so it
     // needs no bindings and no stored state.

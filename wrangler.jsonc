@@ -11,9 +11,23 @@
   "assets": {
     "binding": "ASSETS"
   },
+  // Leads, consent records and assessment requests (brief, section 28).
+  "d1_databases": [
+    {
+      "binding": "onduu_leads",
+      "database_name": "onduu-leads",
+      "database_id": "4524c571-c0f6-43ae-9c07-15d7abf0fc91"
+    }
+  ],
+
   // Backs the /_vinext/image optimisation endpoint.
   "images": {
     "binding": "IMAGES"
+  },
+  // Explicitly empty: v8.8 left a 02:23 cron on this Worker, and this build
+  // exports no scheduled handler, so every run would fail.
+  "triggers": {
+    "crons": []
   },
   "observability": {
     "enabled": true
