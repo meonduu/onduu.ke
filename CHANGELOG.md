@@ -1,6 +1,46 @@
 # Changelog
 
-CURRENT VERSION: v1.0.0 — 2140hrs:15th August2026
+CURRENT VERSION: v1.1.0 — 2303hrs:15th August2026
+
+## v1.1.0 — 2303hrs:15th August2026
+
+Restored `/check`, the free email security checker, and corrected the deploy
+configuration.
+
+### Added
+
+- `/check` — reads a domain's published SPF, DKIM, DMARC and MX records over
+  DNS-over-HTTPS and grades them in plain language, with prioritised fixes.
+  Public DNS only: no credentials, no mailbox access, nothing stored.
+- `GET /api/check` handled in the Worker ahead of the app router; other methods
+  return 405. Needs no bindings and no state.
+- 21 offline tests over the analysers (`tests/email-check.test.mjs`) covering
+  the SPF 10-lookup budget, recursive include expansion, include loops, dead
+  includes, partial-pct DMARC and the provider-selector DKIM gap. 30 tests
+  total across the suite.
+
+### Changed
+
+- `wrangler.jsonc` now names **`onduudotke`**, the Worker that actually serves
+  onduu.ke. It previously named `onduu-ke`, so `wrangler deploy` created a
+  second Worker on workers.dev and production never received the deploy.
+  Workers Builds was unaffected — it deploys to the Worker it is bound to.
+
+### Removed
+
+- The stray `onduu-ke` Worker, created by the misnamed config. It held only
+  three deployments from today and served no custom domain.
+
+### Notes
+
+- Workers Builds is **disconnected** — deleting and recreating the GitHub repo
+  broke the link — so pushing to `main` no longer deploys. Until it is
+  reconnected, releases are manual:
+  `rm -rf dist .vinext && npm run build && npx wrangler deploy -c dist/server/wrangler.json`.
+  The clean step matters: a stale `.vinext` cache silently produced a build
+  with `/check` missing entirely.
+- `/glossary`, `/tools` and `/domain-search` remain 404 by decision. They are
+  not being rebuilt.
 
 ## v1.0.0 — 2140hrs:15th August2026
 
