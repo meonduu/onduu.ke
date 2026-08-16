@@ -409,11 +409,12 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "05 / COOKIES AND ANALYTICS",
         "title": "Cookies and measurement, and how to refuse them.",
         "body": [
-          "Nothing that measures you runs unless you accept it. On a first visit no analytics loads, no dataLayer is created and no request is made to Google. There is no advertising tag on this site.",
-          "If you accept, Google Tag Manager loads and runs Google Analytics. That sets cookies in your browser and sends information about your visit to Google, including to servers outside Kenya. If you decline, none of that is loaded and no analytics cookie is placed on your device.",
+          "Two different things measure use of this site, and they are treated differently because they work differently.",
+          "Cloudflare Web Analytics runs on every visit. It is cookieless: it sets nothing on your device, does not follow you between sites and does not build a profile of you. It reports aggregate figures such as how many people viewed a page. Because it neither stores anything on your device nor identifies you, it is not placed behind the consent choice.",
+          "Google Analytics, loaded through Google Tag Manager, runs only if you accept. It sets cookies in your browser and sends information about your visit to Google, including to servers outside Kenya. Decline and none of it loads: no Google Tag Manager script, no dataLayer, and no request to Google. There is no advertising tag on this site either way.",
           "Your choice is stored in your browser's local storage rather than in a cookie, so declining leaves nothing behind. You can change it at any time using the Cookie choices control in the footer; withdrawing consent reloads the page so measurement stops immediately."
         ],
-        "note": "Cloudflare, which serves this site, may set a short-lived security cookie, and the Turnstile spam check on the forms may set one. Those are used to tell a person from an automated script, not to measure or profile you. Cloudflare Web Analytics is also intended to be added: it uses no cookies and does not identify visitors, so it is not gated behind this choice."
+        "note": "Cloudflare, which serves this site, may set a short-lived security cookie, and the Turnstile spam check on the forms may set one. Those tell a person from an automated script; they do not measure or profile you. Separately, a browser that visited this domain before August 2026 may still hold analytics cookies set by the previous version of this site. Those are not set by the site as it stands, and clearing your cookies for this domain removes them."
       },
       {
         "eyebrow": "06 / WHO ELSE PROCESSES IT",
@@ -421,7 +422,7 @@ export const briefPages: Record<string, PageContent> = {
         "cards": [
           {
             "title": "Cloudflare",
-            "body": "Hosts this website, stores form submissions in its database service, provides the spam check and resolves the DNS lookups used by the checker."
+            "body": "Hosts this website, stores form submissions in its database service, provides the spam check, resolves the DNS lookups used by the checker, and provides the cookieless Web Analytics described above."
           },
           {
             "title": "ZeptoMail",

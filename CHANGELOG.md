@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v2.5.0 — 2041hrs:16th August2026
+CURRENT VERSION: v2.5.1 — 2051hrs:16th August2026
+
+## v2.5.1 — 2051hrs:16th August2026
+
+**Correction: Cloudflare Web Analytics was already running, and the privacy
+notice said the site had no analytics.**
+
+Asked to add Cloudflare Web Analytics, the dashboard showed onduu.ke had been
+set up 8 days ago with automatic setup, reporting 96 page views in 24 hours.
+A real browser confirms `static.cloudflareinsights.com/beacon.min.js` loads on
+every page.
+
+It was missed because automatic setup injects the beacon at Cloudflare's edge
+rather than in the code, so grepping the repository found nothing — and curl
+does not receive the injection either. **Only a real browser shows it.** That
+is the third claim in this project written from a code check and disproved by
+a browser, after the menu links and the consent banner.
+
+- The cookies section now describes both: Cloudflare Web Analytics running on
+  every visit, cookieless and therefore not gated, and Google Analytics
+  loading only on consent.
+- Cloudflare's processor entry now mentions Web Analytics.
+- Added a note that a browser which visited before August 2026 may still hold
+  analytics cookies from the previous site, which this site does not set.
+- Added a regression test asserting the notice describes Web Analytics as
+  running, and that the "no analytics" and "intended to be added" wordings
+  cannot return.
+
+Nothing was installed for this release: the analytics was already live. The
+change is that the privacy notice is now true.
 
 ## v2.5.0 — 2041hrs:16th August2026
 

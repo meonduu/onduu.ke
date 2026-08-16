@@ -50,3 +50,13 @@ test("the privacy notice describes the measurement it actually uses", async () =
     "stale 'no analytics at all' claim must not survive",
   );
 });
+
+test("the notice describes Cloudflare Web Analytics as running, not planned", async () => {
+  const html = await (await fetchPath("/legal/privacy")).text();
+  assert.match(html, /Cloudflare Web Analytics runs on every visit/, "must state it is active");
+  assert.match(html, /cookieless/i, "must explain why it is not gated");
+  // It must not claim the site runs no analytics — the beacon is injected at
+  // Cloudflare's edge and only appears for real browser requests, not curl.
+  assert.doesNotMatch(html, /runs no analytics product/, "stale no-analytics claim");
+  assert.doesNotMatch(html, /intended to be added/, "must not describe live analytics as planned");
+});
