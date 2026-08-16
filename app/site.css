@@ -32,3 +32,9 @@ input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="tr
 .request-form label > input,.request-form label > select,.request-form label > textarea{margin-top:auto}
 .request-form .check{height:auto;align-items:flex-start;gap:12px}
 .request-form .check input{margin-top:3px;flex:0 0 auto}
+
+/* Turnstile holds ~72px even when it solves invisibly and renders no iframe.
+   Collapse the slot while there is nothing to show; :has() restores it as soon
+   as Turnstile draws a challenge, so a real challenge is never hidden. The
+   hidden token input still submits — display:none does not exclude a field. */
+.turnstile-slot:not(:has(iframe)){display:none}

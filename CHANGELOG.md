@@ -1,6 +1,25 @@
 # Changelog
 
-CURRENT VERSION: v1.3.2 — 0610hrs:16th August2026
+CURRENT VERSION: v1.3.3 — 0614hrs:16th August2026
+
+## v1.3.3 — 0614hrs:16th August2026
+
+Collapsed the empty Turnstile gap on both forms.
+
+Turnstile injects a wrapper with an explicit ~72px height even when it solves
+invisibly and draws no iframe, leaving a blank band between the consent
+checkbox and the submit button.
+
+- `.turnstile-slot:not(:has(iframe)){display:none}` hides the slot only while
+  there is nothing to show. If Turnstile ever draws a real challenge the
+  iframe appears, the selector stops matching and the widget is displayed —
+  a challenge can never be hidden from a visitor.
+- The hidden token input still submits; `display:none` does not exclude a
+  field from FormData.
+
+Verified on onduu.ke: slot height 72px to 0, spacing now the ordinary 22px
+grid gap, and a live submission through the hidden slot still succeeded
+(reference ON-260816-QN3R, row confirmed then deleted).
 
 ## v1.3.2 — 0610hrs:16th August2026
 

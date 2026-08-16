@@ -277,7 +277,11 @@ export function SubmissionForm({
       {errors.consent && <strong className="field-error full">{errors.consent}</strong>}
 
       {siteKey ? (
-        <div className="full" ref={widgetRef} />
+        // Turnstile reserves ~72px even when it solves invisibly and draws no
+        // iframe. The CSS collapses this slot while no iframe is present, and
+        // restores it the moment one appears, so a visible challenge is never
+        // hidden from the visitor.
+        <div className="full turnstile-slot" ref={widgetRef} />
       ) : (
         <p className="note full">
           Spam protection is not yet configured, so this form cannot accept submissions. Please
