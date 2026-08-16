@@ -87,6 +87,7 @@ export function robots(): Response {
 Allow: /
 ${disallow}
 Disallow: /api/
+Disallow: /go
 
 Sitemap: ${SITE_URL}/sitemap.xml
 `;

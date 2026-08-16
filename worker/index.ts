@@ -5,8 +5,11 @@ import { handleCheck } from "./email-check.js";
 import { sitemap, rss, robots } from "./feeds";
 import { handleSubmit, type SubmissionEnv } from "./submissions";
 import { clearStaleCookies } from "./stale-cookies";
+import { handleDashboard } from "./dashboard";
+import { recordPageView, shouldRecord } from "./pageviews";
 
 interface Env extends SubmissionEnv {
+  DASHBOARD_TOKEN?: string;
   ASSETS: Fetcher;
   IMAGES: {
     input(stream: ReadableStream): {
@@ -37,6 +40,8 @@ const worker = {
     const redirectTo = REDIRECTS[url.pathname.replace(/\/$/, "")];
     if (redirectTo) return Response.redirect(new URL(redirectTo, url).toString(), 301);
 
+    if (url.pathname === "/go" || url.pathname === "/go/") return handleDashboard(request, env);
+
     if (url.pathname === "/api/submit") return handleSubmit(request, env);
 
     if (url.pathname === "/sitemap.xml") return sitemap();
@@ -66,6 +71,10 @@ const worker = {
     // Expire analytics cookies left by the previous site before handing the
     // page back. Self-limiting: once gone, the browser stops sending them.
     const response = await handler.fetch(request, env, ctx);
+
+    // Recorded after the response is ready, so it never delays the page.
+    if (shouldRecord(request, response)) ctx.waitUntil(recordPageView(request, env));
+
     return clearStaleCookies(request, response);
   },
 };

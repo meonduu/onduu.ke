@@ -373,7 +373,7 @@ export const briefPages: Record<string, PageContent> = {
           "A reference number generated for your request",
           "How you arrived: the site that referred you, the page you landed on, and any campaign parameters in the link you followed"
         ],
-        "note": "The forms ask you not to submit passwords, credentials or sensitive customer data, and you should not do so. Nothing on this site needs them. The arrival details above are recorded so it is possible to tell which article or link actually produced an enquiry; they are held with the enquiry and describe the visit, not you."
+        "note": "The forms ask you not to submit passwords, credentials or sensitive customer data, and you should not do so. Nothing on this site needs them. The arrival details above are recorded so it is possible to tell which article or link actually produced an enquiry; they are held with the enquiry and describe the visit, not you. Page-view records are separate from enquiries and hold nothing that identifies you."
       },
       {
         "eyebrow": "03 / WHY, AND ON WHAT BASIS",
@@ -412,6 +412,7 @@ export const briefPages: Record<string, PageContent> = {
         "body": [
           "This website runs no advertising tags, no third-party tracking scripts and no product that follows you between sites. There is no cookie banner because there is nothing here that needs one.",
           "Cloudflare Web Analytics runs on every visit. It is cookieless: it stores nothing on your device, does not identify you and does not build a profile. It reports aggregate figures such as how many people viewed a page.",
+          "Page views are counted on the server: which page was requested, which external site referred it, the country reported by the network, and whether the device is a phone, tablet or desktop. No address, no browser fingerprint and no identifier is stored, and two views cannot be linked to the same person. Nothing runs in your browser to do this and nothing is stored on your device.",
           "If you submit a form, the site that referred you and any campaign parameters from the link you followed are sent with it, so it is possible to tell which article or link produced an enquiry. Until you submit, those details sit in your browser's session storage — not a cookie — and they are cleared when you close the tab. They are never shared with a third party."
         ],
         "note": "Cloudflare, which serves this site, may set a short-lived security cookie, and the Turnstile spam check on the forms may set one. Those tell a person from an automated script; they do not measure or profile you. Separately, a browser that visited this domain before August 2026 may still hold analytics cookies set by the previous version of this site — including Google Analytics. Those are not set by the site as it stands, and clearing your cookies for this domain removes them."

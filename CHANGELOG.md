@@ -1,6 +1,48 @@
 # Changelog
 
-CURRENT VERSION: v2.8.0 — 2128hrs:16th August2026
+CURRENT VERSION: v2.9.0 — 2139hrs:16th August2026
+
+## v2.9.0 — 2139hrs:16th August2026
+
+Private dashboard at `/go`, and first-party page views.
+
+### First-party page views
+
+Recorded **server-side** on HTML responses, so nothing runs in the visitor's
+browser, nothing is stored on their device, no consent is needed and no ad
+blocker can suppress it. Written after the response via `waitUntil`, so it
+never delays a page.
+
+Stored: path, referring host, country and device class. **Not stored:** IP
+address or any hash of one, the user-agent string (read to skip bots, then
+discarded), and any session or visitor id. Two views cannot be linked to the
+same person — which means this cannot report unique visitors, and does not
+claim to. Bots, assets, error pages and the dashboard itself are skipped.
+
+### The dashboard
+
+Enquiry totals, which source and landing page produced enquiries, the last 100
+enquiries, most-read pages, referring sites, and daily views.
+
+Built to fail closed, because it displays personal data:
+
+- **503 with no `DASHBOARD_TOKEN` configured** — no window where it sits open
+  on a live site. Verified in production before the secret existed.
+- Constant-time token comparison.
+- The session cookie carries an HMAC and expiry, never the token, and is
+  HttpOnly, Secure, SameSite=Strict, 12 hours.
+- A forged cookie is refused; noindex, and disallowed in robots.
+
+Seven tests cover the closed state, the sign-in gate, wrong tokens, cookie
+hardening, forged sessions, and what is excluded from recording.
+
+### Privacy notice
+
+Updated in the same release to describe server-side page-view counting and
+what it deliberately does not hold.
+
+**To switch the dashboard on:**
+`npx wrangler secret put DASHBOARD_TOKEN --name onduudotke`
 
 ## v2.8.0 — 2128hrs:16th August2026
 
