@@ -1,6 +1,26 @@
 # Changelog
 
-CURRENT VERSION: v1.3.3 — 0614hrs:16th August2026
+CURRENT VERSION: v1.4.0 — 0648hrs:16th August2026
+
+## v1.4.0 — 0648hrs:16th August2026
+
+Removed the public "PREVIEW ONLY" badge from the homepage.
+
+The badge marked homepage section 07, which described Managed Website
+Operations — a gated offer. The brief allows unapproved commercial copy to be
+either labelled as draft or hidden, so deleting the badge alone would have
+left unmarked managed-agent copy in public, which is the one combination not
+permitted. The whole section was removed instead, consistent with hiding the
+Managed Operations route.
+
+- Homepage section 07 (After launch / Managed Website Operations) removed.
+- Remaining sections renumbered: Evidence 08 to 07, Your next step 09 to 08.
+- No "PREVIEW ONLY" text, no gate-inline element and no managed-agent copy
+  remain on the homepage. Verified on onduu.ke.
+
+To restore it later, the section needs approved public-facing copy rather than
+an internal review note. The Managed Website Operations page itself is
+unchanged and still reachable for review at /managed-website-operations.
 
 ## v1.3.3 — 0614hrs:16th August2026
 
