@@ -265,20 +265,22 @@ export const briefPages: Record<string, PageContent> = {
       },
       {
         "eyebrow": "01 / WHO ONDUU IS",
-        "title": "An independent professional practice.",
+        "title": "The entity behind the brand.",
         "body": [
-          "Onduu is the independent professional practice of Wycliffe Onduu, offering website, conversion, measurement and digital-performance work to businesses in Kenya.",
-          "TO CONFIRM: registered entity name and number, and whether Onduu trades as a sole proprietorship, a limited company or another form."
+          "Onduu is the brand used for the website, conversion, measurement and digital-performance work offered to businesses in Kenya. The contracting legal entity is Ujiajiri Enterprises Limited.",
+          "Any agreement, invoice or engagement is with Ujiajiri Enterprises Limited trading as Onduu.",
+          "TO CONFIRM: company registration number and registered address."
         ]
       },
       {
         "eyebrow": "02 / THE RELATIONSHIP TO DISCLOSE",
         "title": "The relationship a client should know about.",
         "body": [
-          "Wycliffe holds a senior role at HOSTAFRICA Kenya, a hosting and infrastructure provider. Infrastructure products referenced on this website are supplied and supported by HOSTAFRICA, not by Onduu.",
-          "This is disclosed because a client considering both website work and infrastructure should know that the same person has an interest on both sides, and can then judge the advice accordingly."
+          "Wycliffe Onduu is Managing Director for Kenya at HOSTAFRICA, a hosting and infrastructure provider. HOSTAFRICA acquired EACdirectory.co.ke, the .ke domain registrar he founded and ran from 2005, in 2022.",
+          "Infrastructure products referenced on this website are supplied and supported by HOSTAFRICA, not by Onduu.",
+          "This is disclosed because a client considering both website work and infrastructure should know that the same person has a position on both sides, and can then weigh the advice accordingly."
         ],
-        "note": "TO CONFIRM: Wycliffe's exact job title, whether he is a statutory director, and the precise wording approved for describing the role. The sentence above is drafted from the brief and must be confirmed or corrected before it stands."
+        "note": "TO CONFIRM: whether Wycliffe is a statutory director of the Kenyan company, which carries duties beyond the job title. No claim either way is made here until that is settled."
       },
       {
         "eyebrow": "03 / WHAT ONDUU CONTRACTS FOR",
@@ -300,9 +302,10 @@ export const briefPages: Record<string, PageContent> = {
         "title": "Nothing is passed on automatically.",
         "body": [
           "This website does not send your enquiry to any infrastructure supplier. There is no automatic routing, no lead-sharing integration and no mechanism on this site that forwards what you submit to a third party.",
+          "Onduu receives no commission, fee, revenue share or other benefit if you choose HOSTAFRICA or any other supplier. There is no financial incentive attached to a recommendation.",
           "If an infrastructure conversation would genuinely help you, it will be raised with you first and you decide whether to have it."
         ],
-        "note": "TO CONFIRM: whether Onduu receives any commission, fee or other benefit for a referral, and if so, on what basis. Until this is answered, no statement about payment is published here in either direction."
+        "note": "If that ever changes, this page changes in the same release. A disclosure page that lags behind the arrangement it describes is worse than no page at all."
       },
       {
         "eyebrow": "05 / HOW CONFLICTS ARE HANDLED",
@@ -348,8 +351,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "01 / WHO IS RESPONSIBLE",
         "title": "Who controls this information.",
         "body": [
-          "Onduu is the data controller for information submitted through this website. Onduu is the independent professional practice of Wycliffe Onduu, operating in Kenya.",
-          "TO CONFIRM: registered legal entity name and registration number, postal and physical address, whether Onduu is registered as a data controller with the Office of the Data Protection Commissioner, and the named contact for data questions."
+          "The data controller is Ujiajiri Enterprises Limited, which trades as Onduu and operates this website. Onduu is the brand; Ujiajiri Enterprises Limited is the contracting entity.",
+          "TO CONFIRM: company registration number and registered postal address, so the entity can be identified and checked."
         ],
         "note": "Questions about your information can be sent to me@onduu.ke."
       },
@@ -405,7 +408,7 @@ export const briefPages: Record<string, PageContent> = {
           "This website runs no analytics product, no advertising tags and no third-party tracking scripts. Your visit is not profiled and no cookie is set to follow you between pages or between sites.",
           "The spam check on the forms is Cloudflare Turnstile, which may set its own cookie in your browser for the purpose of telling a person from an automated script. Cloudflare, which serves this site, may also set a short-lived security cookie for the same reason."
         ],
-        "note": "TO CONFIRM: whether to add a privacy-conscious analytics baseline later. If one is added, this section must be updated before it goes live."
+        "note": "Cloudflare Web Analytics is intended to be added. It uses no cookies and does not track visitors across sites. This section will be updated in the same release that enables it, so this page never describes the site inaccurately."
       },
       {
         "eyebrow": "06 / WHO ELSE PROCESSES IT",
@@ -433,12 +436,12 @@ export const briefPages: Record<string, PageContent> = {
       },
       {
         "eyebrow": "08 / HOW LONG IT IS KEPT",
-        "title": "Two years, then deleted.",
+        "title": "Kept until deleted.",
         "body": [
-          "Each submission is stored with a deletion date set two years (730 days) from the day it was received. It is kept for that long so a business relationship or an earlier enquiry can be picked up again, and so a consent record exists for as long as it may be needed.",
-          "You can ask for your information to be deleted sooner, and it will be."
+          "There is no automatic deletion schedule. Submissions stay in the database until they are deleted by hand, and no fixed retention period is currently set.",
+          "You can ask at any time for information about you to be deleted, and it will be. That is the practical control available to you, and it is honoured on request rather than on a timer."
         ],
-        "note": "TO CONFIRM: whether two years is the retention period Wycliffe wants, and who performs the deletion and how it is evidenced."
+        "note": "TO CONFIRM: whether a retention limit should be introduced later. Holding personal data indefinitely is a weaker position under the Data Protection Act than deleting it on a defined schedule."
       },
       {
         "eyebrow": "09 / SECURITY",
@@ -463,7 +466,7 @@ export const briefPages: Record<string, PageContent> = {
           "Include the reference number from your confirmation if you have it, as that makes the record easy to find",
           "You will not be asked for a password or any account credential in order to make a request"
         ],
-        "note": "TO CONFIRM: the response time Onduu commits to. No commitment is published here until the operating capacity to meet it exists."
+        "note": "No response time is published, because no operating commitment has been made. Requests are handled directly by Wycliffe."
       },
       {
         "eyebrow": "11 / WITHDRAWING CONSENT",
@@ -732,7 +735,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "01 / WHO RUNS THIS",
         "title": "Twenty years inside the layer most businesses never see.",
         "body": [
-          "Wycliffe Onduu started a .ke domain registrar in 2005 and ran it for seventeen years, until it was acquired in 2022. He is now Managing Director for Kenya at HOSTAFRICA.",
+          "Wycliffe Onduu started EACdirectory.co.ke, a .ke domain registrar, in 2005 and ran it for seventeen years until HOSTAFRICA acquired it in 2022. He is now Managing Director for Kenya at HOSTAFRICA.",
           "That is two decades spent underneath Kenyan businesses rather than in front of them: registrations and renewals, DNS and mail routing, hosting migrations, outages at inconvenient hours, and the recurring discovery that a company does not control the domain its whole operation depends on.",
           "Onduu is the independent practice built from that experience. It applies the same operational view to the commercial side of a website — whether enquiries arrive, whether anyone can prove they do, and what happens when a supplier or a person disappears."
         ]

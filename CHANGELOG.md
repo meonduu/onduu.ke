@@ -1,6 +1,45 @@
 # Changelog
 
-CURRENT VERSION: v2.3.0 — 1832hrs:16th August2026
+CURRENT VERSION: v2.4.0 — 1909hrs:16th August2026
+
+## v2.4.0 — 1909hrs:16th August2026
+
+Owner answers applied to the legal pages and About.
+
+### Answered
+
+- **Controller identity.** The contracting entity is **Ujiajiri Enterprises
+  Limited**, trading as Onduu. Named in the privacy notice and corrected on
+  Commercial Relationships, which had described Onduu as Wycliffe's personal
+  practice.
+- **ODPC registration.** Not registered. No registration claim is published in
+  either direction.
+- **Referral benefit.** None. Commercial Relationships now states plainly that
+  Onduu receives no commission, fee, revenue share or other benefit for any
+  supplier choice, with a note that the page changes in the same release if
+  that ever changes.
+- **Retention.** No automatic deletion. The notice previously claimed data was
+  "kept for two years and then deleted" — **that was false**: the code stores a
+  retain_until date but nothing acts on it, and the only scheduled job was
+  removed with v8.8. The section now states that data is kept until deleted by
+  hand and that deletion is honoured on request.
+- **Response time.** None published, per the brief.
+- **Role.** Managing Director for Kenya at HOSTAFRICA, as already published in
+  his own article. Statutory-director status remains unanswered and no claim
+  is made either way.
+- **Registrar named.** EACdirectory.co.ke, founded 2005, run for seventeen
+  years, **acquired by HOSTAFRICA in 2022** — which materially strengthens the
+  disclosure, since the employer is also the acquirer of the company he built.
+
+TO CONFIRM markers reduced from 42 to 24, all now genuinely blocked on facts
+or professional review.
+
+### Not yet applied
+
+Cloudflare Web Analytics and Google Analytics via Tag Manager are both wanted
+but not installed. The privacy notice still states truthfully that the site
+runs no analytics, and carries a note that it will be updated in the same
+release that enables any.
 
 ## v2.3.0 — 1832hrs:16th August2026
 
