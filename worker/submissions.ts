@@ -45,6 +45,16 @@ const LIMITS = {
   current_manager: 500,
   consequence_six_months: 2000,
   enquiry_type: 40,
+  // First-party attribution. Optional, never required, and capped so a crafted
+  // referrer cannot bloat a row.
+  referrer: 300,
+  landing_path: 300,
+  submitted_from: 300,
+  utm_source: 150,
+  utm_medium: 150,
+  utm_campaign: 150,
+  utm_term: 150,
+  utm_content: 150,
 } as const;
 
 type Field = keyof typeof LIMITS;
@@ -117,6 +127,12 @@ export function validate(kind: string, body: Record<string, unknown>) {
     errors.primary_concern = "Please choose one of the listed options.";
   if (data.enquiry_type && !ENQUIRY_TYPES.includes(data.enquiry_type))
     errors.enquiry_type = "Please choose one of the listed options.";
+
+  // Attribution is best-effort context, not user input: a malformed value is
+  // dropped rather than shown to the visitor as a form error.
+  for (const field of ["referrer", "landing_path", "submitted_from"] as Field[]) {
+    if (data[field] && !/^(https?:\/\/|\/)/.test(data[field])) data[field] = "";
+  }
 
   if (kind === "contact" && !data.business_result)
     errors.business_result = "Please describe the result the website or workflow should produce.";
@@ -260,8 +276,10 @@ export async function handleSubmit(request: Request, env: SubmissionEnv): Promis
           reference, kind, full_name, business_email, company, role, website_url,
           primary_concern, trigger_now, business_result, current_manager,
           consequence_six_months, enquiry_type,
-          consent_given, consent_text, consent_version, retain_until
-        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?)`
+          consent_given, consent_text, consent_version, retain_until,
+          referrer, landing_path, submitted_from,
+          utm_source, utm_medium, utm_campaign, utm_term, utm_content
+        ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, 1, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
       )
       .bind(
         ref,
@@ -279,7 +297,15 @@ export async function handleSubmit(request: Request, env: SubmissionEnv): Promis
         d.enquiry_type || null,
         CONSENT_TEXT,
         CONSENT_VERSION,
-        retainUntil
+        retainUntil,
+        d.referrer || null,
+        d.landing_path || null,
+        d.submitted_from || null,
+        d.utm_source || null,
+        d.utm_medium || null,
+        d.utm_campaign || null,
+        d.utm_term || null,
+        d.utm_content || null
       )
       .run();
   } catch {

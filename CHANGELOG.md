@@ -1,6 +1,45 @@
 # Changelog
 
-CURRENT VERSION: v2.5.1 — 2051hrs:16th August2026
+CURRENT VERSION: v2.6.0 — 2113hrs:16th August2026
+
+## v2.6.0 — 2113hrs:16th August2026
+
+First-party enquiry attribution, closing the one gap Cloudflare Analytics
+cannot fill.
+
+### What it does
+
+The first page of a visit records the referring site, the landing path and any
+UTM parameters. That travels with the form submission and is stored beside the
+enquiry in D1, tied to its reference number — so "which article produced this
+enquiry" is answerable from our own data.
+
+- Held in **sessionStorage, not a cookie**: it dies with the tab and cannot
+  follow anyone between visits or sites.
+- **No consent gate needed** and no third party involved, so it covers 100% of
+  enquiries rather than only those who accept measurement.
+- Internal referrers are ignored, so moving around the site does not overwrite
+  the original source.
+- Server-side length caps on every field; a malformed referrer is dropped
+  rather than failing the visitor's form.
+
+Migration `0002_attribution.sql` adds the columns and an index on
+(utm_source, created_at).
+
+### Verified live
+
+Arrived at an article with UTM parameters, navigated internally to
+/readiness, submitted. Row `ON-260816-BH09` stored landing_path
+`/insights/ai-in-kenya-is-about-workflow`, submitted_from `/readiness`,
+utm_source `linkedin` — the original source survived the internal navigation.
+Test row deleted.
+
+### Privacy notice
+
+Updated in the same release: arrival details are listed in what is collected,
+legitimate interest is recorded as the basis, and the session-storage
+mechanism is described. Three new tests cover the caps, the malformed-referrer
+case and that attribution is never required.
 
 ## v2.5.1 — 2051hrs:16th August2026
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { Link } from "./nav-link";
+import { readAttribution } from "./attribution";
 import { useEffect, useRef, useState } from "react";
 
 // Field lists are taken verbatim from the definitive brief: section 10
@@ -134,7 +135,9 @@ export function SubmissionForm({
     if (state === "loading") return;
 
     const form = new FormData(event.currentTarget);
-    const payload: Record<string, unknown> = { kind };
+    // First-party attribution travels with the enquiry so its source is known
+    // without an analytics product.
+    const payload: Record<string, unknown> = { kind, ...readAttribution() };
     for (const [key, value] of form.entries()) payload[key] = value;
     payload.consent = form.get("consent") === "on";
 

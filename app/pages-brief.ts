@@ -370,9 +370,10 @@ export const briefPages: Record<string, PageContent> = {
           "Website address, if you give one",
           "The concern you select, and the free-text answers you write about your situation",
           "A record that you ticked the consent box, the exact wording you agreed to, and the date of that wording",
-          "A reference number generated for your request"
+          "A reference number generated for your request",
+          "How you arrived: the site that referred you, the page you landed on, and any campaign parameters in the link you followed"
         ],
-        "note": "The forms ask you not to submit passwords, credentials or sensitive customer data, and you should not do so. Nothing on this site needs them."
+        "note": "The forms ask you not to submit passwords, credentials or sensitive customer data, and you should not do so. Nothing on this site needs them. The arrival details above are recorded so it is possible to tell which article or link actually produced an enquiry; they are held with the enquiry and describe the visit, not you."
       },
       {
         "eyebrow": "03 / WHY, AND ON WHAT BASIS",
@@ -393,6 +394,10 @@ export const briefPages: Record<string, PageContent> = {
           {
             "title": "To measure what is read",
             "body": "If, and only if, you accept measurement, Google Analytics records how pages and articles are used. The basis is your consent, and you can withdraw it at any time."
+          },
+          {
+            "title": "To know which content works",
+            "body": "Where you came from is stored with your enquiry so it is possible to tell which article or link produced it. This is kept in first-party records rather than sent to an analytics company. The basis is a legitimate interest in knowing which work is worth continuing."
           }
         ]
       },
@@ -412,6 +417,7 @@ export const briefPages: Record<string, PageContent> = {
           "Two different things measure use of this site, and they are treated differently because they work differently.",
           "Cloudflare Web Analytics runs on every visit. It is cookieless: it sets nothing on your device, does not follow you between sites and does not build a profile of you. It reports aggregate figures such as how many people viewed a page. Because it neither stores anything on your device nor identifies you, it is not placed behind the consent choice.",
           "Google Analytics, loaded through Google Tag Manager, runs only if you accept. It sets cookies in your browser and sends information about your visit to Google, including to servers outside Kenya. Decline and none of it loads: no Google Tag Manager script, no dataLayer, and no request to Google. There is no advertising tag on this site either way.",
+          "Separately, and only if you submit a form, the referring site and any campaign parameters from the link you followed are sent with that form. They are held in your browser's session storage until then — not a cookie, and cleared when you close the tab — and they are never shared with a third party.",
           "Your choice is stored in your browser's local storage rather than in a cookie, so declining leaves nothing behind. You can change it at any time using the Cookie choices control in the footer; withdrawing consent reloads the page so measurement stops immediately."
         ],
         "note": "Cloudflare, which serves this site, may set a short-lived security cookie, and the Turnstile spam check on the forms may set one. Those tell a person from an automated script; they do not measure or profile you. Separately, a browser that visited this domain before August 2026 may still hold analytics cookies set by the previous version of this site. Those are not set by the site as it stands, and clearing your cookies for this domain removes them."

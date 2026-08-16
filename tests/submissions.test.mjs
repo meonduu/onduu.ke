@@ -93,3 +93,40 @@ test("references are unique, dated and safe to quote", () => {
   for (let i = 0; i < 500; i++) seen.add(reference());
   assert.ok(seen.size > 450, `expected mostly unique references, got ${seen.size}/500`);
 });
+
+test("attribution fields are accepted and length-capped", () => {
+  const result = validate("readiness", {
+    ...valid,
+    referrer: "https://www.linkedin.com/feed/",
+    landing_path: "/insights/ai-in-kenya-is-about-workflow",
+    submitted_from: "/readiness",
+    utm_source: "linkedin",
+    utm_medium: "social",
+    utm_campaign: "august-domains",
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.data.utm_source, "linkedin");
+  assert.equal(result.data.referrer, "https://www.linkedin.com/feed/");
+
+  const long = validate("readiness", { ...valid, utm_source: "x".repeat(400) });
+  assert.equal(long.ok, false, "an oversized utm must be rejected, not stored");
+});
+
+test("a malformed referrer is dropped rather than failing the form", () => {
+  // Attribution is context, not something the visitor typed. A junk value must
+  // never block a real enquiry.
+  const result = validate("readiness", {
+    ...valid,
+    referrer: "javascript:alert(1)",
+    landing_path: "not-a-path",
+  });
+  assert.equal(result.ok, true, "a bad referrer must not fail the submission");
+  assert.equal(result.data.referrer, "");
+  assert.equal(result.data.landing_path, "");
+});
+
+test("attribution is never required", () => {
+  const result = validate("readiness", valid);
+  assert.equal(result.ok, true);
+  assert.equal(result.data.utm_source, "");
+});
