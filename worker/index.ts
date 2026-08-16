@@ -9,7 +9,6 @@ import { handleDashboard } from "./dashboard";
 import { recordPageView, shouldRecord } from "./pageviews";
 
 interface Env extends SubmissionEnv {
-  DASHBOARD_TOKEN?: string;
   ASSETS: Fetcher;
   IMAGES: {
     input(stream: ReadableStream): {

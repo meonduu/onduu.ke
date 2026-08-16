@@ -29,6 +29,11 @@
   "triggers": {
     "crons": []
   },
+  // The site is served on onduu.ke only. The workers.dev route is disabled
+  // because Cloudflare Access is bound to the hostname, not the Worker: with
+  // workers.dev live, /go was reachable without passing Access at all.
+  "workers_dev": false,
+
   "observability": {
     "enabled": true
   }

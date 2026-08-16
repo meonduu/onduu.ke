@@ -1,6 +1,39 @@
 # Changelog
 
-CURRENT VERSION: v2.9.0 — 2139hrs:16th August2026
+CURRENT VERSION: v2.10.0 — 2226hrs:16th August2026
+
+## v2.10.0 — 2226hrs:16th August2026
+
+Dashboard moved to Cloudflare Access only, and a real hole closed on the way.
+
+### The hole
+
+Cloudflare Access protects a **hostname**, not a Worker. With the workers.dev
+route live, `onduudotke.onduu.workers.dev/go` reached the same dashboard code
+**without passing Access at all**. The access token was the only thing standing
+in front of it there. Removing the token as first asked would have left
+enquirers' names and email addresses reachable by anyone who guessed the
+workers.dev subdomain.
+
+### Closed
+
+- workers.dev disabled — the site is served on onduu.ke only.
+- `"workers_dev": false` pinned in `wrangler.jsonc`, so a future deploy cannot
+  silently reopen it. Verified: the deploy after the change did not re-enable
+  it.
+- `/go` now requires proof it came through Access: the Worker checks the
+  headers Access sets on every request it authenticates, and returns 403
+  without them. If Access is ever removed or reconfigured, the dashboard
+  refuses rather than quietly serving personal data.
+- The signed-in identity from Access is shown on the page.
+
+### Removed
+
+The token gate and the `DASHBOARD_TOKEN` secret, as requested. Nothing to
+remember, nothing to rotate, and no password on a page that lists enquirers.
+
+Tests now assert 403 for any request without Access headers, that a cookie or
+bearer header cannot fake it, and that supplying a token is no longer a way in.
 
 ## v2.9.0 — 2139hrs:16th August2026
 

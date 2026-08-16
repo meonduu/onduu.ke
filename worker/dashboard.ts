@@ -1,61 +1,36 @@
 /**
  * /go — private dashboard: enquiries and first-party page views.
  *
- * This page shows personal data, so it is built to fail closed:
+ * Access control is Cloudflare Access, bound to onduu.ke/go. Rather than
+ * assume that gate is in place, the Worker requires proof of it: Access adds
+ * its own headers to every request it lets through, and this refuses anything
+ * arriving without them.
  *
- *   * with no DASHBOARD_TOKEN configured it returns 503 and renders nothing.
- *     There is no window in which it sits open on a live site;
- *   * the token is compared in constant time, so a wrong guess reveals nothing
- *     through timing;
- *   * the session cookie carries an HMAC and an expiry, not the token itself,
- *     so the secret never travels back to the browser;
- *   * the cookie is HttpOnly, Secure and SameSite=Strict, and expires in 12
- *     hours;
- *   * the page is noindex and disallowed in robots.
+ * That matters because Access protects a hostname, not a Worker. The
+ * workers.dev route reached the same code without passing Access at all, and
+ * has been disabled (`workers_dev: false`). This check is the belt to that
+ * braces — if Access is ever removed, reconfigured or bypassed, the dashboard
+ * refuses rather than quietly serving enquirers' names and email addresses.
  *
- * Cloudflare Access can be layered on top for a second factor; this does not
- * depend on it.
+ * The page is noindex and disallowed in robots.
  */
 
 interface Env {
   onduu_leads?: D1Database;
-  DASHBOARD_TOKEN?: string;
 }
 
-const COOKIE = "onduu_dash";
-const SESSION_HOURS = 12;
-
-const enc = new TextEncoder();
-
-async function hmac(secret: string, message: string): Promise<string> {
-  const key = await crypto.subtle.importKey(
-    "raw",
-    enc.encode(secret),
-    { name: "HMAC", hash: "SHA-256" },
-    false,
-    ["sign"]
-  );
-  const sig = await crypto.subtle.sign("HMAC", key, enc.encode(message));
-  return [...new Uint8Array(sig)].map((b) => b.toString(16).padStart(2, "0")).join("");
+/**
+ * Cloudflare Access sets these on every request it authenticates, and strips
+ * any a client tries to send. Their absence means the request did not come
+ * through Access.
+ */
+function accessIdentity(request: Request): string | null {
+  const email = request.headers.get("Cf-Access-Authenticated-User-Email");
+  const jwt = request.headers.get("Cf-Access-Jwt-Assertion");
+  if (!jwt && !email) return null;
+  return email || "authenticated";
 }
 
-/** Constant-time compare, so an attacker learns nothing from response timing. */
-function safeEqual(a: string, b: string): boolean {
-  if (a.length !== b.length) return false;
-  let diff = 0;
-  for (let i = 0; i < a.length; i++) diff |= a.charCodeAt(i) ^ b.charCodeAt(i);
-  return diff === 0;
-}
-
-async function isSignedIn(request: Request, secret: string): Promise<boolean> {
-  const cookie = request.headers.get("cookie") || "";
-  const match = cookie.match(new RegExp(`${COOKIE}=([^;]+)`));
-  if (!match) return false;
-  const [expires, signature] = decodeURIComponent(match[1]).split(".");
-  if (!expires || !signature) return false;
-  if (Number(expires) < Date.now()) return false;
-  return safeEqual(signature, await hmac(secret, expires));
-}
 
 const escape = (value: unknown) =>
   String(value ?? "")
@@ -96,20 +71,6 @@ a{color:var(--green)}
   );
 }
 
-function loginPage(error?: string): Response {
-  return page(
-    "Sign in",
-    `<h1>Onduu dashboard</h1>
-<p class="sub">Enquiries and first-party page views. Private.</p>
-<form method="POST" action="/go">
-<label for="token">Access token</label>
-<input id="token" name="token" type="password" autocomplete="current-password" autofocus>
-<button type="submit">Sign in</button>
-${error ? `<p class="err">${escape(error)}</p>` : ""}
-</form>`
-  );
-}
-
 function table(headers: string[], rows: string[][], emptyNote: string): string {
   if (!rows.length) return `<div class="empty">${escape(emptyNote)}</div>`;
   return `<table><thead><tr>${headers
@@ -124,7 +85,7 @@ function table(headers: string[], rows: string[][], emptyNote: string): string {
     .join("")}</tbody></table>`;
 }
 
-async function dashboard(env: Env): Promise<Response> {
+async function dashboard(env: Env, identity: string): Promise<Response> {
   const db = env.onduu_leads!;
 
   const [enquiries, counts, topPages, topReferrers, sources, daily] = await Promise.all([
@@ -180,7 +141,7 @@ async function dashboard(env: Env): Promise<Response> {
   return page(
     "Dashboard",
     `<h1>Onduu dashboard</h1>
-<p class="sub">Enquiries and first-party page views. Nothing here is shared with a third party.</p>
+<p class="sub">Enquiries and first-party page views. Nothing here is shared with a third party.<br>Signed in via Cloudflare Access as ${escape(identity)}.</p>
 
 <div class="cards">
   <div class="card"><b>${c.enquiries}</b><span>Enquiries, all time</span></div>
@@ -242,31 +203,22 @@ ${table(
 }
 
 export async function handleDashboard(request: Request, env: Env): Promise<Response> {
-  // Fail closed: without a configured token there is nothing to sign in to.
-  if (!env.DASHBOARD_TOKEN || !env.onduu_leads) {
+  // Fail closed. No Access headers means the request did not come through
+  // Cloudflare Access, so it does not see anything.
+  const identity = accessIdentity(request);
+  if (!identity) {
+    return new Response("Not available.", {
+      status: 403,
+      headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" },
+    });
+  }
+
+  if (!env.onduu_leads) {
     return new Response("Dashboard is not configured.", {
       status: 503,
       headers: { "Cache-Control": "no-store" },
     });
   }
 
-  if (request.method === "POST") {
-    const form = await request.formData();
-    const supplied = String(form.get("token") || "");
-    if (!safeEqual(supplied, env.DASHBOARD_TOKEN)) return loginPage("That token was not accepted.");
-
-    const expires = Date.now() + SESSION_HOURS * 60 * 60 * 1000;
-    const value = `${expires}.${await hmac(env.DASHBOARD_TOKEN, String(expires))}`;
-    return new Response(null, {
-      status: 303,
-      headers: {
-        Location: "/go",
-        "Set-Cookie": `${COOKIE}=${encodeURIComponent(value)}; Path=/go; HttpOnly; Secure; SameSite=Strict; Max-Age=${SESSION_HOURS * 3600}`,
-        "Cache-Control": "no-store",
-      },
-    });
-  }
-
-  if (!(await isSignedIn(request, env.DASHBOARD_TOKEN))) return loginPage();
-  return dashboard(env);
+  return dashboard(env, identity);
 }
