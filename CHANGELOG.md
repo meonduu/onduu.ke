@@ -1,6 +1,39 @@
 # Changelog
 
-CURRENT VERSION: v2.2.0 — 0718hrs:16th August2026
+CURRENT VERSION: v2.3.0 — 1832hrs:16th August2026
+
+## v2.3.0 — 1832hrs:16th August2026
+
+About page biography written, replacing the placeholder guide statement.
+
+### Sourcing
+
+Brief section 2 forbids publishing an unverified biography, and section 23
+requires approved facts. **Every biographical claim on the page is taken from
+Wycliffe's own published articles on this site**, already public under his
+name. Nothing is inferred, rounded or embellished:
+
+- ".ke domain registrar in 2005, ran it for seventeen years, acquired in 2022"
+  — /insights/17-years-running-infrastructure
+- "Managing Director for Kenya at HOSTAFRICA" — his own disclosure line in
+  /insights/freelancers-guide-to-ethical-domain-management-in-kenya
+- "in hosting since 2005" — repeated across three articles
+
+An apparent contradiction was checked and resolved: "seventeen years" refers
+to the registrar he ran from 2005 to 2022, and "since 2005" to the whole
+period. Both are his wording and they agree. The page says "two decades" and
+avoids computing a precise current figure, which would be a new claim.
+
+Deliberately absent: the registrar's name, who acquired it, any
+certification, award, client name or performance figure. None appear in the
+source articles, so none are published.
+
+### Changed
+
+- The placeholder "Replace this with verified biography details" text is gone.
+- The internal approval-gate notes are gone from the public page.
+- The HOSTAFRICA disclosure is now stated directly rather than deferred, and
+  points to the Commercial Relationships page for the full position.
 
 ## v2.2.0 — 0718hrs:16th August2026
 

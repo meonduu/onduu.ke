@@ -720,5 +720,53 @@ export const briefPages: Record<string, PageContent> = {
         ]
       }
     ]
+  },
+  "about": {
+    "eyebrow": "ONDUU / ABOUT",
+    "title": "A practical view of the whole digital system.",
+    "intro": "A business website sits inside domains, hosting, email, analytics, customer journeys, suppliers, recovery processes, content decisions and, increasingly, agent workflows. Onduu exists because a website is rarely only a design problem.",
+    "cta": "See how the review works",
+    "ctaHref": "/solutions/digital-revenue-risk-review",
+    "sections": [
+      {
+        "eyebrow": "01 / WHO RUNS THIS",
+        "title": "Twenty years inside the layer most businesses never see.",
+        "body": [
+          "Wycliffe Onduu started a .ke domain registrar in 2005 and ran it for seventeen years, until it was acquired in 2022. He is now Managing Director for Kenya at HOSTAFRICA.",
+          "That is two decades spent underneath Kenyan businesses rather than in front of them: registrations and renewals, DNS and mail routing, hosting migrations, outages at inconvenient hours, and the recurring discovery that a company does not control the domain its whole operation depends on.",
+          "Onduu is the independent practice built from that experience. It applies the same operational view to the commercial side of a website — whether enquiries arrive, whether anyone can prove they do, and what happens when a supplier or a person disappears."
+        ]
+      },
+      {
+        "eyebrow": "02 / WHY THIS WORK",
+        "title": "The failures are boring, and that is the problem.",
+        "body": [
+          "The faults that cost Kenyan businesses real money are rarely dramatic. A form that submits but reaches nobody. A backup nobody has restored. A domain in a former developer's name. Email that any stranger can send as.",
+          "None of it looks urgent until the day it does. Writing here, and building the free checker on this site, both come from the same habit of looking at the unglamorous layer first."
+        ],
+        "note": "The domain checker was pointed at onduu.ke before it was pointed at anyone else, and it found a fault. That article is published on this site."
+      },
+      {
+        "eyebrow": "03 / OPERATING PRINCIPLES",
+        "title": "How the work is done.",
+        "items": [
+          "Evidence before confidence. Label what was declared, observed, reviewed and tested.",
+          "Business consequence before technical theatre. Explain why the issue matters.",
+          "Client control before dependency. Leave ownership and handover clearer than they were.",
+          "One priority before ten activities. Focus effort where it changes the outcome.",
+          "Human judgement before autonomous action. Use agents within explicit boundaries.",
+          "Kenyan context without false localisation claims. Map the full data and supplier journey."
+        ]
+      },
+      {
+        "eyebrow": "04 / DISCLOSURE",
+        "title": "The relationship you should know about.",
+        "body": [
+          "Wycliffe is Managing Director for Kenya at HOSTAFRICA, a hosting and infrastructure provider. Infrastructure products referenced on this site are supplied and supported by HOSTAFRICA, not by Onduu.",
+          "It is stated here so that any recommendation touching hosting or infrastructure can be judged with that in mind. Onduu's website and digital-performance work is contracted separately and independently."
+        ],
+        "note": "The full position, including how referrals are handled, is set out on the Commercial Relationships page."
+      }
+    ]
   }
 };
