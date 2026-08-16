@@ -253,34 +253,79 @@ export const briefPages: Record<string, PageContent> = {
   "legal/commercial-relationships": {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Commercial relationships.",
-    "intro": "How Onduu is owned, what it contracts independently, and how any referral or disclosure works.",
-    "gate": "Legal drafting and professional review pending. Do not rely on this page yet.",
+    "intro": "Who Onduu is, what it contracts for independently, which relationships could create a conflict, and how referrals are handled.",
+    "gate": "Draft for professional review. The employment and supplier boundaries below require the owner's written confirmation before publication.",
     "sections": [
       {
         "eyebrow": "STATUS",
-        "title": "This page is a draft.",
+        "title": "This is a draft.",
         "body": [
-          "Draft. This page is published so the routes and structure exist, and so the assessment and contact forms can link to it. The wording below is not final and is awaiting professional review. It does not yet constitute the published notice."
+          "This page describes intent and current practice. It has not been reviewed by a legal professional, and items marked TO CONFIRM need the owner's input before anything here can be relied on."
         ]
       },
       {
-        "eyebrow": "COVERAGE",
-        "title": "What the final version will cover.",
+        "eyebrow": "01 / WHO ONDUU IS",
+        "title": "An independent professional practice.",
+        "body": [
+          "Onduu is the independent professional practice of Wycliffe Onduu, offering website, conversion, measurement and digital-performance work to businesses in Kenya.",
+          "TO CONFIRM: registered entity name and number, and whether Onduu trades as a sole proprietorship, a limited company or another form."
+        ]
+      },
+      {
+        "eyebrow": "02 / THE RELATIONSHIP TO DISCLOSE",
+        "title": "The relationship a client should know about.",
+        "body": [
+          "Wycliffe holds a senior role at HOSTAFRICA Kenya, a hosting and infrastructure provider. Infrastructure products referenced on this website are supplied and supported by HOSTAFRICA, not by Onduu.",
+          "This is disclosed because a client considering both website work and infrastructure should know that the same person has an interest on both sides, and can then judge the advice accordingly."
+        ],
+        "note": "TO CONFIRM: Wycliffe's exact job title, whether he is a statutory director, and the precise wording approved for describing the role. The sentence above is drafted from the brief and must be confirmed or corrected before it stands."
+      },
+      {
+        "eyebrow": "03 / WHAT ONDUU CONTRACTS FOR",
+        "title": "What is bought from Onduu, and what is not.",
+        "cards": [
+          {
+            "title": "Contracted with Onduu",
+            "body": "Digital readiness assessments, the Digital Revenue and Risk Review, website work, measurement, and any managed or agent-pilot engagement that is separately agreed."
+          },
+          {
+            "title": "Not contracted with Onduu",
+            "body": "Hosting, virtual servers, domains and infrastructure support. Those are supplied under a separate agreement with the infrastructure provider, on their terms and their pricing."
+          }
+        ],
+        "note": "TO CONFIRM: whether any Onduu service is excluded from this list under an employment or non-compete boundary."
+      },
+      {
+        "eyebrow": "04 / HOW REFERRALS WORK",
+        "title": "Nothing is passed on automatically.",
+        "body": [
+          "This website does not send your enquiry to any infrastructure supplier. There is no automatic routing, no lead-sharing integration and no mechanism on this site that forwards what you submit to a third party.",
+          "If an infrastructure conversation would genuinely help you, it will be raised with you first and you decide whether to have it."
+        ],
+        "note": "TO CONFIRM: whether Onduu receives any commission, fee or other benefit for a referral, and if so, on what basis. Until this is answered, no statement about payment is published here in either direction."
+      },
+      {
+        "eyebrow": "05 / HOW CONFLICTS ARE HANDLED",
+        "title": "The working rule.",
         "items": [
-          "Onduu identity and ownership",
-          "Wycliffe's current HOSTAFRICA role",
-          "Which services Onduu contracts independently",
-          "Which infrastructure services HOSTAFRICA contracts and supports",
-          "How referrals and attribution work",
-          "Conflicts and disclosures",
-          "Contact for questions"
+          "A recommendation should be traceable to evidence about your business, not to who supplies the product",
+          "Where a recommendation touches infrastructure, the relationship above is restated at that point, not buried here",
+          "You are free to take any recommendation to a different supplier, and doing so does not affect the rest of the work"
+        ],
+        "note": "TO CONFIRM: whether an internal conflicts policy exists that should be summarised or linked here."
+      },
+      {
+        "eyebrow": "06 / QUESTIONS",
+        "title": "Ask directly.",
+        "body": [
+          "If anything about these relationships is unclear, or you want it stated in writing before engaging, email me@onduu.ke and ask."
         ]
       },
       {
-        "eyebrow": "IN THE MEANTIME",
-        "title": "Questions about your data.",
+        "eyebrow": "07 / VERSION",
+        "title": "Version and effective date.",
         "body": [
-          "If you have a question about information you have already sent, or you want it corrected or deleted, email me@onduu.ke and it will be handled directly."
+          "Draft version 0.1, prepared 16 August 2026. No effective date until reviewed and the TO CONFIRM items are answered."
         ]
       }
     ]
@@ -449,36 +494,113 @@ export const briefPages: Record<string, PageContent> = {
   "legal/assessment-terms": {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Assessment terms.",
-    "intro": "The terms that apply when you request a Digital Readiness Score or a review.",
-    "gate": "Legal drafting and professional review pending. Do not rely on this page yet.",
+    "intro": "The terms that apply when you request a Digital Readiness Score, use the email security checker, or commission a review.",
+    "gate": "Draft for professional review. Items marked TO CONFIRM need the owner's input before this can be relied on.",
     "sections": [
       {
         "eyebrow": "STATUS",
-        "title": "This page is a draft.",
+        "title": "This is a draft.",
         "body": [
-          "Draft. This page is published so the routes and structure exist, and so the assessment and contact forms can link to it. The wording below is not final and is awaiting professional review. It does not yet constitute the published notice."
+          "This page describes intent and current practice. It has not been reviewed by a legal professional, and items marked TO CONFIRM need the owner's input before anything here can be relied on."
         ]
       },
       {
-        "eyebrow": "COVERAGE",
-        "title": "What the final version will cover.",
+        "eyebrow": "01 / WHAT THIS IS",
+        "title": "A human-reviewed business diagnostic.",
+        "body": [
+          "An Onduu assessment combines what your team declares, what can be safely observed from public sources, and what an Onduu reviewer checks by hand. It produces a score, evidence labels, stated limitations and a small number of prioritised actions.",
+          "It is a decision tool for a business owner. It is not an audit, a certification or an engineering deliverable."
+        ]
+      },
+      {
+        "eyebrow": "02 / YOUR AUTHORITY",
+        "title": "Only submit a domain you are entitled to submit.",
+        "body": [
+          "By submitting a domain or website you confirm that you own it or are authorised by the owner to have it assessed. If you are acting for a client, that authority must come from the client."
+        ],
+        "note": "The email security checker reads only records that are already published publicly, so using it does not require access to anyone's systems. It should still not be used to build a target list or to profile a business you have no relationship with."
+      },
+      {
+        "eyebrow": "03 / WHAT IS OBSERVED",
+        "title": "Public records, read without touching your systems.",
         "items": [
-          "Permitted public observations",
-          "Customer authority to submit the domain",
-          "Prohibited use",
-          "Distinction among declaration, observation, review and test",
-          "No penetration test, compliance certificate or guarantee",
-          "Report confidentiality and access",
-          "Retention",
-          "Correction process",
-          "Intellectual property and limitations"
+          "Published DNS records, including MX, SPF, DKIM where a selector can be guessed, and DMARC",
+          "Publicly reachable pages and their responses",
+          "Information you provide in the request form",
+          "Anything an Onduu reviewer verifies with you directly"
+        ],
+        "note": "No password, credential or system access is required, and none should be sent. Nothing on this site asks for one."
+      },
+      {
+        "eyebrow": "04 / WHAT IS NOT DONE",
+        "title": "Explicitly out of scope.",
+        "items": [
+          "No penetration testing and no vulnerability scanning",
+          "No attempt to log in, bypass a control or access private data",
+          "No submission of your production forms without written permission",
+          "No restoration of a backup outside an agreed safe environment",
+          "No legal, regulatory or compliance certification"
+        ],
+        "note": "Any of these can be discussed as separate work with its own written scope and permission. None of them happens as part of a standard assessment."
+      },
+      {
+        "eyebrow": "05 / HOW FINDINGS ARE LABELLED",
+        "title": "Every finding shows what it is based on.",
+        "cards": [
+          {
+            "title": "Declared by customer",
+            "body": "Supplied by you and not independently verified."
+          },
+          {
+            "title": "Publicly observed",
+            "body": "Read from public pages, DNS or performance sources."
+          },
+          {
+            "title": "Manually reviewed",
+            "body": "Checked by an Onduu reviewer."
+          },
+          {
+            "title": "Directly tested",
+            "body": "Observed in a test you permitted, such as an authorised enquiry trace."
+          }
         ]
       },
       {
-        "eyebrow": "IN THE MEANTIME",
-        "title": "Questions about your data.",
+        "eyebrow": "06 / WHAT A RESULT DOES NOT PROVE",
+        "title": "The limits, stated plainly.",
         "body": [
-          "If you have a question about information you have already sent, or you want it corrected or deleted, email me@onduu.ke and it will be handled directly."
+          "A clean result means the things checked looked correct at the time they were checked. It does not prove that your domain, your mailboxes, your website or your business are secure. It does not prove a backup will restore, that email will reach an inbox, or that any legal or regulatory requirement is met.",
+          "Findings describe a moment in time. Records and systems change, and a result is not a continuing assurance."
+        ]
+      },
+      {
+        "eyebrow": "07 / YOUR REPORT",
+        "title": "Who sees it.",
+        "body": [
+          "A report prepared for you is delivered to you privately and is not published. Onduu will not name you, quote you or publish any result about your business without your written consent."
+        ],
+        "note": "TO CONFIRM: how reports are delivered and stored, who inside Onduu can access them, and whether an anonymised finding may ever be used as an example."
+      },
+      {
+        "eyebrow": "08 / RETENTION AND CORRECTIONS",
+        "title": "How long it is kept, and fixing what is wrong.",
+        "body": [
+          "Information submitted through the request forms is kept for two years and then deleted, as described in the privacy notice. You can ask for it to be removed sooner.",
+          "If you believe a finding is wrong, say so and it will be re-examined. A finding based on a declaration you correct will be updated on the corrected basis."
+        ]
+      },
+      {
+        "eyebrow": "09 / INTELLECTUAL PROPERTY",
+        "title": "Who owns what.",
+        "body": [
+          "TO CONFIRM: whether the report, the scoring method and any template supplied remain Onduu's intellectual property, what licence the client receives to use the report internally, and what the client owns outright."
+        ]
+      },
+      {
+        "eyebrow": "10 / VERSION",
+        "title": "Version and effective date.",
+        "body": [
+          "Draft version 0.1, prepared 16 August 2026. No effective date until reviewed and the TO CONFIRM items are answered."
         ]
       }
     ]
@@ -486,38 +608,115 @@ export const briefPages: Record<string, PageContent> = {
   "legal/managed-service-terms": {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Managed service terms.",
-    "intro": "The terms that will apply to ongoing managed work once that service is approved and contracted.",
-    "gate": "Legal drafting and professional review pending. Do not rely on this page yet.",
+    "intro": "The terms intended to apply to ongoing Managed Website Operations, including any supervised agent working inside that service.",
+    "gate": "Draft for professional review. This service is not yet contracted or priced, so most terms below are placeholders.",
     "sections": [
       {
         "eyebrow": "STATUS",
-        "title": "This page is a draft.",
+        "title": "This describes an intended service.",
         "body": [
-          "Draft. This page is published so the routes and structure exist, and so the assessment and contact forms can link to it. The wording below is not final and is awaiting professional review. It does not yet constitute the published notice."
+          "Managed Website Operations is not yet a contracted, priced service. This page exists so the shape of the agreement is visible and can be reviewed, not because it is in force.",
+          "Nothing here creates an obligation on Onduu or on you. A signed agreement would govern any actual engagement."
         ]
       },
       {
-        "eyebrow": "COVERAGE",
-        "title": "What the final version will cover.",
+        "eyebrow": "01 / WHAT WOULD BE COVERED",
+        "title": "Scope.",
+        "body": [
+          "An engagement would define, in writing, the specific systems monitored, the customer journeys watched and the reports produced. Scope is per client rather than a fixed package."
+        ],
+        "note": "TO CONFIRM: the standard inclusions, the tiers if any, and what falls outside every tier."
+      },
+      {
+        "eyebrow": "02 / SUPPORT AND ESCALATION",
+        "title": "Hours, response and escalation.",
+        "body": [
+          "TO CONFIRM: support hours, response targets by severity, the escalation path and who may raise an incident. No response time is published until the capacity to meet it exists."
+        ]
+      },
+      {
+        "eyebrow": "03 / REPORTING",
+        "title": "The intended rhythm.",
         "items": [
-          "Included systems and monitored journeys",
-          "Support hours and escalation",
-          "Reporting cadence",
-          "Approval and authority matrix",
-          "Availability and remediation limitations",
-          "Client responsibilities",
-          "Access and security",
-          "Model and agent limitations",
-          "Incident and breach responsibilities",
-          "Pricing and out-of-scope work",
-          "Termination, export, retention, deletion and offboarding"
+          "Immediate alerts for material exceptions",
+          "A weekly briefing for the responsible owner",
+          "A monthly operating report",
+          "A quarterly readiness and strategy review",
+          "An annual continuity and governance review",
+          "Close-out reports after an incident or an experiment"
+        ],
+        "note": "TO CONFIRM: which of these are included by default and which are chargeable."
+      },
+      {
+        "eyebrow": "04 / APPROVALS AND AUTHORITY",
+        "title": "Who may approve what.",
+        "items": [
+          "A named client approver for anything that changes a live system",
+          "Least-privilege access, requested per system and revoked at offboarding",
+          "A recorded decision history, so it is clear what was agreed and by whom",
+          "Sensitive actions require explicit human approval and are never automated"
         ]
       },
       {
-        "eyebrow": "IN THE MEANTIME",
-        "title": "Questions about your data.",
+        "eyebrow": "05 / LIMITS ON AGENTS AND MODELS",
+        "title": "What a supervised agent may and may not do.",
         "body": [
-          "If you have a question about information you have already sent, or you want it corrected or deleted, email me@onduu.ke and it will be handled directly."
+          "Where a client approves an agent working inside the service, it operates within defined permissions. By default it may retrieve and explain approved evidence, prepare briefings and propose work."
+        ],
+        "items": [
+          "It does not publish, contact customers or change DNS, production systems or advertising spend",
+          "It does not take irreversible action",
+          "It does not make legal, compliance or security guarantees",
+          "It can be stopped, and the way to stop it is defined before it starts"
+        ],
+        "note": "An agent supports accountable people. It does not replace them, and its output is reviewed before it is acted on."
+      },
+      {
+        "eyebrow": "06 / AVAILABILITY AND REMEDIATION",
+        "title": "What is not promised.",
+        "body": [
+          "Monitoring reports what it observes. It does not guarantee that a website stays available, that a fault is detected instantly, or that a third party's outage can be remedied by Onduu.",
+          "Remediation depends on access, supplier cooperation and contracted capacity. Where a fix is outside the agreed scope it is quoted separately rather than assumed."
+        ]
+      },
+      {
+        "eyebrow": "07 / YOUR RESPONSIBILITIES",
+        "title": "What the client provides.",
+        "items": [
+          "A named owner who can make decisions",
+          "Access to the systems in scope, and prompt revocation when people change",
+          "Accurate information about suppliers and dependencies",
+          "Timely decisions on items raised for approval"
+        ]
+      },
+      {
+        "eyebrow": "08 / INCIDENTS AND BREACHES",
+        "title": "If something goes wrong.",
+        "body": [
+          "TO CONFIRM: notification timeframes, who notifies whom, the respective responsibilities of Onduu, the client and any supplier, and how a personal-data breach would be handled and reported."
+        ]
+      },
+      {
+        "eyebrow": "09 / PRICING AND OUT-OF-SCOPE WORK",
+        "title": "Fees.",
+        "body": [
+          "TO CONFIRM: pricing model, billing period, what is included, how out-of-scope work is quoted and approved, and notice periods for change."
+        ],
+        "note": "No pricing is published anywhere on this site until scope and operating cost are approved."
+      },
+      {
+        "eyebrow": "10 / ENDING THE ENGAGEMENT",
+        "title": "Termination and offboarding.",
+        "body": [
+          "The intent is that a client can leave cleanly and keep what is theirs: access revoked, workflows disabled, client-owned material exported, and retention or deletion recorded."
+        ],
+        "note": "TO CONFIRM: notice period, the export format and timeframe, and what Onduu retains afterwards and for how long."
+      },
+      {
+        "eyebrow": "11 / VERSION",
+        "title": "Version and effective date.",
+        "body": [
+          "Draft version 0.1, prepared 16 August 2026. No effective date. This page does not form an agreement."
         ]
       }
     ]

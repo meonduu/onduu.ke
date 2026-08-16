@@ -1,6 +1,45 @@
 # Changelog
 
-CURRENT VERSION: v2.1.0 — 0710hrs:16th August2026
+CURRENT VERSION: v2.2.0 — 0718hrs:16th August2026
+
+## v2.2.0 — 0718hrs:16th August2026
+
+The remaining three legal drafts written, completing brief section 25.
+
+### Commercial Relationships (8 sections)
+
+States the HOSTAFRICA relationship as a disclosure a client should have, and
+separates what is contracted with Onduu from what is supplied by the
+infrastructure provider. Confirms from the code that **this site forwards no
+enquiry to any supplier** — there is no routing, integration or lead-sharing
+mechanism, matching the routing rule in brief section 24.
+
+Makes **no statement in either direction about commission or referral fees**,
+because that is unresolved. Wycliffe's exact title and director status are
+marked TO CONFIRM rather than asserted.
+
+### Assessment Terms (11 sections)
+
+Describes what an assessment observes (public DNS and pages, plus what you
+declare) and what it explicitly never does: no penetration testing, no
+vulnerability scanning, no login attempts, no production-form submission
+without permission, no restore outside an agreed environment, no
+certification. Carries the four evidence labels and states plainly that a
+clean result does not prove a domain, mailbox or business is secure.
+
+### Managed Service Terms (12 sections)
+
+Opens by stating the service **is not yet contracted or priced** and that the
+page creates no obligation. Support hours, response targets, pricing, incident
+notification and offboarding terms are placeholders. The agent section records
+the hard limits: no publishing, no customer contact, no DNS or production
+changes, no irreversible action, and a defined way to stop it.
+
+### Checks
+
+No pricing appears on any page. No compliance, security or availability
+guarantee is claimed. All four legal routes stay marked as drafts.
+**Together the four pages carry 42 TO CONFIRM markers.**
 
 ## v2.1.0 — 0710hrs:16th August2026
 
