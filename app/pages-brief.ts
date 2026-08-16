@@ -288,40 +288,160 @@ export const briefPages: Record<string, PageContent> = {
   "legal/privacy": {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Privacy notice.",
-    "intro": "What Onduu collects when you use this website or request an assessment, why, and what you can ask for.",
-    "gate": "Legal drafting and professional review pending. Do not rely on this page yet.",
+    "intro": "What Onduu collects when you use this website, why it is collected, who else can see it, how long it is kept and what you can ask for.",
+    "gate": "Draft for professional review. Items marked TO CONFIRM need Wycliffe's input before this can be relied on.",
     "sections": [
       {
         "eyebrow": "STATUS",
-        "title": "This page is a draft.",
+        "title": "This is a draft.",
         "body": [
-          "Draft. This page is published so the routes and structure exist, and so the assessment and contact forms can link to it. The wording below is not final and is awaiting professional review. It does not yet constitute the published notice."
+          "This notice describes what the website actually does today, checked against the code that runs it. It has not yet been reviewed by a legal professional, and the entries marked TO CONFIRM are facts only the owner can supply.",
+          "Until that review is complete, treat this as a good-faith description rather than a final legal notice."
         ]
       },
       {
-        "eyebrow": "COVERAGE",
-        "title": "What the final version will cover.",
+        "eyebrow": "01 / WHO IS RESPONSIBLE",
+        "title": "Who controls this information.",
+        "body": [
+          "Onduu is the data controller for information submitted through this website. Onduu is the independent professional practice of Wycliffe Onduu, operating in Kenya.",
+          "TO CONFIRM: registered legal entity name and registration number, postal and physical address, whether Onduu is registered as a data controller with the Office of the Data Protection Commissioner, and the named contact for data questions."
+        ],
+        "note": "Questions about your information can be sent to me@onduu.ke."
+      },
+      {
+        "eyebrow": "02 / WHAT IS COLLECTED",
+        "title": "Only what you type into a form.",
+        "body": [
+          "The Digital Readiness Score request and the contact form collect the fields you complete. Nothing else about you is gathered as you browse."
+        ],
         "items": [
-          "Controller and processor identity by purpose",
-          "Information collected",
-          "Purpose and lawful basis",
-          "Analytics and cookies",
-          "Assessment data",
-          "Processors and model providers",
-          "Data locations and transfers",
-          "Retention",
-          "Security approach",
-          "Data-subject rights and contact route",
-          "Consent withdrawal",
-          "Complaint route",
-          "Version and effective date"
+          "Full name",
+          "Business email address",
+          "Company",
+          "Role, if you give one",
+          "Website address, if you give one",
+          "The concern you select, and the free-text answers you write about your situation",
+          "A record that you ticked the consent box, the exact wording you agreed to, and the date of that wording",
+          "A reference number generated for your request"
+        ],
+        "note": "The forms ask you not to submit passwords, credentials or sensitive customer data, and you should not do so. Nothing on this site needs them."
+      },
+      {
+        "eyebrow": "03 / WHY, AND ON WHAT BASIS",
+        "title": "Why each piece is held.",
+        "cards": [
+          {
+            "title": "To answer your request",
+            "body": "Your form answers are used to review what you have asked for and recommend a next step. The basis is your consent, given by ticking the box when you submit."
+          },
+          {
+            "title": "To keep a record of consent",
+            "body": "The consent text and version are stored so it can be shown later exactly what you agreed to. The basis is the legal obligation to be able to demonstrate consent."
+          },
+          {
+            "title": "To stop abuse of the forms",
+            "body": "A spam check runs on submission and a short-lived counter limits how many requests one connection can send in an hour. The basis is a legitimate interest in keeping the forms usable."
+          }
         ]
       },
       {
-        "eyebrow": "IN THE MEANTIME",
-        "title": "Questions about your data.",
+        "eyebrow": "04 / THE DOMAIN CHECKER",
+        "title": "The email security checker stores nothing.",
         "body": [
-          "If you have a question about information you have already sent, or you want it corrected or deleted, email me@onduu.ke and it will be handled directly."
+          "When you check a domain at /check, the domain name is sent to Cloudflare's public DNS resolver so its published SPF, DKIM, DMARC and MX records can be read. Those records are already public: anyone can look them up.",
+          "The result is generated and returned to you. The domain you checked and the result are not written to any database by this site, and no account or email address is required to use it."
+        ],
+        "note": "A result from the checker describes published DNS records. It is not proof that a domain, a mailbox or a business is secure."
+      },
+      {
+        "eyebrow": "05 / COOKIES AND ANALYTICS",
+        "title": "No analytics, and no tracking cookies.",
+        "body": [
+          "This website runs no analytics product, no advertising tags and no third-party tracking scripts. Your visit is not profiled and no cookie is set to follow you between pages or between sites.",
+          "The spam check on the forms is Cloudflare Turnstile, which may set its own cookie in your browser for the purpose of telling a person from an automated script. Cloudflare, which serves this site, may also set a short-lived security cookie for the same reason."
+        ],
+        "note": "TO CONFIRM: whether to add a privacy-conscious analytics baseline later. If one is added, this section must be updated before it goes live."
+      },
+      {
+        "eyebrow": "06 / WHO ELSE PROCESSES IT",
+        "title": "The other parties involved.",
+        "cards": [
+          {
+            "title": "Cloudflare",
+            "body": "Hosts this website, stores form submissions in its database service, provides the spam check and resolves the DNS lookups used by the checker."
+          },
+          {
+            "title": "ZeptoMail",
+            "body": "Sends the notification that tells Onduu a request has arrived. That message contains only the reference number and which form was used — none of your answers, and not your name or email address."
+          }
+        ],
+        "note": "No artificial-intelligence or language-model provider receives your form submissions. No information from these forms is sold, and none is passed to an infrastructure supplier or any other third party without asking you first."
+      },
+      {
+        "eyebrow": "07 / WHERE IT IS STORED",
+        "title": "Where the information sits, and where it travels.",
+        "body": [
+          "Submissions are stored in Cloudflare's database service and are served from Cloudflare's network, which operates data centres in many countries. Information may therefore be stored or processed outside Kenya.",
+          "Onduu does not claim that this website keeps all data inside Kenya, because that would not be true of a service delivered on a global network."
+        ],
+        "note": "TO CONFIRM: whether the storage region should be pinned, and the safeguards to be recorded for transfers outside Kenya."
+      },
+      {
+        "eyebrow": "08 / HOW LONG IT IS KEPT",
+        "title": "Two years, then deleted.",
+        "body": [
+          "Each submission is stored with a deletion date set two years (730 days) from the day it was received. It is kept for that long so a business relationship or an earlier enquiry can be picked up again, and so a consent record exists for as long as it may be needed.",
+          "You can ask for your information to be deleted sooner, and it will be."
+        ],
+        "note": "TO CONFIRM: whether two years is the retention period Wycliffe wants, and who performs the deletion and how it is evidenced."
+      },
+      {
+        "eyebrow": "09 / SECURITY",
+        "title": "What is done to protect it, and what that does not prove.",
+        "items": [
+          "The site is served only over an encrypted connection",
+          "Database queries use prepared statements, so submitted text cannot alter them",
+          "Application logs record only an event name, the form type and the reference number — never your name, email address or answers",
+          "The abuse counter stores a one-way hash of the connection address rather than the address itself",
+          "The submission endpoint refuses to accept anything at all if its spam check is not configured, rather than accepting data unprotected"
+        ],
+        "note": "These are the measures in place. No website can promise that information is completely safe, and this notice does not make that claim."
+      },
+      {
+        "eyebrow": "10 / YOUR RIGHTS",
+        "title": "What you can ask for.",
+        "body": [
+          "Under the Kenyan Data Protection Act 2019 you may ask to see the information held about you, to have it corrected, to have it deleted, to object to how it is used, and to receive a copy of it."
+        ],
+        "items": [
+          "Email me@onduu.ke with what you would like done",
+          "Include the reference number from your confirmation if you have it, as that makes the record easy to find",
+          "You will not be asked for a password or any account credential in order to make a request"
+        ],
+        "note": "TO CONFIRM: the response time Onduu commits to. No commitment is published here until the operating capacity to meet it exists."
+      },
+      {
+        "eyebrow": "11 / WITHDRAWING CONSENT",
+        "title": "You can change your mind.",
+        "body": [
+          "Where information is processed because you consented, you can withdraw that consent at any time by emailing me@onduu.ke. Withdrawing it does not undo anything already done on the basis of your earlier consent, and it does not affect the separate record kept to show what you agreed to."
+        ]
+      },
+      {
+        "eyebrow": "12 / COMPLAINTS",
+        "title": "If you are not satisfied.",
+        "body": [
+          "Raise it directly first, at me@onduu.ke, and it will be looked at properly.",
+          "You also have the right to complain to the Office of the Data Protection Commissioner in Kenya. Doing so does not require you to contact Onduu first."
+        ],
+        "note": "TO CONFIRM: the ODPC contact details and complaint route to publish here."
+      },
+      {
+        "eyebrow": "13 / VERSION",
+        "title": "Version and effective date.",
+        "body": [
+          "Draft version 0.1, prepared 16 August 2026. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
+          "The consent wording shown on the forms is versioned separately, so a record exists of the exact text each person agreed to."
         ]
       }
     ]

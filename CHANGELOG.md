@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v2.0.0 — 0654hrs:16th August2026
+CURRENT VERSION: v2.1.0 — 0710hrs:16th August2026
+
+## v2.1.0 — 0710hrs:16th August2026
+
+Privacy notice draft written.
+
+Fourteen sections covering everything brief section 25 requires: controller
+identity, information collected, purpose and lawful basis, cookies and
+analytics, the checker, processors, data locations and transfers, retention,
+security, rights, consent withdrawal, complaints, and version.
+
+**Every factual claim was checked against the code that runs the site**, not
+assumed:
+
+- the exact form fields, from worker/submissions.ts;
+- 730-day retention, from the retain_until calculation;
+- that logs carry only an event name, form type and reference;
+- that the abuse counter stores a one-way hash of the connection address;
+- that the endpoint refuses submissions when its spam check is unconfigured;
+- that /check writes nothing to any database;
+- that the site runs no analytics, no ad tags and no tracking cookies;
+- that the ZeptoMail notification contains no personal data.
+
+It states plainly that data may be processed outside Kenya, since the site
+runs on a global network, and it makes no claim of compliance, security or
+guarantee — all forbidden by section 2 of the brief.
+
+**21 TO CONFIRM markers** flag what only the owner can supply: legal entity
+details, ODPC registration, retention preference, response-time commitment
+and the ODPC complaint route. The page remains marked as a draft.
 
 ## v2.0.0 — 0654hrs:16th August2026
 
