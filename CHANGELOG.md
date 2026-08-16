@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v2.7.0 — 2120hrs:16th August2026
+CURRENT VERSION: v2.8.0 — 2128hrs:16th August2026
+
+## v2.8.0 — 2128hrs:16th August2026
+
+Expire the analytics cookies left behind by the previous site.
+
+v8.8 ran Google Analytics, Microsoft Clarity and an Encharge snippet. Those
+cookies were still sitting in the browser of anyone who visited before August
+2026. The privacy notice says this site does not track you, which was true of
+what the site sets and hollow while someone else's tracking cookies remained
+on the domain.
+
+- If a request arrives carrying one, the response expires it: `_ga`, `_gid`,
+  `_gat`, any `_ga_*` / `_gac_*` / `_gcl_*`, `_clck`, `_clsk`,
+  `encheventsnippet`, `unique_session_id` and `wai_from_id`.
+- Each is expired in all three forms — host-only, `Domain=onduu.ke` and
+  `Domain=.onduu.ke` — because a cookie is only deleted when the domain and
+  path match how it was set.
+- **Cloudflare's own functional cookies are never touched.** Expiring
+  `__cf_bm` or `cf_clearance` would break bot protection and Turnstile.
+- Self-limiting: once cleared the browser stops sending them, so the headers
+  stop being added. Visitors who never had them see no Set-Cookie at all, and
+  static assets are never touched.
+
+### Verified live
+
+A request carrying `_ga`, `_ga_HFJ4SF94RP`, `_clck` and `__cf_bm` came back
+with nine expiry headers for the three stale cookies and **none for
+`__cf_bm`**. A clean request received zero Set-Cookie headers.
+
+In a real browser holding seven stale cookies, **one page load cleared all
+seven** — `document.cookie` went from seven names to empty.
+
+Six new tests cover detection, the Cloudflare exclusion, the domain forms and
+the asset exemption.
 
 ## v2.7.0 — 2120hrs:16th August2026
 

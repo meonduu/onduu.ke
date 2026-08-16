@@ -4,6 +4,7 @@ import handler from "vinext/server/app-router-entry";
 import { handleCheck } from "./email-check.js";
 import { sitemap, rss, robots } from "./feeds";
 import { handleSubmit, type SubmissionEnv } from "./submissions";
+import { clearStaleCookies } from "./stale-cookies";
 
 interface Env extends SubmissionEnv {
   ASSETS: Fetcher;
@@ -62,7 +63,10 @@ const worker = {
       }, allowedWidths);
     }
 
-    return handler.fetch(request, env, ctx);
+    // Expire analytics cookies left by the previous site before handing the
+    // page back. Self-limiting: once gone, the browser stops sending them.
+    const response = await handler.fetch(request, env, ctx);
+    return clearStaleCookies(request, response);
   },
 };
 
