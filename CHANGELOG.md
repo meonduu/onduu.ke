@@ -1,6 +1,47 @@
 # Changelog
 
-CURRENT VERSION: v1.4.0 — 0648hrs:16th August2026
+CURRENT VERSION: v2.0.0 — 0654hrs:16th August2026
+
+## v2.0.0 — 0654hrs:16th August2026
+
+**Publication gates lifted.** The owner reviewed and approved the previously
+gated pages, so the whole site is now public.
+
+### Published
+
+- `/managed-website-operations`
+- `/solutions/agent-workflow-pilot`
+- `/infrastructure` and both child pages
+- `/results`
+
+For each: the internal "PREVIEW / APPROVAL GATE" banner removed, noindex
+removed, robots disallow removed, added to the sitemap, and linked from
+navigation. `GATED_ROUTES` is now empty.
+
+### Changed
+
+- Primary navigation restored to brief section 7, including Managed
+  Operations.
+- Footer expanded to the full brief structure: Managed Operations and Agent
+  Workflow Pilot under Solutions; Kenyan Infrastructure, Buzz and Agent
+  Collaboration and Results under Explore; all four legal routes under
+  Company.
+- `/legal/assessment-terms` and `/legal/managed-service-terms` are no longer
+  orphans — they were in the sitemap but linked from nowhere.
+- Homepage: the Managed Operations and Agent Workflow Pilot solution cards
+  restored, and the evidence section links to /results again.
+
+### Unchanged
+
+- The four legal pages remain clearly marked as **drafts** awaiting
+  professional review. Publication of the commercial pages does not change
+  their status.
+- Homepage section 07 stays removed, as requested separately.
+- The About biography is still the generic guide statement; brief section 23
+  requires approved facts before it is replaced.
+
+Sitemap now lists 32 URLs. A crawl from the homepage reaches 33 pages, all
+200 — every page on the site is now reachable by following links.
 
 ## v1.4.0 — 0648hrs:16th August2026
 

@@ -9,16 +9,14 @@
 //
 // Legal routes are deliberately NOT in this list. They ship as marked drafts
 // because the assessment and contact forms must link to a privacy notice.
-export const GATED_ROUTES = new Set([
-  "managed-website-operations",
-  "solutions/agent-workflow-pilot",
-  "infrastructure",
-  "infrastructure/kenyan-vps-data-location",
-  "infrastructure/buzz-agent-collaboration",
-  // "Hide this page from the primary navigation until at least one approved
-  // study exists." — brief, section 21.
-  "results",
-]);
+// Emptied on 16 August 2026: the owner reviewed and approved Managed Website
+// Operations, the Agent Workflow Pilot, the Infrastructure hub and its two
+// child pages, and Results. All are now indexed, in the sitemap and linked
+// from navigation.
+//
+// The legal routes are still marked as drafts on the pages themselves — that
+// is separate from this gate and unaffected.
+export const GATED_ROUTES = new Set<string>([]);
 
 export function isGated(route: string) {
   return GATED_ROUTES.has(route.replace(/^\/|\/$/g, ""));

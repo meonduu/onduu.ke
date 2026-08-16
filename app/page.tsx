@@ -2,12 +2,13 @@ import { Link } from "./nav-link";
 import { Button, Footer, Header } from "./components";
 
 const dimensions=[["Control","Account ownership and continuity"],["Trust","Credibility and responsible foundations"],["Speed","Real-world mobile performance"],["Conversion","A clear, working enquiry path"],["Resilience","Proven recovery and responsibility"],["Agent readiness","Bounded, supervised workflows"]];
-// Managed Website Operations and the Agent Workflow Pilot are omitted until the
-// employment, HOSTAFRICA and managed-agent boundaries are approved. Their pages
-// exist but are gated — see app/route-policy.ts.
+// Four core solutions, per brief section 9. Managed Operations and the Agent
+// Pilot were restored on 16 August 2026 once the owner approved them.
 const solutions=[
  ["01","Digital Revenue and Risk Review","A deeper diagnosis for leaders who need evidence, ownership and a 30/60/90-day plan.","/solutions/digital-revenue-risk-review"],
  ["02","Website Revenue System","Clarify the offer, improve the website, prove the enquiry path and establish measurement.","/solutions/website-revenue-system"],
+ ["03","Managed Website Operations","Keep the website monitored, measurable, on-brand and improving after launch.","/managed-website-operations"],
+ ["04","Agent Workflow Pilot","Test one narrow workflow with permissions, human approval and a clear decision.","/solutions/agent-workflow-pilot"],
 ];
 
 export default function Home(){return <><Header/><main>
@@ -17,6 +18,6 @@ export default function Home(){return <><Header/><main>
  <section className="method"><div><p className="section-number">04 / The method</p><h2>Start with evidence. Fix the right problem. Measure what changes.</h2></div><div className="method-steps">{[["01","Score","Establish the baseline across six connected dimensions."],["02","Fix","Prioritise the three weaknesses with the greatest consequence."],["03","Measure","Verify the result in enquiries, performance, ownership or recovery."]].map(s=><article key={s[0]}><b>{s[0]}</b><h3>{s[1]}</h3><p>{s[2]}</p></article>)}</div></section>
  <section className="solutions-preview"><div className="section-intro"><p className="section-number">05 / Core solutions</p><h2>A clear path from diagnosis to continuous improvement.</h2><p>Start with the weakness and choose the response that fits.</p></div><div className="solution-list">{solutions.map(s=><Link href={s[3]} key={s[0]}><b>{s[0]}</b><h3>{s[1]}</h3><p>{s[2]}</p><span>Explore ↗</span></Link>)}</div></section>
  <section className="split-feature"><div><p className="section-number">06 / One strategy</p><h2>Your website should express one strategy - not disconnected messages.</h2><p>Align the audience, promise, offer hierarchy, proof, voice, visual rules and calls to action behind one practical source of truth.</p><Button href="/solutions/website-revenue-system">See the website revenue system</Button></div><aside><small>BRAND CLARITY FOUNDATION</small><ol><li>Audience and buying trigger</li><li>Position and promise</li><li>Offer hierarchy</li><li>Proof and limitations</li><li>Voice and visual rules</li><li>CTA map</li></ol></aside></section>
- <section className="evidence-section"><div><p className="section-number">07 / Evidence</p><h2>Show the evidence, including what did not work.</h2></div><div><p>Onduu’s first documented studies are in progress. Results will appear only when the customer has consented and the evidence can be shown responsibly.</p><ul><li>Before-and-after readiness scorecards</li><li>Enquiry-path and restore-test evidence</li><li>Speed and accessibility results</li><li>Agent pilot failures and corrections</li></ul><p className="note">Results will be published here once at least one study is approved and consented.</p></div></section>
+ <section className="evidence-section"><div><p className="section-number">07 / Evidence</p><h2>Show the evidence, including what did not work.</h2></div><div><p>Onduu’s first documented studies are in progress. Results will appear only when the customer has consented and the evidence can be shown responsibly.</p><ul><li>Before-and-after readiness scorecards</li><li>Enquiry-path and restore-test evidence</li><li>Speed and accessibility results</li><li>Agent pilot failures and corrections</li></ul><Link className="text-link" href="/results">See the evidence policy ↗</Link></div></section>
  <section className="final-cta"><p className="section-number">08 / Your next step</p><h2>Find the three digital weaknesses worth fixing first.</h2><p>Start with a structured score rather than another open-ended sales call.</p><div className="actions"><Button href="/readiness">Get your digital readiness score</Button><Button href="/contact" secondary>Tell me the business problem</Button></div></section>
  </main><Footer/></>}

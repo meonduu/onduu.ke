@@ -2,6 +2,17 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { GATED_ROUTES, SITE_URL } from "../app/route-policy.ts";
 
+// Approved and published on 16 August 2026. These were gated; the tests below
+// now assert the opposite — that they are indexable, in the sitemap and linked.
+const PUBLISHED_ROUTES = [
+  "managed-website-operations",
+  "solutions/agent-workflow-pilot",
+  "infrastructure",
+  "infrastructure/kenyan-vps-data-location",
+  "infrastructure/buzz-agent-collaboration",
+  "results",
+];
+
 async function fetchPath(path, accept = "text/html") {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-seo`);
@@ -33,10 +44,44 @@ test("sitemap lists public routes and excludes every gated one", async () => {
   }
 });
 
-test("gated pages are noindex", async () => {
-  for (const route of GATED_ROUTES) {
+test("previously gated pages are now published and indexable", async () => {
+  for (const route of PUBLISHED_ROUTES) {
+    const response = await fetchPath(`/${route}`);
+    assert.equal(response.status, 200, `${route} should render`);
+    const html = await response.text();
+    assert.doesNotMatch(html, /content="noindex/, `${route} should be indexable`);
+    // The internal review banner must not survive publication.
+    assert.doesNotMatch(html, /PREVIEW \/ APPROVAL GATE/, `${route} still shows a gate banner`);
+  }
+});
+
+test("published routes appear in the sitemap and are linked from the footer", async () => {
+  const xml = await (await fetchPath("/sitemap.xml")).text();
+  const home = await (await fetchPath("/")).text();
+  for (const route of PUBLISHED_ROUTES) {
+    assert.ok(xml.includes(`${SITE_URL}/${route}`), `sitemap missing ${route}`);
+  }
+  for (const route of ["managed-website-operations", "solutions/agent-workflow-pilot", "infrastructure", "results"]) {
+    assert.match(home, new RegExp(`href="/${route}"`), `nothing links to ${route}`);
+  }
+});
+
+test("all four legal routes are linked from the footer", async () => {
+  const home = await (await fetchPath("/")).text();
+  for (const route of [
+    "legal/commercial-relationships",
+    "legal/privacy",
+    "legal/assessment-terms",
+    "legal/managed-service-terms",
+  ]) {
+    assert.match(home, new RegExp(`href="/${route}"`), `footer missing ${route}`);
+  }
+});
+
+test("legal pages are still marked as drafts", async () => {
+  for (const route of ["legal/privacy", "legal/assessment-terms"]) {
     const html = await (await fetchPath(`/${route}`)).text();
-    assert.match(html, /content="noindex/, `${route} should be noindex`);
+    assert.match(html, /draft/i, `${route} should still be marked a draft`);
   }
 });
 
