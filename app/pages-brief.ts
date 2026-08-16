@@ -389,6 +389,10 @@ export const briefPages: Record<string, PageContent> = {
           {
             "title": "To stop abuse of the forms",
             "body": "A spam check runs on submission and a short-lived counter limits how many requests one connection can send in an hour. The basis is a legitimate interest in keeping the forms usable."
+          },
+          {
+            "title": "To measure what is read",
+            "body": "If, and only if, you accept measurement, Google Analytics records how pages and articles are used. The basis is your consent, and you can withdraw it at any time."
           }
         ]
       },
@@ -403,12 +407,13 @@ export const briefPages: Record<string, PageContent> = {
       },
       {
         "eyebrow": "05 / COOKIES AND ANALYTICS",
-        "title": "No analytics, and no tracking cookies.",
+        "title": "Cookies and measurement, and how to refuse them.",
         "body": [
-          "This website runs no analytics product, no advertising tags and no third-party tracking scripts. Your visit is not profiled and no cookie is set to follow you between pages or between sites.",
-          "The spam check on the forms is Cloudflare Turnstile, which may set its own cookie in your browser for the purpose of telling a person from an automated script. Cloudflare, which serves this site, may also set a short-lived security cookie for the same reason."
+          "Nothing that measures you runs unless you accept it. On a first visit no analytics loads, no dataLayer is created and no request is made to Google. There is no advertising tag on this site.",
+          "If you accept, Google Tag Manager loads and runs Google Analytics. That sets cookies in your browser and sends information about your visit to Google, including to servers outside Kenya. If you decline, none of that is loaded and no analytics cookie is placed on your device.",
+          "Your choice is stored in your browser's local storage rather than in a cookie, so declining leaves nothing behind. You can change it at any time using the Cookie choices control in the footer; withdrawing consent reloads the page so measurement stops immediately."
         ],
-        "note": "Cloudflare Web Analytics is intended to be added. It uses no cookies and does not track visitors across sites. This section will be updated in the same release that enables it, so this page never describes the site inaccurately."
+        "note": "Cloudflare, which serves this site, may set a short-lived security cookie, and the Turnstile spam check on the forms may set one. Those are used to tell a person from an automated script, not to measure or profile you. Cloudflare Web Analytics is also intended to be added: it uses no cookies and does not identify visitors, so it is not gated behind this choice."
       },
       {
         "eyebrow": "06 / WHO ELSE PROCESSES IT",
@@ -421,6 +426,10 @@ export const briefPages: Record<string, PageContent> = {
           {
             "title": "ZeptoMail",
             "body": "Sends the notification that tells Onduu a request has arrived. That message contains only the reference number and which form was used — none of your answers, and not your name or email address."
+          },
+          {
+            "title": "Google",
+            "body": "Receives analytics information about your visit through Google Tag Manager, but only if you accept measurement. Google processes this outside Kenya, including in the United States."
           }
         ],
         "note": "No artificial-intelligence or language-model provider receives your form submissions. No information from these forms is sold, and none is passed to an infrastructure supplier or any other third party without asking you first."

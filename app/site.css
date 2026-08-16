@@ -38,3 +38,18 @@ input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="tr
    as Turnstile draws a challenge, so a real challenge is never hidden. The
    hidden token input still submits — display:none does not exclude a field. */
 .turnstile-slot:not(:has(iframe)){display:none}
+
+/* Consent banner. Deny-by-default: nothing loads until the visitor accepts. */
+.consent{position:fixed;left:0;right:0;bottom:0;z-index:60;background:var(--carbon);color:#e7ecea;padding:24px clamp(20px,5vw,60px);display:none;grid-template-columns:1fr auto;gap:clamp(20px,4vw,60px);align-items:center;border-top:3px solid var(--copper);box-shadow:0 -10px 40px rgba(16,24,32,.28)}
+.consent.is-visible{display:grid}
+.consent h2{font:22px Georgia;margin:0 0 8px;color:#fff}
+.consent p{margin:0;font-size:14px;line-height:1.6;max-width:70ch;color:#c3cdca}
+.consent .consent-detail{margin-top:8px;font-size:13px;color:#9fadaa}
+.consent a{color:#fff;text-decoration:underline;text-underline-offset:3px}
+.consent-actions{display:flex;gap:12px;flex-wrap:wrap}
+.consent-actions .button{border:0}
+.button-quiet{background:transparent;border:1px solid #6d7d79 !important;color:#e7ecea}
+.button-quiet:hover{border-color:#e7ecea !important}
+.footer-link-button{background:none;border:0;padding:0;font:inherit;font-size:12px;color:#9ca7ae;text-align:left;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.footer-link-button:hover{color:#fff}
+@media(max-width:760px){.consent{grid-template-columns:1fr;gap:18px}}

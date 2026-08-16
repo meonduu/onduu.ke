@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v2.4.0 — 1909hrs:16th August2026
+CURRENT VERSION: v2.5.0 — 2041hrs:16th August2026
+
+## v2.5.0 — 2041hrs:16th August2026
+
+Consent-gated Google Analytics via Tag Manager (GTM-MSMMVVZ7).
+
+### Deny by default
+
+Nothing measuring the visitor loads until they accept. Verified on the live
+site with a cleared browser: **zero requests to Google, no GTM script and no
+dataLayer** before a choice is made, and the same after declining. On accept,
+GTM loads and six Google requests follow.
+
+- The choice is stored in localStorage rather than a cookie, so declining
+  leaves nothing on the device.
+- Withdrawal is real: a "Cookie choices" control in the footer reopens the
+  banner, and withdrawing after accepting reloads the page so measurement
+  stops immediately.
+- The banner ships in the HTML but is hidden by CSS and revealed by the
+  client, so it still works if JavaScript is slow and never flashes at
+  visitors who already answered.
+
+### Privacy notice updated in the same release
+
+The notice no longer claims the site runs no analytics. It now states what
+loads on accept, that Google receives data outside Kenya, what declining does,
+and where to change the decision. Google is listed as a processor, and consent
+is recorded as the lawful basis for measurement.
+
+### Fixed during testing
+
+The banner would never hide: a standalone `.consent{display:none}` sat before
+the main `.consent` rule, which re-declared `display:grid` and won on source
+order. Class and aria-hidden were updating correctly, so only a real browser
+showed it. Hiding now lives in the base rule, revealed by `.is-visible`.
+
+Cloudflare Web Analytics is still not installed — it needs enabling on the
+Cloudflare side first.
 
 ## v2.4.0 — 1909hrs:16th August2026
 
