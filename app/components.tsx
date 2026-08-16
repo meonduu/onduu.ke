@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "./nav-link";
 import type { ReactNode } from "react";
 import { SubmissionForm } from "./forms";
 import { TURNSTILE_SITE_KEY } from "./route-policy";

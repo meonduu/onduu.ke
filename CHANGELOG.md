@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v1.3.0 — 0006hrs:16th August2026
+CURRENT VERSION: v1.3.1 — 0546hrs:16th August2026
+
+## v1.3.1 — 0546hrs:16th August2026
+
+Fixed: clicking any menu item did nothing.
+
+### The fault
+
+vinext's `<Link>` is broken in the **production build**. Clicking one threw
+`TypeError: e is not a function` from inside its startTransition handler and
+the navigation never happened. Every link in the header, footer, homepage and
+article pages was inert for real visitors.
+
+Direct URLs always worked, which is why the earlier link crawl passed — curl
+tests server responses, not clicks. The dev server also worked, which is why
+local testing missed it. **The bug only appears in the built output.**
+
+Upgrading vinext 1.0.0-beta.2 → 1.0.0-beta.6 (with @vitejs/plugin-rsc 0.5.34)
+did **not** fix it; the error simply moved. That upgrade was reverted.
+
+### The fix
+
+- `app/nav-link.tsx` — a plain `<a>` replaces `next/link` everywhere. Every
+  click is now an ordinary page load, which cannot fail to navigate. The
+  `link-*` chunk is gone from the build entirely.
+- This also matches the brief's "minimal client JavaScript" requirement
+  (section 28). If vinext fixes client navigation, reverting is one file.
+
+### Verified
+
+- Clicked through the live site, not just curl: How it works, Solutions,
+  Insights and an article all load correctly on onduu.ke.
+- Production build tested locally via `npm start` before deploying — the step
+  that was missing when this bug shipped.
+- Forms, checker, feeds and all 26 internal links still fine.
 
 ## v1.3.0 — 0006hrs:16th August2026
 

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import Link from "next/link";
+import { Link } from "../nav-link";
 import { Header, Footer, Button } from "../components";
 import { CheckForm } from "./check-form";
 

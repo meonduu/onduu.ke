@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { Link } from "./nav-link";
 import { useEffect, useRef, useState } from "react";
 
 // Field lists are taken verbatim from the definitive brief: section 10

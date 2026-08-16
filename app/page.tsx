@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "./nav-link";
 import { Button, Footer, Header } from "./components";
 
 const dimensions=[["Control","Account ownership and continuity"],["Trust","Credibility and responsible foundations"],["Speed","Real-world mobile performance"],["Conversion","A clear, working enquiry path"],["Resilience","Proven recovery and responsibility"],["Agent readiness","Bounded, supervised workflows"]];

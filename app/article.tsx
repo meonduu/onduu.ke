@@ -1,4 +1,4 @@
-import Link from "next/link";
+import { Link } from "./nav-link";
 import { Header, Footer, Button } from "./components";
 import type { Article, Block, Inline } from "./insights-data";
 import { articles } from "./insights-data";
