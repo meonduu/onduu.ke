@@ -218,8 +218,12 @@ export function SubmissionForm({
           className={field.full ? "full" : undefined}
           htmlFor={field.name}
         >
-          {field.label}
-          {field.required && <span aria-hidden="true"> *</span>}
+          {/* Label text and the required marker must be one flex child, or the
+              asterisk wraps onto its own line and pushes the input down. */}
+          <span className="label-text">
+            {field.label}
+            {field.required && <span aria-hidden="true"> *</span>}
+          </span>
           {field.type === "textarea" ? (
             <textarea
               id={field.name}

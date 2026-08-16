@@ -1,6 +1,27 @@
 # Changelog
 
-CURRENT VERSION: v1.3.1 — 0546hrs:16th August2026
+CURRENT VERSION: v1.3.2 — 0610hrs:16th August2026
+
+## v1.3.2 — 0610hrs:16th August2026
+
+Fixed form field alignment.
+
+The required-field asterisk was rendered as a separate flex child of the
+label, so it wrapped onto its own line and pushed that field's input down.
+Because only some fields are required, inputs stopped lining up across the
+two-column grid — Company sat lower than Role, and so on.
+
+- Label text and the asterisk are now a single element, so the marker reads
+  inline: "FULL NAME *".
+- Controls are bottom-aligned within each label, so inputs line up across a
+  row whatever the label length. Long labels that wrap to two or three lines
+  no longer knock their row out of alignment.
+- The consent checkbox aligns to the first line of its text rather than
+  centring against the wrapped paragraph.
+
+Verified on the production build and then on onduu.ke: full_name/business_email
+and company/role each share an identical top edge. The checker form on /check
+was checked too — input and button share a row at matching height.
 
 ## v1.3.1 — 0546hrs:16th August2026
 

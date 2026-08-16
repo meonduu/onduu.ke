@@ -23,3 +23,12 @@ footer{background:#0b1117;color:#fff;padding:75px clamp(24px,7vw,110px) 55px;dis
 .form-confirmation{border-left:3px solid var(--green);background:#e4ece9;padding:34px}.form-confirmation h2{font:clamp(28px,3vw,40px) Georgia;margin:0 0 14px}.form-confirmation p{line-height:1.7;color:#28323a;max-width:640px}.form-confirmation .reference{margin-top:22px;font-size:12px;text-transform:uppercase;letter-spacing:.1em;font-weight:800}.form-confirmation .reference b{font-size:18px;letter-spacing:.04em}
 input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="true"]{border-color:#a8342a;border-width:2px}
 @media(max-width:620px){.request-form{grid-template-columns:1fr}}
+
+/* Form field alignment: labels vary in length (one line vs three), and only
+   some fields are required. Bottom-align the controls so every input in a grid
+   row sits on the same line regardless of its label. */
+.request-form label{justify-content:flex-start;height:100%}
+.request-form .label-text{display:block;line-height:1.45}
+.request-form label > input,.request-form label > select,.request-form label > textarea{margin-top:auto}
+.request-form .check{height:auto;align-items:flex-start;gap:12px}
+.request-form .check input{margin-top:3px;flex:0 0 auto}
