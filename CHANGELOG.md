@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v2.6.0 — 2113hrs:16th August2026
+CURRENT VERSION: v2.7.0 — 2120hrs:16th August2026
+
+## v2.7.0 — 2120hrs:16th August2026
+
+Google Analytics, Tag Manager and the consent banner removed.
+
+With Cloudflare Web Analytics covering traffic and performance for every
+visitor, and first-party attribution covering every enquiry, GA4 was buying
+nothing that was not already covered — while costing a consent banner in front
+of the site, a transfer of personal data to Google, and several paragraphs of
+privacy notice to defend.
+
+### Removed
+
+- `app/consent.tsx`, the layout hook, the footer "Cookie choices" control and
+  the banner styles.
+- The Google Tag Manager container and everything it loaded.
+- The Google processor entry and the consent-based lawful basis for
+  measurement from the privacy notice.
+
+### The notice now says what is true
+
+No advertising tags, no third-party tracking scripts, no cookie banner because
+nothing needs one. Cloudflare Web Analytics runs cookielessly on every visit;
+attribution is held in session storage until a form is submitted. The note
+about stale Google Analytics cookies from the previous site is kept, since
+returning visitors may still carry them.
+
+### Verified live in a browser
+
+Banner gone, cookie control gone, no Tag Manager script, no dataLayer. The
+only third-party host the page contacts is
+`static.cloudflareinsights.com`. Attribution still records the visit source.
+
+Tests now assert the **absence** of Tag Manager, Google Analytics, Clarity and
+a Meta pixel on every page, so a tracker cannot return without the privacy
+notice changing in the same release. The form's consent checkbox is untouched:
+that is data-processing consent, not cookies.
 
 ## v2.6.0 — 2113hrs:16th August2026
 

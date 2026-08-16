@@ -392,10 +392,6 @@ export const briefPages: Record<string, PageContent> = {
             "body": "A spam check runs on submission and a short-lived counter limits how many requests one connection can send in an hour. The basis is a legitimate interest in keeping the forms usable."
           },
           {
-            "title": "To measure what is read",
-            "body": "If, and only if, you accept measurement, Google Analytics records how pages and articles are used. The basis is your consent, and you can withdraw it at any time."
-          },
-          {
             "title": "To know which content works",
             "body": "Where you came from is stored with your enquiry so it is possible to tell which article or link produced it. This is kept in first-party records rather than sent to an analytics company. The basis is a legitimate interest in knowing which work is worth continuing."
           }
@@ -412,15 +408,13 @@ export const briefPages: Record<string, PageContent> = {
       },
       {
         "eyebrow": "05 / COOKIES AND ANALYTICS",
-        "title": "Cookies and measurement, and how to refuse them.",
+        "title": "No tracking cookies, and nothing to consent to.",
         "body": [
-          "Two different things measure use of this site, and they are treated differently because they work differently.",
-          "Cloudflare Web Analytics runs on every visit. It is cookieless: it sets nothing on your device, does not follow you between sites and does not build a profile of you. It reports aggregate figures such as how many people viewed a page. Because it neither stores anything on your device nor identifies you, it is not placed behind the consent choice.",
-          "Google Analytics, loaded through Google Tag Manager, runs only if you accept. It sets cookies in your browser and sends information about your visit to Google, including to servers outside Kenya. Decline and none of it loads: no Google Tag Manager script, no dataLayer, and no request to Google. There is no advertising tag on this site either way.",
-          "Separately, and only if you submit a form, the referring site and any campaign parameters from the link you followed are sent with that form. They are held in your browser's session storage until then — not a cookie, and cleared when you close the tab — and they are never shared with a third party.",
-          "Your choice is stored in your browser's local storage rather than in a cookie, so declining leaves nothing behind. You can change it at any time using the Cookie choices control in the footer; withdrawing consent reloads the page so measurement stops immediately."
+          "This website runs no advertising tags, no third-party tracking scripts and no product that follows you between sites. There is no cookie banner because there is nothing here that needs one.",
+          "Cloudflare Web Analytics runs on every visit. It is cookieless: it stores nothing on your device, does not identify you and does not build a profile. It reports aggregate figures such as how many people viewed a page.",
+          "If you submit a form, the site that referred you and any campaign parameters from the link you followed are sent with it, so it is possible to tell which article or link produced an enquiry. Until you submit, those details sit in your browser's session storage — not a cookie — and they are cleared when you close the tab. They are never shared with a third party."
         ],
-        "note": "Cloudflare, which serves this site, may set a short-lived security cookie, and the Turnstile spam check on the forms may set one. Those tell a person from an automated script; they do not measure or profile you. Separately, a browser that visited this domain before August 2026 may still hold analytics cookies set by the previous version of this site. Those are not set by the site as it stands, and clearing your cookies for this domain removes them."
+        "note": "Cloudflare, which serves this site, may set a short-lived security cookie, and the Turnstile spam check on the forms may set one. Those tell a person from an automated script; they do not measure or profile you. Separately, a browser that visited this domain before August 2026 may still hold analytics cookies set by the previous version of this site — including Google Analytics. Those are not set by the site as it stands, and clearing your cookies for this domain removes them."
       },
       {
         "eyebrow": "06 / WHO ELSE PROCESSES IT",
@@ -433,13 +427,9 @@ export const briefPages: Record<string, PageContent> = {
           {
             "title": "ZeptoMail",
             "body": "Sends the notification that tells Onduu a request has arrived. That message contains only the reference number and which form was used — none of your answers, and not your name or email address."
-          },
-          {
-            "title": "Google",
-            "body": "Receives analytics information about your visit through Google Tag Manager, but only if you accept measurement. Google processes this outside Kenya, including in the United States."
           }
         ],
-        "note": "No artificial-intelligence or language-model provider receives your form submissions. No information from these forms is sold, and none is passed to an infrastructure supplier or any other third party without asking you first."
+        "note": "No artificial-intelligence or language-model provider receives your form submissions, and no analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier or any other third party without asking you first."
       },
       {
         "eyebrow": "07 / WHERE IT IS STORED",

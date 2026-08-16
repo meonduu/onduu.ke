@@ -1,6 +1,11 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 
+// Google Analytics and Tag Manager were removed on 16 August 2026, along with
+// the consent banner they required. These tests assert the absence: nothing
+// here should ever reintroduce a third-party tracker without the privacy
+// notice changing in the same release.
+
 async function fetchPath(path) {
   const workerUrl = new URL("../dist/server/index.js", import.meta.url);
   workerUrl.searchParams.set("test", `${process.pid}-consent`);
@@ -12,51 +17,39 @@ async function fetchPath(path) {
   );
 }
 
-test("no Google or Tag Manager request is present before consent", async () => {
-  // The served HTML must contain no GTM script, no gtag and no dataLayer
-  // bootstrap. Consent is asked for first; the tag is injected only after.
-  for (const path of ["/", "/insights", "/contact", "/legal/privacy"]) {
+test("no third-party tracker is served on any page", async () => {
+  for (const path of ["/", "/insights", "/contact", "/readiness", "/legal/privacy"]) {
     const html = await (await fetchPath(path)).text();
-    assert.doesNotMatch(html, /googletagmanager\.com\/gtm\.js/, `${path} loads GTM before consent`);
-    assert.doesNotMatch(html, /www\.google-analytics\.com/, `${path} loads GA before consent`);
-    assert.doesNotMatch(html, /gtag\(/, `${path} bootstraps gtag before consent`);
+    assert.doesNotMatch(html, /googletagmanager\.com/, `${path} loads Tag Manager`);
+    assert.doesNotMatch(html, /google-analytics\.com/, `${path} loads Google Analytics`);
+    assert.doesNotMatch(html, /gtag\(/, `${path} bootstraps gtag`);
+    assert.doesNotMatch(html, /clarity\.ms/, `${path} loads Clarity`);
+    assert.doesNotMatch(html, /connect\.facebook\.net/, `${path} loads a Meta pixel`);
   }
 });
 
-test("the consent banner is served, with both choices and a privacy link", async () => {
+test("no consent banner is served, since nothing requires consent", async () => {
   const html = await (await fetchPath("/")).text();
-  assert.match(html, /Measurement cookies/);
-  assert.match(html, />Accept</);
-  assert.match(html, />Decline</);
-  assert.match(html, /href="\/legal\/privacy"/);
+  assert.doesNotMatch(html, /Measurement cookies/, "consent banner still rendered");
+  assert.doesNotMatch(html, /id="cookie-preferences"/, "footer still has the cookie control");
+  assert.doesNotMatch(html, /class="consent/, "consent markup still present");
 });
 
-test("consent can be changed later from the footer", async () => {
-  const html = await (await fetchPath("/")).text();
-  assert.match(html, /id="cookie-preferences"/, "footer needs a control to reopen the choice");
-});
-
-test("the privacy notice describes the measurement it actually uses", async () => {
+test("the privacy notice matches: no banner, cookieless analytics, first-party attribution", async () => {
   const html = await (await fetchPath("/legal/privacy")).text();
-  // Both halves must be present: what happens if you accept, and if you refuse.
-  assert.match(html, /Google Tag Manager/, "must name the tag manager");
-  assert.match(html, /outside Kenya/, "must disclose transfer out of Kenya");
-  assert.match(html, /decline/i, "must state what declining does");
-  assert.match(html, /Cookie choices/, "must point at the withdrawal control");
-  // The old blanket claim must be gone now that analytics is being added.
-  assert.doesNotMatch(
-    html,
-    /runs no analytics product, no advertising tags and no third-party tracking scripts/,
-    "stale 'no analytics at all' claim must not survive",
-  );
-});
+  assert.match(html, /no advertising tags, no third-party tracking scripts/);
+  assert.match(html, /There is no cookie banner/);
+  assert.match(html, /Cloudflare Web Analytics runs on every visit/);
+  assert.match(html, /cookieless/i);
+  assert.match(html, /session storage/i, "must describe how attribution is held");
 
-test("the notice describes Cloudflare Web Analytics as running, not planned", async () => {
-  const html = await (await fetchPath("/legal/privacy")).text();
-  assert.match(html, /Cloudflare Web Analytics runs on every visit/, "must state it is active");
-  assert.match(html, /cookieless/i, "must explain why it is not gated");
-  // It must not claim the site runs no analytics — the beacon is injected at
-  // Cloudflare's edge and only appears for real browser requests, not curl.
-  assert.doesNotMatch(html, /runs no analytics product/, "stale no-analytics claim");
+  // Stale claims from earlier releases must not come back.
+  assert.doesNotMatch(html, /Google Tag Manager/, "GA wording survived its removal");
   assert.doesNotMatch(html, /intended to be added/, "must not describe live analytics as planned");
+});
+
+test("form consent is untouched — it is data-processing consent, not cookies", async () => {
+  const html = await (await fetchPath("/readiness")).text();
+  assert.match(html, /id="consent"/, "the form consent checkbox must remain");
+  assert.match(html, /privacy notice/i);
 });
