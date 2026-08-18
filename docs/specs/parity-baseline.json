@@ -1,0 +1,530 @@
+{
+  "/": {
+    "status": 200,
+    "title": "Website Revenue and Digital Readiness in Kenya | Onduu",
+    "description": "Onduu helps established Kenyan businesses find and fix website weaknesses affecting enquiries, trust, control and resilience.",
+    "canonical": null,
+    "og": {},
+    "h1": "Your website should win customers - not quietly lose them.",
+    "words": 612,
+    "textHash": "051732ecbe0ed968"
+  },
+  "/insights": {
+    "status": 200,
+    "title": "Website Revenue, Resilience and Agent Operations Insights | Onduu",
+    "description": "Evidence-led guidance for Kenyan business leaders on conversion, digital control, infrastructure and supervised agents.",
+    "canonical": "https://onduu.ke/insights",
+    "og": {
+      "og:title": "Website Revenue, Resilience and Agent Operations Insights | Onduu",
+      "og:description": "Evidence-led guidance for Kenyan business leaders on conversion, digital control, infrastructure and supervised agents.",
+      "og:url": "https://onduu.ke/insights",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "The layer your business runs on.",
+    "words": 647,
+    "textHash": "ba535a9e98228d1c"
+  },
+  "/check": {
+    "status": 200,
+    "title": "Free email security checker — SPF, DKIM, DMARC and MX | Onduu",
+    "description": "Check whether anyone can send email pretending to be your business. Reads your published SPF, DKIM, DMARC and MX records and explains what to fix, in plain language. No signup, no credentials.",
+    "canonical": null,
+    "og": {},
+    "h1": "Can someone send email pretending to be you?",
+    "words": 358,
+    "textHash": "ee1ac41abc1ca442"
+  },
+  "/readiness": {
+    "status": 200,
+    "title": "See what your website is costing, risking or leaving unproven. | Onduu",
+    "description": "The Digital Readiness Score is a human-reviewed business diagnostic. It combines what your team declares, what can be safely observed from the public internet and what Onduu manually verifies. You receive six dimension scores, evidence labels, limitations and the three actions worth addressing first.",
+    "canonical": "https://onduu.ke/readiness",
+    "og": {
+      "og:title": "See what your website is costing, risking or leaving unproven. | Onduu",
+      "og:description": "The Digital Readiness Score is a human-reviewed business diagnostic. It combines what your team declares, what can be safely observed from the public internet and what Onduu manually verifies. You receive six dimension scores, evidence labels, limitations and the three actions worth addressing first.",
+      "og:url": "https://onduu.ke/readiness",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "See what your website is costing, risking or leaving unproven.",
+    "words": 553,
+    "textHash": "93ae9b3d60d28141"
+  },
+  "/how-it-works": {
+    "status": 200,
+    "title": "From hidden weakness to measured improvement. | Onduu",
+    "description": "Onduu begins with the business consequence, not a predetermined website package. We establish what is weak or unproven, fix the priority, assign ownership and measure what changes.",
+    "canonical": "https://onduu.ke/how-it-works",
+    "og": {
+      "og:title": "From hidden weakness to measured improvement. | Onduu",
+      "og:description": "Onduu begins with the business consequence, not a predetermined website package. We establish what is weak or unproven, fix the priority, assign ownership and measure what changes.",
+      "og:url": "https://onduu.ke/how-it-works",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "From hidden weakness to measured improvement.",
+    "words": 410,
+    "textHash": "c0fcf45f24ff1fc3"
+  },
+  "/solutions": {
+    "status": 200,
+    "title": "Fix the right problem - not simply the visible one. | Onduu",
+    "description": "A redesign will not solve unclear ownership. More traffic will not solve a broken form. A new agent will not solve an undocumented process. Start with the weakness and choose the response that fits.",
+    "canonical": "https://onduu.ke/solutions",
+    "og": {
+      "og:title": "Fix the right problem - not simply the visible one. | Onduu",
+      "og:description": "A redesign will not solve unclear ownership. More traffic will not solve a broken form. A new agent will not solve an undocumented process. Start with the weakness and choose the response that fits.",
+      "og:url": "https://onduu.ke/solutions",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Fix the right problem - not simply the visible one.",
+    "words": 303,
+    "textHash": "6ced591e6cc2ff61"
+  },
+  "/solutions/digital-revenue-risk-review": {
+    "status": 200,
+    "title": "Know what to fix, who should own it and what happens if you do nothing. | Onduu",
+    "description": "The Digital Revenue and Risk Review goes beyond the entry score. It examines the commercial journey, asset ownership, measurement, DNS and email foundations, resilience, brand consistency and readiness for controlled automation.",
+    "canonical": "https://onduu.ke/solutions/digital-revenue-risk-review",
+    "og": {
+      "og:title": "Know what to fix, who should own it and what happens if you do nothing. | Onduu",
+      "og:description": "The Digital Revenue and Risk Review goes beyond the entry score. It examines the commercial journey, asset ownership, measurement, DNS and email foundations, resilience, brand consistency and readiness for controlled automation.",
+      "og:url": "https://onduu.ke/solutions/digital-revenue-risk-review",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Know what to fix, who should own it and what happens if you do nothing.",
+    "words": 312,
+    "textHash": "18ef9a1b32ef8289"
+  },
+  "/solutions/website-revenue-system": {
+    "status": 200,
+    "title": "Build a website that communicates clearly, captures qualified demand and remains under your control. | Onduu",
+    "description": "A fixed-scope transformation of the strategy, message, customer journey, website, measurement and operating foundations behind an important business outcome.",
+    "canonical": "https://onduu.ke/solutions/website-revenue-system",
+    "og": {
+      "og:title": "Build a website that communicates clearly, captures qualified demand and remains under your control. | Onduu",
+      "og:description": "A fixed-scope transformation of the strategy, message, customer journey, website, measurement and operating foundations behind an important business outcome.",
+      "og:url": "https://onduu.ke/solutions/website-revenue-system",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Build a website that communicates clearly, captures qualified demand and remains under your control.",
+    "words": 325,
+    "textHash": "241737997a3095d6"
+  },
+  "/managed-website-operations": {
+    "status": 200,
+    "title": "A website should be operated - not launched and forgotten. | Onduu",
+    "description": "Keep the commercial journey, brand, measurement, trust foundations and responsibilities visible, with one improvement cycle at a time.",
+    "canonical": "https://onduu.ke/managed-website-operations",
+    "og": {
+      "og:title": "A website should be operated - not launched and forgotten. | Onduu",
+      "og:description": "Keep the commercial journey, brand, measurement, trust foundations and responsibilities visible, with one improvement cycle at a time.",
+      "og:url": "https://onduu.ke/managed-website-operations",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "A website should be operated - not launched and forgotten.",
+    "words": 320,
+    "textHash": "5aeacc8311e18fd2"
+  },
+  "/solutions/agent-workflow-pilot": {
+    "status": 200,
+    "title": "Do not buy “AI transformation”. Test one useful workflow. | Onduu",
+    "description": "Map one repetitive process, establish human and system boundaries, run a controlled pilot and measure whether it should expand.",
+    "canonical": "https://onduu.ke/solutions/agent-workflow-pilot",
+    "og": {
+      "og:title": "Do not buy “AI transformation”. Test one useful workflow. | Onduu",
+      "og:description": "Map one repetitive process, establish human and system boundaries, run a controlled pilot and measure whether it should expand.",
+      "og:url": "https://onduu.ke/solutions/agent-workflow-pilot",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Do not buy “AI transformation”. Test one useful workflow.",
+    "words": 292,
+    "textHash": "246ce89fc8713e22"
+  },
+  "/infrastructure": {
+    "status": 200,
+    "title": "Infrastructure should follow the workload, responsibility and evidence. | Onduu",
+    "description": "Map what the website or agent needs, where data and dependencies travel, who operates each layer and which Kenyan infrastructure options may fit.",
+    "canonical": "https://onduu.ke/infrastructure",
+    "og": {
+      "og:title": "Infrastructure should follow the workload, responsibility and evidence. | Onduu",
+      "og:description": "Map what the website or agent needs, where data and dependencies travel, who operates each layer and which Kenyan infrastructure options may fit.",
+      "og:url": "https://onduu.ke/infrastructure",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Infrastructure should follow the workload, responsibility and evidence.",
+    "words": 238,
+    "textHash": "1b035a511d261064"
+  },
+  "/infrastructure/kenyan-vps-data-location": {
+    "status": 200,
+    "title": "Choose where your core workload runs. Map where the rest of its data travels. | Onduu",
+    "description": "A Kenyan VPS may suit workloads with particular location, control or performance objectives. The decision still depends on architecture, data flow, backup, support and cost.",
+    "canonical": "https://onduu.ke/infrastructure/kenyan-vps-data-location",
+    "og": {
+      "og:title": "Choose where your core workload runs. Map where the rest of its data travels. | Onduu",
+      "og:description": "A Kenyan VPS may suit workloads with particular location, control or performance objectives. The decision still depends on architecture, data flow, backup, support and cost.",
+      "og:url": "https://onduu.ke/infrastructure/kenyan-vps-data-location",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Choose where your core workload runs. Map where the rest of its data travels.",
+    "words": 258,
+    "textHash": "9f281d41936b8244"
+  },
+  "/infrastructure/buzz-agent-collaboration": {
+    "status": 200,
+    "title": "Give people and agents one place to work - after proving the workflow fits. | Onduu",
+    "description": "Buzz is a self-hostable, Nostr-based workspace where people and agents can collaborate in channels. Onduu assesses one real operating need before recommending a pilot.",
+    "canonical": "https://onduu.ke/infrastructure/buzz-agent-collaboration",
+    "og": {
+      "og:title": "Give people and agents one place to work - after proving the workflow fits. | Onduu",
+      "og:description": "Buzz is a self-hostable, Nostr-based workspace where people and agents can collaborate in channels. Onduu assesses one real operating need before recommending a pilot.",
+      "og:url": "https://onduu.ke/infrastructure/buzz-agent-collaboration",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Give people and agents one place to work - after proving the workflow fits.",
+    "words": 275,
+    "textHash": "58035bc79a6a26dc"
+  },
+  "/labs": {
+    "status": 200,
+    "title": "Practical tests for the failures businesses rarely see in time. | Onduu",
+    "description": "Structured, permission-based tests that explain what can be observed, what requires evidence and what cannot be proved.",
+    "canonical": "https://onduu.ke/labs",
+    "og": {
+      "og:title": "Practical tests for the failures businesses rarely see in time. | Onduu",
+      "og:description": "Structured, permission-based tests that explain what can be observed, what requires evidence and what cannot be proved.",
+      "og:url": "https://onduu.ke/labs",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Practical tests for the failures businesses rarely see in time.",
+    "words": 262,
+    "textHash": "b4c5a571de2eaf59"
+  },
+  "/results": {
+    "status": 200,
+    "title": "Evidence is being built before claims are made. | Onduu",
+    "description": "Results will appear only when the customer has consented, the baseline is known and the method and limitations can be shown.",
+    "canonical": "https://onduu.ke/results",
+    "og": {
+      "og:title": "Evidence is being built before claims are made. | Onduu",
+      "og:description": "Results will appear only when the customer has consented, the baseline is known and the method and limitations can be shown.",
+      "og:url": "https://onduu.ke/results",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Evidence is being built before claims are made.",
+    "words": 226,
+    "textHash": "f28e9892704ed21c"
+  },
+  "/about": {
+    "status": 200,
+    "title": "A practical view of the whole digital system. | Onduu",
+    "description": "A business website sits inside domains, hosting, email, analytics, customer journeys, suppliers, recovery processes, content decisions and, increasingly, agent workflows. Onduu exists because a website is rarely only a design problem.",
+    "canonical": "https://onduu.ke/about",
+    "og": {
+      "og:title": "A practical view of the whole digital system. | Onduu",
+      "og:description": "A business website sits inside domains, hosting, email, analytics, customer journeys, suppliers, recovery processes, content decisions and, increasingly, agent workflows. Onduu exists because a website is rarely only a design problem.",
+      "og:url": "https://onduu.ke/about",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "A practical view of the whole digital system.",
+    "words": 584,
+    "textHash": "8dbe6820eb7c56d1"
+  },
+  "/contact": {
+    "status": 200,
+    "title": "Tell me the business problem - not the number of pages. | Onduu",
+    "description": "Share the result the website or workflow should produce and the weakness you suspect. Onduu will recommend a score, review, system, programme, pilot or “not yet”.",
+    "canonical": "https://onduu.ke/contact",
+    "og": {
+      "og:title": "Tell me the business problem - not the number of pages. | Onduu",
+      "og:description": "Share the result the website or workflow should produce and the weakness you suspect. Onduu will recommend a score, review, system, programme, pilot or “not yet”.",
+      "og:url": "https://onduu.ke/contact",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Tell me the business problem - not the number of pages.",
+    "words": 342,
+    "textHash": "0d895210d69dde7c"
+  },
+  "/legal/commercial-relationships": {
+    "status": 200,
+    "title": "Commercial relationships. | Onduu",
+    "description": "Who Onduu is, what it contracts for independently, which relationships could create a conflict, and how referrals are handled.",
+    "canonical": "https://onduu.ke/legal/commercial-relationships",
+    "og": {
+      "og:title": "Commercial relationships. | Onduu",
+      "og:description": "Who Onduu is, what it contracts for independently, which relationships could create a conflict, and how referrals are handled.",
+      "og:url": "https://onduu.ke/legal/commercial-relationships",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Commercial relationships.",
+    "words": 730,
+    "textHash": "5e8b3475a4accadb"
+  },
+  "/legal/privacy": {
+    "status": 200,
+    "title": "Privacy notice. | Onduu",
+    "description": "What Onduu collects when you use this website, why it is collected, who else can see it, how long it is kept and what you can ask for.",
+    "canonical": "https://onduu.ke/legal/privacy",
+    "og": {
+      "og:title": "Privacy notice. | Onduu",
+      "og:description": "What Onduu collects when you use this website, why it is collected, who else can see it, how long it is kept and what you can ask for.",
+      "og:url": "https://onduu.ke/legal/privacy",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Privacy notice.",
+    "words": 1798,
+    "textHash": "d8efbc2822074a7f"
+  },
+  "/legal/assessment-terms": {
+    "status": 200,
+    "title": "Assessment terms. | Onduu",
+    "description": "The terms that apply when you request a Digital Readiness Score, use the email security checker, or commission a review.",
+    "canonical": "https://onduu.ke/legal/assessment-terms",
+    "og": {
+      "og:title": "Assessment terms. | Onduu",
+      "og:description": "The terms that apply when you request a Digital Readiness Score, use the email security checker, or commission a review.",
+      "og:url": "https://onduu.ke/legal/assessment-terms",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Assessment terms.",
+    "words": 880,
+    "textHash": "4acc29cb67ff7524"
+  },
+  "/legal/managed-service-terms": {
+    "status": 200,
+    "title": "Managed service terms. | Onduu",
+    "description": "The terms intended to apply to ongoing Managed Website Operations, including any supervised agent working inside that service.",
+    "canonical": "https://onduu.ke/legal/managed-service-terms",
+    "og": {
+      "og:title": "Managed service terms. | Onduu",
+      "og:description": "The terms intended to apply to ongoing Managed Website Operations, including any supervised agent working inside that service.",
+      "og:url": "https://onduu.ke/legal/managed-service-terms",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Managed service terms.",
+    "words": 810,
+    "textHash": "ae2afd42d4323d87"
+  },
+  "/insights/what-checking-domains-taught-me-about-email-security": {
+    "status": 200,
+    "title": "Over 100 parastatal CEOs face action on email security. Check yours. | Onduu",
+    "description": "State agency heads face action over domain and email protection. I built a free checker to see what Kenyan domains actually publish. The first one it caught was mine.",
+    "canonical": "https://onduu.ke/insights/what-checking-domains-taught-me-about-email-security",
+    "og": {
+      "og:title": "Over 100 parastatal CEOs face action on email security. Check yours. | Onduu",
+      "og:description": "State agency heads face action over domain and email protection. I built a free checker to see what Kenyan domains actually publish. The first one it caught was mine.",
+      "og:url": "https://onduu.ke/insights/what-checking-domains-taught-me-about-email-security",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Over 100 parastatal CEOs face action on email security. Check yours.",
+    "words": 1455,
+    "textHash": "52355a130e6c1e23"
+  },
+  "/insights/ai-agent-in-your-inbox-obeys-whoever-emails-you": {
+    "status": 200,
+    "title": "An AI agent in your inbox obeys whoever emails you | Onduu",
+    "description": "Connect an assistant to your email and every message becomes an instruction it might follow. Part of the defence is not in the AI — it is in your DNS.",
+    "canonical": "https://onduu.ke/insights/ai-agent-in-your-inbox-obeys-whoever-emails-you",
+    "og": {
+      "og:title": "An AI agent in your inbox obeys whoever emails you | Onduu",
+      "og:description": "Connect an assistant to your email and every message becomes an instruction it might follow. Part of the defence is not in the AI — it is in your DNS.",
+      "og:url": "https://onduu.ke/insights/ai-agent-in-your-inbox-obeys-whoever-emails-you",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "An AI agent in your inbox obeys whoever emails you",
+    "words": 1547,
+    "textHash": "056a13b3cf7d1ed8"
+  },
+  "/insights/17-years-running-infrastructure": {
+    "status": 200,
+    "title": "What Running Infrastructure Taught Me | Onduu",
+    "description": "Lessons from building systems in real markets, and why operational reliability still matters more than the next big idea.",
+    "canonical": "https://onduu.ke/insights/17-years-running-infrastructure",
+    "og": {
+      "og:title": "What Running Infrastructure Taught Me | Onduu",
+      "og:description": "Lessons from building systems in real markets, and why operational reliability still matters more than the next big idea.",
+      "og:url": "https://onduu.ke/insights/17-years-running-infrastructure",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "What Running Infrastructure Taught Me",
+    "words": 818,
+    "textHash": "36f3f0b20bb74143"
+  },
+  "/insights/ai-in-kenya-is-about-workflow": {
+    "status": 200,
+    "title": "AI in Kenya Is About Workflow, Not Hype | Onduu",
+    "description": "Where AI is already creating real value for SMEs, and where the conversation has gotten ahead of itself.",
+    "canonical": "https://onduu.ke/insights/ai-in-kenya-is-about-workflow",
+    "og": {
+      "og:title": "AI in Kenya Is About Workflow, Not Hype | Onduu",
+      "og:description": "Where AI is already creating real value for SMEs, and where the conversation has gotten ahead of itself.",
+      "og:url": "https://onduu.ke/insights/ai-in-kenya-is-about-workflow",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "AI in Kenya Is About Workflow, Not Hype",
+    "words": 719,
+    "textHash": "1f322de64e457294"
+  },
+  "/insights/reliability-africas-biggest-tech-gap": {
+    "status": 200,
+    "title": "Reliability Is Still Africa's Biggest Tech Gap | Onduu",
+    "description": "Why infrastructure thinking still matters, and why the next wave of tech depends on the boring parts working.",
+    "canonical": "https://onduu.ke/insights/reliability-africas-biggest-tech-gap",
+    "og": {
+      "og:title": "Reliability Is Still Africa's Biggest Tech Gap | Onduu",
+      "og:description": "Why infrastructure thinking still matters, and why the next wave of tech depends on the boring parts working.",
+      "og:url": "https://onduu.ke/insights/reliability-africas-biggest-tech-gap",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Reliability Is Still Africa&#x27;s Biggest Tech Gap",
+    "words": 753,
+    "textHash": "67c7271351309e70"
+  },
+  "/insights/freelancers-guide-to-ethical-domain-management-in-kenya": {
+    "status": 200,
+    "title": "Freelancer's Guide to Ethical Domain Management in Kenya | Onduu",
+    "description": "How Kenyan freelancers should handle client domains: register in the client's name, hand over credentials, set auto-renewal, and never use access as leverage.",
+    "canonical": "https://onduu.ke/insights/freelancers-guide-to-ethical-domain-management-in-kenya",
+    "og": {
+      "og:title": "Freelancer's Guide to Ethical Domain Management in Kenya | Onduu",
+      "og:description": "How Kenyan freelancers should handle client domains: register in the client's name, hand over credentials, set auto-renewal, and never use access as leverage.",
+      "og:url": "https://onduu.ke/insights/freelancers-guide-to-ethical-domain-management-in-kenya",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Freelancer&#x27;s Guide to Ethical Domain Management in Kenya",
+    "words": 925,
+    "textHash": "7b1359aa97dd1c3e"
+  },
+  "/insights/navigating-client-domains-best-practices-for-kenyan-digital-agencies": {
+    "status": 200,
+    "title": "Navigating Client Domains: Best Practices for Kenyan Digital Agencies | Onduu",
+    "description": "Many Kenyan agencies mishandle domain ownership without meaning to. Register in the client's name, document everything, and plan the handover early.",
+    "canonical": "https://onduu.ke/insights/navigating-client-domains-best-practices-for-kenyan-digital-agencies",
+    "og": {
+      "og:title": "Navigating Client Domains: Best Practices for Kenyan Digital Agencies | Onduu",
+      "og:description": "Many Kenyan agencies mishandle domain ownership without meaning to. Register in the client's name, document everything, and plan the handover early.",
+      "og:url": "https://onduu.ke/insights/navigating-client-domains-best-practices-for-kenyan-digital-agencies",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Navigating Client Domains: Best Practices for Kenyan Digital Agencies",
+    "words": 936,
+    "textHash": "6755524c42baa73f"
+  },
+  "/insights/boss-encounters-episode-1-sir-i-want-to-speak-to-the-boss": {
+    "status": 200,
+    "title": "Boss Encounters: Episode 1 — “Sir, I Want to Speak to the Boss!” | Onduu",
+    "description": "A business owner storms in: three websites down, the IT guy vanished, and no document proving he owns the domains. A short story about what ownership means.",
+    "canonical": "https://onduu.ke/insights/boss-encounters-episode-1-sir-i-want-to-speak-to-the-boss",
+    "og": {
+      "og:title": "Boss Encounters: Episode 1 — “Sir, I Want to Speak to the Boss!” | Onduu",
+      "og:description": "A business owner storms in: three websites down, the IT guy vanished, and no document proving he owns the domains. A short story about what ownership means.",
+      "og:url": "https://onduu.ke/insights/boss-encounters-episode-1-sir-i-want-to-speak-to-the-boss",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Boss Encounters: Episode 1 — “Sir, I Want to Speak to the Boss!”",
+    "words": 584,
+    "textHash": "362650a38089b938"
+  },
+  "/insights/protecting-your-online-presence-domain-management-for-kenyan-smes": {
+    "status": 200,
+    "title": "Protecting Your Online Presence: Domain Management for Kenyan SMEs | Onduu",
+    "description": "Your domain is your business's digital identity. Freelancer registrations, missed renewals and no legal cover are how Kenyan SMEs lose it.",
+    "canonical": "https://onduu.ke/insights/protecting-your-online-presence-domain-management-for-kenyan-smes",
+    "og": {
+      "og:title": "Protecting Your Online Presence: Domain Management for Kenyan SMEs | Onduu",
+      "og:description": "Your domain is your business's digital identity. Freelancer registrations, missed renewals and no legal cover are how Kenyan SMEs lose it.",
+      "og:url": "https://onduu.ke/insights/protecting-your-online-presence-domain-management-for-kenyan-smes",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Protecting Your Online Presence: Domain Management for Kenyan SMEs",
+    "words": 760,
+    "textHash": "ebb5b59e06e7cf19"
+  },
+  "/insights/startup-founders-securing-your-digital-identity-in-kenya": {
+    "status": 200,
+    "title": "Startup Founders: Securing Your Digital Identity in Kenya | Onduu",
+    "description": "Your domain is your brand's digital identity. Register it yourself, use a KeNIC-accredited registrar, and trademark the name before a dispute forces you to.",
+    "canonical": "https://onduu.ke/insights/startup-founders-securing-your-digital-identity-in-kenya",
+    "og": {
+      "og:title": "Startup Founders: Securing Your Digital Identity in Kenya | Onduu",
+      "og:description": "Your domain is your brand's digital identity. Register it yourself, use a KeNIC-accredited registrar, and trademark the name before a dispute forces you to.",
+      "og:url": "https://onduu.ke/insights/startup-founders-securing-your-digital-identity-in-kenya",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Startup Founders: Securing Your Digital Identity in Kenya",
+    "words": 695,
+    "textHash": "2010bc84d07bb0aa"
+  },
+  "/insights/top-10-items-every-business-owner-must-know-about-their-domain": {
+    "status": 200,
+    "title": "Top 10 items every business owner must know about their domain | Onduu",
+    "description": "Practical checks for your domain: current contact details, auto-renewal, registrar lock, 2FA, WHOIS privacy, and documented proof of ownership.",
+    "canonical": "https://onduu.ke/insights/top-10-items-every-business-owner-must-know-about-their-domain",
+    "og": {
+      "og:title": "Top 10 items every business owner must know about their domain | Onduu",
+      "og:description": "Practical checks for your domain: current contact details, auto-renewal, registrar lock, 2FA, WHOIS privacy, and documented proof of ownership.",
+      "og:url": "https://onduu.ke/insights/top-10-items-every-business-owner-must-know-about-their-domain",
+      "og:site_name": "Onduu",
+      "og:type": "website"
+    },
+    "h1": "Top 10 items every business owner must know about their domain",
+    "words": 724,
+    "textHash": "e94fa77becb078e2"
+  },
+  "/rss.xml": {
+    "status": 200,
+    "contentType": "application/rss+xml; charset=utf-8",
+    "bodyHash": "82fc91bab2dbabc1"
+  },
+  "/robots.txt": {
+    "status": 200,
+    "contentType": "text/plain; charset=utf-8",
+    "bodyHash": "40fb70c8551f7572"
+  },
+  "/no-such-page-parity-404": {
+    "status": 404,
+    "title": "Website Revenue and Digital Readiness in Kenya | Onduu",
+    "description": "Onduu helps established Kenyan businesses find and fix website weaknesses affecting enquiries, trust, control and resilience.",
+    "canonical": null,
+    "og": {},
+    "h1": "This page is not part of the current system.",
+    "words": 124,
+    "textHash": "76e71ee4142ab1a2"
+  },
+  "/email-security": {
+    "status": 301,
+    "location": "http://localhost:3000/check"
+  },
+  "/email-security/glossary": {
+    "status": 301,
+    "location": "http://localhost:3000/check"
+  }
+}
