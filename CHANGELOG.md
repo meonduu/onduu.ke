@@ -21,6 +21,11 @@ product but cannot run a scan in production until the owner sets
   dimensions with score, coverage and the not-observed list).
 - Not linked from navigation and deliberately absent from the sitemap; the
   `/api/` disallow already covers the endpoint. It ships linked at launch.
+- `scan_blocklist` D1 table (migration `0005`) backing the domain opt-out:
+  the scan now checks a runtime blocklist as well as the code-level
+  `DO_NOT_SCAN` set before any fetch, and refuses a blocked domain and its
+  subdomains. `optOutDomain()` records a domain and deletes its stored
+  results in one step; the production command is in the spec §6.
 
 ### Changed
 
