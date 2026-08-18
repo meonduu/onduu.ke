@@ -1,6 +1,30 @@
 # Changelog
 
-CURRENT VERSION: v4.2.0 — 1537hrs:18th August2026
+CURRENT VERSION: v4.2.1 — 1557hrs:18th August2026
+
+## v4.2.1 — 1557hrs:18th August2026
+
+Browser security headers, owner-approved, attached in code
+(`worker/security-headers.ts`, applied by the middleware to every response
+the Worker serves).
+
+- **HSTS** with a deliberately short starting max-age (7 days): browsers
+  that see it refuse plain-http for that window. Growth path 30d → 180d →
+  1y as confidence accumulates; `preload` and `includeSubDomains`
+  deliberately absent (the test forbids them riding along casually).
+- **X-Content-Type-Options: nosniff** — no MIME guessing.
+- **X-Frame-Options: DENY** — no clickjacking frames; Turnstile's iframe
+  inside our own pages is unaffected.
+- **Referrer-Policy: strict-origin-when-cross-origin** — outbound links
+  (e.g. the HOSTAFRICA panel) learn the origin, not the full URL.
+- **Content-Security-Policy deliberately deferred** to its own task:
+  Turnstile, Astro's hydration scripts and the one YouTube embed all need
+  allowing, and a rushed CSP breaks pages.
+- New test pins all four headers on a page, the scan page and an API
+  response (120 total). With this, the scanner's remaining self-findings
+  (HSTS, baseline headers) are addressed for external observers.
+
+## v4.2.0 — 1537hrs:18th August2026
 
 ## v4.2.0 — 1537hrs:18th August2026
 

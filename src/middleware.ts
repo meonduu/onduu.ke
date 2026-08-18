@@ -3,6 +3,7 @@
 import { defineMiddleware } from "astro:middleware";
 import { env } from "cloudflare:workers";
 import { clearStaleCookies } from "../worker/stale-cookies";
+import { withSecurityHeaders } from "../worker/security-headers";
 import { recordPageView, shouldRecord } from "../worker/pageviews";
 
 // v8.8 URLs that the migrated articles still link to, and that search
@@ -35,6 +36,6 @@ export const onRequest = defineMiddleware(async (context, next) => {
   }
 
   // Expire analytics cookies left by the previous site before handing the
-  // page back. Self-limiting: once gone, the browser stops sending them.
-  return clearStaleCookies(context.request, response);
+  // page back (self-limiting), then attach the browser security headers.
+  return withSecurityHeaders(clearStaleCookies(context.request, response));
 });

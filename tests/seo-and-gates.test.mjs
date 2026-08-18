@@ -95,6 +95,19 @@ test("the legal routes in the footer exclude the gated managed-service terms", a
   assert.doesNotMatch(home, /href="\/legal\/managed-service-terms"/, "gated terms must not be linked");
 });
 
+test("every page carries the browser security headers, with a short-start HSTS", async () => {
+  for (const path of ["/", "/scan", "/api/check?domain=onduu.ke"]) {
+    const res = await fetchPath(path);
+    assert.equal(res.headers.get("x-content-type-options"), "nosniff", `${path} nosniff`);
+    assert.equal(res.headers.get("x-frame-options"), "DENY", `${path} frame-deny`);
+    assert.equal(res.headers.get("referrer-policy"), "strict-origin-when-cross-origin", `${path} referrer`);
+    const hsts = res.headers.get("strict-transport-security") ?? "";
+    assert.match(hsts, /max-age=\d+/, `${path} HSTS present`);
+    assert.doesNotMatch(hsts, /preload/, "preload must never ride along casually");
+    assert.doesNotMatch(hsts, /includeSubDomains/i, "subdomains must not be committed by accident");
+  }
+});
+
 test("the footer carries the responsibility disclosure", async () => {
   const home = await (await fetchPath("/")).text();
   assert.match(home, /operated by Ujiajiri Enterprises Limited/);
