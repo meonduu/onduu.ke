@@ -135,7 +135,32 @@ test("the Dial lockup and favicon are in place", async () => {
   assert.equal(icon.status, 200);
   const svg = await icon.text();
   assert.match(svg, /#B8643B/, "favicon uses the copper token");
+  assert.match(svg, /prefers-color-scheme:dark/, "favicon adapts to dark browser chrome");
   assert.doesNotMatch(svg, /68C4FF/, "the starter placeholder icon must not return");
+});
+
+test("share card, app icons and manifest are served and declared", async () => {
+  const html = await (await fetchPath("/")).text();
+  assert.match(html, new RegExp(`property="og:image" content="${SITE_URL}/og-card.png"`.replace(/[./]/g, "\\$&")), "og:image must be absolute");
+  assert.match(html, /name="twitter:card" content="summary_large_image"/);
+  assert.match(html, /rel="apple-touch-icon" href="\/apple-touch-icon.png"/);
+  assert.match(html, /rel="manifest" href="\/site.webmanifest"/);
+
+  // Raster assets actually resolve — a dead og:image is worse than none.
+  for (const [path, type] of [
+    ["/og-card.png", /image\/png/],
+    ["/apple-touch-icon.png", /image\/png/],
+    ["/icon-192.png", /image\/png/],
+    ["/icon-512.png", /image\/png/],
+    ["/site.webmanifest", /json|manifest/],
+  ]) {
+    const res = await fetchPath(path, "*/*");
+    assert.equal(res.status, 200, `${path} should be served`);
+    assert.match(res.headers.get("content-type") ?? "", type, `${path} content type`);
+  }
+  const manifest = JSON.parse(await (await fetchPath("/site.webmanifest", "*/*")).text());
+  assert.equal(manifest.theme_color, "#B8643B", "manifest carries the copper token");
+  assert.equal(manifest.icons.length, 2);
 });
 
 test("keyboard users get a skip link targeting the main landmark", async () => {

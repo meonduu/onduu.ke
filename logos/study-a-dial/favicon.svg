@@ -1,7 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
   <!-- Onduu Study A favicon: heavier strokes so the ring holds at 16px.
-       Track is mist, legible on both light and dark browser chrome. -->
-  <circle cx="48" cy="48" r="34" fill="none" stroke="#DDE3E1" stroke-width="16"/>
-  <circle cx="48" cy="48" r="34" fill="none" stroke="#B8643B" stroke-width="16"
+       Adaptive: swaps to the dark-ground tokens (#28323C / #CD7A50) when the
+       browser chrome is dark, so the mark reads on both tab bars. -->
+  <style>
+    .track{stroke:#DDE3E1}.arc{stroke:#B8643B}
+    @media (prefers-color-scheme:dark){.track{stroke:#28323C}.arc{stroke:#CD7A50}}
+  </style>
+  <circle class="track" cx="48" cy="48" r="34" fill="none" stroke-width="16"/>
+  <circle class="arc" cx="48" cy="48" r="34" fill="none" stroke-width="16"
     stroke-linecap="round" stroke-dasharray="132.4 81.2" transform="rotate(-90 48 48)"/>
 </svg>

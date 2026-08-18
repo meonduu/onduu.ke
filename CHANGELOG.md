@@ -1,6 +1,34 @@
 # Changelog
 
-CURRENT VERSION: v4.10.0 — 2050hrs:18th August2026
+CURRENT VERSION: v4.11.0 — 2107hrs:18th August2026
+
+## v4.11.0 — 2107hrs:18th August2026
+
+Brand rollout beyond the header — every study earns its keep, and shared
+links finally carry an image.
+
+- **Share card (the big one).** Links to onduu.ke shared on WhatsApp,
+  LinkedIn or X previously rendered with *no image*. A 1200×630 card
+  (`logos/og-card.svg` → `public/og-card.png`) now backs `og:image` on
+  every page with a canonical URL, with `summary_large_image` for X.
+  Carbon ground, dark-variant Dial lockup, tagline, copper baseline.
+- **Adaptive favicon.** `favicon.svg` now carries a
+  `prefers-color-scheme: dark` block, so on dark browser chrome the Dial
+  swaps to the dark-ground tokens (#28323C track, #CD7A50 copper) instead
+  of showing a light-ground mark on a dark tab bar.
+- **Study E goes to work.** The stamp-avatar — drawn for exactly this —
+  becomes `apple-touch-icon.png` (180) and PWA icons (192/512), declared
+  through a new `site.webmanifest` (copper theme colour). Home-screen
+  saves and Android installs now show the copper uu stamp.
+- `theme-color` meta (ivory) added for mobile browser chrome.
+- Rasters are generated, never hand-made:
+  `node scripts/generate-brand-rasters.mjs` rebuilds all four PNGs from
+  the SVG masters using sharp, which ships with Astro — no new
+  dependency. `logos/README.md` documents the loop; its "no raster
+  exports" caveat is retired.
+- Tests: og:image must be absolute and resolvable (a dead og:image is
+  worse than none), all four rasters and the manifest must serve, the
+  favicon must keep its dark-mode block. 134/134.
 
 ## v4.10.0 — 2050hrs:18th August2026
 

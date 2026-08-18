@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Onduu link-preview card (Open Graph / WhatsApp / LinkedIn), 1200x630.
+       Dark-ground lockup scaled ~2.8x from lockup-on-dark.svg. Live Arial
+       text; rasterise via scripts/generate-brand-rasters.mjs, never ship raw. -->
+  <rect width="1200" height="630" fill="#101820"/>
+  <circle cx="338" cy="272" r="78" fill="none" stroke="#28323C" stroke-width="26"/>
+  <circle cx="338" cy="272" r="78" fill="none" stroke="#CD7A50" stroke-width="26"
+    stroke-linecap="round" stroke-dasharray="303.9 186.2" transform="rotate(-90 338 272)"/>
+  <text x="476" y="305" font-family="Arial, Helvetica, sans-serif" font-weight="bold"
+    font-size="95" letter-spacing="17" fill="#F5F1E8">ONDUU</text>
+  <rect x="920" y="273" width="32" height="32" fill="#CD7A50"/>
+  <text x="600" y="435" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
+    font-size="34" letter-spacing="1" fill="#DDE3E1" opacity="0.85">Digital Readiness for Kenyan businesses</text>
+  <text x="600" y="520" text-anchor="middle" font-family="Arial, Helvetica, sans-serif"
+    font-weight="bold" font-size="24" letter-spacing="5" fill="#CD7A50">ONDUU.KE</text>
+  <rect y="622" width="1200" height="8" fill="#B8643B"/>
+</svg>

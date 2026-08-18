@@ -6,6 +6,7 @@
 // Parity quirks preserved deliberately (see docs/specs/astro-migration.md):
 // the homepage, /check and the 404 page ship no canonical and no Open Graph
 // tags, exactly like the baseline. Fixing that is a Phase 1 content decision.
+import { SITE_URL } from "../data/route-policy";
 import "../styles/globals.css";
 import "../styles/site.css";
 
@@ -25,6 +26,9 @@ const { title, description, canonical, author, noindex = false } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#F5F1E8" />
     <title>{title}</title>
     <meta name="description" content={description} />
     {author && <meta name="author" content={author} />}
@@ -38,7 +42,11 @@ const { title, description, canonical, author, noindex = false } = Astro.props;
           <meta property="og:url" content={canonical} />
           <meta property="og:site_name" content="Onduu" />
           <meta property="og:type" content="website" />
-          <meta name="twitter:card" content="summary" />
+          <meta property="og:image" content={`${SITE_URL}/og-card.png`} />
+          <meta property="og:image:width" content="1200" />
+          <meta property="og:image:height" content="630" />
+          <meta property="og:image:alt" content="Onduu — Digital Readiness for Kenyan businesses" />
+          <meta name="twitter:card" content="summary_large_image" />
         </>
       )
     }

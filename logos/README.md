@@ -51,5 +51,17 @@ Same palette as `src/styles/globals.css`:
   bold). They render correctly wherever those system fonts exist — fine for
   web use — but must be converted to outlines before print, sticker or
   merchandise use, and letter-spacing deserves optical tuning at final size.
-- No raster exports here. Generate PNGs from the SVGs at need
-  (e.g. 512/192/180/32/16 for icons, 1200×630 for OG cards).
+- Raster exports are generated, not stored here: run
+  `node scripts/generate-brand-rasters.mjs` (uses sharp, which ships with
+  Astro) to rebuild `public/apple-touch-icon.png`, `public/icon-192.png`,
+  `public/icon-512.png` and `public/og-card.png` from these masters plus
+  `og-card.svg`. Rerun it after editing any master.
+
+## In use on the site (since v4.10.0/v4.11.0)
+
+- Study A Dial + Study D wordmark: header/footer lockup (inline SVG + real
+  text in `src/components/components.tsx`) and the adaptive `favicon.svg`
+  (swaps to dark-ground tokens on dark browser chrome).
+- Study E stamp-avatar: apple-touch-icon, PWA icons and `site.webmanifest`.
+- `og-card.svg`: the 1200×630 link-preview card behind `og:image` on every
+  page with a canonical URL.
