@@ -95,7 +95,7 @@ export const strategyPages: Record<string, PageContent> = {
         links: [
           { label: "Find a Delivery Partner", href: "https://ujiajiri.ke/partners/", external: true },
         ],
-        note: "Ujiajiri and Onduu are operated by the same company, Ujiajiri Enterprises Limited. Onduu does not receive a share of partner project fees; providers on Ujiajiri are independent and neither site delivers or guarantees their work. Any future referral arrangement will be disclosed here before it takes effect.",
+        note: "Onduu is operated by Ujiajiri Enterprises Limited, which also runs the Ujiajiri platform. Onduu does not receive a share of partner project fees; providers on Ujiajiri are independent and neither site delivers or guarantees their work. Any future referral arrangement will be disclosed here before it takes effect.",
       },
     ],
   },

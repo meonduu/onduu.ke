@@ -1,6 +1,17 @@
 # Changelog
 
-CURRENT VERSION: v4.13.0 — 2140hrs:18th August2026
+CURRENT VERSION: v4.13.1 — 2143hrs:18th August2026
+
+## v4.13.1 — 2143hrs:18th August2026
+
+Owner correction to the partner-path disclosure note: "Ujiajiri and
+Onduu are operated by the same company" mis-framed the relationship —
+Ujiajiri Enterprises Limited is the operator, not a sibling brand. Now
+reads "Onduu is operated by Ujiajiri Enterprises Limited, which also
+runs the Ujiajiri platform." Matches the footer and the
+commercial-relationships page.
+
+## v4.13.0 — 2140hrs:18th August2026
 
 ## v4.13.0 — 2140hrs:18th August2026
 
