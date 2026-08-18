@@ -1,6 +1,46 @@
 # Changelog
 
-CURRENT VERSION: v4.7.2 — 1941hrs:18th August2026
+CURRENT VERSION: v4.8.0 — 1957hrs:18th August2026
+
+## v4.8.0 — 1957hrs:18th August2026
+
+The dashboard becomes an index with sections (owner request), each on its
+own route with its own tables.
+
+- `/go` — overview: headline cards (enquiries, scans, page views, routed
+  clicks over 30 days) and a table of every section with what it shows.
+- `/go/enquiries` — sources that produced enquiries, then the submissions.
+- `/go/scans` — scan counts, average score and coverage, domains scanned
+  more than once, and recent results.
+- `/go/email-security` and `/go/kedomains` — tool usage: visits all-time,
+  30 and 7 days, referrers and a daily trend.
+- `/go/analytics` — pages, referrers, countries, devices, daily views.
+- `/go/routing` — outbound clicks by destination and day.
+- `/go/blocklist` — the do-not-scan list.
+
+### Security
+
+Every section fails closed independently: `handleDashboard` refuses
+without Cloudflare Access headers before touching the database, so a
+`/go/*` subpath the Access policy does not cover returns 403 rather than
+serving enquirers' names and addresses. A new test asserts 403 on all
+eight sections plus an unknown one. `robots.txt`'s `Disallow: /go`
+already covers subpaths by prefix.
+
+### Owner decision surfaced, not taken
+
+The email checker and domain search **do not record what visitors search**
+— the privacy notice promises exactly that. Their dashboard sections
+therefore show visits, not results, and state the promise verbatim with
+the two ways to get more: (1) count tool runs without the query, which
+keeps the promise as written; (2) store the searched domain and result,
+which is more useful but requires changing the privacy notice and the
+tool page copy first, and disclosing the change. Nothing was logged in
+this release.
+
+130/130 tests.
+
+## v4.7.2 — 1941hrs:18th August2026
 
 ## v4.7.2 — 1941hrs:18th August2026
 

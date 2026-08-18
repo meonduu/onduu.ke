@@ -16,6 +16,29 @@ test("/go refuses anything that did not come through Cloudflare Access", async (
   assert.doesNotMatch(body, /business_email|Enquiries, all time/, "must leak no data");
 });
 
+test("EVERY dashboard section refuses without Access headers", async () => {
+  // The Access policy protects a hostname path; if it ever fails to cover a
+  // new /go/* subpath, this fail-closed check is what stops enquirers' names
+  // and email addresses being served to the open internet.
+  const sections = [
+    "/go",
+    "/go/enquiries",
+    "/go/scans",
+    "/go/email-security",
+    "/go/kedomains",
+    "/go/analytics",
+    "/go/routing",
+    "/go/blocklist",
+    "/go/anything-else",
+  ];
+  for (const path of sections) {
+    const res = await fetchPath(path);
+    assert.equal(res.status, 403, `${path} must refuse without Access`);
+    const body = await res.text();
+    assert.doesNotMatch(body, /business_email|Enquiries, all time|@/, `${path} must leak nothing`);
+  }
+});
+
 test("a client cannot fake its way in without Access headers", async () => {
   // Anything reaching the Worker at onduu.ke/go has passed Access, which sets
   // these itself. A request without them is refused outright.
