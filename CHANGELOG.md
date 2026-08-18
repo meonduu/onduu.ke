@@ -1,6 +1,50 @@
 # Changelog
 
-CURRENT VERSION: v4.8.0 — 1957hrs:18th August2026
+CURRENT VERSION: v4.9.0 — 2014hrs:18th August2026
+
+## v4.9.0 — 2014hrs:18th August2026
+
+**Lookup results are now stored** — owner decision (option 2, 18 August
+2026), taken with the privacy notice and every page promise changed in
+this same release.
+
+### What is stored, and what is not
+
+- `tool_checks` (migration `0006`, applied to production): the tool used,
+  the domain or name searched, a readable outcome, the JSON detail behind
+  it, and the time.
+- **No visitor identity, in any form** — no address, no hash of one, no
+  account, no session. A row says a domain was checked at a time, never
+  who checked it. The rate-limit counter stays separate and is never
+  joined to these rows. `worker/tool-log.ts` is the only writer and
+  enforces this; the schema has no column that could hold an identifier.
+- Logging runs after the response is on its way (`waitUntil`) and is
+  best-effort, so it can never delay or break a visitor's lookup.
+
+### Promises changed in the same commit (required, not optional)
+
+Six places previously told visitors nothing was stored. All now describe
+the new behaviour: privacy notice §04 (both tools), the tool-limitations
+page (both entries), the checker page body copy, and the `/kedomains`
+meta description. No page now claims storage that does not happen, and
+none claims the opposite.
+
+### Dashboard
+
+`/go/email-security` and `/go/kedomains` now show real results: checks
+all-time/30/7 days, distinct domains, most-checked names with counts and
+last-seen, recent checks with their outcome, and a daily trend — instead
+of the placeholder note explaining why they were empty.
+
+### Verified
+
+Migration applied locally and to production; both tools run end-to-end
+with rows landing (`onduu.ke → 90/100 A — spf:warn dkim:pass dmarc:pass
+mx:pass`; `kra.go.ke → kra.go.ke: registered · kra.ke: registered`);
+dashboard sections render them; schema confirmed to hold no identity
+column; test rows deleted. 130/130 tests.
+
+## v4.8.0 — 1957hrs:18th August2026
 
 ## v4.8.0 — 1957hrs:18th August2026
 

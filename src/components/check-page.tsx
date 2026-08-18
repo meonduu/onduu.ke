@@ -39,8 +39,9 @@ export function CheckPage({ children }: { children?: ReactNode }) {
           <div className="section-body">
             <p>
               Every record checked here is already public. Anyone can look them up, including the
-              people who would spoof your domain. Nothing is stored, no credentials are asked for,
-              and no mailbox is touched.
+              people who would spoof your domain. No credentials are asked for and no mailbox is
+              touched. The domain checked and the result are kept so Onduu can see which checks
+              are run and which failures are common; nothing about you is recorded with them.
             </p>
             <ul>
               <li>SPF — which servers are allowed to send mail as your domain</li>

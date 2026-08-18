@@ -177,8 +177,8 @@ ${table(
   [
     ['<a href="/go/enquiries">Enquiries</a>', "Assessment and contact submissions, with the source that produced them", ""],
     ['<a href="/go/scans">Readiness scans</a>', "Stored scan results: domain, score, coverage, rubric version", ""],
-    ['<a href="/go/email-security">Email checker</a>', "Usage of the SPF/DKIM/DMARC tool (page visits — checks themselves are not recorded)", ""],
-    ['<a href="/go/kedomains">Domain search</a>', "Usage of the Kenyan domain tool (page visits — searches are not recorded)", ""],
+    ['<a href="/go/email-security">Email checker</a>', "SPF/DKIM/DMARC checks run, most-checked domains, daily trend", ""],
+    ['<a href="/go/kedomains">Domain search</a>', "Domain searches run, most-searched names, daily trend", ""],
     ['<a href="/go/analytics">Analytics</a>', "First-party page views: pages, referrers, countries, devices, daily trend", ""],
     ['<a href="/go/routing">Routed clicks</a>', "Outbound clicks to HOSTAFRICA and other routed destinations", ""],
     ['<a href="/go/blocklist">Do-not-scan</a>', "Domains that asked not to be scanned", ""],
@@ -317,85 +317,116 @@ ${table(
   );
 }
 
-/** Usage view for a tool whose queries are deliberately not recorded. */
+/**
+ * Usage view for a lookup tool: stored check results (migration 0006) plus
+ * page visits for context. Rows carry the domain and outcome only — no
+ * visitor identity is recorded with them.
+ */
 async function toolUsage(
   db: D1Database,
-  opts: { slug: string; title: string; paths: string[]; promise: string; blurb: string },
+  opts: { slug: string; tool: string; title: string; paths: string[]; blurb: string },
 ): Promise<Response> {
   const placeholders = opts.paths.map(() => "?").join(",");
-  const [counts, daily, referrers] = await Promise.all([
+  const [checks, recent, top, visits, daily] = await Promise.all([
     safe(
       db
         .prepare(
           `SELECT COUNT(*) AS all_time,
-                  SUM(CASE WHEN viewed_at >= datetime('now','-30 days') THEN 1 ELSE 0 END) AS d30,
-                  SUM(CASE WHEN viewed_at >= datetime('now','-7 days') THEN 1 ELSE 0 END) AS d7
-           FROM page_views WHERE path IN (${placeholders})`,
+                  SUM(CASE WHEN created_at >= datetime('now','-30 days') THEN 1 ELSE 0 END) AS d30,
+                  SUM(CASE WHEN created_at >= datetime('now','-7 days') THEN 1 ELSE 0 END) AS d7,
+                  COUNT(DISTINCT query) AS domains
+           FROM tool_checks WHERE tool = ?`,
         )
-        .bind(...opts.paths)
-        .first<{ all_time: number; d30: number; d7: number }>(),
-      { all_time: 0, d30: 0, d7: 0 },
+        .bind(opts.tool)
+        .first<{ all_time: number; d30: number; d7: number; domains: number }>(),
+      { all_time: 0, d30: 0, d7: 0, domains: 0 },
     ),
     safe(
       db
         .prepare(
-          `SELECT substr(viewed_at,1,10) AS day, COUNT(*) AS n FROM page_views
-           WHERE path IN (${placeholders}) AND viewed_at >= datetime('now','-30 days')
-           GROUP BY day ORDER BY day DESC`,
+          `SELECT query, summary, created_at FROM tool_checks
+           WHERE tool = ? ORDER BY created_at DESC LIMIT 100`,
         )
-        .bind(...opts.paths)
+        .bind(opts.tool)
         .all(),
       EMPTY,
     ),
     safe(
       db
         .prepare(
-          `SELECT COALESCE(referrer_host,'direct') AS src, COUNT(*) AS n FROM page_views
-           WHERE path IN (${placeholders}) GROUP BY src ORDER BY n DESC LIMIT 15`,
+          `SELECT query, COUNT(*) AS n, MAX(created_at) AS last_seen FROM tool_checks
+           WHERE tool = ? GROUP BY query ORDER BY n DESC, last_seen DESC LIMIT 25`,
+        )
+        .bind(opts.tool)
+        .all(),
+      EMPTY,
+    ),
+    safe(
+      db
+        .prepare(
+          `SELECT COUNT(*) AS all_time,
+                  SUM(CASE WHEN viewed_at >= datetime('now','-30 days') THEN 1 ELSE 0 END) AS d30
+           FROM page_views WHERE path IN (${placeholders})`,
         )
         .bind(...opts.paths)
+        .first<{ all_time: number; d30: number }>(),
+      { all_time: 0, d30: 0 },
+    ),
+    safe(
+      db
+        .prepare(
+          `SELECT substr(created_at,1,10) AS day, COUNT(*) AS n FROM tool_checks
+           WHERE tool = ? AND created_at >= datetime('now','-30 days')
+           GROUP BY day ORDER BY day DESC`,
+        )
+        .bind(opts.tool)
         .all(),
       EMPTY,
     ),
   ]);
-  const c = counts ?? { all_time: 0, d30: 0, d7: 0 };
+  const c = checks ?? { all_time: 0, d30: 0, d7: 0, domains: 0 };
+  const v = visits ?? { all_time: 0, d30: 0 };
 
   return page(
     opts.title,
     `<h1>${escape(opts.title)}</h1>
-<p class="sub">${escape(opts.blurb)}</p>
+<p class="sub">${escape(opts.blurb)} Stored rows carry the domain and the outcome only — never who ran the check.</p>
 
 <div class="cards">
-  <div class="card"><b>${c.all_time}</b><span>Visits, all time</span></div>
-  <div class="card"><b>${c.d30}</b><span>Visits, 30 days</span></div>
-  <div class="card"><b>${c.d7}</b><span>Visits, 7 days</span></div>
+  <div class="card"><b>${c.all_time}</b><span>Checks, all time</span></div>
+  <div class="card"><b>${c.d30}</b><span>Checks, 30 days</span></div>
+  <div class="card"><b>${c.d7}</b><span>Checks, 7 days</span></div>
+  <div class="card"><b>${c.domains}</b><span>Distinct domains</span></div>
+  <div class="card"><b>${v.d30}</b><span>Page visits, 30 days</span></div>
 </div>
 
-<div class="note"><b>Results of individual checks are not recorded — by design.</b>
-The privacy notice tells visitors: &ldquo;${escape(opts.promise)}&rdquo; So this page can show how
-many people opened the tool, and where they came from, but not what they searched or what
-the result was. Two ways to get more, both owner decisions:
-<ol>
-<li><b>Count tool runs without the query.</b> Record only that a check happened, with the same
-fields as a page view (no domain, no address, no identifier). Keeps the promise exactly as
-written and answers &ldquo;how many people actually ran a check?&rdquo;</li>
-<li><b>Store the searched domain and result.</b> More useful — you would see demand by domain,
-repeat checks and common failures — but it contradicts the sentence above, so the privacy
-notice and the tool page copy must be changed first, and the change disclosed.</li>
-</ol></div>
-
-<h2>Where visitors came from</h2>
+<h2>Most checked</h2>
 ${table(
-  ["Source", "Visits"],
-  rowsOf<{ src: string; n: number }>(referrers).map((r) => [escape(r.src), String(r.n)]),
-  "No visits recorded yet.",
+  ["Domain or name", "Last checked", "Checks"],
+  rowsOf<{ query: string; n: number; last_seen: string }>(top).map((r) => [
+    escape(r.query),
+    escape(r.last_seen),
+    String(r.n),
+  ]),
+  "No checks recorded yet.",
 )}
 
-<h2>Daily visits, last 30 days</h2>
+<h2>Recent checks</h2>
 ${table(
-  ["Day", "Visits"],
+  ["When", "Domain or name", "Result"],
+  rowsOf<Record<string, string>>(recent).map((r) => [
+    escape(r.created_at),
+    escape(r.query),
+    escape(r.summary || "-"),
+  ]),
+  "No checks recorded yet. Rows appear here from the moment someone runs a lookup.",
+)}
+
+<h2>Daily checks, last 30 days</h2>
+${table(
+  ["Day", "Checks"],
   rowsOf<{ day: string; n: number }>(daily).map((r) => [escape(r.day), String(r.n)]),
-  "No visits recorded yet.",
+  "No checks recorded yet.",
 )}`,
     opts.slug,
   );
@@ -595,20 +626,19 @@ export async function handleDashboard(
     case "email-security":
       return toolUsage(db, {
         slug: "email-security",
+        tool: "email-security",
         title: "Email checker",
         // /check was the tool's route until 18 Aug 2026; keep its history.
         paths: ["/email-security", "/check"],
-        blurb: "Visits to the SPF, DKIM, DMARC and MX checker.",
-        promise:
-          "the domain and the result are not written to any database, and no account or email address is required.",
+        blurb: "SPF, DKIM, DMARC and MX checks run by visitors.",
       });
     case "kedomains":
       return toolUsage(db, {
         slug: "kedomains",
+        tool: "kedomains",
         title: "Domain search",
         paths: ["/kedomains", "/domains"],
-        blurb: "Visits to the Kenyan domain search.",
-        promise: "Nothing you search is stored.",
+        blurb: "Kenyan domain searches run by visitors.",
       });
     case "analytics":
       return analytics(db);

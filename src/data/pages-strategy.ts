@@ -384,7 +384,7 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "01 / EMAIL SECURITY CHECK",
         title: "/email-security — published DNS records only.",
         body: [
-          "Reads a domain's public SPF, DKIM (common selectors only), DMARC and MX records through Cloudflare's public DNS resolver, and explains them in plain language. The domain checked and the result are not stored.",
+          "Reads a domain's public SPF, DKIM (common selectors only), DMARC and MX records through Cloudflare's public DNS resolver, and explains them in plain language. The domain checked and the result are stored (since 18 August 2026) with no visitor identity attached.",
         ],
         items: [
           "A clean result means the published records are correct — not that the domain, mailboxes or business are secure",
@@ -396,7 +396,7 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "02 / DOMAIN SEARCH",
         title: "/kedomains — public availability signals, confirmed at checkout.",
         body: [
-          "Checks the .co.ke and .ke pair using public DNS and registry (RDAP) records. Taken domains show their registrar, transfer-lock status and expiry where the registry publishes them; some registries publish little or nothing. Nothing searched is stored.",
+          "Checks the extension you enter alongside its .ke twin, using public DNS and registry (RDAP) records. Taken domains show their registrar, transfer-lock status and expiry where the registry publishes them; some registries publish little or nothing. The name searched and what was found are stored (since 18 August 2026) with no visitor identity attached.",
         ],
         items: [
           "“Appears available” is an observation, not a reservation — availability and price are confirmed at the registrar's checkout",
