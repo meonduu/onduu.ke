@@ -1,6 +1,19 @@
 # Changelog
 
-CURRENT VERSION: v2.11.0 — 0801hrs:18th August2026
+CURRENT VERSION: v2.11.1 — 0802hrs:18th August2026
+
+## v2.11.1 — 0802hrs:18th August2026
+
+Check in the scanner's network safety layer as work in progress.
+
+- `worker/scan/net.ts` — SSRF defence for the future Instant Public
+  Readiness Scan: LDH-only public hostnames (IP literals in any encoding
+  reject), DNS-over-HTTPS pre-resolution with public-routability checks on
+  every address, per-hop redirect re-validation, streaming size caps, and a
+  shared wall-time/subrequest budget.
+- **Not wired in and not deployed.** Nothing imports it; the Worker's
+  behaviour is unchanged. The scanner itself stays gated behind the Phase 4
+  specification and threat-model tests (`ROADMAP.md`).
 
 ## v2.11.0 — 0801hrs:18th August2026
 
