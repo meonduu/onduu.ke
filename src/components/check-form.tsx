@@ -70,7 +70,7 @@ export function CheckForm() {
 
   return (
     <>
-      <form className="check-form" onSubmit={onSubmit}>
+      <form className="check-form email-form" onSubmit={onSubmit}>
         <label htmlFor="domain">
           Domain name
           <input

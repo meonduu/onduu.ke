@@ -1,6 +1,15 @@
 # Changelog
 
-CURRENT VERSION: v4.15.0 — 2153hrs:18th August2026
+CURRENT VERSION: v4.15.1 — 2157hrs:18th August2026
+
+## v4.15.1 — 2157hrs:18th August2026
+
+Owner request: the /email-security domain input was full content width
+(900px). The form gets its own `email-form` modifier at 540px — exactly
+40% narrower — leaving the scan form (which shares the base class) and
+the domain search (620px) untouched. Mobile stacking unchanged.
+
+## v4.15.0 — 2153hrs:18th August2026
 
 ## v4.15.0 — 2153hrs:18th August2026
 
