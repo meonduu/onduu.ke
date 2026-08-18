@@ -1,4 +1,4 @@
-import type { PageContent } from "./components";
+import type { PageContent } from "../components/components";
 import { briefPages } from "./pages-brief";
 import { pages as prototypePages } from "./site-data";
 

@@ -70,6 +70,29 @@ with a first-class Cloudflare adapter.
   merge. Rollback: revert the merge commit (Workers Builds redeploys) or
   `wrangler rollback`.
 
+## Recorded deviations (all verified, none content-visible)
+
+- **Metadata position improved:** vinext emitted title/meta inside a hidden
+  div at the end of `<body>` (React hoistable metadata never hoisted
+  server-side); the Astro build puts them in `<head>`. Values are identical;
+  the parity diff compares values, not position.
+- **Entity encoding:** Astro escapes apostrophes in `<title>` as `&#39;`;
+  rendering is identical.
+- **`security.checkOrigin` disabled** for behaviour parity (bare cross-origin
+  POSTs reach handlers, as under vinext). Candidate hardening change later.
+- **Sessions disabled** (`session: false`) so the adapter does not declare a
+  SESSION KV binding that deploy would auto-provision.
+- **`/_vinext/image` and the IMAGES binding dropped:** `public/` holds four
+  SVGs, which never used the optimizer.
+- **Attribution is no longer a React island** — same logic, loaded as a
+  plain script, so content pages ship ~0.9KB JS instead of ~187KB.
+- **Test harness runs over HTTP against workerd** (`tests/helpers/server.mjs`)
+  instead of importing the built worker into Node; assertions unchanged; the
+  dashboard test's injected env became a `--var` on the spawned server.
+- **Dev-mode workerd quirks pinned in `astro.config.mjs`**: the
+  `react-dom/server` → `.edge` alias and two `ssr.optimizeDeps.include`
+  entries; each carries a comment explaining the crash it prevents.
+
 ## Out of scope
 
 Any copy change, the MDX conversion, the scanner (`worker/scan/`), and

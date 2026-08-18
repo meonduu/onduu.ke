@@ -1,7 +1,7 @@
 import { Link } from "./nav-link";
 import { Header, Footer, Button } from "./components";
-import type { Article, Block, Inline } from "./insights-data";
-import { articles } from "./insights-data";
+import type { Article, Block, Inline } from "../data/insights-data";
+import { articles } from "../data/insights-data";
 
 function isExternal(href: string) {
   return /^https?:\/\//.test(href) && !href.startsWith("https://onduu.ke");

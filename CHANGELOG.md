@@ -1,6 +1,66 @@
 # Changelog
 
-CURRENT VERSION: v2.11.1 — 0802hrs:18th August2026
+CURRENT VERSION: v3.0.0 — 0846hrs:18th August2026
+
+## v3.0.0 — 0846hrs:18th August2026
+
+Migrate the site from vinext to Astro (ROADMAP Phase 0.5, owner-approved).
+Same Worker, same bindings, same content — a different renderer.
+
+### Why
+
+The site is ~95% static content and ran on vinext 1.0.0-beta.2, which broke
+production twice (v1.3.1 dead nav links; v1.1.0 stale-cache build missing
+/check). Astro renders the same pages as server-rendered HTML with React
+islands only where there is real interactivity.
+
+### Proven
+
+- **Parity:** all 37 baseline routes match the v2.11.1 production build —
+  status codes, redirects, titles, descriptions, canonicals, Open Graph,
+  and the complete visible prose of every page including all 11 articles
+  (`docs/specs/parity-baseline.json`, captured before the port).
+- **Tests:** 67/67 pass. The harness now boots the built Worker in real
+  workerd via wrangler dev (`tests/helpers/server.mjs`); every assertion
+  from the vinext suite is preserved.
+- **Forms:** verified end-to-end in the browser — Turnstile test widget,
+  /api/submit, local D1 row with reference, attribution and consent
+  version; test rows deleted afterwards.
+- **Weight:** content pages ship 0.9KB of JavaScript (0.5KB gzipped),
+  down from 187KB (58.6KB gzipped) under vinext — a 99.5% reduction on 33
+  of 37 routes. React now loads only on /readiness, /contact and /check.
+
+### Changed
+
+- Astro 7 + @astrojs/cloudflare 14 + @astrojs/react; vinext, its Vite
+  pin and the RSC toolchain removed. `app/` became `src/` (data files and
+  worker modules moved unmodified; import paths only).
+- worker/index.ts wiring became Astro endpoints and middleware; the worker
+  modules themselves (submissions, email-check, feeds, dashboard,
+  pageviews, stale-cookies) are byte-identical.
+- Metadata now renders in <head>; vinext had left it in a hidden div at the
+  end of <body>. Values unchanged.
+- Attribution capture is a plain bundled script instead of a React island —
+  that is where most of the JavaScript reduction on content pages comes
+  from.
+- `session: false` keeps the adapter from declaring a SESSION KV binding
+  wrangler would auto-provision on deploy; `/_vinext/image` and the IMAGES
+  binding are gone (public/ holds only SVGs).
+- README, tsconfig, eslint config and .claude/launch.json updated for the
+  new stack. Full deviation log in `docs/specs/astro-migration.md`.
+
+### Notes
+
+- HTML pages stay server-rendered on demand so the middleware keeps seeing
+  every page request (page views, stale-cookie expiry). Do not prerender
+  without moving that logic.
+- Deploy config is now the build output's `dist/server/wrangler.json`; if
+  Workers Builds uses a custom deploy command, it must point there (owner
+  to confirm in the dashboard before merge).
+- The pinned wrangler 4.92.0 cannot read local dev state written by the
+  adapter's newer workerd; upgrade wrangler as a follow-up.
+
+## v2.11.1 — 0802hrs:18th August2026
 
 ## v2.11.1 — 0802hrs:18th August2026
 

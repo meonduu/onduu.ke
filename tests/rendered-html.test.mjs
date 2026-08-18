@@ -2,19 +2,11 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 // Renders through the built Worker so these cover the real production path.
-async function render(path = "/") {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}`);
-  const { default: worker } = await import(workerUrl.href);
+import { fetchPath } from "./helpers/server.mjs";
 
-  return worker.fetch(
-    new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }),
-    { ASSETS: { fetch: async () => new Response("Not found", { status: 404 }) } },
-    { waitUntil() {}, passThroughOnException() {} },
-  );
-}
+const render = (path = "/") => fetchPath(path);
 
-const { articles } = await import("../app/insights-data.ts").catch(() => ({}));
+const { articles } = await import("../src/data/insights-data.ts").catch(() => ({}));
 
 test("home page server-renders", async () => {
   const response = await render("/");
@@ -102,11 +94,7 @@ test("the checker page renders with its limits stated", async () => {
 });
 
 test("the check API rejects bad input without touching DNS", async () => {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-${Date.now()}-api`);
-  const { default: worker } = await import(workerUrl.href);
-  const call = (qs) =>
-    worker.fetch(new Request(`http://localhost/api/check${qs}`), {}, { waitUntil() {}, passThroughOnException() {} });
+  const call = (qs) => fetchPath(`/api/check${qs}`, "application/json");
 
   const empty = await call("");
   assert.equal(empty.status, 400);
@@ -116,11 +104,9 @@ test("the check API rejects bad input without touching DNS", async () => {
   assert.equal(invalid.status, 400);
   assert.match((await invalid.json()).error, /valid domain name/i);
 
-  const wrongMethod = await worker.fetch(
-    new Request("http://localhost/api/check?domain=example.ke", { method: "POST" }),
-    {},
-    { waitUntil() {}, passThroughOnException() {} },
-  );
+  const wrongMethod = await fetchPath("/api/check?domain=example.ke", "application/json", {
+    method: "POST",
+  });
   assert.equal(wrongMethod.status, 405);
 });
 

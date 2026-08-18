@@ -1,7 +1,3 @@
-"use client";
-
-import { useEffect } from "react";
-
 /**
  * First-party enquiry attribution.
  *
@@ -20,7 +16,7 @@ import { useEffect } from "react";
  *   - it is disclosed in the privacy notice rather than left implicit.
  */
 
-const KEY = "onduu-attribution";
+export const KEY = "onduu-attribution";
 
 const UTM_KEYS = ["utm_source", "utm_medium", "utm_campaign", "utm_term", "utm_content"] as const;
 
@@ -30,7 +26,7 @@ export type Attribution = {
   submitted_from?: string;
 } & Partial<Record<(typeof UTM_KEYS)[number], string>>;
 
-function capture() {
+export function capture() {
   if (typeof window === "undefined") return;
   // Only the first page of a visit sets this; later pages leave it alone.
   if (window.sessionStorage.getItem(KEY)) return;
@@ -73,8 +69,7 @@ export function readAttribution(): Attribution {
   return { ...stored, submitted_from: window.location.pathname.slice(0, 300) };
 }
 
-/** Renders nothing; records the visit source once per session. */
-export function AttributionCapture() {
-  useEffect(capture, []);
-  return null;
-}
+// Under vinext this was a React island (AttributionCapture) hydrated on every
+// page, which pulled the React client runtime onto pages with no other
+// interactivity. It is now called from a plain bundled script in Layout.astro,
+// so only the two form pages and /check load React at all.

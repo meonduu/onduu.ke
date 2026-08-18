@@ -1,4 +1,4 @@
-import type { PageContent } from "./components";
+import type { PageContent } from "../components/components";
 
 // Page content taken from the definitive brief of 15 August 2026
 // (ONDUU_DEFINITIVE_WEBSITE_CONTENT_AND_LLM_BUILD_BRIEF_2026_08_15.pdf),

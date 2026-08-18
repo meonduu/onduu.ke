@@ -1,0 +1,55 @@
+---
+// Base document. Replicates the vinext build's metadata values exactly — but
+// places them in <head>, where they belong. (vinext emitted title/meta inside
+// a hidden div at the end of <body>; parity is on values, not position.)
+//
+// Parity quirks preserved deliberately (see docs/specs/astro-migration.md):
+// the homepage, /check and the 404 page ship no canonical and no Open Graph
+// tags, exactly like the baseline. Fixing that is a Phase 1 content decision.
+import "../styles/globals.css";
+import "../styles/site.css";
+
+interface Props {
+  title: string;
+  description: string;
+  /** Absolute canonical URL. Omit to skip canonical + Open Graph entirely. */
+  canonical?: string;
+  author?: string;
+  noindex?: boolean;
+}
+const { title, description, canonical, author, noindex = false } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {author && <meta name="author" content={author} />}
+    {noindex && <meta name="robots" content="noindex, nofollow" />}
+    {canonical && <link rel="canonical" href={canonical} />}
+    {
+      canonical && (
+        <>
+          <meta property="og:title" content={title} />
+          <meta property="og:description" content={description} />
+          <meta property="og:url" content={canonical} />
+          <meta property="og:site_name" content="Onduu" />
+          <meta property="og:type" content="website" />
+          <meta name="twitter:card" content="summary" />
+        </>
+      )
+    }
+  </head>
+  <body>
+    <slot />
+    <script>
+      // First-party enquiry attribution (see components/attribution.ts).
+      // A plain script, not a React island: it must not cost the reader a
+      // framework download on pages that have no other interactivity.
+      import { capture } from "../components/attribution";
+      capture();
+    </script>
+  </body>
+</html>

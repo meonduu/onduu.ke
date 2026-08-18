@@ -12,9 +12,16 @@
     },
     {
       "name": "onduu-prod",
-      "runtimeExecutable": "npm",
+      "runtimeExecutable": "npx",
       "runtimeArgs": [
-        "start"
+        "wrangler",
+        "dev",
+        "-c",
+        "dist/server/wrangler.json",
+        "--port",
+        "3000",
+        "--inspector-port",
+        "0"
       ],
       "port": 3000
     }

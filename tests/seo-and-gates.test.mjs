@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { GATED_ROUTES, SITE_URL } from "../app/route-policy.ts";
+import { GATED_ROUTES, SITE_URL } from "../src/data/route-policy.ts";
+import { fetchPath } from "./helpers/server.mjs";
 
 // Approved and published on 16 August 2026. These were gated; the tests below
 // now assert the opposite — that they are indexable, in the sitemap and linked.
@@ -13,16 +14,6 @@ const PUBLISHED_ROUTES = [
   "results",
 ];
 
-async function fetchPath(path, accept = "text/html") {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-seo`);
-  const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(
-    new Request(`http://localhost${path}`, { headers: { accept } }),
-    {},
-    { waitUntil() {}, passThroughOnException() {} },
-  );
-}
 
 test("sitemap lists public routes and excludes every gated one", async () => {
   const response = await fetchPath("/sitemap.xml");

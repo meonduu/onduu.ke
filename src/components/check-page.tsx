@@ -1,15 +1,10 @@
-import type { Metadata } from "next";
-import { Link } from "../nav-link";
-import { Header, Footer, Button } from "../components";
-import { CheckForm } from "./check-form";
+import type { ReactNode } from "react";
+import { Link } from "./nav-link";
+import { Header, Footer, Button } from "./components";
 
-export const metadata: Metadata = {
-  title: "Free email security checker — SPF, DKIM, DMARC and MX | Onduu",
-  description:
-    "Check whether anyone can send email pretending to be your business. Reads your published SPF, DKIM, DMARC and MX records and explains what to fix, in plain language. No signup, no credentials.",
-};
-
-export default function CheckPage() {
+// Title and description now live in src/pages/check.astro. children is the
+// hydrated CheckForm island.
+export function CheckPage({ children }: { children?: ReactNode }) {
   return (
     <>
       <Header />
@@ -33,7 +28,7 @@ export default function CheckPage() {
         </section>
 
         <section className="check-section">
-          <CheckForm />
+          {children}
         </section>
 
         <section className="content-section">

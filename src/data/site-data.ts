@@ -1,4 +1,4 @@
-import type { PageContent } from "./components";
+import type { PageContent } from "../components/components";
 
 const six=[
  {title:"Control",body:"Know who owns the domain, hosting, website, analytics, email and administrator access - and whether the business can continue when a person or vendor leaves."},
