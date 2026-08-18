@@ -1,6 +1,65 @@
 # Changelog
 
-CURRENT VERSION: v3.0.1 — 1010hrs:18th August2026
+CURRENT VERSION: v3.1.0 — 1048hrs:18th August2026
+
+## v3.1.0 — 1048hrs:18th August2026
+
+Build the Instant Public Readiness Scan (ROADMAP Phase 4), to the approved
+spec and psr-v1 rubric. **Gated and dark** — no user-visible change.
+
+### The gate
+
+`POST /api/scan` returns 404 unless the `SCAN_ENABLED` Worker var is
+exactly `"true"`. Production has no such var, so deploying this exposes
+nothing. Launch is a separate owner action: apply migration 0004, review
+the gate results, build the visitor-facing page, set the flag, approve.
+
+### What was built
+
+- `worker/scan/collect.ts` — observation collectors over the fixed fetch
+  surface (RDAP, DoH, homepage, http probe, www twin, robots, sitemap, one
+  missing-page probe), all through the existing `net.ts` safety layer. Page
+  bodies are never stored — only extracted facts and retained headers.
+- `worker/scan/signals.ts` — the 24 deterministic signals from rubric §9.
+  Unobservable signals (unfound DKIM selectors, failed fetches) are marked
+  unobservable, never pass or fail.
+- `worker/scan/rubric.ts` — versioned `psr-v1` weights and the Public
+  Signal Score / Evidence Coverage calculation. Integer arithmetic, so
+  replay is exact.
+- `worker/scan/scan.ts` — orchestrator: validate, do-not-scan check, one
+  shared 20 s / 40-subrequest budget, score, store, shape the result with
+  its "not a Digital Readiness Score" statement.
+- `worker/scan/store.ts` + `migrations/0004_scans.sql` — 24 h per-domain
+  result cache, hourly per-client rate limit, scan reference IDs. No
+  visitor identity stored with a result.
+- `worker/scan/do-not-scan.ts` — blocklist honoured before any fetch.
+- `src/pages/api/scan.ts` — the flag-gated endpoint: Turnstile (same widget
+  and secret as the forms), then rate limit, then cache, then scan. Fails
+  closed with no secret, exactly like `/api/submit`.
+
+### Verified
+
+- 100/100 tests pass (31 new). Three launch-gate suites:
+  **SSRF** (`net.ts` controls: every IP-literal encoding, forbidden v4/v6
+  ranges, redirect-to-internal, loops, oversize bodies, budget), **abuse**
+  (flag-off 404, rate limit, 24 h cache, do-not-scan), **scoring-replay**
+  (a JSON round trip of stored observations reproduces signals and score
+  byte-for-byte; unknown rubric/signal is a hard error).
+- Live end-to-end scan of onduu.ke through `wrangler dev` with the flag on:
+  real RDAP/DNS/HTTP observations, score 80 at 100% coverage, cache-hit on
+  the second call. Test rows deleted.
+- Two small exports added to `worker/submissions.ts` (`verifyTurnstile`,
+  `clientKeyOf`) so the scan reuses the exact Turnstile and rate-limit
+  logic; behaviour unchanged.
+
+### Still required before launch (gates §7)
+
+Privacy review (stored fields vs the privacy notice; retention), copy
+review of every visitor-facing string, the `/scan` page, and explicit
+owner approval. Migration 0004 is **not** applied to production by this
+change.
+
+## v3.0.1 — 1010hrs:18th August2026
 
 ## v3.0.1 — 1010hrs:18th August2026
 

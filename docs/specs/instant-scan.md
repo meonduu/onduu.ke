@@ -1,10 +1,12 @@
 # Spec — Instant Public Readiness Scan
 
-**Status: approved by the owner on 18 August 2026, with the proposed
-defaults** (decisions recorded in §8). Two approvals remain outstanding:
-the `psr-v1` rubric weights in §9, and launch itself — nothing reaches
-production until every launch gate in §7 passes and the owner approves
-launch explicitly.
+**Status: spec and psr-v1 rubric approved (18 August 2026); implementation
+built and gated (v3.1.0).** The code lives in `worker/scan/` and
+`src/pages/api/scan.ts`, behind the `SCAN_ENABLED` flag (§7a). Launch
+remains outstanding: it requires the owner to apply migration `0004`,
+review the gate results, set `SCAN_ENABLED=true`, and approve launch
+explicitly. Building and deploying the code changes nothing user-visible
+until then.
 
 ## 1. What it is, and is not
 
@@ -116,6 +118,26 @@ the platform backstop.
   design (the data is public), but results pages for uncached third-party
   scans are shown to the requester only — no public index of scanned
   domains, no share URLs in v1.
+
+## 7a. Implementation map (v3.1.0)
+
+| Concern | Where |
+| --- | --- |
+| Network safety | `worker/scan/net.ts` (pre-existing) |
+| Observation collection (fixed fetch surface) | `worker/scan/collect.ts` |
+| Signal evaluation (24 signals) | `worker/scan/signals.ts` |
+| Rubric + scoring (versioned, replayable) | `worker/scan/rubric.ts` |
+| Orchestrator (validate, budget, score, store) | `worker/scan/scan.ts` |
+| Storage: 24h cache, rate limit, references | `worker/scan/store.ts` |
+| Do-not-scan list | `worker/scan/do-not-scan.ts` |
+| D1 schema | `migrations/0004_scans.sql` |
+| Endpoint, flag-gated, Turnstile + rate limit | `src/pages/api/scan.ts` |
+| Gate suites | `tests/scan-{ssrf,scoring,abuse}.test.mjs` |
+
+The flag: `POST /api/scan` returns 404 unless the `SCAN_ENABLED` Worker var
+is exactly `"true"`. Production has no such var, so the endpoint is dark
+until an owner sets it. No visitor-facing scan page (`/scan`) exists yet —
+that ships with launch, after approval.
 
 ## 7. Launch gates (all must pass before any public exposure)
 

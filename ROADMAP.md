@@ -164,14 +164,17 @@ layer in progress (untracked).
 Remaining:
 
 - [ ] Preserve the human-reviewed assessment route through all changes.
-- [ ] Write and approve the Instant Public Readiness Scan specification
-  (deterministic; public observations only). **Draft written:**
-  `docs/specs/instant-scan.md` — awaiting owner review of the spec and its
-  seven open decisions.
-- [ ] Separate Public Signal Score, Evidence Coverage and Verified Digital
-  Readiness Score in product, copy and results.
-- [ ] Complete SSRF, abuse, scoring-replay and privacy tests **before** any
-  public scanner launch.
+- [x] Write and approve the Instant Public Readiness Scan specification
+  (`docs/specs/instant-scan.md`, spec + psr-v1 rubric approved 18 Aug 2026).
+- [x] Separate Public Signal Score, Evidence Coverage and Verified Digital
+  Readiness Score in product, copy and results (built into the scan
+  response and its statement text).
+- [x] Complete SSRF, abuse and scoring-replay tests
+  (`tests/scan-{ssrf,scoring,abuse}.test.mjs`, 31 tests). **Privacy review
+  and copy review remain** (launch gates §7).
+- [ ] **Launch (owner):** apply migration `0004`, review gate results,
+  build the visitor-facing `/scan` page, set `SCAN_ENABLED=true`, approve
+  launch. The endpoint is built and dark (`src/pages/api/scan.ts`, v3.1.0).
 
 **Acceptance:** scan reports only public observations; missing private
 evidence is never scored as pass or fail; threat-model tests pass; owner
