@@ -154,7 +154,8 @@ export function reference(now = new Date(), random = Math.random) {
   return `ON-${stamp}-${suffix}`;
 }
 
-async function verifyTurnstile(token: string, secret: string, ip: string | null) {
+// Exported for reuse by the scan endpoint (same widget, same secret).
+export async function verifyTurnstile(token: string, secret: string, ip: string | null) {
   const form = new FormData();
   form.append("secret", secret);
   form.append("response", token);
@@ -198,7 +199,8 @@ async function withinRateLimit(db: D1Database, clientKey: string) {
 }
 
 // Coarse, hashed client key. Never store or log the raw IP.
-async function clientKeyOf(request: Request) {
+// Exported for reuse by the scan rate limiter — same coarse, hashed key.
+export async function clientKeyOf(request: Request) {
   const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
   const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ip));
   return [...new Uint8Array(digest)].slice(0, 8).map((b) => b.toString(16).padStart(2, "0")).join("");
