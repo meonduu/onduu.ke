@@ -27,4 +27,13 @@ export const SITE_URL = "https://onduu.ke";
 // Turnstile site key for the "Onduu.ke" widget. Site keys are public by design
 // — they are served to every visitor in the page. The matching secret lives
 // only in the Worker's TURNSTILE_SECRET binding and is never in this repo.
-export const TURNSTILE_SITE_KEY = "0x4AAAAAABgay5gLqOlJAaa7";
+//
+// The real key is registered for onduu.ke only, so on localhost the widget
+// fails with error 110200. The dev server therefore uses Cloudflare's official
+// always-passing test key (dashboard-independent, valid on any hostname); its
+// matching test secret is in .dev.vars. import.meta.env only exists under
+// Vite, so plain-Node consumers (the tests) fall through to the real key.
+const viteEnv = (import.meta as { env?: { DEV?: boolean } }).env;
+export const TURNSTILE_SITE_KEY = viteEnv?.DEV
+  ? "1x00000000000000000000AA"
+  : "0x4AAAAAABgay5gLqOlJAaa7";

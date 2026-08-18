@@ -1,6 +1,44 @@
 # Changelog
 
-CURRENT VERSION: v2.10.0 — 2226hrs:16th August2026
+CURRENT VERSION: v2.10.2 — 0637hrs:18th August2026
+
+## v2.10.2 — 0637hrs:18th August2026
+
+Turnstile now works on localhost, using Cloudflare's published test keys.
+
+The real widget key is registered for onduu.ke only, so every dev-server page
+with a form threw error 110200 and the forms could never submit locally.
+
+- `route-policy.ts` picks the site key by environment: under the Vite dev
+  server (`import.meta.env.DEV`) it uses Cloudflare's official always-passing
+  test key; production builds inline `DEV: false`, so onduu.ke keeps the real
+  key. Verified in the built output — the conditional resolves to the real key.
+- `.dev.vars` (new, gitignored) gives the local Worker the matching published
+  test secret, so `/api/submit` verification passes locally. Neither value is
+  a real credential — both are Cloudflare's documented test keys.
+- Local D1 already had the migrations applied, so the whole path works in dev:
+  widget issues its dummy token, the Worker verifies it against siteverify, and
+  a submission stores and returns a reference (tested end-to-end, then the test
+  row was deleted).
+
+## v2.10.1 — 0629hrs:18th August2026
+
+Three small CTA fixes from a site-wide action review.
+
+- **/readiness no longer links to itself.** The final CTA band on every
+  standard page pointed at `/readiness` — including on `/readiness`, where it
+  reloaded the page the visitor was already on. On the readiness page it now
+  anchors to `#request`, the form section. Every other page is unchanged.
+- **/readiness has a hero CTA again.** The brief copy dropped the prototype's
+  "Start my assessment" button, so visitors had to scroll five sections to find
+  the form. Restored as "Start my assessment → #request".
+- **/check surfaced on the homepage.** The email security check was only
+  reachable from the footer. The six-part-score section now pairs "Score my
+  website" with a text link "Run the free email security check → /check",
+  matching the hero's button-plus-text-link pattern.
+
+Verified on the dev server: both readiness CTAs resolve to the existing
+`#request` anchor, and the homepage action row renders both links.
 
 ## v2.10.0 — 2226hrs:16th August2026
 

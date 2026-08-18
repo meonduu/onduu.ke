@@ -15,6 +15,8 @@ export const briefPages: Record<string, PageContent> = {
     "eyebrow": "THE ONDUU DIGITAL READINESS SCORE",
     "title": "See what your website is costing, risking or leaving unproven.",
     "intro": "The Digital Readiness Score is a human-reviewed business diagnostic. It combines what your team declares, what can be safely observed from the public internet and what Onduu manually verifies. You receive six dimension scores, evidence labels, limitations and the three actions worth addressing first.",
+    "cta": "Start my assessment",
+    "ctaHref": "#request",
     "sections": [
       {
         "eyebrow": "WHY THIS EXISTS",
