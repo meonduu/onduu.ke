@@ -53,14 +53,24 @@ test("a clean -all record passes", () => {
   assert.equal(result.status, "pass");
 });
 
-test("~all is only a warning, and says why", () => {
+test("~all passes, with -all stated as the recommendation", () => {
   const result = analyseSpf(["v=spf1 include:_spf.google.com ~all"], {
     total: 3,
     duplicates: [],
     unresolved: [],
   });
-  assert.equal(result.status, "warn");
+  assert.equal(result.status, "pass");
   assert.match(result.detail, /softfail/);
+  assert.match(result.detail, /"-all" is the recommended endpoint/);
+});
+
+test("~all with record problems still warns", () => {
+  const result = analyseSpf(["v=spf1 include:_spf.google.com ~all"], {
+    total: 3,
+    duplicates: ["_spf.google.com"],
+    unresolved: [],
+  });
+  assert.equal(result.status, "warn");
 });
 
 test("exceeding 10 lookups fails, because the record permerrors", () => {

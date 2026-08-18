@@ -285,22 +285,23 @@ export function analyseSpf(txtRecords, expansion) {
     notes.push(`You are at ${lookups} of 10 lookups — close enough that adding one more service could break the record.`);
   }
 
-  const clean = qualifier === '-' && !notes.length;
+  // Both "-all" and "~all" are valid, working configurations. Softfail is a
+  // deliberate, common stance (unauthorised mail is flagged, not refused), so
+  // it passes — with "-all" stated as the recommended endpoint, not a defect.
+  const healthy = !notes.length;
   return {
-    status: clean ? 'pass' : 'warn',
+    status: healthy ? 'pass' : 'warn',
     record,
     lookups,
     qualifier,
     duplicates,
     unresolved,
-    detail: clean
-      ? `A single valid SPF record ending in "-all", using ${lookups} of the 10 permitted DNS lookups. This is correct.`
-      : [
-          qualifier === '-'
-            ? 'Valid SPF ending in "-all".'
-            : 'Valid SPF, but it ends in "~all" (softfail) — unauthorised mail is marked suspicious rather than refused. Once every real sender is listed, move to "-all".',
-          ...notes,
-        ].join(' '),
+    detail: [
+      qualifier === '-'
+        ? `A single valid SPF record ending in "-all", using ${lookups} of the 10 permitted DNS lookups. This is correct.`
+        : `A single valid SPF record ending in "~all" (softfail), using ${lookups} of the 10 permitted DNS lookups — unauthorised mail is marked suspicious rather than refused. This is a legitimate, working setup; once you are confident every real sender is listed, "-all" is the recommended endpoint because it refuses unauthorised mail outright.`,
+      ...notes,
+    ].join(' '),
   };
 }
 

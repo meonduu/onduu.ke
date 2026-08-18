@@ -1,6 +1,20 @@
 # Changelog
 
-CURRENT VERSION: v4.13.1 — 2143hrs:18th August2026
+CURRENT VERSION: v4.14.0 — 2149hrs:18th August2026
+
+## v4.14.0 — 2149hrs:18th August2026
+
+Owner correction to the email check's SPF verdict: a valid record ending
+in "~all" (softfail) is a legitimate, working configuration, not a
+defect — it now reads **PASS** instead of NEEDS WORK, with the detail
+stating plainly that "-all" is the recommended endpoint once every real
+sender is listed. Scoring follows (full 25 SPF points instead of 15).
+Real problems still warn or fail exactly as before: duplicate includes,
+dead includes, 8+ lookups (warn); "+all", no "all" qualifier, over the
+10-lookup limit (warn/fail). Tests updated: ~all passes with the
+recommendation, ~all with record problems still warns. 136 tests.
+
+## v4.13.1 — 2143hrs:18th August2026
 
 ## v4.13.1 — 2143hrs:18th August2026
 
