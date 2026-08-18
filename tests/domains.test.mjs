@@ -36,6 +36,27 @@ test("pasted URLs and casing normalise before candidates are built", () => {
   assert.deepEqual(candidatesFor("https://Shop.CO.KE/path"), ["shop.co.ke", "shop.ke"]);
 });
 
+test("every KeNIC third-level extension is recognised — no invented twins", () => {
+  // The bug this pins: kra.go.ke once produced the nonsense "kra.go.co.ke".
+  assert.deepEqual(candidatesFor("kra.go.ke"), ["kra.go.ke", "kra.ke", "kra.co.ke"]);
+  for (const ext of ["or.ke", "ne.ke", "go.ke", "me.ke", "mobi.ke", "info.ke", "sc.ke", "ac.ke"]) {
+    const got = candidatesFor(`name.${ext}`);
+    assert.deepEqual(got, [`name.${ext}`, "name.ke", "name.co.ke"], `wrong candidates for .${ext}`);
+    assert.ok(!got.some((d) => d.includes(`.${ext}.`)), `invented twin under .${ext}`);
+  }
+});
+
+test("subdomains collapse to the registrable domain", () => {
+  assert.deepEqual(candidatesFor("portal.kra.go.ke"), ["kra.go.ke", "kra.ke", "kra.co.ke"]);
+  assert.deepEqual(candidatesFor("www.shop.co.ke"), ["shop.co.ke", "shop.ke"]);
+  assert.deepEqual(candidatesFor("foo.bar.ke"), ["bar.ke", "bar.co.ke"]);
+});
+
+test("a bare KeNIC suffix alone is refused", () => {
+  assert.deepEqual(candidatesFor("co.ke"), []);
+  assert.deepEqual(candidatesFor("go.ke"), []);
+});
+
 /* ── availability classification with a stubbed network ── */
 
 const RDAP_HOSTS = new Set(["rdap.org", "rdap.kenic.or.ke"]);

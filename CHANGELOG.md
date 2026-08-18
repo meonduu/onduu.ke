@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.4.1 — 1729hrs:18th August2026
+CURRENT VERSION: v4.4.2 — 1741hrs:18th August2026
+
+## v4.4.2 — 1741hrs:18th August2026
+
+Domain search understands KeNIC's full namespace (owner report: searching
+kra.go.ke invented the nonsense twin "kra.go.co.ke" and offered to
+register it).
+
+- All nine KeNIC third-level extensions are now recognised — co.ke,
+  or.ke, ne.ke, go.ke, me.ke, mobi.ke, info.ke, sc.ke, ac.ke — alongside
+  second-level .ke. A third-level query (kra.go.ke, school.ac.ke, …)
+  returns itself plus the open pair for the same name (kra.ke,
+  kra.co.ke); twins are never built by bolting suffixes together.
+- Subdomains collapse to the registrable domain first
+  (portal.kra.go.ke → kra.go.ke; www.shop.co.ke → shop.co.ke), and a
+  bare suffix alone (co.ke, go.ke) is refused.
+- Tests pin every extension against invented twins. 127/127.
+
+## v4.4.1 — 1729hrs:18th August2026
 
 ## v4.4.1 — 1729hrs:18th August2026
 
