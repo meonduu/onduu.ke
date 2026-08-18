@@ -107,6 +107,25 @@ test("tool limitations page states the honest limits of all three tools", async 
   assert.match(html, /me@onduu\.ke/, "opt-out route published");
 });
 
+test("pages carry a hashed CSP header allowing only Turnstile and YouTube beyond self", async () => {
+  const res = await fetchPath("/about");
+  const csp = res.headers.get("content-security-policy") ?? "";
+  assert.match(csp, /default-src 'self'/);
+  assert.match(csp, /script-src [^;]*'sha256-/, "Astro's inline scripts are hashed, not unsafe-inline");
+  assert.doesNotMatch(csp, /script-src[^;]*'unsafe-inline'/, "no blanket inline scripts");
+  assert.match(csp, /frame-src [^;]*challenges\.cloudflare\.com/);
+  assert.match(csp, /frame-src [^;]*youtube\.com/);
+  const external = csp.match(/https:\/\/[a-z0-9.-]+/g) ?? [];
+  const allowed = new Set(["https://challenges.cloudflare.com", "https://www.youtube.com"]);
+  for (const origin of external) assert.ok(allowed.has(origin), `unexpected CSP origin: ${origin}`);
+});
+
+test("keyboard users get a skip link targeting the main landmark", async () => {
+  const html = await (await fetchPath("/")).text();
+  assert.match(html, /class="skip-link" href="#main"/);
+  assert.match(html, /<main id="main"/);
+});
+
 test("every page carries the browser security headers, with a short-start HSTS", async () => {
   for (const path of ["/", "/scan", "/api/check?domain=onduu.ke"]) {
     const res = await fetchPath(path);

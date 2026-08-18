@@ -10,7 +10,7 @@ export function ScanPage({ children }: { children?: ReactNode }) {
   return (
     <>
       <Header />
-      <main>
+      <main id="main">
         <section className="page-hero">
           <div>
             <p className="eyebrow">ONDUU / INSTANT PUBLIC SCAN</p>

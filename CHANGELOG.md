@@ -1,6 +1,53 @@
 # Changelog
 
-CURRENT VERSION: v4.3.0 — 1609hrs:18th August2026
+CURRENT VERSION: v4.4.0 — 1623hrs:18th August2026
+
+## v4.4.0 — 1623hrs:18th August2026
+
+Content-Security-Policy and the accessibility pass.
+
+### CSP (the deferred security header, done carefully)
+
+- Astro's stabilised `security.csp` now emits a **response-header CSP with
+  per-page hashes** for its inline hydration scripts — no
+  `unsafe-inline` for scripts anywhere. Only two external origins are
+  allowed, each for one purpose: `challenges.cloudflare.com` (Turnstile
+  script/frame/connect) and `www.youtube.com` (the one Insights embed).
+  Style elements are hashed; only style *attributes* (astro-island's
+  `display: contents`) get attribute-scoped `unsafe-inline`.
+  `frame-ancestors` stays with the X-Frame-Options header.
+- Verified with zero CSP violations: islands hydrate, the /check island
+  ran a full live check under the policy, and the embed iframe loads its
+  allowed source. A test pins the policy shape and fails on any
+  unexpected origin.
+
+### Accessibility
+
+- **Skip link** ("Skip to content") as the first focusable element on
+  every page, targeting the new `id="main"` landmark on all nine page
+  layouts.
+- **:focus-visible** outline (3px copper) so keyboard position is always
+  visible; CSS had no outline suppression anywhere (verified).
+- Forms audit: the submission forms already carry correct labels,
+  aria-invalid, aria-describedby per-field errors, a focused role=alert
+  error summary and a role=status confirmation — no changes needed. The
+  tool islands announce busy/result states via aria-live (pre-existing).
+- Fixed a Phase-1 straggler: the 404 CTA still said "Get your readiness
+  score" — now "Check Your Digital Readiness".
+
+### Findings reported, not changed (owner decisions)
+
+- **Colour contrast:** copper (#B8643B) as small text on ivory, and white
+  on copper buttons, measure ≈3.3–3.5:1 — below the 4.5:1 AA threshold
+  for small text. Fixing it means adjusting brand colours; an owner call,
+  not a silent edit.
+- **Mobile navigation:** below 1000px the header nav links are hidden
+  with no menu button — mobile users navigate via the CTA and footer
+  only. Adding a disclosure menu is a design decision.
+
+- 123/123 tests.
+
+## v4.3.0 — 1609hrs:18th August2026
 
 ## v4.3.0 — 1609hrs:18th August2026
 

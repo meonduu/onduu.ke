@@ -17,7 +17,35 @@ export default defineConfig({
   // Parity with the vinext Worker: bare cross-origin POSTs reach the route
   // handlers (405 from /api/check, Turnstile + validation on /api/submit)
   // instead of a blanket 403. Revisit as a hardening option post-migration.
-  security: { checkOrigin: false },
+  //
+  // CSP (owner-approved 18 Aug 2026): Astro hashes its own inline hydration
+  // scripts automatically; the allowances below are Turnstile (script,
+  // frame, connect) and the one YouTube embed in Insights (frame).
+  // frame-ancestors is intentionally absent — meta CSP cannot carry it, and
+  // the X-Frame-Options header (worker/security-headers.ts) covers it.
+  security: {
+    checkOrigin: false,
+    csp: {
+      directives: [
+        "default-src 'self'",
+        "img-src 'self' data:",
+        "connect-src 'self' https://challenges.cloudflare.com",
+        "frame-src https://challenges.cloudflare.com https://www.youtube.com",
+        "base-uri 'self'",
+        "form-action 'self'",
+        "object-src 'none'",
+      ],
+      scriptDirective: {
+        resources: ["'self'", "https://challenges.cloudflare.com"],
+      },
+      styleDirective: {
+        // astro-island applies display:contents via a style attribute; the
+        // attribute-scoped 'unsafe-inline' allows exactly that without
+        // weakening style elements (which stay 'self' + Astro's hashes).
+        resources: ["'self'", { resource: "'unsafe-inline'", kind: "attribute" }],
+      },
+    },
+  },
   adapter: cloudflare({
     // public/ holds only SVGs, which are served as-is; no runtime image
     // transformation, so no IMAGES binding (dropped from wrangler.jsonc).

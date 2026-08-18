@@ -8,7 +8,7 @@ export function CheckPage({ children }: { children?: ReactNode }) {
   return (
     <>
       <Header />
-      <main>
+      <main id="main">
         <section className="page-hero">
           <div>
             <p className="eyebrow">ONDUU / FREE TOOL</p>

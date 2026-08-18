@@ -86,7 +86,7 @@ export function ArticlePage({ article }: { article: Article }) {
   return (
     <>
       <Header />
-      <main>
+      <main id="main">
         <article className="article">
           <header className="article-head">
             <Link className="article-back" href="/insights">
@@ -154,7 +154,7 @@ export function InsightsIndex() {
   return (
     <>
       <Header />
-      <main>
+      <main id="main">
         <section className="page-hero">
           <div>
             <p className="eyebrow">ONDUU / INSIGHTS</p>
