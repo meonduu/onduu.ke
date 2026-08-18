@@ -165,7 +165,9 @@ Remaining:
 
 - [ ] Preserve the human-reviewed assessment route through all changes.
 - [ ] Write and approve the Instant Public Readiness Scan specification
-  (deterministic; public observations only).
+  (deterministic; public observations only). **Draft written:**
+  `docs/specs/instant-scan.md` — awaiting owner review of the spec and its
+  seven open decisions.
 - [ ] Separate Public Signal Score, Evidence Coverage and Verified Digital
   Readiness Score in product, copy and results.
 - [ ] Complete SSRF, abuse, scoring-replay and privacy tests **before** any
