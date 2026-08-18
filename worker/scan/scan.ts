@@ -10,7 +10,13 @@ import { collectObservations } from "./collect.ts";
 import { evaluateSignals } from "./signals.ts";
 import { scoreSignals, CURRENT_RUBRIC, type SignalResult } from "./rubric.ts";
 import { isBlocked } from "./do-not-scan.ts";
-import { findRecentScan, saveScan, scanReference, type StoredScan } from "./store.ts";
+import {
+  findRecentScan,
+  isDomainBlocklisted,
+  saveScan,
+  scanReference,
+  type StoredScan,
+} from "./store.ts";
 
 /** Whole-job limits: wall clock and outbound request count (spec §5). */
 const WALL_MS = 20_000;
@@ -64,7 +70,10 @@ export async function runScan(rawInput: string, db: D1Database): Promise<ScanOut
   if (!domain || !isScannableHost(domain)) {
     return { ok: false, status: 400, error: "Please enter a valid public domain name, like yourbusiness.co.ke." };
   }
-  if (isBlocked(domain)) {
+  // Two opt-out layers, both checked before any network request: the
+  // code-level list for permanent exclusions, and the runtime blocklist table
+  // a domain owner's opt-out writes to.
+  if (isBlocked(domain) || (await isDomainBlocklisted(db, domain))) {
     return { ok: false, status: 403, error: "This domain has asked not to be scanned." };
   }
 

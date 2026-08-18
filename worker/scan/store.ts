@@ -84,6 +84,54 @@ export async function saveScan(db: D1Database, scan: StoredScan): Promise<void> 
     .run();
 }
 
+/** The domain and each of its parent suffixes, longest-registrable-first. */
+function domainSuffixes(domain: string): string[] {
+  const labels = domain.toLowerCase().split(".");
+  const out: string[] = [];
+  for (let i = 0; i < labels.length - 1; i++) out.push(labels.slice(i).join("."));
+  return out;
+}
+
+/**
+ * True when the domain, or any parent of it, is in the opt-out log. A block on
+ * "example.co.ke" therefore also blocks "www.example.co.ke".
+ */
+export async function isDomainBlocklisted(db: D1Database, domain: string): Promise<boolean> {
+  const candidates = domainSuffixes(domain);
+  if (candidates.length === 0) return false;
+  const placeholders = candidates.map(() => "?").join(",");
+  const row = await db
+    .prepare(`SELECT 1 FROM scan_blocklist WHERE domain IN (${placeholders}) LIMIT 1`)
+    .bind(...candidates)
+    .first();
+  return row != null;
+}
+
+/**
+ * The owner opt-out action: record the domain in the blocklist and delete any
+ * stored result for it (and its subdomains). Idempotent. Returns how many
+ * stored results were removed.
+ */
+export async function optOutDomain(
+  db: D1Database,
+  domain: string,
+  note: string | null = null,
+  now = new Date(),
+): Promise<{ deleted: number }> {
+  await db
+    .prepare(
+      "INSERT INTO scan_blocklist (domain, created_at, note) VALUES (?, ?, ?)" +
+        " ON CONFLICT(domain) DO UPDATE SET created_at = excluded.created_at, note = excluded.note",
+    )
+    .bind(domain.toLowerCase(), now.toISOString(), note)
+    .run();
+  const res = await db
+    .prepare("DELETE FROM scans WHERE domain = ? OR domain LIKE ?")
+    .bind(domain.toLowerCase(), `%.${domain.toLowerCase()}`)
+    .run();
+  return { deleted: res.meta?.changes ?? 0 };
+}
+
 /** Same sliding-window shape as submissions' withinRateLimit. */
 export async function withinScanRateLimit(
   db: D1Database,

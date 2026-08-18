@@ -2,9 +2,11 @@
  * Do-not-scan list (docs/specs/instant-scan.md §6). Checked before any
  * network request. Matches the domain itself and any subdomain of an entry.
  *
- * Additions go through a normal PR so every entry has history. The removal
- * request route for domain owners is me@onduu.ke (to be published on the
- * scan page at launch).
+ * Additions go through a normal PR so every entry has history. Policy (owner,
+ * 18 Aug 2026): a domain owner who emails me@onduu.ke to opt out has any
+ * stored result for their domain deleted and the domain added here so it is
+ * not scanned again. The route is published on the /scan page and in the
+ * privacy notice.
  */
 export const DO_NOT_SCAN: ReadonlySet<string> = new Set<string>([
   // Intentionally empty at launch; entries are added on request or owner

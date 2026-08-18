@@ -2,13 +2,19 @@
 // launch flag, rate limiting, result caching and the do-not-scan list.
 import assert from "node:assert/strict";
 import test from "node:test";
-import { fetchPath } from "./helpers/server.mjs";
+import { startWorker, fetchPath } from "./helpers/server.mjs";
 import { isBlocked } from "../worker/scan/do-not-scan.ts";
+
+// Force the launch flag off for this file's Worker, so the flag-off assertion
+// holds even if a developer's gitignored .dev.vars sets SCAN_ENABLED=true.
+await startWorker(["--var", "SCAN_ENABLED:false"]);
 import {
   scanReference,
   withinScanRateLimit,
   findRecentScan,
   saveScan,
+  isDomainBlocklisted,
+  optOutDomain,
   SCANS_PER_HOUR,
   CACHE_TTL_MS,
 } from "../worker/scan/store.ts";
@@ -28,20 +34,26 @@ test("without SCAN_ENABLED the endpoint is indistinguishable from a missing rout
   assert.equal(get.status, 404, "GET must 404 while the flag is off");
 });
 
-/* ── an in-memory D1 stand-in, enough for the store's three queries ── */
+/* ── an in-memory D1 stand-in for the store's queries ── */
 
 function fakeDb() {
   const throttle = new Map();
   const scans = [];
+  const blocklist = new Map();
   return {
     scans,
     throttle,
+    blocklist,
     prepare(sql) {
       return {
         bind(...args) {
           return {
             async first() {
               if (sql.includes("FROM scan_throttle")) return throttle.get(args[0]) ?? null;
+              if (sql.includes("FROM scan_blocklist")) {
+                // args are the candidate suffixes; hit if any is blocklisted.
+                return args.some((d) => blocklist.has(d)) ? { 1: 1 } : null;
+              }
               if (sql.includes("FROM scans")) {
                 const [domain, cutoff] = args;
                 const hit = scans
@@ -56,6 +68,17 @@ function fakeDb() {
                 throttle.set(args[0], { window_start: args[1], count: 1 });
               } else if (sql.includes("scan_throttle SET count")) {
                 throttle.get(args[0]).count += 1;
+              } else if (sql.startsWith("INSERT INTO scan_blocklist")) {
+                blocklist.set(args[0], { created_at: args[1], note: args[2] });
+                return { meta: { changes: 1 } };
+              } else if (sql.startsWith("DELETE FROM scans")) {
+                const [exact, likePattern] = args;
+                const suffix = likePattern.replace(/^%/, "");
+                const before = scans.length;
+                for (let i = scans.length - 1; i >= 0; i--) {
+                  if (scans[i].domain === exact || scans[i].domain.endsWith(suffix)) scans.splice(i, 1);
+                }
+                return { meta: { changes: before - scans.length } };
               } else if (sql.startsWith("INSERT INTO scans")) {
                 scans.push({
                   reference: args[0],
@@ -165,6 +188,46 @@ test("the do-not-scan list blocks a domain and every subdomain of it", () => {
   assert.equal(isBlocked("deep.sub.blocked.co.ke", list), true);
   assert.equal(isBlocked("notblocked.co.ke", list), false);
   assert.equal(isBlocked("blocked.co.ke.evil.example", list), false, "suffix tricks do not match");
+});
+
+test("opt-out records the domain in the blocklist and deletes its stored results", async () => {
+  const db = fakeDb();
+  const now = new Date().toISOString();
+  for (const domain of ["optout.co.ke", "www.optout.co.ke", "keepme.co.ke"]) {
+    await saveScan(db, {
+      reference: "SC-260818-" + domain.slice(0, 4).toUpperCase(),
+      domain,
+      rubricVersion: "psr-v1",
+      observations: { domain, scannedAt: now },
+      signals: [],
+      score: 70,
+      coverage: 80,
+      createdAt: now,
+    });
+  }
+
+  const { deleted } = await optOutDomain(db, "optout.co.ke", "owner emailed 18 Aug");
+  assert.equal(deleted, 2, "the domain and its subdomain result are both deleted");
+  assert.equal(db.scans.filter((s) => s.domain.endsWith("optout.co.ke")).length, 0);
+  assert.equal(db.scans.some((s) => s.domain === "keepme.co.ke"), true, "other domains untouched");
+});
+
+test("a blocklisted domain and its subdomains are refused before any scan", async () => {
+  const db = fakeDb();
+  await optOutDomain(db, "blocked.co.ke");
+
+  assert.equal(await isDomainBlocklisted(db, "blocked.co.ke"), true);
+  assert.equal(await isDomainBlocklisted(db, "www.blocked.co.ke"), true, "subdomains inherit the block");
+  assert.equal(await isDomainBlocklisted(db, "notblocked.co.ke"), false);
+  assert.equal(
+    await isDomainBlocklisted(db, "blocked.co.ke.evil.example"),
+    false,
+    "suffix tricks do not match a blocklist entry",
+  );
+
+  const refused = await runScan("https://www.blocked.co.ke/", db);
+  assert.equal(refused.ok, false);
+  assert.equal(refused.status, 403);
 });
 
 /* ── references ── */

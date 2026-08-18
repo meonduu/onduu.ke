@@ -108,8 +108,14 @@ the platform backstop.
   submission. Repeated scans of one domain serve the cached result.
 - **Caching:** results cached by domain for a fixed TTL (owner decision
   below) so the scan cannot be used to hammer a third party.
-- **Do-not-scan:** a repo-held blocklist honoured before any fetch;
-  documented contact route for removal requests.
+- **Do-not-scan:** two layers, both checked before any fetch — a repo-held
+  `DO_NOT_SCAN` set for permanent, version-controlled exclusions, and a
+  `scan_blocklist` D1 table (migration `0005`) that logs per-domain opt-outs
+  at runtime. A block on a domain covers its subdomains.
+- **Owner opt-out (policy, 18 Aug 2026):** when a domain owner emails
+  me@onduu.ke, `optOutDomain()` records the domain in `scan_blocklist` and
+  deletes any stored result for it and its subdomains. Run in production as:
+  `wrangler d1 execute onduu_leads --remote --command "INSERT INTO scan_blocklist (domain, created_at, note) VALUES ('example.co.ke', datetime('now'), 'owner request'); DELETE FROM scans WHERE domain='example.co.ke' OR domain LIKE '%.example.co.ke';"`
 - **Stored data:** domain, observations, score, rubric version, timestamps.
   No visitor identity attached to scan results; the scanning client's IP is
   used for rate limiting only and not stored with the result. Retention
@@ -132,12 +138,15 @@ the platform backstop.
 | Do-not-scan list | `worker/scan/do-not-scan.ts` |
 | D1 schema | `migrations/0004_scans.sql` |
 | Endpoint, flag-gated, Turnstile + rate limit | `src/pages/api/scan.ts` |
+| Visitor page + island (v3.2.0) | `src/pages/scan.astro`, `src/components/scan-page.tsx`, `scan-form.tsx` |
+| Privacy notice coverage (v3.2.0) | `src/data/pages-brief.ts` §04 |
 | Gate suites | `tests/scan-{ssrf,scoring,abuse}.test.mjs` |
 
 The flag: `POST /api/scan` returns 404 unless the `SCAN_ENABLED` Worker var
 is exactly `"true"`. Production has no such var, so the endpoint is dark
-until an owner sets it. No visitor-facing scan page (`/scan`) exists yet —
-that ships with launch, after approval.
+until an owner sets it. The `/scan` page renders for everyone but cannot
+run a scan until the flag is set; it is not linked from navigation and is
+absent from the sitemap until launch.
 
 ## 7. Launch gates (all must pass before any public exposure)
 
