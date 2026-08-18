@@ -1,6 +1,19 @@
 # Changelog
 
-CURRENT VERSION: v4.15.3 — 2204hrs:18th August2026
+CURRENT VERSION: v4.15.4 — 2219hrs:18th August2026
+
+## v4.15.4 — 2219hrs:18th August2026
+
+Docs only: spec drafted for a fourth free tool, the DNS Health Check at
+`/dns-check` (`docs/specs/dns-check.md`). Owner approved the standalone-tool
+concept; build waits on the spec's §9 gates. Key decisions recorded in the
+spec: hyphenated `/dns-check` URL, eight-rule v1 check set with delegation
+consistency via RDAP-vs-DoH comparison, inline execution on the existing
+`onduudotke` Worker (the source guide's separate Worker, subdomain and
+Cloudflare Queues explicitly rejected), storage under the v4.9 promises, no
+numeric score, and an SEO posture of referral/funnel traffic because the
+"dns checker" SERP is held entirely by global free tools. No site behaviour
+changed.
 
 ## v4.15.3 — 2204hrs:18th August2026
 
