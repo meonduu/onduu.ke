@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <!-- Onduu Study A: the Dial. Copper arc = 62% of circumference (2*pi*34 = 213.6). -->
+  <circle cx="48" cy="48" r="34" fill="none" stroke="#DDE3E1" stroke-width="12"/>
+  <circle cx="48" cy="48" r="34" fill="none" stroke="#B8643B" stroke-width="12"
+    stroke-linecap="round" stroke-dasharray="132.4 81.2" transform="rotate(-90 48 48)"/>
+</svg>

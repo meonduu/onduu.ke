@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.9.1 — 2026hrs:18th August2026
+CURRENT VERSION: v4.10.0 — 2050hrs:18th August2026
+
+## v4.10.0 — 2050hrs:18th August2026
+
+The Dial identity goes live — Study A + Study D, the pairing recommended
+in `logos/README.md`.
+
+- **Favicon replaced.** The site had *no* `<link rel="icon">` at all, and
+  `public/favicon.svg` was still the OpenAI starter's blue placeholder.
+  Both fixed: the Dial favicon (heavier strokes, holds at 16px) is now
+  served and declared.
+- **Header and footer wordmark** is now the lockup: the Dial as inline
+  SVG plus ONDUU in caps with the copper square stop. Inline SVG means no
+  extra request and per-ground recolouring; the name stays **real text**,
+  so it is selectable, searchable and independent of any font file —
+  which also sidesteps the README's live-`<text>` caveat for web use.
+- Dark grounds use the specified variants: track `#28323C`, copper lifted
+  to `#CD7A50` — verified as computed styles in the footer.
+- The mark is the homepage scorecard's 62/100 gauge promoted to a symbol,
+  so the identity and the product illustration are now the same shape.
+- `logos/` (five studies, README, masters) is committed rather than left
+  untracked; `.DS_Store` added to `.gitignore`.
+- A test pins the favicon link, the icon's copper token, the mark in both
+  header and footer, and the name remaining text — and fails if the
+  starter placeholder ever returns. 133/133.
+
+**Unchanged caveat from the README:** the standalone lockup/wordmark SVGs
+still use live `<text>`; convert to outlines before print, sticker or
+merchandise use. No raster exports yet (icons and OG cards still to
+generate).
 
 ## v4.9.1 — 2026hrs:18th August2026
 

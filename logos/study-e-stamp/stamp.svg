@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="96" height="96" viewBox="0 0 96 96">
+  <!-- Onduu Study E: the Stamp. Solid block works on any ground. -->
+  <rect x="8" y="8" width="80" height="80" fill="#B8643B"/>
+  <path d="M24 36 V50 A11 11 0 0 0 46 50 V36" fill="none" stroke="#F5F1E8" stroke-width="9" stroke-linecap="round"/>
+  <path d="M52 36 V50 A11 11 0 0 0 74 50 V36" fill="none" stroke="#F5F1E8" stroke-width="9" stroke-linecap="round"/>
+</svg>

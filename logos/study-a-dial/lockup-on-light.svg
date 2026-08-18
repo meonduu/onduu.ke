@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="280" height="96" viewBox="0 0 280 96">
+  <!-- Recommended pairing: Dial symbol + Letterhead wordmark (Studies A + D).
+       Text is live (Arial bold); outline before print/production use. -->
+  <circle cx="40" cy="48" r="28" fill="none" stroke="#DDE3E1" stroke-width="10"/>
+  <circle cx="40" cy="48" r="28" fill="none" stroke="#B8643B" stroke-width="10"
+    stroke-linecap="round" stroke-dasharray="109.1 66.8" transform="rotate(-90 40 48)"/>
+  <text x="86" y="60" font-family="Arial, Helvetica, sans-serif" font-weight="bold"
+    font-size="34" letter-spacing="6" fill="#101820">ONDUU</text>
+  <rect x="245" y="48.5" width="11.5" height="11.5" fill="#B8643B"/>
+</svg>

@@ -123,6 +123,21 @@ test("pages carry a hashed CSP header allowing only Turnstile and YouTube beyond
   for (const origin of external) assert.ok(allowed.has(origin), `unexpected CSP origin: ${origin}`);
 });
 
+test("the Dial lockup and favicon are in place", async () => {
+  const html = await (await fetchPath("/")).text();
+  assert.match(html, /<link rel="icon" href="\/favicon.svg"/, "favicon must be declared");
+  // Header and footer both carry the mark; the name stays real text.
+  assert.equal((html.match(/wordmark-dial/g) ?? []).length, 2, "dial in header and footer");
+  assert.equal((html.match(/class="wordmark"/g) ?? []).length, 2);
+  assert.match(html, /class="wordmark"[^>]*>.*?ONDUU/s, "the name is selectable text, not an image");
+
+  const icon = await fetchPath("/favicon.svg", "image/svg+xml");
+  assert.equal(icon.status, 200);
+  const svg = await icon.text();
+  assert.match(svg, /#B8643B/, "favicon uses the copper token");
+  assert.doesNotMatch(svg, /68C4FF/, "the starter placeholder icon must not return");
+});
+
 test("keyboard users get a skip link targeting the main landmark", async () => {
   const html = await (await fetchPath("/")).text();
   assert.match(html, /class="skip-link" href="#main"/);
