@@ -1,5 +1,12 @@
 # Superseded-content inventory — input to Phase 1
 
+> **Applied in v4.0.0 (18 August 2026).** The strategy documents surfaced
+> and were filed under `docs/strategy/`; every disposition below was
+> resolved per the Current Version strategy — removals became 301s to
+> `/paths/*` and `/guides/*`, Managed Website Operations / Results /
+> managed-service terms were regated, and the homepage/nav/footer were
+> rewritten. Kept for the audit trail.
+
 Compiled 18 August 2026 (ROADMAP Phase 0). Page-by-page record of live copy
 that conflicts with the 16 August two-site strategy: Onduu educates and
 routes; independent Ujiajiri partners implement; HOSTAFRICA supplies

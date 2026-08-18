@@ -3,16 +3,28 @@ import test from "node:test";
 import { GATED_ROUTES, SITE_URL } from "../src/data/route-policy.ts";
 import { fetchPath } from "./helpers/server.mjs";
 
-// Approved and published on 16 August 2026. These were gated; the tests below
-// now assert the opposite — that they are indexable, in the sitemap and linked.
+// The paths-and-guides architecture from the 18 August 2026 strategy
+// (docs/strategy/). These must be live, indexable, in the sitemap and linked.
 const PUBLISHED_ROUTES = [
-  "managed-website-operations",
-  "solutions/agent-workflow-pilot",
-  "infrastructure",
-  "infrastructure/kenyan-vps-data-location",
-  "infrastructure/buzz-agent-collaboration",
-  "results",
+  "paths",
+  "paths/website-and-digital-marketing",
+  "paths/hostafrica-infrastructure",
+  "guides",
+  "guides/website-revenue-system",
+  "guides/kenyan-vps",
+  "guides/agents-on-vps",
 ];
+
+// Old delivery-offer routes 301 to their strategy successors.
+const REDIRECTED = {
+  "/solutions": "/paths",
+  "/solutions/digital-revenue-risk-review": "/readiness",
+  "/solutions/website-revenue-system": "/guides/website-revenue-system",
+  "/solutions/agent-workflow-pilot": "/guides/agents-on-vps",
+  "/infrastructure": "/paths/hostafrica-infrastructure",
+  "/infrastructure/kenyan-vps-data-location": "/guides/kenyan-vps",
+  "/infrastructure/buzz-agent-collaboration": "/guides/agents-on-vps",
+};
 
 
 test("sitemap lists public routes and excludes every gated one", async () => {
@@ -35,38 +47,64 @@ test("sitemap lists public routes and excludes every gated one", async () => {
   }
 });
 
-test("previously gated pages are now published and indexable", async () => {
+test("the paths and guides architecture is published and indexable", async () => {
   for (const route of PUBLISHED_ROUTES) {
     const response = await fetchPath(`/${route}`);
     assert.equal(response.status, 200, `${route} should render`);
     const html = await response.text();
     assert.doesNotMatch(html, /content="noindex/, `${route} should be indexable`);
-    // The internal review banner must not survive publication.
     assert.doesNotMatch(html, /PREVIEW \/ APPROVAL GATE/, `${route} still shows a gate banner`);
   }
 });
 
-test("published routes appear in the sitemap and are linked from the footer", async () => {
+test("published routes appear in the sitemap and are linked from the homepage", async () => {
   const xml = await (await fetchPath("/sitemap.xml")).text();
   const home = await (await fetchPath("/")).text();
   for (const route of PUBLISHED_ROUTES) {
     assert.ok(xml.includes(`${SITE_URL}/${route}`), `sitemap missing ${route}`);
   }
-  for (const route of ["managed-website-operations", "solutions/agent-workflow-pilot", "infrastructure", "results"]) {
+  for (const route of ["readiness", "paths/website-and-digital-marketing", "paths/hostafrica-infrastructure", "guides/website-revenue-system", "guides"]) {
     assert.match(home, new RegExp(`href="/${route}"`), `nothing links to ${route}`);
   }
 });
 
-test("all four legal routes are linked from the footer", async () => {
+test("old delivery-offer routes 301 to their strategy successors", async () => {
+  for (const [from, to] of Object.entries(REDIRECTED)) {
+    const res = await fetchPath(from);
+    assert.equal(res.status, 301, `${from} should redirect`);
+    const location = res.headers.get("location") ?? "";
+    assert.ok(new URL(location).pathname === to, `${from} should land on ${to}, got ${location}`);
+  }
+});
+
+test("gated routes stay reachable but noindex, and carry no delivery promise in nav", async () => {
+  for (const route of GATED_ROUTES) {
+    const res = await fetchPath(`/${route}`);
+    assert.equal(res.status, 200, `${route} should stay reachable for review`);
+    const html = await res.text();
+    assert.match(html, /content="noindex/, `${route} must be noindex`);
+  }
+});
+
+test("the legal routes in the footer exclude the gated managed-service terms", async () => {
   const home = await (await fetchPath("/")).text();
-  for (const route of [
-    "legal/commercial-relationships",
-    "legal/privacy",
-    "legal/assessment-terms",
-    "legal/managed-service-terms",
-  ]) {
+  for (const route of ["legal/commercial-relationships", "legal/privacy", "legal/assessment-terms"]) {
     assert.match(home, new RegExp(`href="/${route}"`), `footer missing ${route}`);
   }
+  assert.doesNotMatch(home, /href="\/legal\/managed-service-terms"/, "gated terms must not be linked");
+});
+
+test("the footer carries the responsibility disclosure", async () => {
+  const home = await (await fetchPath("/")).text();
+  assert.match(home, /operated by Ujiajiri Enterprises Limited/);
+  assert.match(home, /HOSTAFRICA provides, bills and supports/);
+});
+
+test("no direct-delivery promise survives on the homepage", async () => {
+  const home = await (await fetchPath("/")).text();
+  assert.doesNotMatch(home, /finds and fixes/i, "the banned phrase is back");
+  assert.doesNotMatch(home, /Managed Website Operations/i);
+  assert.doesNotMatch(home, /Agent Workflow Pilot/i);
 });
 
 test("legal pages are still marked as drafts", async () => {

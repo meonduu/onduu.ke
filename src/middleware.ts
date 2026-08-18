@@ -7,10 +7,19 @@ import { recordPageView, shouldRecord } from "../worker/pageviews";
 
 // v8.8 URLs that the migrated articles still link to, and that search
 // engines have indexed. /email-security was the checker, so /check is its
-// direct successor.
+// direct successor. The /solutions and /infrastructure trees were removed
+// by the 18 August 2026 strategy (docs/strategy/): delivery offers became
+// guides and paths, so each old route 301s to its successor.
 const REDIRECTS: Record<string, string> = {
   "/email-security": "/check",
   "/email-security/glossary": "/check",
+  "/solutions": "/paths",
+  "/solutions/digital-revenue-risk-review": "/readiness",
+  "/solutions/website-revenue-system": "/guides/website-revenue-system",
+  "/solutions/agent-workflow-pilot": "/guides/agents-on-vps",
+  "/infrastructure": "/paths/hostafrica-infrastructure",
+  "/infrastructure/kenyan-vps-data-location": "/guides/kenyan-vps",
+  "/infrastructure/buzz-agent-collaboration": "/guides/agents-on-vps",
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {

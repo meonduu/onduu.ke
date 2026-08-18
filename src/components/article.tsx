@@ -137,9 +137,9 @@ export function ArticlePage({ article }: { article: Article }) {
         )}
         <section className="final-cta">
           <p className="section-number">YOUR NEXT STEP</p>
-          <h2>Find the three digital weaknesses worth fixing first.</h2>
-          <p>Start with a structured score rather than another open-ended sales call.</p>
-          <Button href="/readiness">Get your digital readiness score</Button>
+          <h2>Start with the problem - not the supplier.</h2>
+          <p>Identify the priorities, understand the responsibility and continue through the right route.</p>
+          <Button href="/readiness">Check Your Digital Readiness</Button>
         </section>
       </main>
       <Footer />
@@ -202,9 +202,9 @@ export function InsightsIndex() {
         </section>
         <section className="final-cta">
           <p className="section-number">YOUR NEXT STEP</p>
-          <h2>Find the three digital weaknesses worth fixing first.</h2>
-          <p>Start with a structured score rather than another open-ended sales call.</p>
-          <Button href="/readiness">Get your digital readiness score</Button>
+          <h2>Start with the problem - not the supplier.</h2>
+          <p>Identify the priorities, understand the responsibility and continue through the right route.</p>
+          <Button href="/readiness">Check Your Digital Readiness</Button>
         </section>
       </main>
       <Footer />

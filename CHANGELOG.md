@@ -1,6 +1,69 @@
 # Changelog
 
-CURRENT VERSION: v3.2.0 — 1114hrs:18th August2026
+CURRENT VERSION: v4.0.0 — 1323hrs:18th August2026
+
+## v4.0.0 — 1323hrs:18th August2026
+
+Phase 1: reposition Onduu per the current strategy. Onduu educates,
+assesses and routes; independent Ujiajiri partners implement; HOSTAFRICA
+supplies infrastructure. The direct-delivery era of the site ends here.
+
+### The strategy, filed and authoritative
+
+- `docs/strategy/onduu-strategy-current-2026-08-18.pdf` (authoritative),
+  the 16 Aug two-site decision (exact approved copy) and the 15 Aug brief
+  are now in the repo; `CLAUDE.md`'s source-of-truth order points at them.
+
+### Changed
+
+- **Homepage rewritten** with the approved copy: "Know what is weakening
+  your digital business — and what to do next." The banned "Onduu finds
+  and fixes" is gone; new problem, readiness, two-paths, framework,
+  knowledge, youth-pathway and evidence sections; metadata updated.
+- **Single primary CTA everywhere: "Check Your Digital Readiness"** —
+  header button, section CTAs, final CTAs, articles, /check and /scan.
+- **New architecture:** nav Readiness · How It Works · Paths · Guides ·
+  About. New pages: `/paths`, `/paths/website-and-digital-marketing`,
+  `/paths/hostafrica-infrastructure` (with the MD disclosure; outbound
+  destination link withheld until approved), `/guides`,
+  `/guides/website-revenue-system` (the WRS demoted from delivery offer to
+  published framework), `/guides/kenyan-vps`, `/guides/agents-on-vps`
+  (educational method salvaged from the pilot).
+- **Removed with 301s:** `/solutions` → `/paths`; the Revenue & Risk
+  Review → `/readiness`; the WRS page → its guide; the Agent Pilot →
+  `/guides/agents-on-vps`; `/infrastructure` tree → the HOSTAFRICA path
+  and the VPS guide.
+- **Regated (noindex, out of nav/sitemap, reachable for review):**
+  Managed Website Operations (a service with no operator), Results
+  (awaits approved evidence), the managed-service terms.
+- `/how-it-works` reframed to **Assess → Prioritise → Choose a path →
+  Verify**; `/readiness` gained the "What happens after the score?"
+  consent-first routing block; `/about` the operating-relationship
+  paragraph; `/contact` the three-destination split (nothing silently
+  shared between organisations); footer rebuilt per the strategy with the
+  responsibility disclosure; contact-form microcopy no longer offers
+  managed programmes or pilots.
+- Content layering: new `src/data/pages-strategy.ts` overrides the brief
+  and prototype layers, keeping provenance auditable.
+
+### Verified
+
+- 106/106 tests, lint and type-check clean. New tests pin the
+  architecture, the 301 map, the gates (reachable + noindex), the footer
+  disclosure, the legal-link set, and the absence of "finds and fixes",
+  Managed Website Operations and Agent Workflow Pilot from the homepage.
+
+### Notes
+
+- HOSTAFRICA outbound link and any tracking remain gated until the owner
+  approves the exact destination and wording (stated on the path page).
+- The Ujiajiri partner directory is described as "being established"; no
+  link is published to the current ujiajiri.ke (still a clone of the old
+  Onduu homepage). The youth section likewise carries no external link yet.
+- `/legal/tool-limitations` from the strategy's sitemap is not yet drafted
+  (Phase 3); the footer links the three existing legal pages.
+
+## v3.2.0 — 1114hrs:18th August2026
 
 ## v3.2.0 — 1114hrs:18th August2026
 

@@ -125,8 +125,11 @@ Working discipline:
 ## Source-of-truth order
 
 When sources conflict: (1) the owner's current explicit instructions;
-(2) this file and current repo architecture docs; (3) the 16 August 2026
-Onduu/Ujiajiri two-site strategy; (4) the 15 August 2026 website brief where
-it does not conflict with (3); (5) generic workflow guides, as advice only.
-The 16 Aug strategy and 15 Aug brief PDF are **not yet in the repo** — ask
-the owner rather than guessing, and file them under `docs/` when supplied.
+(2) this file and current repo architecture docs; (3) **the Onduu Strategy —
+Current Version, 18 August 2026**
+(`docs/strategy/onduu-strategy-current-2026-08-18.pdf`), which consolidates
+and supersedes conflicting parts of the earlier documents; (4) the 16 August
+two-site decision (`docs/strategy/onduu-ujiajiri-two-site-decision-2026-08-16.md`,
+carries the exact approved copy) and the 15 August brief
+(`docs/strategy/onduu-website-brief-2026-08-15.pdf`) where they do not
+conflict with (3); (5) generic workflow guides, as advice only.

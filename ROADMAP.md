@@ -106,19 +106,30 @@ handling; all test suites ported.
 - PR preview approved by the owner on desktop and mobile; owner approves the
   merge; post-deploy production checks pass; changelog v3.0.0.
 
-## Phase 1 — Correct Onduu's public proposition — `blocked`
+## Phase 1 — Correct Onduu's public proposition — `done`
 
-Blocked on: the 16 August two-site strategy document (not in repo).
+Shipped in v4.0.0 (18 Aug 2026) once the strategy documents were located and
+filed under `docs/strategy/`. Applied per the Current Version strategy:
 
-- Reframe Onduu as education, Digital Readiness and routing.
-- Replace direct-delivery and unstaffed managed-service promises (inventory
-  above).
-- Implement the agreed navigation, homepage positioning and StoryBrand
-  journey.
-- Keep Digital Readiness as the primary CTA.
+- Homepage rewritten with the approved copy; "Onduu finds and fixes" gone;
+  primary CTA everywhere is **Check Your Digital Readiness**.
+- New architecture: nav Readiness · How It Works · Paths · Guides · About;
+  `/paths/*` (Ujiajiri partners, HOSTAFRICA infrastructure with disclosure);
+  `/guides/*` (Website Revenue System demoted to a framework guide, Kenyan
+  VPS, Agents on a VPS).
+- `/solutions/*` and `/infrastructure/*` removed with 301s; Managed Website
+  Operations, Results and the managed-service terms regated (noindex).
+- `/how-it-works` reframed to Assess → Prioritise → Choose a path → Verify;
+  `/readiness` gained the result-routing consent block; `/about` the
+  relationship paragraph; `/contact` the three-destination split; footer
+  carries the responsibility disclosure.
+- Tests updated to pin the new architecture, redirects, gates, disclosure
+  and the absence of direct-delivery promises (106 passing).
 
-**Acceptance:** no superseded promise reachable or indexed; homepage and
-navigation match the strategy; one primary CTA per page; passes `REVIEW.md`.
+**Notes:** HOSTAFRICA outbound destination link still gated pending owner
+approval (the path page says so); Ujiajiri partner directory described as
+"being established" — no link to the current ujiajiri.ke clone; the youth
+section carries no external link for the same reason.
 
 ## Phase 2 — Separate routes and responsibilities — `blocked`
 

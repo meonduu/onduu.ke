@@ -77,9 +77,9 @@ export function CheckPage({ children }: { children?: ReactNode }) {
 
         <section className="final-cta">
           <p className="section-number">YOUR NEXT STEP</p>
-          <h2>Find the three digital weaknesses worth fixing first.</h2>
-          <p>The email records are one layer. A readiness score covers the rest.</p>
-          <Button href="/readiness">Get your digital readiness score</Button>
+          <h2>The email records are one layer. Readiness covers the rest.</h2>
+          <p>Identify the priorities, understand the responsibility and continue through the right route.</p>
+          <Button href="/readiness">Check Your Digital Readiness</Button>
         </section>
       </main>
       <Footer />

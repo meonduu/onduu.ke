@@ -84,7 +84,7 @@ export function ScanPage({ children }: { children?: ReactNode }) {
             The scan shows what is visible. The readiness assessment shows what to fix first, with
             evidence and a human review.
           </p>
-          <Button href="/readiness">Get your digital readiness score</Button>
+          <Button href="/readiness">Check Your Digital Readiness</Button>
         </section>
       </main>
       <Footer />
