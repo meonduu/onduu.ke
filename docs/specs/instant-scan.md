@@ -1,12 +1,17 @@
 # Spec — Instant Public Readiness Scan
 
-**Status: spec and psr-v1 rubric approved (18 August 2026); implementation
-built and gated (v3.1.0).** The code lives in `worker/scan/` and
-`src/pages/api/scan.ts`, behind the `SCAN_ENABLED` flag (§7a). Launch
-remains outstanding: it requires the owner to apply migration `0004`,
-review the gate results, set `SCAN_ENABLED=true`, and approve launch
-explicitly. Building and deploying the code changes nothing user-visible
-until then.
+**Status: LIVE. Launched 18 August 2026 on the owner's instruction** after
+all §7 gates passed (SSRF/abuse/scoring-replay suites, privacy review with
+recorded retention and opt-out decisions, copy review). Migrations
+0004/0005 applied to production; `SCAN_ENABLED` set as a Worker secret so
+it survives deploys — deleting the secret is the instant kill switch.
+Verified live: real Turnstile, real scans, cache and reference IDs working.
+
+**Known vantage limitation:** scanning onduu.ke *from its own Worker*
+under-observes (Cloudflare blocks a Worker fetching its own zone), so the
+site's self-scan reports honest-but-low Evidence Coverage with web signals
+"not publicly observable". Third-party domains — the product's purpose —
+observe fully (verified live).
 
 ## 1. What it is, and is not
 

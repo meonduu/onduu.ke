@@ -1,6 +1,36 @@
 # Changelog
 
-CURRENT VERSION: v4.1.0 — 1520hrs:18th August2026
+CURRENT VERSION: v4.2.0 — 1537hrs:18th August2026
+
+## v4.2.0 — 1537hrs:18th August2026
+
+**The Instant Public Readiness Scan is LIVE**, on the owner's instruction,
+with every launch gate passed.
+
+### Launch actions (production)
+
+- Migrations `0004_scans.sql` and `0005_scan_blocklist.sql` applied to the
+  production D1 database (additive only).
+- `SCAN_ENABLED=true` set as a **Worker secret** — secrets survive Workers
+  Builds deploys where dashboard plaintext vars can be wiped; deleting the
+  secret is the instant kill switch.
+- `/scan` linked from the footer ("Readiness Scan") and added to the
+  sitemap; the page comment updated from gated to launched.
+
+### Verified live on production
+
+- Bare POST to `/api/scan` → 403 Turnstile challenge (live, guarded).
+- Real browser scan of onduu.ke through the real Turnstile widget:
+  reference SC-260818-ZVCE. This exposed a **vantage limitation**, now
+  documented in the spec: a Worker cannot fetch its own zone (Cloudflare
+  recursion protection), so onduu.ke's self-scan reports web signals as
+  "not publicly observable" — Evidence Coverage 34%, score 91 on what
+  remains. Honest behaviour, exactly as rule 2 requires.
+- Real browser scan of example.com: score 75 at 81% coverage — third-party
+  domains (the product's purpose) observe fully; the missing 19% is
+  example.com's absent mail configuration, correctly unobservable.
+
+## v4.1.0 — 1520hrs:18th August2026
 
 ## v4.1.0 — 1520hrs:18th August2026
 

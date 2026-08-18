@@ -186,10 +186,13 @@ Remaining:
   (notice §04 rewritten to cover stored scan results, v3.2.0). Owner
   decisions recorded: results kept until deleted; domain-owner opt-out via
   email deletes the result and adds the domain to the do-not-scan list.
-- [ ] **Launch (owner):** review the privacy wording, apply migration
-  `0004` to production, set `SCAN_ENABLED=true`, link `/scan` from
-  navigation, approve. Everything else is built and dark (v3.1.0 engine,
-  v3.2.0 page).
+- [x] **LAUNCHED 18 Aug 2026** on the owner's instruction: migrations
+  0004/0005 applied to production D1, `SCAN_ENABLED` set as a Worker
+  secret (survives deploys; deleting it is the kill switch), `/scan`
+  linked from the footer and sitemap (v4.2.0). Verified live with real
+  Turnstile and real scans. Known limit: self-scanning onduu.ke from its
+  own Worker under-observes (zone recursion protection) — third-party
+  domains observe fully.
 
 **Acceptance:** scan reports only public observations; missing private
 evidence is never scored as pass or fail; threat-model tests pass; owner

@@ -1,10 +1,11 @@
 ---
 // Visitor-facing page for the Instant Public Readiness Scan.
 //
-// The page renders for everyone, but the ScanForm submits to POST /api/scan,
-// which returns 404 until SCAN_ENABLED="true" in the Worker (spec §7a). Until
-// launch the form is reachable only by direct URL — it is not yet linked from
-// navigation, and this route is left out of the sitemap deliberately.
+// LAUNCHED 18 August 2026: SCAN_ENABLED is set as a production Worker secret
+// (survives deploys), migrations 0004/0005 are applied, and the page is
+// linked from the footer and sitemap. The flag remains the kill switch —
+// deleting the secret returns /api/scan to 404 instantly (see
+// docs/runbooks/scan-launch.md).
 import Layout from "../layouts/Layout.astro";
 import { ScanPage } from "../components/scan-page";
 import { ScanForm } from "../components/scan-form";
