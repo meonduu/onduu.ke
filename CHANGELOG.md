@@ -1,6 +1,29 @@
 # Changelog
 
-CURRENT VERSION: v4.5.3 — 1840hrs:18th August2026
+CURRENT VERSION: v4.6.0 — 1847hrs:18th August2026
+
+## v4.6.0 — 1847hrs:18th August2026
+
+Registrar links in domain results (owner request: people assume the
+largest registrar controls every domain — the tool now shows and links
+each domain's ACTUAL registrar).
+
+- REGISTRAR: now links to the registrar's own website when the published
+  name matches a known registrar — 17 entries covering the major Kenyan
+  registrars (Truehost, Safaricom, Kenya Website Experts, Sasahost,
+  HostPinnacle, EAC Directory, HOSTAFRICA) and the big internationals
+  (GoDaddy, Namecheap, Cloudflare, Gandi, IONOS, Hostinger, Name.com,
+  Porkbun, OVH, MarkMonitor). Unknown registrars show their name with no
+  link — nothing is guessed.
+- Neutral treatment by design: competitor links are plain, with no
+  tracking parameters; only the approved HOSTAFRICA destination carries
+  attribution. Every URL was verified reachable before inclusion (Deep
+  Africa excluded — its site did not answer).
+- Name matching is normalised, so "HostAfrica Kenya Ltd", "Truehost Cloud
+  Limited" and "GoDaddy.com, LLC" all resolve. Tests pin the variants.
+  128/128.
+
+## v4.5.3 — 1840hrs:18th August2026
 
 ## v4.5.3 — 1840hrs:18th August2026
 

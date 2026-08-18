@@ -6,6 +6,7 @@ interface DomainResult {
   domain: string;
   status: "registered" | "maybe-available" | "unknown";
   registrar?: string | null;
+  registrarUrl?: string | null;
   locked?: boolean;
   expiryDate?: string | null;
   registerUrl?: string;
@@ -123,7 +124,19 @@ export function DomainsForm() {
                     <p>
                       <strong>REGISTERED</strong>
                     </p>
-                    {r.registrar && <p>REGISTRAR: {r.registrar}.</p>}
+                    {r.registrar && (
+                      <p>
+                        REGISTRAR:{" "}
+                        {r.registrarUrl ? (
+                          <a href={r.registrarUrl} target="_blank" rel="noopener noreferrer">
+                            {r.registrar} <span aria-hidden="true">↗</span>
+                          </a>
+                        ) : (
+                          r.registrar
+                        )}
+                        .
+                      </p>
+                    )}
                     {r.locked === true && (
                       <p>
                         TRANSFER LOCK: <b className="value-good">ON.</b>

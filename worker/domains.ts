@@ -23,9 +23,50 @@ export interface DomainResult {
   domain: string;
   status: Availability;
   registrar?: string | null;
+  registrarUrl?: string | null;
   locked?: boolean;
   expiryDate?: string | null;
   registerUrl?: string;
+}
+
+/**
+ * Websites of well-known registrars, matched against the registrar name the
+ * registry publishes. Owner-requested (18 Aug 2026): many people assume the
+ * largest registrar controls every domain, so a taken domain links to its
+ * ACTUAL registrar. Competitor links are plain — no tracking parameters;
+ * only the approved HOSTAFRICA destination carries attribution. Every URL
+ * here was verified reachable before inclusion; unknown registrars simply
+ * show their published name without a link.
+ */
+const REGISTRAR_SITES: [pattern: string, url: string][] = [
+  ["hostafrica", "https://www.hostafrica.com"],
+  ["truehost", "https://truehost.co.ke"],
+  ["safaricom", "https://www.safaricom.co.ke"],
+  ["kenyawebsiteexperts", "https://kenyawebexperts.co.ke"],
+  ["kenyawebexperts", "https://kenyawebexperts.co.ke"],
+  ["sasahost", "https://www.sasahost.co.ke"],
+  ["hostpinnacle", "https://www.hostpinnacle.co.ke"],
+  ["eacdirectory", "https://www.eacdirectory.co.ke"],
+  ["godaddy", "https://www.godaddy.com"],
+  ["namecheap", "https://www.namecheap.com"],
+  ["cloudflare", "https://www.cloudflare.com"],
+  ["gandi", "https://www.gandi.net"],
+  ["ionos", "https://www.ionos.com"],
+  ["hostinger", "https://www.hostinger.com"],
+  ["namecom", "https://www.name.com"],
+  ["porkbun", "https://porkbun.com"],
+  ["ovh", "https://www.ovhcloud.com"],
+  ["markmonitor", "https://www.markmonitor.com"],
+];
+
+/** Match the published registrar name to a known website, or null. */
+export function registrarWebsite(name: string | null | undefined): string | null {
+  if (!name) return null;
+  const key = name.toLowerCase().replace(/[^a-z]/g, "");
+  for (const [pattern, url] of REGISTRAR_SITES) {
+    if (key.includes(pattern)) return url;
+  }
+  return null;
 }
 
 /**
@@ -110,6 +151,7 @@ export async function checkDomain(
       domain,
       status: "registered",
       registrar: rdap.registrar ?? null,
+      registrarUrl: registrarWebsite(rdap.registrar),
       locked: (rdap.eppStatuses ?? []).some((s) =>
         /transferprohibited/.test(s.toLowerCase().replace(/[^a-z]/g, "")),
       ),

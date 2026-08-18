@@ -8,6 +8,7 @@ import {
   checkDomain,
   handleDomainSearch,
   withinSearchLimit,
+  registrarWebsite,
   REGISTER_URL,
 } from "../worker/domains.ts";
 
@@ -106,8 +107,18 @@ test("a domain with an RDAP record reports registrar, lock and expiry", async ()
   const result = await checkDomain("taken.co.ke", makeBudget(5000, 10), fetcher);
   assert.equal(result.status, "registered");
   assert.equal(result.registrar, "HOSTAFRICA");
+  assert.equal(result.registrarUrl, "https://www.hostafrica.com", "known registrar links to its site");
   assert.equal(result.locked, true);
   assert.equal(result.expiryDate, "2027-03-01T00:00:00Z");
+});
+
+test("registrar names match their websites across published variants", () => {
+  assert.equal(registrarWebsite("HostAfrica Kenya Ltd"), "https://www.hostafrica.com");
+  assert.equal(registrarWebsite("Truehost Cloud Limited"), "https://truehost.co.ke");
+  assert.equal(registrarWebsite("Safaricom PLC"), "https://www.safaricom.co.ke");
+  assert.equal(registrarWebsite("GoDaddy.com, LLC"), "https://www.godaddy.com");
+  assert.equal(registrarWebsite("Some Unknown Registrar Ltd"), null, "unknown names get no link");
+  assert.equal(registrarWebsite(null), null);
 });
 
 test("a domain in DNS but without RDAP is registered with unknown details", async () => {
