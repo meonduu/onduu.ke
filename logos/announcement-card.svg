@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <!-- Launch-post card for the three free tools (18 Aug 2026). Same grammar
+       as og-card.svg: carbon ground, dark-variant lockup, copper baseline.
+       Live Arial text; rasterise before posting, never ship raw. -->
+  <rect width="1200" height="630" fill="#101820"/>
+  <g transform="translate(52,40)">
+    <circle cx="40" cy="48" r="28" fill="none" stroke="#28323C" stroke-width="10"/>
+    <circle cx="40" cy="48" r="28" fill="none" stroke="#CD7A50" stroke-width="10"
+      stroke-linecap="round" stroke-dasharray="109.1 66.8" transform="rotate(-90 40 48)"/>
+    <text x="86" y="60" font-family="Arial, Helvetica, sans-serif" font-weight="bold"
+      font-size="34" letter-spacing="6" fill="#F5F1E8">ONDUU</text>
+    <rect x="245" y="48.5" width="11.5" height="11.5" fill="#CD7A50"/>
+  </g>
+  <text x="80" y="248" font-family="Arial, Helvetica, sans-serif" font-weight="bold"
+    font-size="56" fill="#F5F1E8">Three free checks for your domain.</text>
+  <text x="80" y="342" font-family="Arial, Helvetica, sans-serif" font-size="29" fill="#DDE3E1">Can someone send email as your business?  <tspan fill="#CD7A50" font-weight="bold">onduu.ke/email-security</tspan></text>
+  <text x="80" y="412" font-family="Arial, Helvetica, sans-serif" font-size="29" fill="#DDE3E1">Is your name protected in .ke as well as .co.ke?  <tspan fill="#CD7A50" font-weight="bold">onduu.ke/kedomains</tspan></text>
+  <text x="80" y="482" font-family="Arial, Helvetica, sans-serif" font-size="29" fill="#DDE3E1">What does your domain show the public?  <tspan fill="#CD7A50" font-weight="bold">onduu.ke/scan</tspan></text>
+  <text x="80" y="560" font-family="Arial, Helvetica, sans-serif" font-weight="bold"
+    font-size="22" letter-spacing="4" fill="#8C97A0">FREE · NO SIGN-UP · PUBLIC RECORDS ONLY</text>
+  <rect y="622" width="1200" height="8" fill="#B8643B"/>
+</svg>

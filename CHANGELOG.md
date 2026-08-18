@@ -1,6 +1,19 @@
 # Changelog
 
-CURRENT VERSION: v4.11.0 — 2107hrs:18th August2026
+CURRENT VERSION: v4.11.1 — 2114hrs:18th August2026
+
+## v4.11.1 — 2114hrs:18th August2026
+
+Docs only, no site change. The launch post moves out of chat and into the
+repo: `docs/marketing/announcement-post.md` (verbatim draft plus owner
+notes), now paired with a branded 1200×630 card
+(`logos/announcement-card.svg` → `docs/marketing/announcement-card.png`)
+in the new identity — dark-ground Dial lockup, the three tool routes in
+copper, "FREE · NO SIGN-UP · PUBLIC RECORDS ONLY" strapline. Bare links
+already auto-render the v4.11.0 share card, so the post carries the Dial
+either way.
+
+## v4.11.0 — 2107hrs:18th August2026
 
 ## v4.11.0 — 2107hrs:18th August2026
 
