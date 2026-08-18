@@ -1,6 +1,21 @@
 # Changelog
 
-CURRENT VERSION: v4.5.1 — 1817hrs:18th August2026
+CURRENT VERSION: v4.5.2 — 1834hrs:18th August2026
+
+## v4.5.2 — 1834hrs:18th August2026
+
+Domain search polish (owner spec).
+
+- Indeterminate copper progress bar while a search runs (static under
+  prefers-reduced-motion; the aria-live note still announces the state
+  for screen readers).
+- Form note shortened to "Checks the extension you enter" (the storage
+  disclosure remains on the page body and in the privacy notice).
+- Input placeholder is now just "yourdomain".
+- The per-result "Public registry data only…" small print removed.
+- 127/127 tests.
+
+## v4.5.1 — 1817hrs:18th August2026
 
 ## v4.5.1 — 1817hrs:18th August2026
 

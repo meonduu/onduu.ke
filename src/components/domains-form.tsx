@@ -69,7 +69,7 @@ export function DomainsForm() {
             name="q"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="yourbusiness or yourbusiness.co.ke"
+            placeholder="yourdomain"
             autoComplete="off"
             autoCapitalize="none"
             spellCheck={false}
@@ -82,10 +82,14 @@ export function DomainsForm() {
         </button>
       </form>
 
+      {state === "loading" && (
+        <div className="progress" role="progressbar" aria-label="Searching the registries">
+          <span />
+        </div>
+      )}
+
       <p className="check-note" role="status" aria-live="polite">
-        {state === "loading"
-          ? "Reading public DNS and registry records…"
-          : "Checks the extension you enter together with its .ke twin. Public records only; nothing you search is stored."}
+        {state === "loading" ? "Reading public DNS and registry records…" : "Checks the extension you enter"}
       </p>
 
       {error && (
@@ -138,7 +142,6 @@ export function DomainsForm() {
                         </b>
                       </p>
                     )}
-                    <small>Public registry data only. If this is your domain, the readiness assessment covers what these records mean.</small>
                   </>
                 )}
                 {r.status === "maybe-available" && (
