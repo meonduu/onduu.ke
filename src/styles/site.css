@@ -39,3 +39,5 @@ input[aria-invalid="true"],textarea[aria-invalid="true"],select[aria-invalid="tr
    hidden token input still submits — display:none does not exclude a field. */
 .turnstile-slot:not(:has(iframe)){display:none}
 
+
+.value-good{color:var(--green);font-weight:800}.value-bad{color:#8d2b22;font-weight:800}

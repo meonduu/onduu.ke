@@ -1,6 +1,20 @@
 # Changelog
 
-CURRENT VERSION: v4.5.0 — 1802hrs:18th August2026
+CURRENT VERSION: v4.5.1 — 1817hrs:18th August2026
+
+## v4.5.1 — 1817hrs:18th August2026
+
+Domain search result values colour-coded (owner spec): good values bold
+green, bad values bold red.
+
+- TRANSFER LOCK: ON. → green; OFF. → red (the "— worth fixing" tail is
+  removed — the colour now says it).
+- EXPIRES: green at 60+ days of renewal buffer (the guide's threshold),
+  red inside 60.
+- Green uses the brand token; red matches the dashboard's error tone.
+  127/127 tests.
+
+## v4.5.0 — 1802hrs:18th August2026
 
 ## v4.5.0 — 1802hrs:18th August2026
 

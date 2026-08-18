@@ -11,12 +11,14 @@ interface DomainResult {
   registerUrl?: string;
 }
 
-/** DD-MM-YYYY (owner-specified format) with days remaining. */
-function expiryLine(expiryDate: string | null | undefined): string | null {
+/** DD-MM-YYYY (owner-specified format) with days remaining; green when the
+ * renewal buffer is comfortable (≥60 days, the guide's threshold), red when
+ * not. */
+function expiryParts(expiryDate: string | null | undefined): { text: string; good: boolean } | null {
   if (!expiryDate) return null;
   const days = Math.floor((Date.parse(expiryDate) - Date.now()) / 86_400_000);
   const [y, m, d] = expiryDate.slice(0, 10).split("-");
-  return `EXPIRES: ${d}-${m}-${y} (${days} days).`;
+  return { text: `${d}-${m}-${y} (${days} days).`, good: days >= 60 };
 }
 
 /** Fire-and-forget outbound click count; never blocks the navigation. */
@@ -118,9 +120,24 @@ export function DomainsForm() {
                       <strong>REGISTERED</strong>
                     </p>
                     {r.registrar && <p>REGISTRAR: {r.registrar}.</p>}
-                    {r.locked === true && <p>TRANSFER LOCK: ON.</p>}
-                    {r.locked === false && <p>TRANSFER LOCK: OFF — worth fixing.</p>}
-                    {expiryLine(r.expiryDate) && <p>{expiryLine(r.expiryDate)}</p>}
+                    {r.locked === true && (
+                      <p>
+                        TRANSFER LOCK: <b className="value-good">ON.</b>
+                      </p>
+                    )}
+                    {r.locked === false && (
+                      <p>
+                        TRANSFER LOCK: <b className="value-bad">OFF.</b>
+                      </p>
+                    )}
+                    {expiryParts(r.expiryDate) && (
+                      <p>
+                        EXPIRES:{" "}
+                        <b className={expiryParts(r.expiryDate)!.good ? "value-good" : "value-bad"}>
+                          {expiryParts(r.expiryDate)!.text}
+                        </b>
+                      </p>
+                    )}
                     <small>Public registry data only. If this is your domain, the readiness assessment covers what these records mean.</small>
                   </>
                 )}
