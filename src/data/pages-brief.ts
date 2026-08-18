@@ -271,6 +271,7 @@ export const briefPages: Record<string, PageContent> = {
         "body": [
           "Onduu is the brand used for the website, conversion, measurement and digital-performance work offered to businesses in Kenya. The contracting legal entity is Ujiajiri Enterprises Limited.",
           "Any agreement, invoice or engagement is with Ujiajiri Enterprises Limited trading as Onduu.",
+          "Ujiajiri Enterprises Limited also operates ujiajiri.ke, a practical-skills and independent-provider platform relaunched on 18 August 2026. Providers listed there are independent businesses: clients contract and pay them directly, and neither Ujiajiri nor Onduu delivers, manages or guarantees their work. Links from this site to ujiajiri.ke are plain links — nothing you submit to Onduu is passed to Ujiajiri.",
           "TO CONFIRM: company registration number and registered address."
         ]
       },

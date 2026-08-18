@@ -87,12 +87,15 @@ export const strategyPages: Record<string, PageContent> = {
         ],
       },
       {
-        eyebrow: "STATUS",
-        title: "The partner directory is being established.",
+        eyebrow: "THE DIRECTORY",
+        title: "Compare providers on Ujiajiri.",
         body: [
-          "Ujiajiri is establishing its first reviewed independent partners before the directory is promoted. Until it is live, use the contact route and Onduu will point you at the appropriate next step — without acting as the contractor.",
+          "Need implementation? Compare independent website and digital-marketing providers on Ujiajiri. Each provider publishes its own capabilities and terms; you choose, contract and pay the provider directly.",
         ],
-        note: "Onduu does not receive a share of partner project fees. Any future referral or commercial arrangement will be disclosed here before it takes effect.",
+        links: [
+          { label: "Find a Delivery Partner", href: "https://ujiajiri.ke/partners/", external: true },
+        ],
+        note: "Ujiajiri and Onduu are operated by the same company, Ujiajiri Enterprises Limited. Onduu does not receive a share of partner project fees; providers on Ujiajiri are independent and neither site delivers or guarantees their work. Any future referral arrangement will be disclosed here before it takes effect.",
       },
     ],
   },
@@ -497,8 +500,11 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "AFTER THE SCORE",
         title: "What happens after the score?",
         body: [
-          "Website and digital-marketing implementation can be discussed directly with an independent Ujiajiri partner. HOSTAFRICA product enquiries continue through the approved official HOSTAFRICA route.",
-          "Onduu does not automatically transmit your assessment answers to either destination. Any transfer of your information requires your explicit consent first — at launch, the routes are outbound links you follow yourself.",
+          "Need implementation? Compare independent website and digital-marketing providers on Ujiajiri — each contracts with you directly. HOSTAFRICA product enquiries continue through the approved official HOSTAFRICA route.",
+          "Onduu does not automatically transmit your assessment answers to either destination. Nothing you enter here is shared with Ujiajiri or anyone else — the routes are plain outbound links you follow yourself.",
+        ],
+        links: [
+          { label: "Find a Delivery Partner", href: "https://ujiajiri.ke/partners/", external: true },
         ],
       },
     ],
@@ -532,7 +538,7 @@ export const strategyPages: Record<string, PageContent> = {
           },
           {
             title: "Website or digital-marketing implementation",
-            body: "Independent Ujiajiri partners contract directly with clients. The directory is being established; until then the form below can point you at the next step.",
+            body: "Independent providers are listed on the Ujiajiri directory. Compare them there and contract directly; the form below can still point you at the next step if you are unsure.",
           },
           {
             title: "HOSTAFRICA products or support",

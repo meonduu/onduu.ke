@@ -199,6 +199,32 @@ test("the approved HOSTAFRICA destination is UTM-tagged with no affiliate parame
   assert.doesNotMatch(domains, /aff=/);
 });
 
+test("Ujiajiri cross-links are present, plain, and honestly worded", async () => {
+  const partnersUrl = "https://ujiajiri.ke/partners/";
+  const youthUrl = "https://ujiajiri.ke/for-youth/";
+
+  const paths = await (await fetchPath("/paths/website-and-digital-marketing")).text();
+  assert.ok(paths.includes(partnersUrl), "partner path must link the Ujiajiri directory");
+  assert.match(paths, /Find a Delivery Partner/);
+  assert.doesNotMatch(paths, /directory is being established/i, "stale status must be gone");
+
+  const readiness = await (await fetchPath("/readiness")).text();
+  assert.ok(readiness.includes(partnersUrl), "readiness page must offer the implementation route");
+
+  const home = await (await fetchPath("/")).text();
+  assert.ok(home.includes(youthUrl), "homepage skills section must link the youth pathway");
+  assert.ok(home.includes(partnersUrl), "homepage status must link the live directory");
+
+  // Plain links only: no query strings, no parameters, targets keep the slash.
+  for (const html of [paths, readiness, home]) {
+    assert.doesNotMatch(html, /ujiajiri\.ke[^"]*\?/, "no query strings on Ujiajiri links");
+  }
+  // The youth programme is under development: no promises of training outcomes.
+  for (const banned of [/applications are open/i, /guaranteed placement/i, /certification/i]) {
+    assert.doesNotMatch(home, banned, "youth copy must not overpromise");
+  }
+});
+
 test("no direct-delivery promise survives on the homepage", async () => {
   const home = await (await fetchPath("/")).text();
   assert.doesNotMatch(home, /finds and fixes/i, "the banned phrase is back");

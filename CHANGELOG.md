@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.12.0 — 2131hrs:18th August2026
+CURRENT VERSION: v4.13.0 — 2140hrs:18th August2026
+
+## v4.13.0 — 2140hrs:18th August2026
+
+First cross-links to the relaunched ujiajiri.ke (same operator, Ujiajiri
+Enterprises Limited; relaunched 18 August 2026). Two CTAs, bare URLs with
+trailing slashes, no query strings, nothing auto-shared:
+
+- **Implementation → https://ujiajiri.ke/partners/** — a "Find a Delivery
+  Partner" button on /paths/website-and-digital-marketing (whose stale
+  "directory is being established" status is replaced: the directory is
+  live) and on /readiness in the "after the score" section. Copy keeps
+  the boundary: providers are independent, clients contract and pay them
+  directly, neither site delivers or guarantees the work.
+- **Youth pathway → https://ujiajiri.ke/for-youth/** — inline link in the
+  homepage "Skills into opportunity" section. Copy says the pathway is
+  under development and promises no training, certification, placement
+  or income; the stale sibling status line now reflects the live
+  directory.
+- Contact-page card updated to point at the directory instead of "being
+  established".
+- /legal/commercial-relationships §01 now names ujiajiri.ke, the shared
+  operating company, provider independence and that links are plain —
+  nothing submitted to Onduu is passed to Ujiajiri (page remains a
+  marked draft pending professional review).
+- New test pins both URLs on all three pages, forbids query strings on
+  any Ujiajiri link, forbids the stale status text and overpromising
+  youth copy. 135/135.
+
+## v4.12.0 — 2131hrs:18th August2026
 
 ## v4.12.0 — 2131hrs:18th August2026
 
