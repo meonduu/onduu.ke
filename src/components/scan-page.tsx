@@ -72,7 +72,7 @@ export function ScanPage({ children }: { children?: ReactNode }) {
             </p>
             <p>
               The email records are one layer of the scan. For those alone, in more depth, use the{" "}
-              <Link href="/check">free email security check</Link>.
+              <Link href="/email-security">free email security check</Link>.
             </p>
           </div>
         </section>

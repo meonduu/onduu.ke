@@ -15,11 +15,14 @@ const PUBLISHED_ROUTES = [
   "guides/agents-on-vps",
   "guides/domains-and-dns",
   "guides/email-and-trust",
-  "domains",
+  "kedomains",
 ];
 
 // Old delivery-offer routes 301 to their strategy successors.
 const REDIRECTED = {
+  "/check": "/email-security",
+  "/domains": "/kedomains",
+  "/email-security/glossary": "/email-security",
   "/solutions": "/paths",
   "/solutions/digital-revenue-risk-review": "/readiness",
   "/solutions/website-revenue-system": "/guides/website-revenue-system",
@@ -151,7 +154,7 @@ test("the approved HOSTAFRICA destination is UTM-tagged with no affiliate parame
   assert.doesNotMatch(paths, /aff=/, "affiliate parameters are not approved");
   assert.match(paths, /Managing Director of HOSTAFRICA Kenya/, "disclosure at the decision point");
 
-  const domains = await (await fetchPath("/domains")).text();
+  const domains = await (await fetchPath("/kedomains")).text();
   assert.match(domains, /Managing Director of HOSTAFRICA Kenya/, "domain page carries the disclosure");
   assert.doesNotMatch(domains, /aff=/);
 });
@@ -170,11 +173,11 @@ test("legal pages are still marked as drafts", async () => {
   }
 });
 
-test("the homepage and /check carry canonical and Open Graph", async () => {
+test("the homepage and the email checker carry canonical and Open Graph", async () => {
   // These two shipped without canonical/OG under vinext; fixed post-migration.
   for (const { path, canonical } of [
     { path: "/", canonical: "https://onduu.ke" },
-    { path: "/check", canonical: "https://onduu.ke/check" },
+    { path: "/email-security", canonical: "https://onduu.ke/email-security" },
   ]) {
     const html = await (await fetchPath(path)).text();
     assert.match(

@@ -127,7 +127,7 @@ export const strategyPages: Record<string, PageContent> = {
             href: "https://panel.hostafrica.com/?utm_source=onduu&utm_medium=referral&utm_campaign=infrastructure-path",
             external: true,
           },
-          { label: "Search Kenyan domains first", href: "/domains" },
+          { label: "Search Kenyan domains first", href: "/kedomains" },
         ],
         note: "Destination approved by the owner on 18 August 2026 (docs/strategy/ decision log in CHANGELOG v4.1.0). Product information, ordering, billing, provisioning, renewal and support all happen at HOSTAFRICA.",
       },
@@ -316,7 +316,7 @@ export const strategyPages: Record<string, PageContent> = {
           "The pair matters too: owning yourbusiness.co.ke without yourbusiness.ke (or the reverse) leaves the twin open for anyone — including someone who wants to send email that looks like yours.",
         ],
         links: [
-          { label: "Check a domain now — registrar, lock and expiry", href: "/domains" },
+          { label: "Check a domain now — registrar, lock and expiry", href: "/kedomains" },
         ],
       },
       {
@@ -357,7 +357,7 @@ export const strategyPages: Record<string, PageContent> = {
         body: [
           "Over one hundred Kenyan parastatal chief executives were put on notice over exactly these records — the full story is in Insights. A domain without them can be impersonated to its own customers, suppliers and bank; most recipients will never spot the difference.",
         ],
-        links: [{ label: "Check your records now — free, in seconds", href: "/check" }],
+        links: [{ label: "Check your records now — free, in seconds", href: "/email-security" }],
       },
       {
         eyebrow: "THE HONEST LIMITS",
@@ -382,7 +382,7 @@ export const strategyPages: Record<string, PageContent> = {
     sections: [
       {
         eyebrow: "01 / EMAIL SECURITY CHECK",
-        title: "/check — published DNS records only.",
+        title: "/email-security — published DNS records only.",
         body: [
           "Reads a domain's public SPF, DKIM (common selectors only), DMARC and MX records through Cloudflare's public DNS resolver, and explains them in plain language. The domain checked and the result are not stored.",
         ],
@@ -394,7 +394,7 @@ export const strategyPages: Record<string, PageContent> = {
       },
       {
         eyebrow: "02 / DOMAIN SEARCH",
-        title: "/domains — public availability signals, confirmed at checkout.",
+        title: "/kedomains — public availability signals, confirmed at checkout.",
         body: [
           "Checks the .co.ke and .ke pair using public DNS and registry (RDAP) records. Taken domains show their registrar, transfer-lock status and expiry where the registry publishes them; some registries publish little or nothing. Nothing searched is stored.",
         ],

@@ -6,14 +6,16 @@ import { clearStaleCookies } from "../worker/stale-cookies";
 import { withSecurityHeaders } from "../worker/security-headers";
 import { recordPageView, shouldRecord } from "../worker/pageviews";
 
-// v8.8 URLs that the migrated articles still link to, and that search
-// engines have indexed. /email-security was the checker, so /check is its
-// direct successor. The /solutions and /infrastructure trees were removed
-// by the 18 August 2026 strategy (docs/strategy/): delivery offers became
-// guides and paths, so each old route 301s to its successor.
+// Route history, each old URL 301ing to its successor: the checker began
+// life at /email-security (v8.8), moved to /check in the rebuild, and moved
+// back to /email-security on 18 Aug 2026 (owner rename, with /domains →
+// /kedomains). The /solutions and /infrastructure trees were removed by the
+// 18 August 2026 strategy (docs/strategy/): delivery offers became guides
+// and paths.
 const REDIRECTS: Record<string, string> = {
-  "/email-security": "/check",
-  "/email-security/glossary": "/check",
+  "/email-security/glossary": "/email-security",
+  "/check": "/email-security",
+  "/domains": "/kedomains",
   "/solutions": "/paths",
   "/solutions/digital-revenue-risk-review": "/readiness",
   "/solutions/website-revenue-system": "/guides/website-revenue-system",

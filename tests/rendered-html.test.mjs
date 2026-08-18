@@ -82,7 +82,7 @@ test("external article links are safely attributed", async () => {
 });
 
 test("the checker page renders with its limits stated", async () => {
-  const response = await render("/check");
+  const response = await render("/email-security");
   assert.equal(response.status, 200);
 
   const html = await response.text();

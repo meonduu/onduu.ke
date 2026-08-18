@@ -71,7 +71,7 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
             </p>
             <p>
               Already own the domain? The next question is whether its records protect you —{" "}
-              <Link href="/check">run the free email security check</Link>.
+              <Link href="/email-security">run the free email security check</Link>.
             </p>
           </div>
         </section>

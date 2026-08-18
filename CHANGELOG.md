@@ -1,6 +1,23 @@
 # Changelog
 
-CURRENT VERSION: v4.6.2 — 1858hrs:18th August2026
+CURRENT VERSION: v4.7.0 — 1916hrs:18th August2026
+
+## v4.7.0 — 1916hrs:18th August2026
+
+Tool routes renamed (owner spec): `/domains` → `/kedomains` and `/check`
+→ `/email-security` (the checker returns to its original v8.8 address).
+
+- Old URLs 301 to the new ones; `/email-security/glossary` now lands on
+  the checker itself. No redirect loops — the old /email-security→/check
+  rule is retired since /email-security is a real page again.
+- Canonicals, sitemap, footer, homepage, cross-links between the tools,
+  the tool-limitations page and the privacy notice all updated; the API
+  endpoints (`/api/check`, `/api/domains`) are unchanged, so nothing
+  bookmarked at the API level breaks.
+- Tests updated: published routes, redirect map (including the flipped
+  glossary rule), canonical checks. 129/129.
+
+## v4.6.2 — 1858hrs:18th August2026
 
 ## v4.6.2 — 1858hrs:18th August2026
 
