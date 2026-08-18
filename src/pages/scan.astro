@@ -1,0 +1,22 @@
+---
+// Visitor-facing page for the Instant Public Readiness Scan.
+//
+// The page renders for everyone, but the ScanForm submits to POST /api/scan,
+// which returns 404 until SCAN_ENABLED="true" in the Worker (spec §7a). Until
+// launch the form is reachable only by direct URL — it is not yet linked from
+// navigation, and this route is left out of the sitemap deliberately.
+import Layout from "../layouts/Layout.astro";
+import { ScanPage } from "../components/scan-page";
+import { ScanForm } from "../components/scan-form";
+import { TURNSTILE_SITE_KEY } from "../data/route-policy";
+---
+
+<Layout
+  title="Instant Public Readiness Scan | Onduu"
+  description="Scan a domain for the digital readiness signals anyone can observe publicly — registry, DNS, email and homepage — as a Public Signal Score with an honest evidence-coverage figure. Not a security or compliance test."
+  canonical="https://onduu.ke/scan"
+>
+  <ScanPage>
+    <ScanForm client:load siteKey={TURNSTILE_SITE_KEY} />
+  </ScanPage>
+</Layout>

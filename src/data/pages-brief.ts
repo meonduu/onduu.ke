@@ -400,13 +400,14 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "04 / THE DOMAIN CHECKER",
-        "title": "The email security checker stores nothing.",
+        "eyebrow": "04 / THE DOMAIN TOOLS",
+        "title": "What the domain tools read, and what they keep.",
         "body": [
-          "When you check a domain at /check, the domain name is sent to Cloudflare's public DNS resolver so its published SPF, DKIM, DMARC and MX records can be read. Those records are already public: anyone can look them up.",
-          "The result is generated and returned to you. The domain you checked and the result are not written to any database by this site, and no account or email address is required to use it."
+          "The email security checker at /check sends the domain name to Cloudflare's public DNS resolver so its published SPF, DKIM, DMARC and MX records can be read. Those records are already public. The result is generated and returned to you; the domain and the result are not written to any database, and no account or email address is required.",
+          "The Instant Public Readiness Scan at /scan reads more public information about a domain — its registry record, DNS, published email records, and the homepage, robots.txt and sitemap that any visitor can request — and returns a Public Signal Score. Unlike the checker, a scan result is stored: the domain scanned, the public observations behind each signal, the score and a reference number. This is what lets a repeat scan of the same domain return the recent result for a day rather than re-reading someone else's site, and it is what a score is recomputed from if a result is ever questioned.",
+          "A scan result is about a domain, not about you. No name, email address or account is required or attached to it. The domain you enter need not be your own, because everything the scan reads is already public. To limit abuse, the scan uses the same one-way hashed connection address as the forms, held only for a short hourly counter and never stored with the result."
         ],
-        "note": "A result from the checker describes published DNS records. It is not proof that a domain, a mailbox or a business is secure."
+        "note": "The basis for storing scan results is a legitimate interest in operating the tool, caching results so it does not repeatedly fetch third-party sites, and being able to reproduce a score. A Public Signal Score describes public observations at a moment in time; it is not a Digital Readiness Score, and not proof that a domain, a mailbox or a business is secure. TO CONFIRM: the retention period for stored scan results, and whether a domain owner's request to delete or exclude a result should be handled the same way as a data request below."
       },
       {
         "eyebrow": "05 / COOKIES AND ANALYTICS",
@@ -425,7 +426,7 @@ export const briefPages: Record<string, PageContent> = {
         "cards": [
           {
             "title": "Cloudflare",
-            "body": "Hosts this website, stores form submissions in its database service, provides the spam check, resolves the DNS lookups used by the checker, and provides the cookieless Web Analytics described above."
+            "body": "Hosts this website, stores form submissions and stored scan results in its database service, provides the spam check, resolves the DNS lookups used by the domain tools, and provides the cookieless Web Analytics described above."
           },
           {
             "title": "ZeptoMail",

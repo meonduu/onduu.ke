@@ -170,11 +170,15 @@ Remaining:
   Readiness Score in product, copy and results (built into the scan
   response and its statement text).
 - [x] Complete SSRF, abuse and scoring-replay tests
-  (`tests/scan-{ssrf,scoring,abuse}.test.mjs`, 31 tests). **Privacy review
-  and copy review remain** (launch gates §7).
-- [ ] **Launch (owner):** apply migration `0004`, review gate results,
-  build the visitor-facing `/scan` page, set `SCAN_ENABLED=true`, approve
-  launch. The endpoint is built and dark (`src/pages/api/scan.ts`, v3.1.0).
+  (`tests/scan-{ssrf,scoring,abuse}.test.mjs`, 31 tests).
+- [x] Copy review (the `/scan` page copy, v3.2.0) and privacy review
+  (notice §04 rewritten to cover stored scan results, v3.2.0). Two owner
+  TO CONFIRM items remain in the notice: scan-result retention, and
+  domain-owner delete/exclude handling.
+- [ ] **Launch (owner):** review the privacy wording, apply migration
+  `0004` to production, set `SCAN_ENABLED=true`, link `/scan` from
+  navigation, approve. Everything else is built and dark (v3.1.0 engine,
+  v3.2.0 page).
 
 **Acceptance:** scan reports only public observations; missing private
 evidence is never scored as pass or fail; threat-model tests pass; owner

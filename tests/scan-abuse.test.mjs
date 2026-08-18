@@ -2,8 +2,12 @@
 // launch flag, rate limiting, result caching and the do-not-scan list.
 import assert from "node:assert/strict";
 import test from "node:test";
-import { fetchPath } from "./helpers/server.mjs";
+import { startWorker, fetchPath } from "./helpers/server.mjs";
 import { isBlocked } from "../worker/scan/do-not-scan.ts";
+
+// Force the launch flag off for this file's Worker, so the flag-off assertion
+// holds even if a developer's gitignored .dev.vars sets SCAN_ENABLED=true.
+await startWorker(["--var", "SCAN_ENABLED:false"]);
 import {
   scanReference,
   withinScanRateLimit,

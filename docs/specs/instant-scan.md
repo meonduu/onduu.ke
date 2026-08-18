@@ -132,12 +132,15 @@ the platform backstop.
 | Do-not-scan list | `worker/scan/do-not-scan.ts` |
 | D1 schema | `migrations/0004_scans.sql` |
 | Endpoint, flag-gated, Turnstile + rate limit | `src/pages/api/scan.ts` |
+| Visitor page + island (v3.2.0) | `src/pages/scan.astro`, `src/components/scan-page.tsx`, `scan-form.tsx` |
+| Privacy notice coverage (v3.2.0) | `src/data/pages-brief.ts` §04 |
 | Gate suites | `tests/scan-{ssrf,scoring,abuse}.test.mjs` |
 
 The flag: `POST /api/scan` returns 404 unless the `SCAN_ENABLED` Worker var
 is exactly `"true"`. Production has no such var, so the endpoint is dark
-until an owner sets it. No visitor-facing scan page (`/scan`) exists yet —
-that ships with launch, after approval.
+until an owner sets it. The `/scan` page renders for everyone but cannot
+run a scan until the flag is set; it is not linked from navigation and is
+absent from the sitemap until launch.
 
 ## 7. Launch gates (all must pass before any public exposure)
 

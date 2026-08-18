@@ -1,6 +1,56 @@
 # Changelog
 
-CURRENT VERSION: v3.1.0 — 1048hrs:18th August2026
+CURRENT VERSION: v3.2.0 — 1114hrs:18th August2026
+
+## v3.2.0 — 1114hrs:18th August2026
+
+The visitor-facing side of the Instant Public Readiness Scan, plus the
+privacy review it needs — the launch-enabling work. **Still gated:** the
+`/scan` form posts to the flag-dark `/api/scan`, so the page explains the
+product but cannot run a scan in production until the owner sets
+`SCAN_ENABLED=true`.
+
+### Added
+
+- `/scan` — the scan page. Copy reviewed against the CLAUDE.md claims
+  rules: it is a "Public Signal Score", never a Digital Readiness Score,
+  never "secure"/"compliant"/"guaranteed"; the human-reviewed Verified
+  route and the "not publicly observable" framing are stated throughout.
+  `src/components/scan-page.tsx` (static) + `src/components/scan-form.tsx`
+  (React island: domain input, Turnstile, results grouped by the six
+  dimensions with score, coverage and the not-observed list).
+- Not linked from navigation and deliberately absent from the sitemap; the
+  `/api/` disallow already covers the endpoint. It ships linked at launch.
+
+### Changed
+
+- Privacy notice (`src/data/pages-brief.ts`, section 04) rewritten from
+  "the checker stores nothing" to cover both tools honestly: the scan
+  **does** store a result (domain, public observations, score, reference)
+  and why (caching, score replay), that no visitor identity is attached,
+  and that the abuse counter reuses the same one-way hashed address as the
+  forms. The processors section notes Cloudflare now stores scan results.
+  Two TO CONFIRM items added for the owner: scan-result retention, and how
+  a domain owner's delete/exclude request is handled.
+
+### Verified
+
+- 100/100 tests, lint and type-check clean.
+- Full browser end-to-end on the Astro dev server (test Turnstile key):
+  the `/scan` form hydrated, solved Turnstile, scanned onduu.ke, and
+  rendered score 82 at 100% coverage across all 24 signals in six
+  dimensions, with the "not a Digital Readiness Score" statement. Test
+  rows deleted.
+- The flag-off gate re-tested: `/api/scan` 404s without `SCAN_ENABLED`.
+
+### Still required before launch
+
+Owner review of the privacy wording (esp. the two TO CONFIRM items), then
+the go-live steps: apply migration `0004` to production, set
+`SCAN_ENABLED=true`, link `/scan` from navigation, and approve. None are in
+this change.
+
+## v3.1.0 — 1048hrs:18th August2026
 
 ## v3.1.0 — 1048hrs:18th August2026
 
