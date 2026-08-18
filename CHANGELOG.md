@@ -30,8 +30,10 @@ product but cannot run a scan in production until the owner sets
   and why (caching, score replay), that no visitor identity is attached,
   and that the abuse counter reuses the same one-way hashed address as the
   forms. The processors section notes Cloudflare now stores scan results.
-  Two TO CONFIRM items added for the owner: scan-result retention, and how
-  a domain owner's delete/exclude request is handled.
+  Owner decisions (18 Aug 2026) recorded in the notice and on the page:
+  scan results are kept until deleted (no fixed schedule); a domain owner
+  who emails me@onduu.ke has their result deleted and the domain added to
+  the do-not-scan list.
 
 ### Verified
 

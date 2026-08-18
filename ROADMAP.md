@@ -172,9 +172,9 @@ Remaining:
 - [x] Complete SSRF, abuse and scoring-replay tests
   (`tests/scan-{ssrf,scoring,abuse}.test.mjs`, 31 tests).
 - [x] Copy review (the `/scan` page copy, v3.2.0) and privacy review
-  (notice §04 rewritten to cover stored scan results, v3.2.0). Two owner
-  TO CONFIRM items remain in the notice: scan-result retention, and
-  domain-owner delete/exclude handling.
+  (notice §04 rewritten to cover stored scan results, v3.2.0). Owner
+  decisions recorded: results kept until deleted; domain-owner opt-out via
+  email deletes the result and adds the domain to the do-not-scan list.
 - [ ] **Launch (owner):** review the privacy wording, apply migration
   `0004` to production, set `SCAN_ENABLED=true`, link `/scan` from
   navigation, approve. Everything else is built and dark (v3.1.0 engine,

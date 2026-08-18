@@ -53,7 +53,8 @@ export function ScanPage({ children }: { children?: ReactNode }) {
             <div className="note">
               A Public Signal Score is not a Digital Readiness Score, and this is not a security
               test, a compliance check or a penetration test. It cannot tell you that a domain, a
-              mailbox or a business is secure or compliant.
+              mailbox or a business is secure or compliant. If you operate a domain and do not want
+              it scanned, email me@onduu.ke and it will be removed and blocked from future scans.
             </div>
           </div>
         </section>
