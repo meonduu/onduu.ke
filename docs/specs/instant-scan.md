@@ -1,9 +1,10 @@
 # Spec — Instant Public Readiness Scan
 
-**Status: DRAFT — not approved.** ROADMAP Phase 4. Nothing in this document
-may reach production until the owner approves it and every launch gate at
-the end passes. The scanner stays out of production regardless of the state
-of the code.
+**Status: approved by the owner on 18 August 2026, with the proposed
+defaults** (decisions recorded in §8). Two approvals remain outstanding:
+the `psr-v1` rubric weights in §9, and launch itself — nothing reaches
+production until every launch gate in §7 passes and the owner approves
+launch explicitly.
 
 ## 1. What it is, and is not
 
@@ -130,14 +131,57 @@ the platform backstop.
    or failure is an automatic MUST FIX).
 6. **Owner approval** of this spec, the rubric weights, and launch itself.
 
-## 8. Open owner decisions
+## 8. Owner decisions — recorded 18 August 2026
 
-| # | Decision | Options / notes |
+| # | Decision | Outcome |
 | --- | --- | --- |
-| 1 | Result cache TTL | 24 h default proposed |
-| 2 | Turnstile before scan | proposed: yes (same widget as forms) |
-| 3 | Rubric weights for psr-v1 | table to be drafted for approval |
-| 4 | Where results live | ephemeral vs stored with reference ID |
-| 5 | DKIM selector list | reuse `/check`'s list vs extend |
-| 6 | Relationship to `/check` | keep both vs fold /check into the scan |
-| 7 | Name shown to visitors | "Instant Public Readiness Scan" vs shorter |
+| 1 | Result cache TTL | **24 hours** |
+| 2 | Turnstile before scan | **Yes** (same widget as the forms) |
+| 3 | Rubric weights for psr-v1 | Drafted in §9 — **awaiting approval** |
+| 4 | Where results live | **Stored with a reference ID** (required anyway by scoring replay, §3) |
+| 5 | DKIM selector list | **Reuse `/check`'s list** unchanged |
+| 6 | Relationship to `/check` | **Keep both**; revisit folding after the scan is live |
+| 7 | Name shown to visitors | **"Instant Public Readiness Scan"** |
+
+## 9. Rubric `psr-v1` — DRAFT, awaiting owner approval
+
+Weights sum to 100 across the full public rubric. Each observed signal
+scores pass = 1.0, needs-work = 0.5, fail = 0 of its weight.
+
+**Public Signal Score** = 100 × Σ(points × weight) / Σ(weight), over
+observed signals only. **Evidence Coverage** = Σ(weight of observed
+signals) as a percentage. Unobservable signals leave both sums.
+
+| Dimension | Signal | Weight | Pass / needs-work / fail (deterministic) |
+| --- | --- | --- | --- |
+| Control (20) | Domain expiry buffer (RDAP) | 6 | ≥60 days / 30–59 / <30 |
+| | Transfer lock visible (RDAP EPP status) | 5 | lock present / — / absent |
+| | DNSSEC (DS record) | 4 | present / — / absent |
+| | Nameserver redundancy | 5 | ≥2 NS on distinct hosts / 2 on one host / 1 NS |
+| Trust (20) | Valid HTTPS certificate | 6 | valid / expires <14 days / invalid or none |
+| | http → https redirect | 4 | redirects / — / plain-http content served |
+| | apex ↔ www coherence | 3 | one canonical, other redirects / both serve same content / split content |
+| | HSTS header | 2 | present / — / absent |
+| | Baseline security headers (XCTO, XFO or CSP) | 2 | ≥2 present / 1 / none |
+| | Title + meta description on homepage | 3 | both / one / neither |
+| Speed (10) | TTFB band (single request) | 4 | <800 ms / 800–2500 / >2500 |
+| | Compressed HTML weight | 3 | <100 KiB / 100–300 / >300 |
+| | Viewport meta present | 3 | present / — / absent |
+| Conversion (15) | Contact path on homepage (tel/mailto/contact link/form) | 8 | present / — / none found |
+| | 404 handling | 4 | proper page with 404 status / 200 for missing path / server error |
+| | Single clear h1 on homepage | 3 | exactly one / multiple / none |
+| Resilience (25) | SPF | 6 | per `/check` analyser (pass/warn/fail) |
+| | DKIM (common selectors) | 4 | observed: per analyser; **not found: unobservable, drops out** |
+| | DMARC | 8 | enforcing / p=none or partial / absent |
+| | MX | 4 | per `/check` analyser |
+| | DNS provider diversity | 3 | mail and web not on one failing provider / — / all single-provider |
+| Agent readiness (10) | robots.txt | 4 | present and parseable / present with errors / absent |
+| | sitemap.xml | 4 | present and parseable / present with errors / absent |
+| | JSON-LD structured data on homepage | 2 | present and parseable / present with errors / absent |
+
+Notes: "—" means the signal is binary (pass or fail only). DKIM is the
+worked example of rule 2 in §1: selectors cannot be enumerated from DNS,
+so an unfound key is *not observable* and neither helps nor hurts the
+score — it appears in the report as covered by the Verified assessment.
+Signals whose fetch fails (timeout, budget) are likewise unobservable,
+never failures.
