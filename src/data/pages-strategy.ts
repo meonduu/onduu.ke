@@ -153,6 +153,16 @@ export const strategyPages: Record<string, PageContent> = {
             meta: "/guides/website-revenue-system",
           },
           {
+            title: "Domains and DNS",
+            body: "Who really controls your domain — registrant, registrar account, lock, expiry and nameservers — and how to check yours today.",
+            meta: "/guides/domains-and-dns",
+          },
+          {
+            title: "Email and trust",
+            body: "What SPF, DKIM and DMARC actually decide, what a clean check proves — and what it deliberately cannot.",
+            meta: "/guides/email-and-trust",
+          },
+          {
             title: "Choosing Kenyan VPS infrastructure",
             body: "Map the workload, the data journey and the responsibilities before deciding where anything should run.",
             meta: "/guides/kenyan-vps",
@@ -170,7 +180,7 @@ export const strategyPages: Record<string, PageContent> = {
         body: [
           "Domain control, email trust, enquiry-path failures and ownership stories are covered in depth in Insights — including what SPF, DKIM and DMARC do and do not prove, and what to do when a developer disappears.",
         ],
-        note: "Further guides — domains and DNS, email and trust — are being drawn from that material. Each guide ends with one relevant next step, not a sales pitch.",
+        note: "Each guide ends with one relevant next step, not a sales pitch. The honest limits of every free tool on this site are stated in one place: the tool limitations page under Legal.",
       },
     ],
   },
@@ -275,6 +285,148 @@ export const strategyPages: Record<string, PageContent> = {
           "An incident and shutdown process that works without the agent's cooperation",
         ],
         note: "An agent does not replace accountable people, and no agent's accuracy is guaranteed. Bounded, supervised and reversible is the standard — anything less is not ready for real work.",
+      },
+    ],
+  },
+
+  "guides/domains-and-dns": {
+    eyebrow: "GUIDES / CONTROL",
+    title: "Who really controls your domain and DNS?",
+    intro:
+      "The domain is the one asset everything else hangs off — the website, the email, the brand. Yet in many Kenyan businesses nobody can answer who owns it, where it renews or who can move it. This guide is the set of checks that make the answer definite.",
+    cta: "Check Your Digital Readiness",
+    ctaHref: "/readiness",
+    sections: [
+      {
+        eyebrow: "THE CONTROL QUESTIONS",
+        title: "Five facts every business owner should be able to state.",
+        items: [
+          "Who is the registrant — the business, or a developer, freelancer or agency?",
+          "Who holds the registrar account login, and does the business have its own access?",
+          "Is the transfer lock on, so the domain cannot be moved without deliberate steps?",
+          "When does it expire, who receives the renewal notices, and who pays?",
+          "Who can change the nameservers — because whoever controls DNS controls where the website and email actually go?",
+        ],
+      },
+      {
+        eyebrow: "THE COMMON FAILURE",
+        title: "Registered by someone else, renewed by nobody.",
+        body: [
+          "The recurring Kenyan pattern, covered at length in Insights: a domain registered in a helper's personal account, renewal notices going to an inbox nobody reads, and the business discovering the problem the day the website goes dark or the helper disappears. Recovering a lapsed or hostage domain is slow, sometimes expensive, and sometimes impossible.",
+          "The pair matters too: owning yourbusiness.co.ke without yourbusiness.ke (or the reverse) leaves the twin open for anyone — including someone who wants to send email that looks like yours.",
+        ],
+        links: [
+          { label: "Check a domain now — registrar, lock and expiry", href: "/domains" },
+        ],
+      },
+      {
+        eyebrow: "PUTTING IT RIGHT",
+        title: "The order of repair.",
+        steps: [
+          { title: "Establish", body: "Look up the registrar, lock status and expiry for your domain and its .co.ke/.ke twin. Public records answer this in seconds." },
+          { title: "Repatriate", body: "Get the registrar account (not just the domain) under a business-controlled login with a business-owned email address." },
+          { title: "Lock and diarise", body: "Turn the transfer lock on and put the renewal date, with a 60-day buffer, where the business will actually see it." },
+          { title: "Document", body: "Record who controls DNS, what each record does, and what would need to change in a provider exit — before the exit happens." },
+        ],
+        note: "This guide describes public checks and account hygiene. It is not legal advice on domain disputes, and no check here proves a domain cannot be lost — it reduces the ways it can be.",
+      },
+    ],
+  },
+
+  "guides/email-and-trust": {
+    eyebrow: "GUIDES / TRUST",
+    title: "What email-security checks can and cannot prove.",
+    intro:
+      "SPF, DKIM and DMARC decide one narrow, important thing: whether a stranger can send email that claims to be from your domain — and whether the world's mail servers have been told to refuse it. This guide explains what each record does, and is honest about the limits.",
+    cta: "Check Your Digital Readiness",
+    ctaHref: "/readiness",
+    sections: [
+      {
+        eyebrow: "THE RECORDS",
+        title: "Four public records, one decision.",
+        cards: [
+          { title: "SPF", body: "Lists the servers allowed to send mail as your domain. Ending in -all tells receivers to distrust everything else." },
+          { title: "DKIM", body: "Signs your outgoing mail so tampering and forgery are detectable by the receiver." },
+          { title: "DMARC", body: "Tells receiving servers what to do with mail that fails the checks — and p=reject is the setting that actually refuses forgeries." },
+          { title: "MX", body: "Says where your incoming mail is delivered, and reveals which provider runs it." },
+        ],
+      },
+      {
+        eyebrow: "WHY IT MATTERS HERE",
+        title: "This is a live Kenyan problem, not a theoretical one.",
+        body: [
+          "Over one hundred Kenyan parastatal chief executives were put on notice over exactly these records — the full story is in Insights. A domain without them can be impersonated to its own customers, suppliers and bank; most recipients will never spot the difference.",
+        ],
+        links: [{ label: "Check your records now — free, in seconds", href: "/check" }],
+      },
+      {
+        eyebrow: "THE HONEST LIMITS",
+        title: "What a clean result does not prove.",
+        items: [
+          "It does not prove your mailboxes are secure — passwords, sessions and staff phishing are untouched by these records",
+          "It does not prove mail is delivered, read or answered",
+          "It does not prove the business is secure or compliant in any general sense",
+          "It is not a penetration test, an audit or a certificate",
+        ],
+        note: "Published DNS records are the defence the world can see. The rest — mailbox access, recovery, staff practice — is exactly what the human-reviewed readiness assessment examines.",
+      },
+    ],
+  },
+
+  "legal/tool-limitations": {
+    eyebrow: "ONDUU / LEGAL",
+    title: "Tool limitations.",
+    intro:
+      "What each free tool on this site reads, what it stores, and — most importantly — what its results do and do not prove. If a statement here ever conflicts with a marketing sentence elsewhere, this page wins.",
+    gate: "Draft for professional review, maintained against the code that runs the tools.",
+    sections: [
+      {
+        eyebrow: "01 / EMAIL SECURITY CHECK",
+        title: "/check — published DNS records only.",
+        body: [
+          "Reads a domain's public SPF, DKIM (common selectors only), DMARC and MX records through Cloudflare's public DNS resolver, and explains them in plain language. The domain checked and the result are not stored.",
+        ],
+        items: [
+          "A clean result means the published records are correct — not that the domain, mailboxes or business are secure",
+          "DKIM selectors cannot be listed from outside: a key not found at common selectors is reported as not found, not as missing",
+          "Not a penetration test, a deliverability guarantee or a compliance certificate",
+        ],
+      },
+      {
+        eyebrow: "02 / DOMAIN SEARCH",
+        title: "/domains — public availability signals, confirmed at checkout.",
+        body: [
+          "Checks the .co.ke and .ke pair using public DNS and registry (RDAP) records. Taken domains show their registrar, transfer-lock status and expiry where the registry publishes them; some registries publish little or nothing. Nothing searched is stored.",
+        ],
+        items: [
+          "“Appears available” is an observation, not a reservation — availability and price are confirmed at the registrar's checkout",
+          "Registration, billing, renewal and support happen at HOSTAFRICA, not on this site; Onduu earns no commission and the outbound link carries attribution tags only",
+          "Registry data can lag or be incomplete; the registry's own answer is authoritative",
+        ],
+      },
+      {
+        eyebrow: "03 / READINESS SCAN",
+        title: "/scan — a Public Signal Score, never a verdict.",
+        body: [
+          "Reads only public information about a domain: registry record, DNS, published email records, and the homepage, robots.txt and sitemap any visitor can request. Results are stored (domain, observations, score, reference) so repeat scans within 24 hours serve the cached result and any score can be reproduced; no visitor identity is attached.",
+        ],
+        items: [
+          "The Public Signal Score covers only what is publicly observable; Evidence Coverage says how much that is",
+          "Anything not observable from outside is excluded from the score — it never counts as a pass or a failure",
+          "It is not a Digital Readiness Score, a penetration test, a legal opinion or a compliance certificate",
+          "A domain owner who does not want their domain scanned can email me@onduu.ke: stored results are deleted and the domain is blocked from future scans",
+        ],
+      },
+      {
+        eyebrow: "04 / ALL TOOLS",
+        title: "Shared boundaries.",
+        items: [
+          "No tool on this site promises guaranteed security, compliance, rankings, leads, revenue, uptime, recovery or agent accuracy",
+          "All tools are rate-limited and read public information only — no logins, no credentials, nothing private is touched",
+          "Results describe a moment in time; records change, and a result is not monitoring",
+          "What each tool stores is described in the privacy notice, which governs where this page is silent",
+        ],
+        links: [{ label: "Read the privacy notice", href: "/legal/privacy" }],
       },
     ],
   },

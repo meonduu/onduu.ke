@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v4.2.1 — 1557hrs:18th August2026
+CURRENT VERSION: v4.3.0 — 1609hrs:18th August2026
+
+## v4.3.0 — 1609hrs:18th August2026
+
+Completing the tools story: the tool-limitations page, the two promised
+guides, and dashboard visibility for what the tools produce.
+
+### Added
+
+- **`/legal/tool-limitations`** — the honest limits of all three tools in
+  one place (what each reads, what it stores, what results do and do not
+  prove, the scan opt-out route), marked as a draft for professional
+  review like the other legal pages, linked from the footer. Where a
+  marketing sentence conflicts with it, this page wins — by its own words.
+- **`/guides/domains-and-dns`** — "Who really controls your domain and
+  DNS?": the five control questions, the registered-by-someone-else
+  failure pattern from the Insights archive, and an order of repair;
+  routes to the domain search.
+- **`/guides/email-and-trust`** — what SPF, DKIM, DMARC and MX decide,
+  why it is a live Kenyan problem, and the honest limits of a clean
+  result; routes to /check. The guides index now lists all five guides
+  the strategy's sitemap named.
+- **Dashboard (/go):** two new stat cards (readiness scans all-time/30d),
+  a routed-clicks table (the strategy's "approved HOSTAFRICA-path clicks"
+  measure, from the /outbound/* counts), and a recent-scans table
+  (reference, domain, score, coverage, rubric). Queries degrade to zeros
+  on a database that predates migrations 0004–0005 rather than breaking
+  the page.
+
+### Verified
+
+- 121/121 tests (new: tool-limitations content pinned — "not a
+  penetration test", "not a reservation", scan rule 2, the opt-out
+  address; the two guides join the published-architecture suite).
+- Dashboard sections verified locally with a simulated Access identity;
+  new pages 200 and in the sitemap.
+
+## v4.2.1 — 1557hrs:18th August2026
 
 ## v4.2.1 — 1557hrs:18th August2026
 

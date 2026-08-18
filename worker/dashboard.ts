@@ -85,8 +85,52 @@ function table(headers: string[], rows: string[][], emptyNote: string): string {
     .join("")}</tbody></table>`;
 }
 
+/** The scan/outbound tables arrived in migrations 0004–0005; a dev database
+ * that predates them should degrade to zeros, not break the dashboard. */
+async function tryAll<T>(q: Promise<T>, fallback: T): Promise<T> {
+  try {
+    return await q;
+  } catch {
+    return fallback;
+  }
+}
+
 async function dashboard(env: Env, identity: string): Promise<Response> {
   const db = env.onduu_leads!;
+
+  const [scans, scanCounts, outbound] = await Promise.all([
+    tryAll(
+      db
+        .prepare(
+          `SELECT reference, domain, score, coverage, rubric_version, created_at
+           FROM scans ORDER BY created_at DESC LIMIT 25`
+        )
+        .all(),
+      { results: [] } as unknown as D1Result<Record<string, unknown>>
+    ),
+    tryAll(
+      db
+        .prepare(
+          `SELECT
+             (SELECT COUNT(*) FROM scans) AS scansAll,
+             (SELECT COUNT(*) FROM scans WHERE created_at >= datetime('now','-30 days')) AS scans30,
+             (SELECT COUNT(*) FROM scan_blocklist) AS blocked`
+        )
+        .first<{ scansAll: number; scans30: number; blocked: number }>(),
+      { scansAll: 0, scans30: 0, blocked: 0 }
+    ),
+    tryAll(
+      db
+        .prepare(
+          `SELECT path, COUNT(*) AS n,
+                  SUM(CASE WHEN viewed_at >= datetime('now','-30 days') THEN 1 ELSE 0 END) AS n30
+           FROM page_views WHERE path LIKE '/outbound/%'
+           GROUP BY path ORDER BY n DESC`
+        )
+        .all(),
+      { results: [] } as unknown as D1Result<Record<string, unknown>>
+    ),
+  ]);
 
   const [enquiries, counts, topPages, topReferrers, sources, daily] = await Promise.all([
     db
@@ -136,19 +180,44 @@ async function dashboard(env: Env, identity: string): Promise<Response> {
   ]);
 
   const c = counts!;
+  const s = scanCounts ?? { scansAll: 0, scans30: 0, blocked: 0 };
   const rows = <T>(r: { results?: unknown[] }) => (r.results ?? []) as T[];
+  const outboundRows = rows<{ path: string; n: number; n30: number }>(outbound);
 
   return page(
     "Dashboard",
     `<h1>Onduu dashboard</h1>
-<p class="sub">Enquiries and first-party page views. Nothing here is shared with a third party.<br>Signed in via Cloudflare Access as ${escape(identity)}.</p>
+<p class="sub">Enquiries, first-party page views, readiness scans and routed clicks. Nothing here is shared with a third party.<br>Signed in via Cloudflare Access as ${escape(identity)}.</p>
 
 <div class="cards">
   <div class="card"><b>${c.enquiries}</b><span>Enquiries, all time</span></div>
   <div class="card"><b>${c.enquiries30}</b><span>Enquiries, 30 days</span></div>
   <div class="card"><b>${c.views}</b><span>Page views, all time</span></div>
   <div class="card"><b>${c.views30}</b><span>Page views, 30 days</span></div>
+  <div class="card"><b>${s.scansAll}</b><span>Readiness scans, all time</span></div>
+  <div class="card"><b>${s.scans30}</b><span>Readiness scans, 30 days</span></div>
 </div>
+
+<h2>Routed clicks (outbound paths)</h2>
+${table(
+  ["Route", "All time", "Last 30 days"],
+  outboundRows.map((r) => [escape(r.path.replace("/outbound/", "")), String(r.n), String(r.n30)]),
+  "No outbound clicks counted yet — they appear when someone follows a routed link."
+)}
+
+<h2>Readiness scans (fresh runs; cache hits are not stored)</h2>
+${table(
+  ["Reference", "Domain", "Score", "Coverage", "Rubric", "When"],
+  rows<Record<string, string>>(scans).map((r) => [
+    escape(r.reference),
+    escape(r.domain),
+    escape(r.score),
+    `${escape(r.coverage)}%`,
+    escape(r.rubric_version),
+    escape(r.created_at),
+  ]),
+  "No scans stored yet."
+)}${s.blocked > 0 ? `<p class="sub">Do-not-scan list: ${s.blocked} domain(s).</p>` : ""}
 
 <h2>Which source produced enquiries</h2>
 ${table(

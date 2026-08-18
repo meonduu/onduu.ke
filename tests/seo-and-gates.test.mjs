@@ -13,6 +13,8 @@ const PUBLISHED_ROUTES = [
   "guides/website-revenue-system",
   "guides/kenyan-vps",
   "guides/agents-on-vps",
+  "guides/domains-and-dns",
+  "guides/email-and-trust",
   "domains",
 ];
 
@@ -89,10 +91,20 @@ test("gated routes stay reachable but noindex, and carry no delivery promise in 
 
 test("the legal routes in the footer exclude the gated managed-service terms", async () => {
   const home = await (await fetchPath("/")).text();
-  for (const route of ["legal/commercial-relationships", "legal/privacy", "legal/assessment-terms"]) {
+  for (const route of ["legal/commercial-relationships", "legal/privacy", "legal/assessment-terms", "legal/tool-limitations"]) {
     assert.match(home, new RegExp(`href="/${route}"`), `footer missing ${route}`);
   }
   assert.doesNotMatch(home, /href="\/legal\/managed-service-terms"/, "gated terms must not be linked");
+});
+
+test("tool limitations page states the honest limits of all three tools", async () => {
+  const res = await fetchPath("/legal/tool-limitations");
+  assert.equal(res.status, 200);
+  const html = await res.text();
+  assert.match(html, /not a penetration test/i);
+  assert.match(html, /not a reservation/i, "domain availability framed honestly");
+  assert.match(html, /never counts as a pass or a failure/i, "scan rule 2 stated");
+  assert.match(html, /me@onduu\.ke/, "opt-out route published");
 });
 
 test("every page carries the browser security headers, with a short-start HSTS", async () => {
