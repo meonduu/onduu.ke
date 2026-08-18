@@ -108,28 +108,52 @@ export async function isDomainBlocklisted(db: D1Database, domain: string): Promi
 }
 
 /**
- * The owner opt-out action: record the domain in the blocklist and delete any
- * stored result for it (and its subdomains). Idempotent. Returns how many
- * stored results were removed.
+ * The owner opt-out action: record the domain in the blocklist and delete
+ * everything stored about it — scan results AND lookup-tool results (email
+ * checker and domain search, migration 0006) — for the domain and its
+ * subdomains. Idempotent.
+ *
+ * The blocklist then does double duty: it refuses future scans outright, and
+ * stops future lookups being recorded (worker/tool-log.ts). The lookups
+ * themselves keep working, because they read only the public DNS and registry
+ * records any WHOIS tool can read; what the owner opted out of is Onduu
+ * keeping a record.
  */
 export async function optOutDomain(
   db: D1Database,
   domain: string,
   note: string | null = null,
   now = new Date(),
-): Promise<{ deleted: number }> {
+): Promise<{ deleted: number; checksDeleted: number }> {
+  const bare = domain.toLowerCase();
   await db
     .prepare(
       "INSERT INTO scan_blocklist (domain, created_at, note) VALUES (?, ?, ?)" +
         " ON CONFLICT(domain) DO UPDATE SET created_at = excluded.created_at, note = excluded.note",
     )
-    .bind(domain.toLowerCase(), now.toISOString(), note)
+    .bind(bare, now.toISOString(), note)
     .run();
-  const res = await db
+
+  const scansRes = await db
     .prepare("DELETE FROM scans WHERE domain = ? OR domain LIKE ?")
-    .bind(domain.toLowerCase(), `%.${domain.toLowerCase()}`)
+    .bind(bare, `%.${bare}`)
     .run();
-  return { deleted: res.meta?.changes ?? 0 };
+
+  // Lookup rows are keyed by what the visitor typed, which may be a bare
+  // name ("zero") whose results included the domain — so the stored detail
+  // is matched too.
+  let checksDeleted = 0;
+  try {
+    const checksRes = await db
+      .prepare("DELETE FROM tool_checks WHERE query = ? OR query LIKE ? OR detail LIKE ?")
+      .bind(bare, `%.${bare}`, `%"${bare}"%`)
+      .run();
+    checksDeleted = checksRes.meta?.changes ?? 0;
+  } catch {
+    /* tool_checks arrived in migration 0006; absent on an older database */
+  }
+
+  return { deleted: scansRes.meta?.changes ?? 0, checksDeleted };
 }
 
 /** Same sliding-window shape as submissions' withinRateLimit. */

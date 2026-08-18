@@ -1,6 +1,34 @@
 # Changelog
 
-CURRENT VERSION: v4.9.0 — 2014hrs:18th August2026
+CURRENT VERSION: v4.9.1 — 2026hrs:18th August2026
+
+## v4.9.1 — 2026hrs:18th August2026
+
+The deletion route now covers everything stored about a domain, not just
+scan results (owner request, closing the gap opened by v4.9.0).
+
+- `optOutDomain()` deletes stored **lookup results as well as scans** —
+  matching the domain, its subdomains, and bare-name searches whose
+  stored detail named it (so a search for "zero" that returned
+  `zero.co.ke` is removed too). It returns both counts.
+- The blocklist now does double duty: it refuses future **scans**
+  outright, and stops future **lookups being recorded**. The lookups
+  themselves keep working — they read only the public DNS and registry
+  records any WHOIS tool can read, so blocking them would be theatre;
+  what the owner opted out of is Onduu keeping a record.
+- Privacy notice and the tool-limitations page now state this: one email
+  to me@onduu.ke deletes every stored record of a domain, blocks future
+  scans, and stops future lookups being recorded.
+- The runbook's opt-out command covers `tool_checks`.
+
+### Verified end to end against real D1
+
+Check a domain → one row stored. Opt out → row deleted. Check it again →
+still answers, but no row. Unrelated domain → still recorded. Two new
+unit tests pin both halves (deletion across tools, and no-record-after
+opt-out). 132/132 tests.
+
+## v4.9.0 — 2014hrs:18th August2026
 
 ## v4.9.0 — 2014hrs:18th August2026
 

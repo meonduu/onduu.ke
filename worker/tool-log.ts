@@ -11,6 +11,8 @@
  * failure here must never break a visitor's lookup.
  */
 
+import { isDomainBlocklisted } from "./scan/store.ts";
+
 export type ToolName = "email-security" | "kedomains";
 
 export interface ToolCheck {
@@ -18,10 +20,22 @@ export interface ToolCheck {
   query: string;
   summary: string;
   detail?: unknown;
+  /** Domains this check concerned; any one opted out means nothing is kept. */
+  domains?: string[];
 }
 
 export async function logToolCheck(db: D1Database | undefined, check: ToolCheck): Promise<void> {
   if (!db) return;
+  try {
+    // A domain owner who opted out is not recorded again. The lookup itself
+    // still worked — only the record is withheld (worker/scan/store.ts).
+    const subjects = check.domains?.length ? check.domains : [check.query];
+    for (const subject of subjects) {
+      if (subject.includes(".") && (await isDomainBlocklisted(db, subject))) return;
+    }
+  } catch {
+    /* blocklist unreadable: fall through and log, as before */
+  }
   try {
     await db
       .prepare(
@@ -61,6 +75,7 @@ export function summariseEmailCheck(body: EmailCheckBody): ToolCheck | null {
   return {
     tool: "email-security",
     query: body.domain,
+    domains: [body.domain],
     summary: `${body.score ?? "-"}/100 ${body.grade ?? ""}`.trim() + (statuses ? ` — ${statuses}` : ""),
     detail: {
       score: body.score,
@@ -86,6 +101,9 @@ export function summariseDomainSearch(body: DomainSearchBody): ToolCheck | null 
   return {
     tool: "kedomains",
     query: body.query,
+    // The typed query may be a bare name; the blocklist is checked against
+    // the domains the search actually concerned.
+    domains: body.results.map((r) => r.domain),
     summary: body.results.map((r) => `${r.domain}: ${r.status}`).join(" · "),
     detail: body.results.map((r) => ({
       domain: r.domain,

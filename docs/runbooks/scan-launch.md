@@ -80,15 +80,18 @@ that is when the scan becomes publicly discoverable.
 
 ## Domain-owner opt-out
 
-When an owner emails me@onduu.ke asking not to be scanned, record the block and
-delete any stored result in one command:
+When an owner emails me@onduu.ke asking to be left alone, record the block and
+delete every stored record of the domain — scan results and lookup-tool
+results — in one command:
 
 ```
-npx wrangler d1 execute onduu_leads --remote --command "INSERT INTO scan_blocklist (domain, created_at, note) VALUES ('example.co.ke', datetime('now'), 'owner request'); DELETE FROM scans WHERE domain='example.co.ke' OR domain LIKE '%.example.co.ke';"
+npx wrangler d1 execute onduu_leads --remote --command "INSERT INTO scan_blocklist (domain, created_at, note) VALUES ('example.co.ke', datetime('now'), 'owner request'); DELETE FROM scans WHERE domain='example.co.ke' OR domain LIKE '%.example.co.ke'; DELETE FROM tool_checks WHERE query='example.co.ke' OR query LIKE '%.example.co.ke' OR detail LIKE '%\"example.co.ke\"%';"
 ```
 
-A block covers the domain and all its subdomains, and is checked before any
-network request.
+A block covers the domain and all its subdomains. It is checked before any
+scan request, and before any lookup result is recorded — so after opting out,
+the email checker and domain search still work for that domain (they read only
+public records) but nothing about it is kept.
 
 ## Rollback (instant)
 

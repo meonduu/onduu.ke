@@ -19,6 +19,7 @@ import {
   CACHE_TTL_MS,
 } from "../worker/scan/store.ts";
 import { runScan } from "../worker/scan/scan.ts";
+import { logToolCheck } from "../worker/tool-log.ts";
 
 /* ── the launch gate itself, through the real built Worker ── */
 
@@ -40,10 +41,12 @@ function fakeDb() {
   const throttle = new Map();
   const scans = [];
   const blocklist = new Map();
+  const checks = [];
   return {
     scans,
     throttle,
     blocklist,
+    checks,
     prepare(sql) {
       return {
         bind(...args) {
@@ -71,6 +74,21 @@ function fakeDb() {
               } else if (sql.startsWith("INSERT INTO scan_blocklist")) {
                 blocklist.set(args[0], { created_at: args[1], note: args[2] });
                 return { meta: { changes: 1 } };
+              } else if (sql.startsWith("INSERT INTO tool_checks")) {
+                checks.push({ tool: args[0], query: args[1], summary: args[2], detail: args[3] });
+                return { meta: { changes: 1 } };
+              } else if (sql.startsWith("DELETE FROM tool_checks")) {
+                const [exact, likePattern, detailPattern] = args;
+                const suffix = likePattern.replace(/^%/, "");
+                const needle = detailPattern.replace(/^%/, "").replace(/%$/, "");
+                const before = checks.length;
+                for (let i = checks.length - 1; i >= 0; i--) {
+                  const c = checks[i];
+                  if (c.query === exact || c.query.endsWith(suffix) || (c.detail ?? "").includes(needle)) {
+                    checks.splice(i, 1);
+                  }
+                }
+                return { meta: { changes: before - checks.length } };
               } else if (sql.startsWith("DELETE FROM scans")) {
                 const [exact, likePattern] = args;
                 const suffix = likePattern.replace(/^%/, "");
@@ -238,4 +256,52 @@ test("scan references are dated, well-formed and distinguishable from enquiries"
   const seen = new Set();
   for (let i = 0; i < 500; i++) seen.add(scanReference());
   assert.ok(seen.size > 450, "references are mostly unique");
+});
+
+/* ── opt-out covers everything stored about a domain ── */
+
+test("opt-out deletes stored lookup results as well as scans", async () => {
+  const db = fakeDb();
+  const now = new Date().toISOString();
+  await saveScan(db, {
+    reference: "SC-260818-DEL1",
+    domain: "leaveme.co.ke",
+    rubricVersion: "psr-v1",
+    observations: { domain: "leaveme.co.ke", scannedAt: now },
+    signals: [],
+    score: 60,
+    coverage: 70,
+    createdAt: now,
+  });
+  // A direct check of the domain, and a bare-name search that returned it.
+  await logToolCheck(db, { tool: "email-security", query: "leaveme.co.ke", summary: "50/100 C" });
+  await logToolCheck(db, {
+    tool: "kedomains",
+    query: "leaveme",
+    summary: "leaveme.co.ke: registered",
+    detail: [{ domain: "leaveme.co.ke", status: "registered" }],
+  });
+  await logToolCheck(db, { tool: "email-security", query: "unrelated.co.ke", summary: "90/100 A" });
+
+  const { deleted, checksDeleted } = await optOutDomain(db, "leaveme.co.ke", "owner request");
+  assert.equal(deleted, 1, "the scan result is deleted");
+  assert.equal(checksDeleted, 2, "both the direct check and the bare-name search are deleted");
+  assert.equal(db.checks.length, 1, "other domains' checks are untouched");
+  assert.equal(db.checks[0].query, "unrelated.co.ke");
+});
+
+test("after opt-out, further lookups of that domain are not recorded", async () => {
+  const db = fakeDb();
+  await optOutDomain(db, "quiet.co.ke");
+  await logToolCheck(db, { tool: "email-security", query: "quiet.co.ke", summary: "70/100 B" });
+  await logToolCheck(db, {
+    tool: "kedomains",
+    query: "quiet",
+    summary: "quiet.co.ke: registered",
+    domains: ["quiet.co.ke", "quiet.ke"],
+  });
+  assert.equal(db.checks.length, 0, "nothing about an opted-out domain is kept");
+
+  await logToolCheck(db, { tool: "email-security", query: "other.co.ke", summary: "80/100 B" });
+  assert.equal(db.checks.length, 1, "unrelated domains are still recorded");
 });
