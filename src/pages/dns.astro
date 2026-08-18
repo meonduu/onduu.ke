@@ -1,0 +1,25 @@
+---
+// Visitor-facing page for the DNS Health Check (spec: docs/specs/dns-check.md).
+//
+// Launch-gated like the scan was: until the DNS_CHECK_ENABLED secret is set
+// to "true" in production, this page and /api/dns both return 404, so the
+// tool cannot appear half-configured. Deleting the secret is the kill switch.
+import Layout from "../layouts/Layout.astro";
+import { env } from "cloudflare:workers";
+import { DnsPage } from "../components/dns-page";
+import { DnsForm } from "../components/dns-form";
+
+if ((env as unknown as { DNS_CHECK_ENABLED?: string }).DNS_CHECK_ENABLED !== "true") {
+  return new Response("Not found", { status: 404 });
+}
+---
+
+<Layout
+  title="Free DNS Check: Nameservers, Delegation, DNSSEC | Onduu"
+  description="Check your domain's DNS health in plain English: nameservers, registry delegation, apex and www resolution, mail routing and DNSSEC. Public records only, no signup."
+  canonical="https://onduu.ke/dns"
+>
+  <DnsPage>
+    <DnsForm client:load />
+  </DnsPage>
+</Layout>

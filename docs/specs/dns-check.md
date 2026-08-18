@@ -92,8 +92,12 @@ proven at current traffic in `/scan` and `/email-security`).
 - DoH via `worker/scan/net.ts` (`dohQuery`, `makeBudget`,
   `normaliseHost`, `isScannableHost`); RDAP via the client already used by
   `worker/domains.ts`; `do-not-scan` list honoured.
-- Rate limiting and logging via the existing throttle and `tool-log`
-  patterns; Turnstile on the form as on `/scan`.
+- Rate limiting via the same per-isolate token bucket as the domain search
+  (30 checks/hour per connection), logging via `tool-log`. **Build
+  decision:** no Turnstile in v1 — the fetch surface is DNS-and-RDAP only
+  and tightly budgeted, matching `/email-security` and `/kedomains`, which
+  run without it. Revisit if the endpoint is abused (the drafted spec had
+  proposed `/scan`-style Turnstile).
 - Kill switch: `DNS_CHECK_ENABLED` Worker secret, same semantics as
   `SCAN_ENABLED` (delete = instant off, survives deploys).
 

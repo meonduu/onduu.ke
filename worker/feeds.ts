@@ -18,7 +18,7 @@ const escape = (s: string) =>
     .replace(/"/g, "&quot;");
 
 function publicRoutes() {
-  const routes = ["", "insights", "email-security", "kedomains", "scan", ...Object.keys(pages)];
+  const routes = ["", "insights", "email-security", "dns", "kedomains", "scan", ...Object.keys(pages)];
   return routes.filter((r) => !GATED_ROUTES.has(r));
 }
 

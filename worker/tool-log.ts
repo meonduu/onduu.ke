@@ -13,7 +13,7 @@
 
 import { isDomainBlocklisted } from "./scan/store.ts";
 
-export type ToolName = "email-security" | "kedomains";
+export type ToolName = "email-security" | "kedomains" | "dns";
 
 export interface ToolCheck {
   tool: ToolName;
@@ -87,6 +87,26 @@ export function summariseEmailCheck(body: EmailCheckBody): ToolCheck | null {
         Object.entries(body.checks ?? {}).map(([k, v]) => [k, v?.status ?? null]),
       ),
     },
+  };
+}
+
+interface DnsCheckBody {
+  ok?: boolean;
+  domain?: string;
+  headline?: string;
+  summary?: { pass?: number; warn?: number; fail?: number; info?: number };
+  findings?: { code?: string; severity?: string }[];
+}
+
+export function summariseDnsCheck(body: DnsCheckBody): ToolCheck | null {
+  if (!body?.ok || !body.domain) return null;
+  const s = body.summary ?? {};
+  return {
+    tool: "dns",
+    query: body.domain,
+    domains: [body.domain],
+    summary: `${s.pass ?? 0} pass · ${s.warn ?? 0} advisory · ${s.fail ?? 0} attention · ${s.info ?? 0} observed`,
+    detail: (body.findings ?? []).map((f) => ({ code: f.code ?? null, severity: f.severity ?? null })),
   };
 }
 

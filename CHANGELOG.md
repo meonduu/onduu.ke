@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v4.15.4 — 2219hrs:18th August2026
+CURRENT VERSION: v4.16.0 — 2236hrs:18th August2026
+
+## v4.16.0 — 2236hrs:18th August2026
+
+The DNS Health Check is built at `/dns` (spec: `docs/specs/dns-check.md`,
+owner-approved). Launch-gated: page and `/api/dns` both 404 until the
+`DNS_CHECK_ENABLED` production secret is set to "true" — the same
+kill-switch semantics as the scan. **Not yet launched: the secret is not
+set in production.**
+
+What it does: eight deterministic findings over public DNS and registry
+records — nameserver count, registry-vs-live delegation (KeNIC/registry
+RDAP compared with DoH answers; Workers cannot query port 53, so RDAP is
+the registry side), provider diversity as an observation, SOA coherence,
+apex and www resolution, MX presence (depth routed to `/email-security`),
+and DNSSEC adoption (detection, not validation). No numeric score — counts
+only, so nothing competes with the Public Signal Score. Severity words are
+OK / ADVISORY / ATTENTION / OBSERVED; missing registry data reads
+"not observable", never pass or fail.
+
+Implementation: `worker/dns-check.ts` reusing `scan/net.ts` budgets and
+DoH, `collectRdap` extended (additively) to surface registry nameservers,
+per-isolate rate limit (30/hour, as the domain search; Turnstile decision
+recorded in spec §4), `tool-log` extended with a `dns` summariser (domain
+and outcome only, never the visitor), footer link under Learn, `/dns` in
+the sitemap, `DNS_CHECK_ENABLED=true` in `.dev.vars` for local work.
+
+Verified: 154 tests pass including 16 new rule/handler tests (delegation
+mismatch fixtures, RDAP-unavailable fallback, NXDOMAIN, rate limit); lint
+clean; production build served locally — live checks against kenic.or.ke
+(7/8 OK, delegation match via real KeNIC RDAP, DNSSEC detected) and
+onduu.ke; NXDOMAIN message, sitemap entry, footer link and the logged
+`tool='dns'` D1 row all confirmed; mobile viewport collapses cleanly.
+
+Launch steps remaining (owner): set the `DNS_CHECK_ENABLED` secret in
+production, merge, and decide whether the "three free checks" launch
+article gets a follow-up mentioning the fourth. Dashboard aggregation for
+the new tool is a small follow-up (`worker/dashboard.ts` sections).
 
 ## v4.15.4 — 2219hrs:18th August2026
 

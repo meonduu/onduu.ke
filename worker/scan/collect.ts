@@ -49,6 +49,8 @@ export interface RdapFacts {
   expiryDate?: string | null;
   eppStatuses?: string[];
   registrar?: string | null;
+  /** Registry-side delegation (ldhName of each nameserver object). */
+  nameservers?: string[];
 }
 
 export interface DnsFacts {
@@ -185,6 +187,7 @@ async function collectRdapFrom(
       status?: string[];
       events?: { eventAction?: string; eventDate?: string }[];
       entities?: { roles?: string[]; vcardArray?: unknown }[];
+      nameservers?: { ldhName?: string }[];
     };
     const expiry =
       (data.events || []).find((e) => e.eventAction === "expiration")?.eventDate ?? null;
@@ -210,6 +213,10 @@ async function collectRdapFrom(
       expiryDate: expiry,
       eppStatuses: (data.status || []).map(String).slice(0, 20),
       registrar,
+      nameservers: (data.nameservers || [])
+        .map((n) => String(n.ldhName || "").trim().toLowerCase().replace(/\.$/, ""))
+        .filter(Boolean)
+        .slice(0, 13),
     };
   } catch {
     return { fetched: false, error: "unparseable-rdap" };
