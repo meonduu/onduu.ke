@@ -1,6 +1,22 @@
 # Changelog
 
-CURRENT VERSION: v2.10.2 — 0637hrs:18th August2026
+CURRENT VERSION: v2.11.0 — 0801hrs:18th August2026
+
+## v2.11.0 — 0801hrs:18th August2026
+
+Governance files, approved by the owner after review.
+
+- `CLAUDE.md` — permanent operating manual: purpose, the Onduu/Ujiajiri/
+  HOSTAFRICA responsibility boundaries, content and claims rules, technical
+  rules and the required work loop.
+- `ROADMAP.md` — current state, the two 18 August decisions (reposition per
+  the 16 Aug two-site strategy; migrate the stack to Astro), phases 0–6 with
+  statuses and acceptance criteria, the gated list, and outstanding owner
+  decisions.
+- `REVIEW.md` — pre-merge/pre-deploy standard: outcome categories, seven
+  checklist sections, twelve automatic MUST FIX blockers.
+- No website code, dependencies, migrations, resources, DNS or deployment
+  changes in this release.
 
 ## v2.10.2 — 0637hrs:18th August2026
 
