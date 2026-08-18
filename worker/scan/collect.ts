@@ -188,12 +188,23 @@ async function collectRdapFrom(
     };
     const expiry =
       (data.events || []).find((e) => e.eventAction === "expiration")?.eventDate ?? null;
-    let registrar: string | null = null;
-    const registrarEntity = (data.entities || []).find((e) => e.roles?.includes("registrar"));
-    const vcard = registrarEntity?.vcardArray as [string, [string, unknown, string, string][]] | undefined;
-    if (Array.isArray(vcard) && Array.isArray(vcard[1])) {
-      registrar = (vcard[1].find((row) => row[0] === "fn")?.[3] as string) ?? null;
-    }
+    // The registrar's display name. gTLD servers put an fn vcard on the
+    // registrar entity itself; KeNIC's entity carries only a handle (e.g.
+    // "EAL") and nests the name inside a sub-entity (the abuse contact,
+    // fn "HOSTAFRICA EAC") — so descend before falling back to the handle.
+    const fnOf = (entity?: { vcardArray?: unknown }): string | null => {
+      const vcard = entity?.vcardArray as [string, [string, unknown, string, string][]] | undefined;
+      if (!Array.isArray(vcard) || !Array.isArray(vcard[1])) return null;
+      return (vcard[1].find((row) => row[0] === "fn")?.[3] as string) ?? null;
+    };
+    const registrarEntity = (data.entities || []).find((e) => e.roles?.includes("registrar")) as
+      | { handle?: string; vcardArray?: unknown; entities?: { vcardArray?: unknown }[] }
+      | undefined;
+    const registrar =
+      fnOf(registrarEntity) ??
+      (registrarEntity?.entities ?? []).map(fnOf).find((name) => name) ??
+      registrarEntity?.handle ??
+      null;
     return {
       fetched: true,
       expiryDate: expiry,

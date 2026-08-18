@@ -121,6 +121,29 @@ test("registrar names match their websites across published variants", () => {
   assert.equal(registrarWebsite(null), null);
 });
 
+test("KeNIC's nested registrar shape resolves the name from the abuse sub-entity", async () => {
+  // KeNIC's registrar entity has only a handle; the display name lives in a
+  // nested entity (verified against rdap.kenic.or.ke for onduu.ke).
+  const KENIC_RECORD = {
+    status: ["client transfer prohibited"],
+    events: [{ eventAction: "expiration", eventDate: "2027-08-14T08:44:08Z" }],
+    entities: [
+      {
+        roles: ["registrar"],
+        handle: "EAL",
+        entities: [
+          { roles: ["abuse"], vcardArray: ["vcard", [["fn", {}, "text", "HOSTAFRICA EAC"]]] },
+        ],
+      },
+    ],
+  };
+  const fetcher = stubNet({ dns: { "nested.ke": ["ns1.host.africa"] }, rdap: { "nested.ke": KENIC_RECORD } });
+  const result = await checkDomain("nested.ke", makeBudget(5000, 10), fetcher);
+  assert.equal(result.registrar, "HOSTAFRICA EAC");
+  assert.equal(result.registrarUrl, "https://www.hostafrica.com", "nested name still matches its website");
+  assert.equal(result.locked, true);
+});
+
 test("a domain in DNS but without RDAP is registered with unknown details", async () => {
   const fetcher = stubNet({ dns: { "quiet.ke": ["ns1.kenic.or.ke"] } });
   const result = await checkDomain("quiet.ke", makeBudget(5000, 10), fetcher);

@@ -1,6 +1,19 @@
 # Changelog
 
-CURRENT VERSION: v4.6.0 — 1847hrs:18th August2026
+CURRENT VERSION: v4.6.1 — 1853hrs:18th August2026
+
+## v4.6.1 — 1853hrs:18th August2026
+
+Registrar names now resolve for .ke domains (owner-spotted): KeNIC's RDAP
+publishes the registrar's display name inside a NESTED sub-entity (the
+abuse contact, e.g. fn "HOSTAFRICA EAC") while the registrar entity
+itself carries only a handle ("EAL"). The parser now tries the entity's
+own vcard, then descends into sub-entities, then falls back to the
+handle. Verified against rdap.kenic.or.ke for onduu.ke; fixture test pins
+the nested shape. Registrar links light up for .ke domains as a result.
+129/129.
+
+## v4.6.0 — 1847hrs:18th August2026
 
 ## v4.6.0 — 1847hrs:18th August2026
 
