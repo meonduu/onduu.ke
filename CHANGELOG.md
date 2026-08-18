@@ -1,6 +1,47 @@
 # Changelog
 
-CURRENT VERSION: v4.4.0 — 1623hrs:18th August2026
+CURRENT VERSION: v4.4.1 — 1729hrs:18th August2026
+
+## v4.4.1 — 1729hrs:18th August2026
+
+RDAP reliability and a real accuracy bug, both surfaced by the owner
+questioning the transfer-lock signal on the live scan.
+
+### What was wrong (two separate things)
+
+1. The owner's live scan (SC-260818-ZVCE) predated locking the domain AND
+   caught rdap.org failing to answer the Worker — so it honestly reported
+   the lock as "not publicly observable" and the 24-hour cache kept
+   serving that snapshot. Working as designed; the stale row is deleted.
+2. **A genuine bug found while fixing #1:** KeNIC's RDAP publishes the
+   spec-normalised spaced status form ("client transfer prohibited"),
+   while the matcher only recognised camelCase EPP
+   ("clientTransferProhibited") — so a locked .ke domain could evaluate
+   as unlocked. Affected the scan's transfer-lock signal and the domain
+   search's lock display.
+
+### Fixed
+
+- **RDAP hardened:** .ke/.co.ke domains now query KeNIC's own RDAP
+  (`rdap.kenic.or.ke`) first — the authority, observed answering
+  directly — with rdap.org as fallback and one retry per endpoint,
+  capped at three requests. Transient failures fall through; a parsed
+  record or an authoritative 404 stops the loop.
+- **Status matching normalised** (strip non-letters, lowercase) so both
+  RDAP's spaced form and EPP camelCase match, in `worker/scan/signals.ts`
+  and `worker/domains.ts`. The test fixture now uses KeNIC's spaced-only
+  form so the regression is pinned.
+- Verified with a fresh local scan of onduu.ke: transfer-lock **PASS**
+  with the registry's "client transfer prohibited, client update
+  prohibited, client delete prohibited" as evidence; 124/124 tests.
+
+### Note
+
+The production self-scan of onduu.ke will still show reduced Evidence
+Coverage (the Worker cannot fetch its own zone — spec §status), but the
+registry-side signals (lock, expiry, DNSSEC) now observe reliably there.
+
+## v4.4.0 — 1623hrs:18th August2026
 
 ## v4.4.0 — 1623hrs:18th August2026
 

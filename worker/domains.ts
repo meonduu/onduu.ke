@@ -82,7 +82,9 @@ export async function checkDomain(
       domain,
       status: "registered",
       registrar: rdap.registrar ?? null,
-      locked: (rdap.eppStatuses ?? []).some((s) => /transferprohibited/i.test(s)),
+      locked: (rdap.eppStatuses ?? []).some((s) =>
+        /transferprohibited/.test(s.toLowerCase().replace(/[^a-z]/g, "")),
+      ),
       expiryDate: rdap.expiryDate ?? null,
     };
   }

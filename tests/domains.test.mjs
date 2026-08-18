@@ -38,13 +38,16 @@ test("pasted URLs and casing normalise before candidates are built", () => {
 
 /* ── availability classification with a stubbed network ── */
 
-function stubNet({ dns = {}, rdap = {} }) {
+const RDAP_HOSTS = new Set(["rdap.org", "rdap.kenic.or.ke"]);
+
+function stubNet({ dns = {}, rdap = {}, deadRdapHosts = [] }) {
+  const dead = new Set(deadRdapHosts);
   return async (url) => {
     const u = new URL(url);
     if (u.hostname === "cloudflare-dns.com") {
       const name = u.searchParams.get("name");
       const type = u.searchParams.get("type");
-      if (name === "rdap.org") {
+      if (RDAP_HOSTS.has(name)) {
         const answers = type === "A" ? [{ name, type: 1, data: "104.16.1.1" }] : [];
         return Response.json({ Status: 0, Answer: answers });
       }
@@ -55,7 +58,8 @@ function stubNet({ dns = {}, rdap = {} }) {
         type === "NS" ? entry.map((data) => ({ name, type: 2, data })) : [];
       return Response.json({ Status: 0, Answer: answers });
     }
-    if (u.hostname === "rdap.org") {
+    if (RDAP_HOSTS.has(u.hostname)) {
+      if (dead.has(u.hostname)) throw new TypeError("fetch failed");
       const domain = decodeURIComponent(u.pathname.split("/").pop());
       const record = rdap[domain];
       if (!record)
@@ -67,7 +71,8 @@ function stubNet({ dns = {}, rdap = {} }) {
 }
 
 const RDAP_RECORD = {
-  status: ["client transfer prohibited", "clientTransferProhibited"],
+  // KeNIC publishes only the RDAP spec-normalised spaced form.
+  status: ["client transfer prohibited"],
   events: [{ eventAction: "expiration", eventDate: "2027-03-01T00:00:00Z" }],
   entities: [
     { roles: ["registrar"], vcardArray: ["vcard", [["fn", {}, "text", "HOSTAFRICA"]]] },
@@ -97,6 +102,17 @@ test("NXDOMAIN plus no RDAP record appears available, with the register link", a
   assert.equal(result.registerUrl, REGISTER_URL);
   assert.match(REGISTER_URL, /utm_source=onduu/, "attribution is UTM");
   assert.doesNotMatch(REGISTER_URL, /aff=/, "no affiliate parameter");
+});
+
+test("when KeNIC's RDAP is down, the rdap.org fallback still answers for .ke", async () => {
+  const fetcher = stubNet({
+    dns: { "taken.co.ke": ["ns1.host.africa"] },
+    rdap: { "taken.co.ke": RDAP_RECORD },
+    deadRdapHosts: ["rdap.kenic.or.ke"],
+  });
+  const result = await checkDomain("taken.co.ke", makeBudget(5000, 12), fetcher);
+  assert.equal(result.status, "registered");
+  assert.equal(result.registrar, "HOSTAFRICA", "fallback delivered the full record");
 });
 
 test("a DNS transport failure is unknown, never available", async () => {

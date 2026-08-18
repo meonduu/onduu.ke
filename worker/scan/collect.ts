@@ -132,12 +132,45 @@ function extractPageFacts(result: Awaited<ReturnType<typeof safeFetch>>): PageFa
 
 /* ── collectors ──────────────────────────────────────────────────────── */
 
+/**
+ * RDAP endpoints in preference order. For .ke domains KeNIC's own server is
+ * queried first: the rdap.org bootstrap hop answered the Worker
+ * inconsistently in production (observed 18 Aug 2026, twice), and KeNIC is
+ * the authority anyway. Other TLDs go through the rdap.org bootstrap.
+ */
+function rdapBases(domain: string): string[] {
+  return domain.endsWith(".ke")
+    ? ["https://rdap.kenic.or.ke/domain/", "https://rdap.org/domain/"]
+    : ["https://rdap.org/domain/"];
+}
+
 export async function collectRdap(
   domain: string,
   budget: Budget,
   fetcher: typeof fetch = fetch,
 ): Promise<RdapFacts> {
-  const res = await safeFetch(`https://rdap.org/domain/${encodeURIComponent(domain)}`, budget, {
+  // Two passes over the base list (i.e. one retry each), capped at three
+  // requests total so a bad day cannot eat the scan budget. A definitive
+  // answer — a parsed record, or an authoritative 404 meaning "no such
+  // registration" — stops the loop; only transient failures fall through.
+  const bases = rdapBases(domain);
+  const attempts = [...bases, ...bases].slice(0, 3);
+  let last: RdapFacts = { fetched: false, error: "rdap-unreachable" };
+  for (const base of attempts) {
+    const attempt = await collectRdapFrom(base, domain, budget, fetcher);
+    if (attempt.fetched || attempt.error === "rdap-not-found") return attempt;
+    last = attempt;
+  }
+  return last;
+}
+
+async function collectRdapFrom(
+  base: string,
+  domain: string,
+  budget: Budget,
+  fetcher: typeof fetch,
+): Promise<RdapFacts> {
+  const res = await safeFetch(`${base}${encodeURIComponent(domain)}`, budget, {
     accept: "application/rdap+json, application/json",
     maxBytes: 256 * 1024,
     fetcher,

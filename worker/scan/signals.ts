@@ -63,7 +63,12 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
   if (!obs.rdap.fetched || !obs.rdap.eppStatuses) {
     out.push(unobservable("transfer-lock", "control", "Transfer lock", "RDAP status codes were not available."));
   } else {
-    const locked = obs.rdap.eppStatuses.some((s) => /transferprohibited/i.test(s));
+    // RDAP publishes spec-normalised, space-separated statuses ("client
+    // transfer prohibited"); some servers echo EPP camelCase instead. Strip
+    // everything non-alphabetic so both forms match.
+    const locked = obs.rdap.eppStatuses.some((s) =>
+      /transferprohibited/.test(s.toLowerCase().replace(/[^a-z]/g, "")),
+    );
     out.push(
       signal(
         "transfer-lock",
