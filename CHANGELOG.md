@@ -1,6 +1,15 @@
 # Changelog
 
-CURRENT VERSION: v4.15.2 — 2200hrs:18th August2026
+CURRENT VERSION: v4.15.3 — 2204hrs:18th August2026
+
+## v4.15.3 — 2204hrs:18th August2026
+
+Completes the form-width pass: the readiness/contact request form
+(`.request-form`), previously uncapped and stretching to its full grid
+column, is now capped at the same 540px as the three tool search bars.
+Two-column field layout and the 620px mobile stack point unchanged.
+
+## v4.15.2 — 2200hrs:18th August2026
 
 ## v4.15.2 — 2200hrs:18th August2026
 
