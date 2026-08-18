@@ -1,13 +1,14 @@
 ---
-// Same metadata defaults as the homepage, matching the vinext baseline: the
-// 404 response carried the root layout's title/description and no canonical.
+// Distinct 404 metadata (the vinext build reused the homepage title — logged
+// during the migration and fixed here). Description reuses the page's own
+// approved copy; no canonical on an error response.
 import Layout from "../layouts/Layout.astro";
 import NotFound from "../components/not-found";
 ---
 
 <Layout
-  title="Website Revenue and Digital Readiness in Kenya | Onduu"
-  description="Onduu helps established Kenyan businesses find and fix website weaknesses affecting enquiries, trust, control and resilience."
+  title="Page not found | Onduu"
+  description="This page is not part of the current system. The link may be old, gated or waiting for approval. Start with the Readiness Score or return home."
 >
   <NotFound />
 </Layout>

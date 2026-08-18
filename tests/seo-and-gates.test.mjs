@@ -76,6 +76,30 @@ test("legal pages are still marked as drafts", async () => {
   }
 });
 
+test("the homepage and /check carry canonical and Open Graph", async () => {
+  // These two shipped without canonical/OG under vinext; fixed post-migration.
+  for (const { path, canonical } of [
+    { path: "/", canonical: "https://onduu.ke" },
+    { path: "/check", canonical: "https://onduu.ke/check" },
+  ]) {
+    const html = await (await fetchPath(path)).text();
+    assert.match(
+      html,
+      new RegExp(`rel="canonical" href="${canonical.replace(/\//g, "\\/")}"`),
+      `${path} should carry its canonical URL`,
+    );
+    assert.match(html, /property="og:title"/, `${path} needs Open Graph tags`);
+  }
+});
+
+test("the 404 page has its own title, not the homepage's", async () => {
+  const res = await fetchPath("/no-such-page");
+  assert.equal(res.status, 404);
+  const html = await res.text();
+  assert.match(html, /<title>Page not found \| Onduu<\/title>/);
+  assert.doesNotMatch(html, /<link rel="canonical"/, "an error response has no canonical");
+});
+
 test("public pages are indexable and carry canonical plus Open Graph", async () => {
   for (const path of ["/about", "/insights", "/insights/17-years-running-infrastructure"]) {
     const html = await (await fetchPath(path)).text();

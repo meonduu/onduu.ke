@@ -54,8 +54,9 @@ link to them in new work.
 - [x] Capture parity baseline for the migration: per-route HTML, title,
   description, canonical, Open Graph (`docs/specs/parity-baseline.json`,
   37 routes, captured from the v2.11.1 production build).
-- [ ] Record superseded-content inventory page by page (list above is the
-  summary; per-page notes go in the Phase 1 spec).
+- [x] Record superseded-content inventory page by page
+  (`docs/specs/superseded-content.md` — provisional dispositions pending the
+  strategy document).
 - [x] Correct the stale README (done on the `astro-migration` branch).
 
 **Found during the baseline/migration, deferred to their phases:**
@@ -64,23 +65,24 @@ link to them in new work.
   (the standard pages have both). Preserved for parity; fix in Phase 1.
 - The 404 page serves the homepage title. Preserved for parity; fix in
   Phase 1.
-- The pinned wrangler CLI (4.92.0) cannot read local dev state written by
-  the Astro adapter's newer workerd. Upgrade wrangler as a maintenance task.
+- ~~The pinned wrangler CLI (4.92.0) cannot read local dev state written by
+  the Astro adapter's newer workerd.~~ Upgraded to 4.123.0 (with
+  workers-types 5.x) in v3.0.1; verified against the dev state and the full
+  test suite.
 - Astro's cross-origin POST protection (`security.checkOrigin`) is disabled
   for behaviour parity; consider enabling it as a hardening change later.
 
 **Acceptance:** baseline snapshots exist in the repo or scratch archive;
 `git status` clean; rollback steps written down.
 
-## Phase 0.5 — Migrate to Astro — `ready for review`
+## Phase 0.5 — Migrate to Astro — `done`
 
-Results on the `astro-migration` branch: parity diff green across all 37
-baseline routes (titles, descriptions, canonicals, Open Graph, full prose,
-statuses, redirects, feeds); 67/67 tests pass against the built Worker in
-workerd; forms verified end-to-end in the browser into local D1 (test rows
-deleted); client JavaScript on content pages fell from 187KB (58.6KB gz) to
-0.9KB (0.5KB gz), with React loading only on the two form pages and /check.
-Awaiting owner preview and merge approval.
+Merged to `main` (PR #1) and live on onduu.ke since 18 August 2026
+(v3.0.0). Parity diff green across all 37 baseline routes, re-verified
+against production after deploy; 67/67 tests; forms verified end-to-end;
+client JavaScript on content pages fell from 187KB (58.6KB gz) to 0.9KB
+(0.5KB gz), with React loading only on the two form pages and /check.
+Rollback: revert merge commit 00b8d27, or `wrangler rollback`.
 
 Approved by the owner 18 August 2026. Detailed steps live in
 `docs/specs/astro-migration.md` (created as the migration's first commit).

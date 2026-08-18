@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v3.0.0 — 0846hrs:18th August2026
+CURRENT VERSION: v3.0.1 — 1010hrs:18th August2026
+
+## v3.0.1 — 1010hrs:18th August2026
+
+Phase 0 closeout: metadata fixes, the superseded-content inventory, and
+toolchain maintenance.
+
+### Fixed
+
+- The homepage and `/check` now carry a canonical URL and Open Graph tags;
+  they were the only indexable pages without them (pre-existing, preserved
+  through the migration for parity, logged in `ROADMAP.md`).
+- The 404 page has its own title ("Page not found | Onduu") and a
+  description reusing its on-page copy, instead of masquerading as the
+  homepage. No canonical on the error response.
+- Two new tests pin all of the above; 69 total, all passing.
+
+### Added
+
+- `docs/specs/superseded-content.md` — the page-by-page inventory of
+  direct-delivery copy that Phase 1 must replace, with provisional
+  dispositions pending the 16 August strategy document. Completes the last
+  open Phase 0 audit item.
+
+### Changed
+
+- wrangler 4.92.0 → 4.123.0 with @cloudflare/workers-types 5.x (the old CLI
+  could not read local dev state written by the Astro adapter's newer
+  workerd). Clean build, lint, type-check and full test suite verified on
+  the new toolchain.
+- `ROADMAP.md`: Phase 0.5 marked done (live since v3.0.0); Phase 0 audit
+  items closed out.
+- Deleted the merged `astro-migration` branch on GitHub.
+
+## v3.0.0 — 0846hrs:18th August2026
 
 ## v3.0.0 — 0846hrs:18th August2026
 
