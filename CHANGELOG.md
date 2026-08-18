@@ -1,6 +1,22 @@
 # Changelog
 
-CURRENT VERSION: v4.7.0 — 1916hrs:18th August2026
+CURRENT VERSION: v4.7.1 — 1920hrs:18th August2026
+
+## v4.7.1 — 1920hrs:18th August2026
+
+Domain search: expired domains read plainly, and a narrower search bar
+(owner spec, from a zero.co.ke search showing "(-78 days)").
+
+- A past expiry date now renders **EXPIRED: 78 DAYS AGO (02-06-2026).**
+  in bold red, instead of a negative day count under an "EXPIRES:" label.
+  Future dates are unchanged: EXPIRES: DD-MM-YYYY (n days), green at 60+
+  days of buffer.
+- The search form is capped at 620px (`.domain-form`) — a domain is
+  short, and the full-width field looked out of proportion. The email
+  checker's form is untouched.
+- 129/129 tests.
+
+## v4.7.0 — 1916hrs:18th August2026
 
 ## v4.7.0 — 1916hrs:18th August2026
 

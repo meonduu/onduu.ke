@@ -12,14 +12,20 @@ interface DomainResult {
   registerUrl?: string;
 }
 
-/** DD-MM-YYYY (owner-specified format) with days remaining; green when the
- * renewal buffer is comfortable (≥60 days, the guide's threshold), red when
- * not. */
-function expiryParts(expiryDate: string | null | undefined): { text: string; good: boolean } | null {
+/** DD-MM-YYYY (owner-specified format). Green when the renewal buffer is
+ * comfortable (≥60 days, the guide's threshold), red when not — and a date
+ * already past reads "EXPIRED n DAYS AGO" rather than negative days. */
+function expiryParts(
+  expiryDate: string | null | undefined,
+): { label: string; text: string; good: boolean } | null {
   if (!expiryDate) return null;
   const days = Math.floor((Date.parse(expiryDate) - Date.now()) / 86_400_000);
   const [y, m, d] = expiryDate.slice(0, 10).split("-");
-  return { text: `${d}-${m}-${y} (${days} days).`, good: days >= 60 };
+  const date = `${d}-${m}-${y}`;
+  if (days < 0) {
+    return { label: "EXPIRED:", text: `${Math.abs(days)} DAYS AGO (${date}).`, good: false };
+  }
+  return { label: "EXPIRES:", text: `${date} (${days} days).`, good: days >= 60 };
 }
 
 /** Fire-and-forget outbound click count; never blocks the navigation. */
@@ -62,7 +68,7 @@ export function DomainsForm() {
 
   return (
     <>
-      <form className="check-form" onSubmit={onSubmit}>
+      <form className="check-form domain-form" onSubmit={onSubmit}>
         <label htmlFor="domain-query">
           Business name or domain
           <input
@@ -149,7 +155,7 @@ export function DomainsForm() {
                     )}
                     {expiryParts(r.expiryDate) && (
                       <p>
-                        EXPIRES:{" "}
+                        {expiryParts(r.expiryDate)!.label}{" "}
                         <b className={expiryParts(r.expiryDate)!.good ? "value-good" : "value-bad"}>
                           {expiryParts(r.expiryDate)!.text}
                         </b>
