@@ -13,11 +13,11 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
         <section className="page-hero">
           <div>
             <p className="eyebrow">ONDUU / FREE TOOL</p>
-            <h1>Is your business name protected in both .co.ke and .ke?</h1>
+            <h1>Is your business name protected in .ke too?</h1>
             <p className="lede">
-              Search a name and this checks the .co.ke and .ke pair together — because owning one
-              without the other leaves the door open for someone else. Taken domains show their
-              registrar, transfer lock and expiry from public records.
+              Search a name in any Kenyan extension and this checks it together with its .ke twin —
+              because owning one without the other leaves the door open for someone else. Taken
+              domains show their registrar, transfer lock and expiry from public records.
             </p>
           </div>
           <aside className="hero-index">

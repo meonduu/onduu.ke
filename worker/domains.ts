@@ -46,16 +46,16 @@ const KENIC_3LDS = [
 ];
 
 /**
- * The candidate list for a query: the registrable name itself plus its
- * Kenyan twins, so a business sees the brand-relevant variants.
+ * The candidate pair for a query — exactly two results (owner decision,
+ * 18 Aug 2026): the extension the visitor entered, plus its .ke twin.
  *
  * - a bare label → label.co.ke + label.ke;
  * - name.co.ke ↔ name.ke pair each other;
  * - any other KeNIC third-level (kra.go.ke, school.ac.ke, …) → itself plus
- *   the open pair (name.ke, name.co.ke);
+ *   name.ke;
  * - subdomains collapse to the registrable domain first
  *   (portal.kra.go.ke → kra.go.ke);
- * - other TLDs are checked as given, alongside the Kenyan pair.
+ * - another TLD is checked as given, paired with name.co.ke.
  */
 export function candidatesFor(input: string): string[] {
   const host = normaliseHost(input.includes(".") ? input : `${input}.co.ke`);
@@ -73,19 +73,17 @@ export function candidatesFor(input: string): string[] {
     const label = labels[labels.length - suffixLabels - 1];
     out.add(`${label}.${kenicSuffix}`);
     out.add(`${label}.ke`);
-    out.add(`${label}.co.ke`);
   } else if (host.endsWith(".ke")) {
     // Second-level .ke (name.ke), or a subdomain of one (foo.name.ke).
     const label = labels[labels.length - 2];
     out.add(`${label}.ke`);
     out.add(`${label}.co.ke`);
   } else {
-    // Another TLD: check it as given, and offer the Kenyan pair.
+    // Another TLD: check it as given, paired with the commercial default.
     out.add(host);
     out.add(`${labels[0]}.co.ke`);
-    out.add(`${labels[0]}.ke`);
   }
-  return [...out].slice(0, 3);
+  return [...out].slice(0, 2);
 }
 
 /**

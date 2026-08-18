@@ -22,8 +22,8 @@ test(".co.ke input adds the .ke twin, and vice versa", () => {
   assert.deepEqual(candidatesFor("shop.ke"), ["shop.ke", "shop.co.ke"]);
 });
 
-test("another TLD is checked alongside the Kenyan pair", () => {
-  assert.deepEqual(candidatesFor("shop.com"), ["shop.com", "shop.co.ke", "shop.ke"]);
+test("another TLD is checked as given, paired with the commercial default", () => {
+  assert.deepEqual(candidatesFor("shop.com"), ["shop.com", "shop.co.ke"]);
 });
 
 test("junk, IP literals and URLs with credentials produce no candidates", () => {
@@ -36,18 +36,19 @@ test("pasted URLs and casing normalise before candidates are built", () => {
   assert.deepEqual(candidatesFor("https://Shop.CO.KE/path"), ["shop.co.ke", "shop.ke"]);
 });
 
-test("every KeNIC third-level extension is recognised — no invented twins", () => {
+test("every KeNIC third-level extension pairs with its .ke twin — no invented twins", () => {
   // The bug this pins: kra.go.ke once produced the nonsense "kra.go.co.ke".
-  assert.deepEqual(candidatesFor("kra.go.ke"), ["kra.go.ke", "kra.ke", "kra.co.ke"]);
+  // Owner decision: exactly two results — the entered extension + name.ke.
+  assert.deepEqual(candidatesFor("kra.go.ke"), ["kra.go.ke", "kra.ke"]);
   for (const ext of ["or.ke", "ne.ke", "go.ke", "me.ke", "mobi.ke", "info.ke", "sc.ke", "ac.ke"]) {
     const got = candidatesFor(`name.${ext}`);
-    assert.deepEqual(got, [`name.${ext}`, "name.ke", "name.co.ke"], `wrong candidates for .${ext}`);
+    assert.deepEqual(got, [`name.${ext}`, "name.ke"], `wrong candidates for .${ext}`);
     assert.ok(!got.some((d) => d.includes(`.${ext}.`)), `invented twin under .${ext}`);
   }
 });
 
 test("subdomains collapse to the registrable domain", () => {
-  assert.deepEqual(candidatesFor("portal.kra.go.ke"), ["kra.go.ke", "kra.ke", "kra.co.ke"]);
+  assert.deepEqual(candidatesFor("portal.kra.go.ke"), ["kra.go.ke", "kra.ke"]);
   assert.deepEqual(candidatesFor("www.shop.co.ke"), ["shop.co.ke", "shop.ke"]);
   assert.deepEqual(candidatesFor("foo.bar.ke"), ["bar.ke", "bar.co.ke"]);
 });

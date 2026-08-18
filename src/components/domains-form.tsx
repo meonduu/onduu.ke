@@ -11,10 +11,12 @@ interface DomainResult {
   registerUrl?: string;
 }
 
+/** DD-MM-YYYY (owner-specified format) with days remaining. */
 function expiryLine(expiryDate: string | null | undefined): string | null {
   if (!expiryDate) return null;
   const days = Math.floor((Date.parse(expiryDate) - Date.now()) / 86_400_000);
-  return `Expires ${expiryDate.slice(0, 10)} (${days} days)`;
+  const [y, m, d] = expiryDate.slice(0, 10).split("-");
+  return `EXPIRES: ${d}-${m}-${y} (${days} days).`;
 }
 
 /** Fire-and-forget outbound click count; never blocks the navigation. */
@@ -73,7 +75,7 @@ export function DomainsForm() {
           />
         </label>
         <button className="button" type="submit" disabled={state === "loading"}>
-          {state === "loading" ? "Checking the registries…" : "Search both .co.ke and .ke"}
+          {state === "loading" ? "Checking the registries…" : "Search with the .ke twin"}
           <span aria-hidden="true">↗</span>
         </button>
       </form>
@@ -81,7 +83,7 @@ export function DomainsForm() {
       <p className="check-note" role="status" aria-live="polite">
         {state === "loading"
           ? "Reading public DNS and registry records…"
-          : "Checks the .co.ke and .ke pair together. Public records only; nothing you search is stored."}
+          : "Checks the extension you enter together with its .ke twin. Public records only; nothing you search is stored."}
       </p>
 
       {error && (
@@ -113,20 +115,18 @@ export function DomainsForm() {
                 {r.status === "registered" && (
                   <>
                     <p>
-                      {r.registrar ? `Registrar: ${r.registrar}.` : "Registered; the registry publishes no registrar details."}
-                      {r.locked === true && " Transfer lock: on."}
-                      {r.locked === false && " Transfer lock: off — worth fixing."}
-                      {expiryLine(r.expiryDate) ? ` ${expiryLine(r.expiryDate)}.` : ""}
+                      <strong>REGISTERED</strong>
                     </p>
+                    {r.registrar && <p>REGISTRAR: {r.registrar}.</p>}
+                    {r.locked === true && <p>TRANSFER LOCK: ON.</p>}
+                    {r.locked === false && <p>TRANSFER LOCK: OFF — worth fixing.</p>}
+                    {expiryLine(r.expiryDate) && <p>{expiryLine(r.expiryDate)}</p>}
                     <small>Public registry data only. If this is your domain, the readiness assessment covers what these records mean.</small>
                   </>
                 )}
                 {r.status === "maybe-available" && (
                   <>
-                    <p>
-                      Not found in public DNS or the registry — it appears available. Availability
-                      is confirmed at checkout.
-                    </p>
+                    <p>Appears available. Confirm at checkout.</p>
                     <a
                       className="button"
                       href={r.registerUrl}

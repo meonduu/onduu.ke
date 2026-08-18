@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.4.2 — 1741hrs:18th August2026
+CURRENT VERSION: v4.5.0 — 1802hrs:18th August2026
+
+## v4.5.0 — 1802hrs:18th August2026
+
+Domain search presentation, to the owner's spec.
+
+- **Exactly two results per search**: the extension the visitor entered
+  plus its .ke twin (a .ke query pairs with .co.ke; another TLD pairs
+  with .co.ke; a bare name still gets the .co.ke/.ke pair).
+- Headline: "Is your business name protected in .ke too?"; lede, button
+  ("Search with the .ke twin") and form note updated to match.
+- Registered results broken into lines: bold **REGISTERED**, then
+  REGISTRAR (only when the registry publishes a name), TRANSFER LOCK:
+  ON/OFF, EXPIRES: DD-MM-YYYY (days). The awkward "publishes no registrar
+  details" sentence is gone.
+- Available results: "Appears available. Confirm at checkout."
+- Tests updated to the two-row pairing; 127/127.
+
+## v4.4.2 — 1741hrs:18th August2026
 
 ## v4.4.2 — 1741hrs:18th August2026
 
