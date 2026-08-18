@@ -4,6 +4,11 @@ Status: DRAFT, owner to publish. Written 18 August 2026, updated same day
 with the brand assets from v4.10.0/v4.11.0. Every factual claim below was
 verified on the day of writing.
 
+**On-site version:** published at
+https://onduu.ke/insights/three-free-checks-for-your-domain (v4.12.0) — the
+strongest link target for the social post, since it renders the brand card
+and keeps readers on the site.
+
 **Image:** attach `announcement-card.png` (in this folder) for the strongest
 post. If you post the bare link instead, LinkedIn/WhatsApp/X now auto-render
 the branded share card from onduu.ke — either way the post carries the Dial.

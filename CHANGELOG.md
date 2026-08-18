@@ -1,6 +1,20 @@
 # Changelog
 
-CURRENT VERSION: v4.11.1 — 2114hrs:18th August2026
+CURRENT VERSION: v4.12.0 — 2131hrs:18th August2026
+
+## v4.12.0 — 2131hrs:18th August2026
+
+The launch announcement is published on the site itself:
+`/insights/three-free-checks-for-your-domain` ("Three free checks for
+your domain. I pointed them at mine first."), adapted from the approved
+post draft in `docs/marketing/announcement-post.md`. Dated 18 August
+2026, it sorts to the top of `/insights` automatically; it links each
+tool, the earlier parastatal-CEOs article and the tool-limitations page,
+and carries the HOSTAFRICA disclosure verbatim. Shared links to it render
+the v4.11.0 brand card. RSS now carries 12 items; both hard-coded article
+counts in tests updated. 134/134.
+
+## v4.11.1 — 2114hrs:18th August2026
 
 ## v4.11.1 — 2114hrs:18th August2026
 

@@ -117,7 +117,7 @@ test("unknown routes return 404", async () => {
 
 test("every article carries renderable content", () => {
   assert.ok(articles, "insights data should be importable");
-  assert.equal(articles.length, 11);
+  assert.equal(articles.length, 12);
   for (const article of articles) {
     assert.ok(article.title, `${article.slug}: missing title`);
     assert.ok(article.lede, `${article.slug}: missing lede`);

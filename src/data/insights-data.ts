@@ -28,6 +28,153 @@ export type Article = {
 
 export const articles: Article[] = [
   {
+    "slug": "three-free-checks-for-your-domain",
+    "title": "Three free checks for your domain. I pointed them at mine first.",
+    "lede": "Three free tools are now live on onduu.ke — an email spoofing check, a .ke domain search and a public readiness scan. The first domain I tested was my own, and it failed three of the checks.",
+    "date": "2026-08-18",
+    "dateLabel": "18 August 2026",
+    "readTime": "3 min read",
+    "author": "Wycliffe Onduu",
+    "tags": [
+      "free tools",
+      "email security",
+      "domains",
+      "Kenya"
+    ],
+    "category": "Domains & email",
+    "excerpt": "An email spoofing check, a .ke domain search and a public readiness scan — free, no sign-up. The first domain I tested was my own, and it failed three of the checks.",
+    "body": [
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "text",
+            "v": "The tools told me my domain had no HSTS, no automatic redirect to HTTPS, and — worse — "
+          },
+          {
+            "t": "strong",
+            "v": "my transfer lock was off"
+          },
+          {
+            "t": "text",
+            "v": ". All three were true. I fixed them before publishing this."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "text",
+            "v": "That is the point. Most Kenyan businesses have never seen this layer of their own operation, and most tools that show it are attached to someone selling you something. These three are free, need no sign-up, and read only public records."
+          }
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "1. Can someone send email pretending to be your business?"
+      },
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "text",
+            "v": "The "
+          },
+          {
+            "t": "a",
+            "v": "email security check",
+            "href": "/email-security"
+          },
+          {
+            "t": "text",
+            "v": " reads your published SPF, DKIM, DMARC and MX records and explains, in plain English, what they do — and what they do not prove. Over 100 parastatal chief executives "
+          },
+          {
+            "t": "a",
+            "v": "faced action over exactly these records",
+            "href": "/insights/what-checking-domains-taught-me-about-email-security"
+          },
+          {
+            "t": "text",
+            "v": "."
+          }
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "2. Is your business name protected in .ke as well as .co.ke?"
+      },
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "text",
+            "v": "The "
+          },
+          {
+            "t": "a",
+            "v": "domain search",
+            "href": "/kedomains"
+          },
+          {
+            "t": "text",
+            "v": " checks the extension you enter alongside its .ke twin. For a domain already taken, it shows who the registrar is, whether the transfer lock is on, and when it expires. One domain I checked while testing expired 78 days ago and is still unlocked."
+          }
+        ]
+      },
+      {
+        "type": "h2",
+        "text": "3. What does your domain show the public?"
+      },
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "text",
+            "v": "The "
+          },
+          {
+            "t": "a",
+            "v": "readiness scan",
+            "href": "/scan"
+          },
+          {
+            "t": "text",
+            "v": " produces a Public Signal Score across six dimensions — control, trust, speed, conversion, resilience, agent readiness — with an honest Evidence Coverage figure showing how much of the picture is actually visible from outside. Anything that cannot be observed publicly is marked as such, and never counts for or against you."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "text",
+            "v": "None of these prove your business is secure. They show what is visible and what is missing, so you can decide what to fix first — and who should fix it. The limits of each tool are documented on the "
+          },
+          {
+            "t": "a",
+            "v": "tool limitations page",
+            "href": "/legal/tool-limitations"
+          },
+          {
+            "t": "text",
+            "v": "."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "em",
+            "v": "Disclosure: registration links in the domain search go to HOSTAFRICA, where I am Managing Director of the Kenyan business. Onduu earns no commission on them."
+          }
+        ]
+      }
+    ]
+  },
+  {
     "slug": "what-checking-domains-taught-me-about-email-security",
     "title": "Over 100 parastatal CEOs face action on email security. Check yours.",
     "lede": "State agency heads face action over domain and email protection. I built a free checker to see what Kenyan domains actually publish. The first one it caught was mine.",

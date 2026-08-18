@@ -264,7 +264,7 @@ test("RSS is well formed and covers every article", async () => {
   assert.match(xml, /<rss version="2\.0"/);
   assert.match(xml, /<title>Onduu Insights<\/title>/);
   const items = [...xml.matchAll(/<item>/g)];
-  assert.equal(items.length, 11);
+  assert.equal(items.length, 12);
   // pubDate must be RFC-822, not ISO, or feed readers reject it.
   assert.match(xml, /<pubDate>[A-Z][a-z]{2}, \d{2} [A-Z][a-z]{2} \d{4}/);
 });
