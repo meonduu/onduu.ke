@@ -1,6 +1,33 @@
 # Changelog
 
-CURRENT VERSION: v4.7.1 — 1920hrs:18th August2026
+CURRENT VERSION: v4.7.2 — 1941hrs:18th August2026
+
+## v4.7.2 — 1941hrs:18th August2026
+
+Titles and descriptions for the two renamed tool pages, chosen against
+live SERP evidence (seo-target-validation methodology).
+
+- `/kedomains` — "Kenyan Domain Search: Registrar, Lock and Expiry |
+  Onduu". The old title still said ".co.ke and .ke together", which
+  contradicted the page after the two-row rename.
+- `/email-security` — "Free Email Spoofing Check: SPF, DKIM, DMARC, MX |
+  Onduu", leading with the problem in business language and keeping the
+  acronyms for long-tail and AI-citation value.
+- Both descriptions rewritten inside the 158-character display limit
+  (the old ones were ~190-200 and truncated in results).
+
+**Evidence and honest limits, recorded:** page one for Kenyan domain
+availability and WHOIS queries is held entirely by registrars (Truehost,
+HostAfrica, Olitt, Novahost, HostGuru, EuroDNS); page one for
+SPF/DKIM/DMARC checkers is held entirely by global SaaS (Mimecast,
+EasyDMARC, DMARCLY, Red Sift). No local or small commercial site appears
+on either. **Neither page is a viable head-term SEO target for a new
+domain**, so both are written for click-through from referral, social
+and long-tail traffic rather than to harvest head terms. Search-volume
+data could not be measured — no keyword-volume tool is connected to this
+environment; the volume gate is unverified, not passed.
+
+## v4.7.1 — 1920hrs:18th August2026
 
 ## v4.7.1 — 1920hrs:18th August2026
 
