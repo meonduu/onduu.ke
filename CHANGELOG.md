@@ -1,6 +1,17 @@
 # Changelog
 
-CURRENT VERSION: v4.15.1 — 2157hrs:18th August2026
+CURRENT VERSION: v4.15.2 — 2200hrs:18th August2026
+
+## v4.15.2 — 2200hrs:18th August2026
+
+Owner request, completing v4.15.1: the /kedomains (620px) and /scan
+(900px) search bars now match the email checker at 540px. The width
+moved into the shared `.check-form` base rule and the per-form
+modifiers were removed, so all three tools stay in step by
+construction. Mobile stacking unchanged; verified at 540px computed on
+all three pages.
+
+## v4.15.1 — 2157hrs:18th August2026
 
 ## v4.15.1 — 2157hrs:18th August2026
 
