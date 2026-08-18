@@ -1,0 +1,17 @@
+---
+// Domain search across the .co.ke/.ke pair, with registration routed to the
+// approved HOSTAFRICA destination (UTM attribution only; no commission).
+import Layout from "../layouts/Layout.astro";
+import { DomainsPage } from "../components/domains-page";
+import { DomainsForm } from "../components/domains-form";
+---
+
+<Layout
+  title="Kenyan domain search — .co.ke and .ke together | Onduu"
+  description="Check whether your business name is protected in both .co.ke and .ke. Taken domains show their registrar, transfer lock and expiry from public records; available names can be registered at HOSTAFRICA."
+  canonical="https://onduu.ke/domains"
+>
+  <DomainsPage>
+    <DomainsForm client:load />
+  </DomainsPage>
+</Layout>

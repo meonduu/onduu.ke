@@ -132,12 +132,21 @@ function extractPageFacts(result: Awaited<ReturnType<typeof safeFetch>>): PageFa
 
 /* ── collectors ──────────────────────────────────────────────────────── */
 
-async function collectRdap(domain: string, budget: Budget): Promise<RdapFacts> {
+export async function collectRdap(
+  domain: string,
+  budget: Budget,
+  fetcher: typeof fetch = fetch,
+): Promise<RdapFacts> {
   const res = await safeFetch(`https://rdap.org/domain/${encodeURIComponent(domain)}`, budget, {
     accept: "application/rdap+json, application/json",
     maxBytes: 256 * 1024,
+    fetcher,
   });
   if (!res.ok) return { fetched: false, error: res.error };
+  // Registries answer 404 (often with an RDAP error object) for domains with
+  // no record: that is "no registration found", never a parsed registration.
+  if (res.status === 404) return { fetched: false, error: "rdap-not-found" };
+  if (res.status !== 200) return { fetched: false, error: `rdap-status-${res.status}` };
   try {
     const data = JSON.parse(res.body) as {
       status?: string[];

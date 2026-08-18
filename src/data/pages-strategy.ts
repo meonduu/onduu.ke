@@ -119,9 +119,17 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "DISCLOSURE",
         title: "The commercial relationship, disclosed.",
         body: [
-          "Wycliffe, who operates Onduu, is also Managing Director of HOSTAFRICA Kenya. Any referral, commission, sponsorship or other material relationship connected to this path is disclosed at the decision point where it matters. HOSTAFRICA brand assets, programme claims and tracked routes appear only once formally approved.",
+          "Wycliffe, who operates Onduu, is also Managing Director of HOSTAFRICA Kenya. Onduu receives no commission on this route; the destination link carries attribution tags so routed demand can be measured. HOSTAFRICA brand assets, programme claims and endorsements appear only once formally approved.",
         ],
-        note: "The official HOSTAFRICA destination link will appear here once the exact destination and wording are approved. Until then, no outbound product link is published on this page.",
+        links: [
+          {
+            label: "Explore the HOSTAFRICA Path",
+            href: "https://panel.hostafrica.com/?utm_source=onduu&utm_medium=referral&utm_campaign=infrastructure-path",
+            external: true,
+          },
+          { label: "Search Kenyan domains first", href: "/domains" },
+        ],
+        note: "Destination approved by the owner on 18 August 2026 (docs/strategy/ decision log in CHANGELOG v4.1.0). Product information, ordering, billing, provisioning, renewal and support all happen at HOSTAFRICA.",
       },
     ],
   },

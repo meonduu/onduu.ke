@@ -238,7 +238,7 @@ owner approves:
 | Supply 15 Aug brief PDF (secondary source) | Phases 1–3 | outstanding |
 | Approve governance files (this commit) | everything | outstanding |
 | Approve Astro migration merge after preview | Phase 0.5 | outstanding |
-| Approved HOSTAFRICA destination + wording | Phase 2 | outstanding |
+| Approved HOSTAFRICA destination + wording | Phase 2 | **decided 18 Aug 2026**: panel.hostafrica.com with UTM attribution only, no affiliate parameter, no commission (v4.1.0) |
 | Identity/contact facts; lift draft markings | Phase 3 | outstanding |
 | Instant-scan specification approval | Phase 4 | outstanding |
 | Scanner public launch approval | Phase 4 | outstanding |

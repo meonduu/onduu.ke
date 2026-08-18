@@ -1,6 +1,58 @@
 # Changelog
 
-CURRENT VERSION: v4.0.0 — 1323hrs:18th August2026
+CURRENT VERSION: v4.1.0 — 1520hrs:18th August2026
+
+## v4.1.0 — 1520hrs:18th August2026
+
+Kenyan domain search, and the HOSTAFRICA path goes live. Owner decisions
+(18 Aug): destination is the official HOSTAFRICA panel with **UTM
+attribution only — no affiliate parameter, no commission**; two-step
+checkout (no deep link); the same destination powers the infrastructure
+path CTA.
+
+### Added
+
+- **`/domains`** — search a business name and check the **.co.ke and .ke
+  pair together** (brand-protection framing, the Control dimension).
+  Taken domains show registrar, transfer lock and expiry from public RDAP
+  (the scan's collector, reused); a lock that is off says "worth fixing".
+  Available names get "Register it at HOSTAFRICA ↗" with the UTM link,
+  presented honestly as "appears available — confirmed at checkout"
+  (DNS NXDOMAIN + no RDAP record; the registry answer at checkout is
+  authoritative). Nothing searched is stored; per-connection rate limit;
+  all lookups through the scan's SSRF-safe layer.
+- **`/api/domains`** (GET) — the search endpoint behind the page.
+- **`/api/out`** — first-party outbound-click counting for the strategy's
+  "approved HOSTAFRICA-path clicks" measure: an allowlisted route name is
+  recorded as a synthetic page view (no IP, no identity, nothing on the
+  device), via sendBeacon from the register button.
+- Footer "Domain Search" link; `/domains` in the sitemap.
+
+### Changed
+
+- **`/paths/hostafrica-infrastructure` CTA is live**: "Explore the
+  HOSTAFRICA Path" now links the approved panel destination
+  (utm_campaign=infrastructure-path), with the no-commission disclosure at
+  the decision point and a cross-link to the domain search.
+  `ContentSection` gained an optional `links` field to carry it.
+- `collectRdap` now treats RDAP 404/non-200 as "no record found" instead
+  of parsing error bodies (also correct for the scan: unobservable, never
+  a fake registration), and accepts an injectable fetcher for tests.
+- Privacy notice §04 covers the domain search: nothing stored, aggregate
+  click counting, UTM attribution, no commission.
+
+### Verified
+
+- 119/119 tests (13 new: candidate pairing, availability classification
+  with stubbed DNS/RDAP, handler validation, rate limit; SEO suite now
+  pins the UTM destination, the absence of any `aff=` parameter, and the
+  disclosure on both pages).
+- Live searches against real registries: `onduu` → both registered, with
+  onduu.ke's real RDAP (expiry 2027-08-14, **transfer lock off — flagged
+  to the owner**); an unlikely name → both "appears available" with the
+  register link. Browser end-to-end verified on the built Worker.
+
+## v4.0.0 — 1323hrs:18th August2026
 
 ## v4.0.0 — 1323hrs:18th August2026
 

@@ -13,6 +13,7 @@ const PUBLISHED_ROUTES = [
   "guides/website-revenue-system",
   "guides/kenyan-vps",
   "guides/agents-on-vps",
+  "domains",
 ];
 
 // Old delivery-offer routes 301 to their strategy successors.
@@ -98,6 +99,17 @@ test("the footer carries the responsibility disclosure", async () => {
   const home = await (await fetchPath("/")).text();
   assert.match(home, /operated by Ujiajiri Enterprises Limited/);
   assert.match(home, /HOSTAFRICA provides, bills and supports/);
+});
+
+test("the approved HOSTAFRICA destination is UTM-tagged with no affiliate parameter", async () => {
+  const paths = await (await fetchPath("/paths/hostafrica-infrastructure")).text();
+  assert.match(paths, /panel\.hostafrica\.com\/\?utm_source=onduu/, "outbound CTA missing");
+  assert.doesNotMatch(paths, /aff=/, "affiliate parameters are not approved");
+  assert.match(paths, /Managing Director of HOSTAFRICA Kenya/, "disclosure at the decision point");
+
+  const domains = await (await fetchPath("/domains")).text();
+  assert.match(domains, /Managing Director of HOSTAFRICA Kenya/, "domain page carries the disclosure");
+  assert.doesNotMatch(domains, /aff=/);
 });
 
 test("no direct-delivery promise survives on the homepage", async () => {

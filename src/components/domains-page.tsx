@@ -1,0 +1,89 @@
+import type { ReactNode } from "react";
+import { Link } from "./nav-link";
+import { Header, Footer, Button } from "./components";
+
+// Domain search page. Education-first (the Control dimension: own both
+// halves of your brand), with registration routed to HOSTAFRICA under the
+// approved UTM-only destination. children is the hydrated DomainsForm island.
+export function DomainsPage({ children }: { children?: ReactNode }) {
+  return (
+    <>
+      <Header />
+      <main>
+        <section className="page-hero">
+          <div>
+            <p className="eyebrow">ONDUU / FREE TOOL</p>
+            <h1>Is your business name protected in both .co.ke and .ke?</h1>
+            <p className="lede">
+              Search a name and this checks the .co.ke and .ke pair together — because owning one
+              without the other leaves the door open for someone else. Taken domains show their
+              registrar, transfer lock and expiry from public records.
+            </p>
+          </div>
+          <aside className="hero-index">
+            <span>.co.ke</span>
+            <span>.ke</span>
+            <span>Registrar</span>
+            <span>Lock</span>
+            <span>Expiry</span>
+          </aside>
+        </section>
+
+        <section className="check-section">{children}</section>
+
+        <section className="content-section">
+          <div>
+            <p className="section-number">01 / WHY BOTH</p>
+            <h2>Two doors to one brand.</h2>
+          </div>
+          <div className="section-body">
+            <p>
+              Kenyan businesses usually register one of the pair and forget the other. Anyone can
+              register the twin — for a competing business, a copycat, or worse, an email domain
+              that looks like yours to your own customers. Registering both is one of the cheapest
+              pieces of brand protection available.
+            </p>
+            <ul>
+              <li>A taken domain shows its registrar — where the renewal relationship lives</li>
+              <li>Transfer lock off means the domain can be moved with less friction — worth fixing</li>
+              <li>An expiry date inside 60 days is a renewal risk worth acting on today</li>
+            </ul>
+            <div className="note">
+              &quot;Appears available&quot; is a public observation from DNS and the registry, not a
+              reservation. Availability and price are confirmed at the registrar&apos;s checkout.
+              Nothing you search here is stored.
+            </div>
+          </div>
+        </section>
+
+        <section className="content-section">
+          <div>
+            <p className="section-number">02 / WHO DOES WHAT</p>
+            <h2>Registration happens at HOSTAFRICA.</h2>
+          </div>
+          <div className="section-body">
+            <p>
+              If a name is available, registration, billing, renewal and support happen at
+              HOSTAFRICA through its official panel — not on this site. Wycliffe, who operates
+              Onduu, is also Managing Director of HOSTAFRICA Kenya. Onduu receives no commission on
+              registrations; the outbound link carries attribution tags so routed demand can be
+              measured, and clicks are counted here in aggregate only.
+            </p>
+            <p>
+              Already own the domain? The next question is whether its records protect you —{" "}
+              <Link href="/check">run the free email security check</Link>.
+            </p>
+          </div>
+        </section>
+
+        <section className="final-cta">
+          <p className="section-number">YOUR NEXT STEP</p>
+          <h2>The domain is one layer. Readiness covers the rest.</h2>
+          <p>Identify the priorities, understand the responsibility and continue through the right route.</p>
+          <Button href="/readiness">Check Your Digital Readiness</Button>
+        </section>
+      </main>
+      <Footer />
+    </>
+  );
+}
