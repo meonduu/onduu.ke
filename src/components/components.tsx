@@ -1,7 +1,5 @@
 import { Link } from "./nav-link";
 import type { ReactNode } from "react";
-import { SubmissionForm } from "./forms";
-import { TURNSTILE_SITE_KEY } from "./route-policy";
 
 // Primary navigation follows brief section 7.
 export function Header(){return <header className="site-header"><Link className="wordmark" href="/">ONDUU<span>.</span></Link><nav aria-label="Primary navigation"><Link href="/how-it-works">How it works</Link><Link href="/solutions">Solutions</Link><Link href="/managed-website-operations">Managed operations</Link><Link href="/insights">Insights</Link><Link href="/about">About</Link></nav><Link className="button button-small" href="/readiness">Get your readiness score</Link></header>}
@@ -13,12 +11,14 @@ export function Button({href,children,secondary=false}:{href:string;children:Rea
 export type ContentSection={eyebrow?:string;title:string;body?:string[];items?:string[];cards?:{title:string;body:string;meta?:string}[];steps?:{title:string;body:string}[];note?:string};
 export type PageContent={eyebrow?:string;title:string;intro:string;cta?:string;ctaHref?:string;gate?:string;sections:ContentSection[];form?:"readiness"|"contact"};
 
-export function StandardPage({page}:{page:PageContent}){return <><Header/><main><section className="page-hero"><div><p className="eyebrow">{page.eyebrow||"ONDUU / DIGITAL READINESS"}</p><h1>{page.title}</h1><p className="lede">{page.intro}</p>{page.cta&&<Button href={page.ctaHref||"/contact"}>{page.cta}</Button>}</div><aside className="hero-index"><span>Find the weakness.</span><span>Fix the priority.</span><span>Operate the system.</span><span>Measure the result.</span></aside></section>{page.gate&&<div className="gate"><b>PREVIEW / APPROVAL GATE</b><span>{page.gate}</span></div>}{page.sections.map((s,i)=><section className="content-section" key={s.title}><div><p className="section-number">{String(i+1).padStart(2,"0")} / {s.eyebrow||"DETAIL"}</p><h2>{s.title}</h2></div><div className="section-body">{s.body?.map(p=><p key={p}>{p}</p>)}{s.items&&<ul>{s.items.map(x=><li key={x}>{x}</li>)}</ul>}{s.cards&&<div className="content-cards">{s.cards.map(c=><article key={c.title}>{c.meta&&<small>{c.meta}</small>}<h3>{c.title}</h3><p>{c.body}</p></article>)}</div>}{s.steps&&<div className="steps">{s.steps.map((x,n)=><article key={x.title}><b>{String(n+1).padStart(2,"0")}</b><div><h3>{x.title}</h3><p>{x.body}</p></div></article>)}</div>}{s.note&&<div className="note">{s.note}</div>}</div></section>)}{page.form&&<Form type={page.form}/>}<FinalCta href={page.form==="readiness"?"#request":"/readiness"}/></main><Footer/></>}
+// The submission form hydrates as an Astro island, so it is passed in as
+// children from the .astro page rather than imported here; everything in this
+// file renders to static HTML with no client JavaScript.
+export function StandardPage({page,children}:{page:PageContent;children?:ReactNode}){return <><Header/><main><section className="page-hero"><div><p className="eyebrow">{page.eyebrow||"ONDUU / DIGITAL READINESS"}</p><h1>{page.title}</h1><p className="lede">{page.intro}</p>{page.cta&&<Button href={page.ctaHref||"/contact"}>{page.cta}</Button>}</div><aside className="hero-index"><span>Find the weakness.</span><span>Fix the priority.</span><span>Operate the system.</span><span>Measure the result.</span></aside></section>{page.gate&&<div className="gate"><b>PREVIEW / APPROVAL GATE</b><span>{page.gate}</span></div>}{page.sections.map((s,i)=><section className="content-section" key={s.title}><div><p className="section-number">{String(i+1).padStart(2,"0")} / {s.eyebrow||"DETAIL"}</p><h2>{s.title}</h2></div><div className="section-body">{s.body?.map(p=><p key={p}>{p}</p>)}{s.items&&<ul>{s.items.map(x=><li key={x}>{x}</li>)}</ul>}{s.cards&&<div className="content-cards">{s.cards.map(c=><article key={c.title}>{c.meta&&<small>{c.meta}</small>}<h3>{c.title}</h3><p>{c.body}</p></article>)}</div>}{s.steps&&<div className="steps">{s.steps.map((x,n)=><article key={x.title}><b>{String(n+1).padStart(2,"0")}</b><div><h3>{x.title}</h3><p>{x.body}</p></div></article>)}</div>}{s.note&&<div className="note">{s.note}</div>}</div></section>)}{page.form&&<FormSection type={page.form}>{children}</FormSection>}<FinalCta href={page.form==="readiness"?"#request":"/readiness"}/></main><Footer/></>}
 
-function Form({type}:{type:"readiness"|"contact"}){
+function FormSection({type,children}:{type:"readiness"|"contact";children?:ReactNode}){
   // Field lists, copy and microcopy come from the definitive brief, sections
-  // 10 and 24. TURNSTILE_SITE_KEY is a public key, so it is safe in the bundle.
-  const siteKey = TURNSTILE_SITE_KEY;
+  // 10 and 24. children is the hydrated SubmissionForm island.
   return <section className="form-section" id="request">
     <div>
       <p className="section-number">REQUEST FORM</p>
@@ -27,7 +27,7 @@ function Form({type}:{type:"readiness"|"contact"}){
         ? <p>Initial completion time: approximately 5-8 minutes. Do not submit passwords, credentials or sensitive customer data.</p>
         : <p>Share the result the website or workflow should produce and the weakness you suspect. Onduu will review the request and recommend a score, review, system, managed programme, pilot or &quot;not yet&quot;.</p>}
     </div>
-    <SubmissionForm kind={type} siteKey={siteKey}/>
+    {children}
   </section>;
 }
 

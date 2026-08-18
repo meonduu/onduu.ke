@@ -50,18 +50,37 @@ link to them in new work.
   disabled, `/go` behind Cloudflare Access bound to the hostname.
 - [x] Rollback understood: revert commit on `main` (Workers Builds redeploys)
   or `wrangler rollback` for immediate restore.
-- [ ] Commit `worker/scan/` work-in-progress so nothing is lost.
-- [ ] Capture parity baseline for the migration: per-route HTML, title,
-  description, canonical, Open Graph.
+- [x] Commit `worker/scan/` work-in-progress so nothing is lost (v2.11.1).
+- [x] Capture parity baseline for the migration: per-route HTML, title,
+  description, canonical, Open Graph (`docs/specs/parity-baseline.json`,
+  37 routes, captured from the v2.11.1 production build).
 - [ ] Record superseded-content inventory page by page (list above is the
   summary; per-page notes go in the Phase 1 spec).
-- [ ] Correct the stale README (it still says the forms are non-submitting
-  prototypes; they have been live since v1.2.0).
+- [x] Correct the stale README (done on the `astro-migration` branch).
+
+**Found during the baseline/migration, deferred to their phases:**
+
+- The homepage and `/check` ship **no canonical URL and no Open Graph tags**
+  (the standard pages have both). Preserved for parity; fix in Phase 1.
+- The 404 page serves the homepage title. Preserved for parity; fix in
+  Phase 1.
+- The pinned wrangler CLI (4.92.0) cannot read local dev state written by
+  the Astro adapter's newer workerd. Upgrade wrangler as a maintenance task.
+- Astro's cross-origin POST protection (`security.checkOrigin`) is disabled
+  for behaviour parity; consider enabling it as a hardening change later.
 
 **Acceptance:** baseline snapshots exist in the repo or scratch archive;
 `git status` clean; rollback steps written down.
 
-## Phase 0.5 — Migrate to Astro — `not started`
+## Phase 0.5 — Migrate to Astro — `ready for review`
+
+Results on the `astro-migration` branch: parity diff green across all 37
+baseline routes (titles, descriptions, canonicals, Open Graph, full prose,
+statuses, redirects, feeds); 67/67 tests pass against the built Worker in
+workerd; forms verified end-to-end in the browser into local D1 (test rows
+deleted); client JavaScript on content pages fell from 187KB (58.6KB gz) to
+0.9KB (0.5KB gz), with React loading only on the two form pages and /check.
+Awaiting owner preview and merge approval.
 
 Approved by the owner 18 August 2026. Detailed steps live in
 `docs/specs/astro-migration.md` (created as the migration's first commit).

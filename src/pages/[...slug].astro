@@ -1,0 +1,79 @@
+---
+// Shared renderer for the standard pages and Insights, mirroring the vinext
+// app/[...slug]/page.tsx: same route table, same metadata rules (unique
+// title, description, canonical and Open Graph per page; gated routes are
+// noindex — the gate list is currently empty).
+import Layout from "../layouts/Layout.astro";
+import { StandardPage } from "../components/components";
+import { ArticlePage, InsightsIndex } from "../components/article";
+import { SubmissionForm } from "../components/forms";
+import { articlesBySlug } from "../data/insights-data";
+import { pages } from "../data/site-pages";
+import { isGated, SITE_URL, TURNSTILE_SITE_KEY } from "../data/route-policy";
+
+const key = (Astro.params.slug ?? "").replace(/\/$/, "");
+const parts = key.split("/");
+
+let head: {
+  title: string;
+  description: string;
+  canonical: string;
+  author?: string;
+  noindex?: boolean;
+} | null = null;
+let view: "insights" | "article" | "page" = "page";
+
+if (key === "insights") {
+  view = "insights";
+  head = {
+    title: "Website Revenue, Resilience and Agent Operations Insights | Onduu",
+    description:
+      "Evidence-led guidance for Kenyan business leaders on conversion, digital control, infrastructure and supervised agents.",
+    canonical: `${SITE_URL}/insights`,
+  };
+}
+
+const article =
+  parts[0] === "insights" && parts.length === 2 ? articlesBySlug.get(parts[1]) : undefined;
+if (article) {
+  view = "article";
+  head = {
+    title: `${article.title} | Onduu`,
+    description: article.lede,
+    canonical: `${SITE_URL}/insights/${article.slug}`,
+    author: article.author,
+  };
+}
+
+const page = view === "page" ? pages[key] : undefined;
+if (page) {
+  head = {
+    title: `${page.title} | Onduu`,
+    description: page.intro,
+    canonical: `${SITE_URL}/${key}`,
+    noindex: isGated(key),
+  };
+}
+
+if (!head) return Astro.rewrite("/404");
+---
+
+<Layout
+  title={head.title}
+  description={head.description}
+  canonical={head.canonical}
+  author={head.author}
+  noindex={head.noindex}
+>
+  {view === "insights" && <InsightsIndex />}
+  {view === "article" && article && <ArticlePage article={article} />}
+  {
+    view === "page" && page && (
+      <StandardPage page={page}>
+        {page.form && (
+          <SubmissionForm client:load kind={page.form} siteKey={TURNSTILE_SITE_KEY} />
+        )}
+      </StandardPage>
+    )
+  }
+</Layout>

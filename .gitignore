@@ -45,3 +45,6 @@ yarn-error.log*
 
 # typescript
 *.tsbuildinfo
+
+# Astro generated types and dev-server state
+.astro/

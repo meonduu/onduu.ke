@@ -1,0 +1,14 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { CheckPage } from "../components/check-page";
+import { CheckForm } from "../components/check-form";
+---
+
+<Layout
+  title="Free email security checker — SPF, DKIM, DMARC and MX | Onduu"
+  description="Check whether anyone can send email pretending to be your business. Reads your published SPF, DKIM, DMARC and MX records and explains what to fix, in plain language. No signup, no credentials."
+>
+  <CheckPage>
+    <CheckForm client:load />
+  </CheckPage>
+</Layout>

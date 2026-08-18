@@ -6,16 +6,7 @@ import test from "node:test";
 // here should ever reintroduce a third-party tracker without the privacy
 // notice changing in the same release.
 
-async function fetchPath(path) {
-  const workerUrl = new URL("../dist/server/index.js", import.meta.url);
-  workerUrl.searchParams.set("test", `${process.pid}-consent`);
-  const { default: worker } = await import(workerUrl.href);
-  return worker.fetch(
-    new Request(`http://localhost${path}`, { headers: { accept: "text/html" } }),
-    {},
-    { waitUntil() {}, passThroughOnException() {} },
-  );
-}
+import { fetchPath } from "./helpers/server.mjs";
 
 test("no third-party tracker is served on any page", async () => {
   for (const path of ["/", "/insights", "/contact", "/readiness", "/legal/privacy"]) {

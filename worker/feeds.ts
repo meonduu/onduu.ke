@@ -6,9 +6,9 @@
  * release. Gated routes are excluded from both the sitemap and robots, so
  * unapproved commercial copy is not advertised to crawlers.
  */
-import { articles } from "../app/insights-data";
-import { GATED_ROUTES, SITE_URL } from "../app/route-policy";
-import { pages } from "../app/site-pages";
+import { articles } from "../src/data/insights-data";
+import { GATED_ROUTES, SITE_URL } from "../src/data/route-policy";
+import { pages } from "../src/data/site-pages";
 
 const escape = (s: string) =>
   s
