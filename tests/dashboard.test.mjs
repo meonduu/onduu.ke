@@ -25,6 +25,7 @@ test("EVERY dashboard section refuses without Access headers", async () => {
     "/go/enquiries",
     "/go/scans",
     "/go/email-security",
+    "/go/dns",
     "/go/kedomains",
     "/go/analytics",
     "/go/routing",

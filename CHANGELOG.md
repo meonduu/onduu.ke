@@ -1,6 +1,16 @@
 # Changelog
 
-CURRENT VERSION: v4.16.0 — 2236hrs:18th August2026
+CURRENT VERSION: v4.16.1 — 2248hrs:18th August2026
+
+## v4.16.1 — 2248hrs:18th August2026
+
+Dashboard aggregation for the DNS Health Check (the follow-up recorded in
+v4.16.0): `/go/dns` renders the same `toolUsage` view as the other lookup
+tools — checks all-time/30-day/7-day, distinct domains, page visits, most
+checked, recent checks with summaries, daily trend. Added to the dashboard
+nav and the overview section table. The fail-closed Access test now covers
+`/go/dns`. Verified locally against the production build: renders with the
+logged rows, refuses 403 without Access headers.
 
 ## v4.16.0 — 2236hrs:18th August2026
 

@@ -4,6 +4,7 @@
  *   /go/enquiries          form submissions and their sources
  *   /go/scans              readiness scan results
  *   /go/email-security     email checker usage
+ *   /go/dns                DNS health check usage
  *   /go/kedomains          domain search usage
  *   /go/analytics          first-party page views
  *   /go/routing            outbound clicks to routed destinations
@@ -52,6 +53,7 @@ const SECTIONS: [slug: string, label: string][] = [
   ["enquiries", "Enquiries"],
   ["scans", "Readiness scans"],
   ["email-security", "Email checker"],
+  ["dns", "DNS check"],
   ["kedomains", "Domain search"],
   ["analytics", "Analytics"],
   ["routing", "Routed clicks"],
@@ -178,6 +180,7 @@ ${table(
     ['<a href="/go/enquiries">Enquiries</a>', "Assessment and contact submissions, with the source that produced them", ""],
     ['<a href="/go/scans">Readiness scans</a>', "Stored scan results: domain, score, coverage, rubric version", ""],
     ['<a href="/go/email-security">Email checker</a>', "SPF/DKIM/DMARC checks run, most-checked domains, daily trend", ""],
+    ['<a href="/go/dns">DNS check</a>', "DNS health checks run, most-checked domains, daily trend", ""],
     ['<a href="/go/kedomains">Domain search</a>', "Domain searches run, most-searched names, daily trend", ""],
     ['<a href="/go/analytics">Analytics</a>', "First-party page views: pages, referrers, countries, devices, daily trend", ""],
     ['<a href="/go/routing">Routed clicks</a>', "Outbound clicks to HOSTAFRICA and other routed destinations", ""],
@@ -631,6 +634,14 @@ export async function handleDashboard(
         // /check was the tool's route until 18 Aug 2026; keep its history.
         paths: ["/email-security", "/check"],
         blurb: "SPF, DKIM, DMARC and MX checks run by visitors.",
+      });
+    case "dns":
+      return toolUsage(db, {
+        slug: "dns",
+        tool: "dns",
+        title: "DNS check",
+        paths: ["/dns"],
+        blurb: "DNS health checks run by visitors: nameservers, delegation, addresses, DNSSEC.",
       });
     case "kedomains":
       return toolUsage(db, {
