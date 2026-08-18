@@ -117,6 +117,7 @@ test("registrar names match their websites across published variants", () => {
   assert.equal(registrarWebsite("Truehost Cloud Limited"), "https://truehost.co.ke");
   assert.equal(registrarWebsite("Safaricom PLC"), "https://www.safaricom.co.ke");
   assert.equal(registrarWebsite("GoDaddy.com, LLC"), "https://www.godaddy.com");
+  assert.equal(registrarWebsite("ICT Authority"), "https://www.icta.go.ke");
   assert.equal(registrarWebsite("Some Unknown Registrar Ltd"), null, "unknown names get no link");
   assert.equal(registrarWebsite(null), null);
 });

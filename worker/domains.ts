@@ -39,6 +39,8 @@ export interface DomainResult {
  * show their published name without a link.
  */
 const REGISTRAR_SITES: [pattern: string, url: string][] = [
+  // Government domains (.go.ke) register through the ICT Authority.
+  ["ictauthority", "https://www.icta.go.ke"],
   ["hostafrica", "https://www.hostafrica.com"],
   ["truehost", "https://truehost.co.ke"],
   ["safaricom", "https://www.safaricom.co.ke"],

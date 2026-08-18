@@ -1,6 +1,14 @@
 # Changelog
 
-CURRENT VERSION: v4.6.1 — 1853hrs:18th August2026
+CURRENT VERSION: v4.6.2 — 1858hrs:18th August2026
+
+## v4.6.2 — 1858hrs:18th August2026
+
+Added the ICT Authority (icta.go.ke, URL verified) to the registrar
+directory, so government .go.ke domains link to the body that actually
+registers them. 129/129 tests.
+
+## v4.6.1 — 1853hrs:18th August2026
 
 ## v4.6.1 — 1853hrs:18th August2026
 
