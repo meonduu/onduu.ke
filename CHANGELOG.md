@@ -1,6 +1,18 @@
 # Changelog
 
-CURRENT VERSION: v4.5.2 — 1834hrs:18th August2026
+CURRENT VERSION: v4.5.3 — 1840hrs:18th August2026
+
+## v4.5.3 — 1840hrs:18th August2026
+
+Removed the duplicated HOSTAFRICA disclosure note from the domain search
+results block (owner request). The disclosure remains on the same page —
+the "Registration happens at HOSTAFRICA" section with the MD relationship
+and no-commission statement — and in the footer, so it still sits at the
+decision point; the results block no longer repeats it after every
+search. The SEO test asserting the page-level disclosure still passes.
+127/127.
+
+## v4.5.2 — 1834hrs:18th August2026
 
 ## v4.5.2 — 1834hrs:18th August2026
 

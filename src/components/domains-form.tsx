@@ -164,11 +164,6 @@ export function DomainsForm() {
               </li>
             ))}
           </ul>
-          <div className="note">
-            Registration, billing and support happen at HOSTAFRICA, not on this site. Wycliffe, who
-            operates Onduu, is also Managing Director of HOSTAFRICA Kenya. Onduu receives no
-            commission on registrations; outbound clicks are counted in aggregate only.
-          </div>
         </div>
       )}
     </>
