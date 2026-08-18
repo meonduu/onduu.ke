@@ -129,10 +129,16 @@ test("a dead include is recorded as unresolved", async () => {
   assert.deepEqual(expansion.unresolved, ["gone.com"]);
 });
 
-test("DMARC p=reject passes, p=none only warns", () => {
+test("DMARC enforcing policies pass, p=none only warns", () => {
   assert.equal(analyseDmarc(["v=DMARC1; p=reject; rua=mailto:a@b.ke"]).status, "pass");
+  assert.equal(analyseDmarc(["v=DMARC1; p=quarantine; rua=mailto:a@b.ke"]).status, "pass");
   assert.equal(analyseDmarc(["v=DMARC1; p=none; rua=mailto:a@b.ke"]).status, "warn");
   assert.equal(analyseDmarc([]).status, "fail");
+});
+
+test("quarantine's pass detail still recommends p=reject", () => {
+  const result = analyseDmarc(["v=DMARC1; p=quarantine; rua=mailto:a@b.ke"]);
+  assert.match(result.detail, /p=reject is the recommended endpoint/);
 });
 
 test("DMARC with a partial pct is not treated as full enforcement", () => {

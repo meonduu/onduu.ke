@@ -1,6 +1,19 @@
 # Changelog
 
-CURRENT VERSION: v4.14.0 — 2149hrs:18th August2026
+CURRENT VERSION: v4.15.0 — 2153hrs:18th August2026
+
+## v4.15.0 — 2153hrs:18th August2026
+
+Companion to v4.14.0, per the owner: DMARC **p=quarantine now reads
+PASS** — it is an enforcing policy (forged mail is kept out of the
+inbox), so it is treated like p=reject with the detail stating that
+p=reject is the recommended endpoint once reports are clean. Scoring
+follows: full 45 DMARC points. An enforcing policy diluted by pct<100
+still warns, now with consistent partial credit (30) whether the policy
+is quarantine or reject. p=none keeps its warning, a missing policy its
+failure. 137 tests.
+
+## v4.14.0 — 2149hrs:18th August2026
 
 ## v4.14.0 — 2149hrs:18th August2026
 

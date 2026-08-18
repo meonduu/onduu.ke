@@ -384,8 +384,11 @@ export function analyseDmarc(txtRecords) {
       detail: `Policy is p=${policy} but only applied to ${pct}% of mail. The remaining ${100 - pct}% is unprotected. Raise pct to 100 once you are confident.`,
     };
   }
+  // Both quarantine and reject are enforcing policies — forged mail is kept
+  // out of the inbox either way. Quarantine passes, with p=reject stated as
+  // the recommended endpoint rather than treated as a defect.
   return {
-    status: policy === 'reject' ? 'pass' : 'warn',
+    status: 'pass',
     record,
     policy,
     pct,
@@ -393,7 +396,7 @@ export function analyseDmarc(txtRecords) {
     detail:
       policy === 'reject'
         ? `Policy is p=reject${rua ? ' with reporting enabled' : ''}. Forged mail claiming to be from your domain is refused outright. This is the goal.${rua ? '' : ' Add a rua= address so you can still see who is trying.'}`
-        : 'Policy is p=quarantine — forged mail goes to spam rather than being refused. Good progress. Move to p=reject once the reports are clean.',
+        : `Policy is p=quarantine${rua ? ' with reporting enabled' : ''} — forged mail is sent to spam instead of the inbox, so your domain is protected. This is a legitimate, enforcing setup; once the reports are clean, p=reject is the recommended endpoint because it refuses forged mail outright.${rua ? '' : ' Add a rua= address so you can see who is trying.'}`,
   };
 }
 
@@ -512,10 +515,12 @@ export function score(checks) {
   }
 
   max += 45;
-  if (checks.dmarc.status === 'pass') s += 45; // p=reject
+  if (checks.dmarc.status === 'pass') s += 45; // p=reject or p=quarantine
   else if (checks.dmarc.status === 'warn') {
-    if (checks.dmarc.policy === 'quarantine') s += 30;
-    else s += checks.dmarc.rua ? 10 : 5; // p=none, with or without reporting
+    // A warn with an enforcing policy means something else is wrong (pct<100);
+    // partial credit. Otherwise p=none, with or without reporting.
+    if (checks.dmarc.policy === 'quarantine' || checks.dmarc.policy === 'reject') s += 30;
+    else s += checks.dmarc.rua ? 10 : 5;
   }
 
   return Math.max(0, Math.min(100, Math.round((s / max) * 100)));
