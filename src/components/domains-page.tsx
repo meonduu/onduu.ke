@@ -16,8 +16,7 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
             <h1>Is your business name protected in .ke too?</h1>
             <p className="lede">
               Search a name in any Kenyan extension and this checks it together with its .ke twin,
-              because owning one without the other leaves the door open for someone else. Taken
-              domains show their registrar, transfer lock and expiry from public records.
+              because owning one without the other leaves the door open for someone else.
             </p>
           </div>
         </section>

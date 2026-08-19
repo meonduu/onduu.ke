@@ -1,6 +1,34 @@
 # Changelog
 
-CURRENT VERSION: v4.31.1 — 1523hrs:19th August2026
+CURRENT VERSION: v4.32.0 — 1547hrs:19th August2026
+
+## v4.32.0 — 1547hrs:19th August2026
+
+Four changes on `/kedomains`, as instructed.
+
+- **An unlocked domain now says what to do about it.** "TRANSFER LOCK:
+  OFF." is followed by "Log into your registrar panel and lock it. It is
+  the main defence against domain theft." Previously the tool reported the
+  weakness and left the reader to work out the fix.
+- The reserved-name limitation line ("Reported by the registry itself…")
+  is deleted.
+- The idle form microcopy ("Checks the extension you enter") is removed.
+  The element stays in the DOM as the aria-live region that announces
+  "Reading public DNS and registry records…".
+- The lede drops its closing sentence about registrar, lock and expiry.
+
+**One wording change from the instruction, flagged for the owner.** The
+guidance was given as "It prevents theft". A transfer lock blocks an
+unauthorised transfer, which is the usual route for domain theft, but it
+does not prevent theft through a compromised registrar account, so
+"prevents" would be a guarantee the tool cannot make, and CLAUDE.md
+forbids promising guaranteed security. It reads "It is the main defence
+against domain theft" instead, which keeps the point and stays true. Say
+the word if the original wording is preferred.
+
+Verified against a live lookup of safaricom.co.ke and safaricom.ke: both
+report the lock off and now carry the guidance. 174 tests pass.
+
 
 ## v4.31.1 — 1523hrs:19th August2026
 

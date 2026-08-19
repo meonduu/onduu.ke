@@ -111,7 +111,7 @@ export function DomainsForm() {
       )}
 
       <p className="check-note" role="status" aria-live="polite">
-        {state === "loading" ? "Reading public DNS and registry records…" : "Checks the extension you enter"}
+        {state === "loading" ? "Reading public DNS and registry records…" : ""}
       </p>
 
       {error && (
@@ -157,7 +157,8 @@ export function DomainsForm() {
                     )}
                     {r.locked === false && (
                       <p>
-                        TRANSFER LOCK: <b className="value-bad">OFF.</b>
+                        TRANSFER LOCK: <b className="value-bad">OFF.</b> Log into your registrar
+                        panel and lock it. It is the main defence against domain theft.
                       </p>
                     )}
                     {r.locked === undefined && (
@@ -196,10 +197,6 @@ export function DomainsForm() {
                       <strong>Not registered</strong>
                     </p>
                     {r.reservedNote && <code>{r.reservedNote}</code>}
-                    <p className="check-limitation">
-                      Reported by the registry itself. Whether a name can be released is the
-                      registry&rsquo;s decision, not a registrar&rsquo;s.
-                    </p>
                   </>
                 )}
                 {r.status === "unknown" && (
