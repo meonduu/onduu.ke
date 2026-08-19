@@ -1,6 +1,37 @@
 # Changelog
 
-CURRENT VERSION: v4.25.0 — 1229hrs:19th August2026
+CURRENT VERSION: v4.25.1 — 1246hrs:19th August2026
+
+## v4.25.1 — 1246hrs:19th August2026
+
+Findings from reading the paths pages and privacy notice after the dash
+removal, as promised.
+
+One regression from that pass, now fixed. In the privacy notice the scan
+paragraph had a long aside ("a domain — its registry record, DNS,
+published email records, and the homepage, robots.txt and sitemap that
+any visitor can request — and returns a Public Signal Score"). The aside
+was longer than the pairing rule's limit, so both dashes became separate
+commas and the list blurred into the sentence. It is parentheses now. A
+diff sweep confirmed this was the only aside affected.
+
+Two directory-era labels found while reading, unrelated to the dashes.
+The 19 August brief §12 replaced the public-directory model, and v4.17.0
+updated the links and section copy, but two internal labels survived
+because that pass searched for the external ujiajiri.ke/partners URL
+rather than link text:
+
+- The final CTA on every standard page, and the homepage, offered "Find
+  an Implementation Partner". It links to the paths page, which now
+  describes private introductions, so the label promised browsing that no
+  longer exists. It reads "See the implementation path".
+- The footer's "Choose a Path" column listed "Ujiajiri Partners", now
+  "Ujiajiri Introductions".
+
+The rest of both pages reads correctly: the paths copy, the referral-fee
+disclosure, the consent step and the privacy notice's tool sections all
+survived the punctuation change intact. 170 tests pass; lint clean.
+
 
 ## v4.25.0 — 1229hrs:19th August2026
 
