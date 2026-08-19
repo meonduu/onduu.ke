@@ -1,6 +1,25 @@
 # Changelog
 
-CURRENT VERSION: v4.37.2 — 1717hrs:19th August2026
+CURRENT VERSION: v4.37.3 — 1727hrs:19th August2026
+
+## v4.37.3 — 1727hrs:19th August2026
+
+A false claim removed from `/kedomains`, spotted by the owner: the
+"appears available" note ended "Nothing you search here is stored." That
+has been untrue since 18 August, when the v4.9.x decision started storing
+the name searched and what was found (with no visitor identity). The
+sentence predates that decision and was missed when the other tool pages
+gained their storage disclosures.
+
+It now reads "The name searched and what was found are kept; nothing
+about you is." — the same one-line form as /email-security and /dns, and
+matching what the privacy notice says about this tool.
+
+Swept for sibling absolutes: the two remaining "never stored / nothing is
+stored" phrases are both in the privacy notice and both are accurate (the
+hashed connection address is never stored with a result; nothing is
+stored on the visitor's device). 174 tests pass.
+
 
 ## v4.37.2 — 1717hrs:19th August2026
 

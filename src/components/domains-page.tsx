@@ -42,7 +42,7 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
             <div className="note">
               &quot;Appears available&quot; is a public observation from DNS and the registry, not a
               reservation. Availability and price are confirmed at the registrar&apos;s checkout.
-              Nothing you search here is stored.
+              The name searched and what was found are kept; nothing about you is.
             </div>
           </div>
         </section>
