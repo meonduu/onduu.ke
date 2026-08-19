@@ -71,3 +71,20 @@ footer .wordmark .track{stroke:#28323C}footer .wordmark .arc{stroke:#CD7A50}foot
    types. Specificity beats the bare .lede rule, so order does not matter. */
 .page-hero .eyebrow,.hero-copy .eyebrow,.article-head .eyebrow{margin-bottom:6px}
 .page-hero .lede,.hero-copy .lede,.article-head .lede{margin-top:14px}
+
+/* Result status reads first (19 Aug 2026). The badge sat right-aligned at
+   the far end of the row, so "TAKEN" or "APPEARS AVAILABLE" was the last
+   thing seen rather than the first. CSS order moves it left without
+   changing the DOM, so the heading is still what a screen reader meets
+   first. All four tools share this markup, so one rule covers them. */
+.check-row-head{justify-content:flex-start;align-items:center}
+.check-row-head h3{order:2}
+.check-badge{order:1;font-size:10px;padding:8px 12px;border-width:2px;min-width:15.5em;text-align:center}
+.check-badge.check-pass{color:#1f5346;background:#e7f0ec}
+.check-badge.check-warn{color:#8a4526;background:#f6ece5}
+.check-badge.check-fail{color:#8c2b22;background:#f7e6e3}
+.check-badge.check-info{color:#4a5860;background:#eceff0}
+/* The fixed status column earns its alignment on a wide screen. On a
+   phone it only forces the heading onto its own line, so let the badge
+   size to its text there. */
+@media(max-width:760px){.check-badge{min-width:0}}

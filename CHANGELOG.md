@@ -1,6 +1,37 @@
 # Changelog
 
-CURRENT VERSION: v4.32.0 — 1547hrs:19th August2026
+CURRENT VERSION: v4.33.0 — 1557hrs:19th August2026
+
+## v4.33.0 — 1557hrs:19th August2026
+
+The result status now reads first. It sat right-aligned at the far end of
+the row, so "TAKEN" or "APPEARS AVAILABLE" was the last thing a visitor
+saw rather than the first.
+
+CSS only, no component changes: all four tools already share the same
+`check-row-head` markup, so one rule moves the badge left on
+`/kedomains`, `/dns`, `/email-security` and `/scan` at once. The move uses
+`order` rather than reordering the DOM, so the heading is still what a
+screen reader meets first.
+
+The badge is also more prominent: larger text, thicker border, and a
+tinted background per status instead of an outline alone.
+
+Two things came out of measuring rather than eyeballing:
+
+- With badges sized to their text, the headings started at different
+  x-positions ("TAKEN" is 115px wide, "APPEARS AVAILABLE" 155px), so the
+  rows looked ragged. A 15.5em minimum turns the status into a proper
+  column and the headings line up at a single left edge.
+- That fixed column then forced headings onto their own line on a phone,
+  where the width is not available to spare. Below 760px the minimum is
+  dropped and badges size to their text again.
+
+Verified on real lookups: zero.co.ke and zero.ke on `/kedomains`
+(headings aligned at 290px), and an 11-finding kenic.or.ke report on
+`/dns`, at 1280x800 and 375x812, with no horizontal overflow at either.
+174 tests pass.
+
 
 ## v4.32.0 — 1547hrs:19th August2026
 
