@@ -1,6 +1,19 @@
 # Changelog
 
-CURRENT VERSION: v4.26.0 — 1303hrs:19th August2026
+CURRENT VERSION: v4.26.1 — 1317hrs:19th August2026
+
+## v4.26.1 — 1317hrs:19th August2026
+
+One sentence repaired on /kedomains, spotted by the owner: "checks it
+together with its .ke twin. because owning one..." — a full stop followed
+by lowercase "because". A casualty of the v4.25.0 dash removal: the source
+had the dash at the end of a wrapped line, the replacer did not read past
+the newline, so it chose a period and could not capitalise what it could
+not see. Now a comma, which is what the sentence always wanted.
+
+Swept the whole codebase for the same signature (period, line break,
+lowercase letter): this was the only instance. 173 tests pass.
+
 
 ## v4.26.0 — 1303hrs:19th August2026
 
