@@ -200,8 +200,17 @@ Remaining:
   narrowed to the human-reviewed assessment with the free tools pointed at
   the tool limitations page; DKIM wording matches the code. Still a draft;
   TO CONFIRM items stand for professional review.
-- [ ] Define and document retention, deletion, consent, processors and
-  transfer behaviour; enforce `retain_until`.
+- [x] Retention and deletion decided by the owner 19 August 2026
+  (v4.39.1): **the formal policy is deletion on request** — submissions and
+  stored tool results are kept until deleted, and deletion requests are
+  honoured — which is what the privacy notice, the Assessment Terms 0.2 and
+  the code already do. The `retain_until` column (stamped two years from
+  submission in `worker/submissions.ts`) is an **advisory marker only**,
+  kept so a fixed-period policy could be adopted later; it must not be
+  described as a promise anywhere, and adopting it for real means changing
+  both legal pages and building enforcement together.
+- [ ] Document processors and transfer behaviour beyond what the privacy
+  notice already covers, if the professional review asks for it.
 - [ ] Accessibility pass over the important flows (keyboard, screen reader).
 
 **Acceptance:** every legal statement matches observed behaviour; no draft
@@ -289,10 +298,11 @@ owner approves:
 | --- | --- | --- |
 | Supply 16 Aug two-site strategy document | Phases 1–2 | **supplied 18 Aug 2026** — filed under `docs/strategy/` (with the 18 Aug Current Version consolidating it) |
 | Supply 15 Aug brief PDF (secondary source) | Phases 1–3 | **supplied 18 Aug 2026** — `docs/strategy/onduu-website-brief-2026-08-15.pdf` |
-| Approve governance files (this commit) | everything | outstanding (in daily use since 18 Aug, but no explicit sign-off recorded) |
+| Approve governance files (this commit) | everything | **approved 19 Aug 2026** — explicit owner sign-off of `CLAUDE.md`, `ROADMAP.md` and `REVIEW.md` recorded during the full-repo audit session (v4.39.1) |
 | Approve Astro migration merge after preview | Phase 0.5 | **approved and merged 18 Aug 2026** (PR #1, v3.0.0, live) |
 | Approved HOSTAFRICA destination + wording | Phase 2 | **decided 18 Aug 2026**: panel.hostafrica.com with UTM attribution only, no affiliate parameter, no commission (v4.1.0) |
 | Identity/contact facts; lift draft markings | Phase 3 | outstanding |
+| Retention policy: deletion on request, no fixed period | Phase 3 | **decided 19 Aug 2026** — `retain_until` stays advisory only (v4.39.1) |
 | Instant-scan specification approval | Phase 4 | **approved 18 Aug 2026** (spec + psr-v1 rubric) |
 | Scanner public launch approval | Phase 4 | **approved and launched 18 Aug 2026** (v4.2.0, `SCAN_ENABLED` set) |
 | DNS Health Check spec, URL and launch | Phase 4 | **decided 18 Aug 2026**: spec approved, owner set the URL to `/dns`, launched (v4.15.4–v4.16.1) |
