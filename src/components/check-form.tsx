@@ -94,7 +94,7 @@ export function CheckForm() {
       <p className="check-note" role="status" aria-live="polite">
         {state === "loading"
           ? "Querying public DNS records…"
-          : "This reads published DNS records only. You need no account, and it never asks for a password."}
+          : "This reads published DNS records only."}
       </p>
 
       {error && (

@@ -15,8 +15,7 @@ export function CheckPage({ children }: { children?: ReactNode }) {
             <h1>Can someone send email pretending to be you?</h1>
             <p className="lede">
               Enter your domain. This reads the public records that decide whether a stranger can
-              email your customers using your business name, and tells you, in plain English,
-              what to fix.
+              email your customers using your domain.
             </p>
           </div>
         </section>
@@ -33,9 +32,7 @@ export function CheckPage({ children }: { children?: ReactNode }) {
           <div className="section-body">
             <p>
               Every record checked here is already public. Anyone can look them up, including the
-              people who would spoof your domain. No credentials are asked for and no mailbox is
-              touched. The domain checked and the result are kept so Onduu can see which checks
-              are run and which failures are common; nothing about you is recorded with them.
+              people who would spoof your domain.
             </p>
             <ul>
               <li>SPF: which servers are allowed to send mail as your domain</li>

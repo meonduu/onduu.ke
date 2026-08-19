@@ -1,6 +1,33 @@
 # Changelog
 
-CURRENT VERSION: v4.30.0 — 1447hrs:19th August2026
+CURRENT VERSION: v4.30.1 — 1502hrs:19th August2026
+
+## v4.30.1 — 1502hrs:19th August2026
+
+Three copy trims on `/email-security`, as instructed.
+
+- Lede: drops "and tells you, in plain English, what to fix" and now ends
+  "…using your domain."
+- Form microcopy: "This reads published DNS records only." (the account and
+  password reassurance is gone).
+- Section 01: keeps the first two sentences and drops the rest.
+
+**One consequence worth recording.** The deleted section-01 text carried
+the storage disclosure: "The domain checked and the result are kept so
+Onduu can see which checks are run and which failures are common; nothing
+about you is recorded with them." That sentence was added in v4.9.x
+specifically because storage began then, and the decision at the time was
+that the privacy notice **and both tool pages** would say so. The tool
+page no longer does.
+
+The disclosure itself is not lost: `/legal/privacy` §04 and
+`/legal/tool-limitations` §01 both still state that the domain and result
+are stored, and the footer on this page links to both. So the statement
+remains one click away rather than in front of the visitor. Flagged for
+the owner in case a shorter line is wanted back on the page.
+
+174 tests pass; lint clean.
+
 
 ## v4.30.0 — 1447hrs:19th August2026
 
