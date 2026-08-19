@@ -268,11 +268,23 @@ Remaining:
 private evidence is never scored as pass or fail; threat-model tests pass;
 owner approves each launch (scan and DNS check: granted 18 Aug 2026).
 
-## Phase 5 — Guides, tools and content system — `not started`
+## Phase 5 — Guides, tools and content system — `in progress`
 
-- Trigger-based guides: domains, DNS, email trust, websites, Kenyan
-  infrastructure, Buzz, supervised agents.
-- One relevant next path per article.
+Status corrected 19 August 2026: this said `not started` while five guides
+were already written, live and in the sitemap. Found in the same pass that
+caught the navigation defect below.
+
+- [x] Trigger-based guides: domains (`/guides/domains-and-dns`), DNS (same
+  guide plus the `/dns` tool), email trust (`/guides/email-and-trust`),
+  websites (`/guides/website-revenue-system`), Kenyan infrastructure
+  (`/guides/kenyan-vps`), supervised agents (`/guides/agents-on-vps`).
+  **Buzz has no guide** — the one item from the original list still unwritten.
+- [x] One relevant next path per article — every guide carries the standard
+  closing CTA through `StandardPage`.
+- [x] Guides reachable by clicking (v4.44.0, 19 Aug 2026): the index printed
+  each guide's URL as plain `<small>` text instead of linking it, so four of
+  the five guides had no clickable route anywhere on the site and the fifth
+  only through the footer. Cards now link from their headings.
 - Sustainable LinkedIn/YouTube repurposing workflow; no low-value generic
   duplication.
 - (Deferred from Phase 0.5) Convert Insights block model to MDX content
