@@ -141,7 +141,12 @@ under `docs/strategy/`, and the HOSTAFRICA destination is decided
 (panel.hostafrica.com, UTM attribution only — v4.1.0). Partially delivered
 already: `/paths/*` pages with disclosures (v4.0.0), the contact
 three-destination split (v4.0.0), and the domain search routing to the
-approved destination (v4.x). Remaining below.
+approved destination (v4.x). **19 August 2026 (v4.17.0/v4.19.2): the
+Ujiajiri route shipped as private curated introductions** per the 19 Aug
+developer brief — every implementation CTA is "Request an Implementation
+Introduction" to `ujiajiri.ke/request-an-introduction/`, with the consent
+step and referral-fee existence disclosed at the decision point and the
+public-directory model retired. Remaining below.
 
 - Route website/digital-marketing implementation to Ujiajiri partners.
 - Route HOSTAFRICA products/support to the approved official destination.

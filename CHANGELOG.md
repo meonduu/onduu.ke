@@ -1,10 +1,17 @@
 # Changelog
 
-CURRENT VERSION: v4.19.1 — 0718hrs:19th August2026
-(v4.17.0 is reserved by the unmerged branch `feat/introduction-routing`.)
+CURRENT VERSION: v4.19.2 — 0732hrs:19th August2026
+
+## v4.19.2 — 0732hrs:19th August2026
+
+The introduction routing is live: `feat/introduction-routing` (v4.17.0,
+below in sequence) merged on the owner's instruction after
+`ujiajiri.ke/request-an-introduction/` was verified live (HTTP 200, form
+present). Every implementation CTA on onduu.ke now routes to Ujiajiri's
+private curated introductions. Merge-only release; the change itself is
+described in the v4.17.0 entry.
 
 ## v4.19.1 — 0718hrs:19th August2026
-
 Docs only: spec §3 records the Phase 2 vantage limits verified from the
 production edge. Cloudflare-hosted nameservers cannot be TCP-probed from
 a Worker (platform restriction — serials degrade to "not probed" for
@@ -84,6 +91,33 @@ missing PTR, dead NS name, SOA advice); lint clean; live check of
 kenic.or.ke on the production build renders all six blocks, five tables
 and the diagram, with real registry data, Outlook PTR names and no
 horizontal overflow.
+
+## v4.17.0 — 0641hrs:19th August2026 — merged 0732hrs:19th August2026 (v4.19.2)
+
+Onduu's side of the 19 August developer brief (private curated
+introductions): every implementation route now describes Ujiajiri's
+introduction model instead of the retired public directory.
+
+- Paths hub card, `/paths/website-and-digital-marketing` (intro, "how it
+  works" list rewritten to the §2 business rules, "THE DIRECTORY" section
+  replaced by "THE INTRODUCTION" carrying the brief's recommended wording
+  and the no-guarantee/worldwide-scope sentence), `/readiness` after-score
+  section, `/contact` implementation card, homepage status paragraph.
+- All links now target `https://ujiajiri.ke/request-an-introduction/` with
+  the label "Request an Implementation Introduction"; no
+  `ujiajiri.ke/partners/` link remains anywhere (published articles never
+  linked it).
+- Disclosure updated per §2/§9: the possible referral fee's existence is
+  stated at the decision point, its amount is not, and the provider's duty
+  to explain price impact is named. The "no automatic transfer of
+  assessment answers" promise is retained on /readiness.
+- The cross-link test suite now pins the new model: introduction URL and
+  label present, consent step stated, fee disclosed without an amount,
+  directory links banned, youth-page link and plain-URL rules unchanged.
+  154 tests pass; lint clean; copy verified on the production build.
+
+Held unmerged until the owner approved the wording and the ujiajiri.ke
+route went live; both confirmed and merged 19 August 2026 (v4.19.2).
 
 ## v4.16.3 — 0650hrs:19th August2026
 

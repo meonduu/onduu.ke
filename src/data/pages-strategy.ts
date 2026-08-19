@@ -47,8 +47,8 @@ export const strategyPages: Record<string, PageContent> = {
         cards: [
           {
             title: "Website and digital-marketing implementation",
-            body: "Independent implementation partners, discovered through Ujiajiri. Each partner publishes its own capabilities and contracts directly with the client. Ujiajiri and Onduu do not quote, collect payment for or guarantee the partner's work.",
-            meta: "UJIAJIRI PARTNERS",
+            body: "Independent providers, reached through Ujiajiri's private curated introductions. Ujiajiri proposes a suitable provider and asks your permission before sharing your information; the provider contracts and delivers directly. Ujiajiri and Onduu do not quote, collect payment for or guarantee the provider's work.",
+            meta: "UJIAJIRI INTRODUCTIONS",
           },
           {
             title: "Domains, hosting, email and VPS infrastructure",
@@ -69,33 +69,35 @@ export const strategyPages: Record<string, PageContent> = {
 
   "paths/website-and-digital-marketing": {
     eyebrow: "PATHS / IMPLEMENTATION",
-    title: "Independent partners implement. You contract them directly.",
+    title: "Independent providers implement. You contract them directly.",
     intro:
-      "Website-design and digital-marketing implementation routes to independent partners listed through Ujiajiri. The client chooses, contracts and pays the partner directly.",
+      "Website-design and digital-marketing implementation routes to independent providers through Ujiajiri's private curated introductions. The provider you approve contracts with you and is paid by you directly.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
       {
         eyebrow: "HOW IT WORKS",
-        title: "The partner relationship, plainly.",
+        title: "The introduction, plainly.",
         items: [
-          "Each partner publishes its own capabilities, portfolio and terms",
-          "You choose the partner and contract with them directly",
-          "The partner sets its own scope, price and delivery commitments",
-          "The partner is responsible for its warranty and support",
+          "You tell Ujiajiri what the business needs",
+          "Ujiajiri proposes one suitable provider from its private network and tells you who it is",
+          "Nothing identifiable is shared with the provider until you give permission",
+          "You may accept, decline or ask for another provider",
+          "The provider scopes, quotes, contracts, invoices, delivers and warrants its own work — you pay the provider directly",
           "Ujiajiri and Onduu do not quote, collect project payments or guarantee the work",
         ],
       },
       {
-        eyebrow: "THE DIRECTORY",
-        title: "Compare providers on Ujiajiri.",
+        eyebrow: "THE INTRODUCTION",
+        title: "Ask Ujiajiri for a private introduction.",
         body: [
-          "Need implementation? Compare independent website and digital-marketing providers on Ujiajiri. Each provider publishes its own capabilities and terms; you choose, contract and pay the provider directly.",
+          "When independent website or digital-marketing implementation is needed, you may ask Ujiajiri to identify a suitable provider from its private network. Ujiajiri will propose a provider and request your permission before sharing your information. The provider contracts and delivers directly.",
+          "An introduction is not guaranteed: it depends on project fit, jurisdiction and the availability of a suitable approved provider. International enquiries are welcome on the same basis.",
         ],
         links: [
-          { label: "Find a Delivery Partner", href: "https://ujiajiri.ke/partners/", external: true },
+          { label: "Request an Implementation Introduction", href: "https://ujiajiri.ke/request-an-introduction/", external: true },
         ],
-        note: "Onduu is operated by Ujiajiri Enterprises Limited, which also runs the Ujiajiri platform. Onduu does not receive a share of partner project fees; providers on Ujiajiri are independent and neither site delivers or guarantees their work. Any future referral arrangement will be disclosed here before it takes effect.",
+        note: "Onduu is operated by Ujiajiri Enterprises Limited, which also runs the Ujiajiri introduction service. Ujiajiri may receive a referral fee from the proposed provider after qualifying client payment; the fee's existence is disclosed to you before you approve an introduction, and the provider must tell you whether the arrangement affects its quoted price. Onduu does not deliver or guarantee the provider's work.",
       },
     ],
   },
@@ -500,11 +502,11 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "AFTER THE SCORE",
         title: "What happens after the score?",
         body: [
-          "Need implementation? Compare independent website and digital-marketing providers on Ujiajiri — each contracts with you directly. HOSTAFRICA product enquiries continue through the approved official HOSTAFRICA route.",
+          "Need implementation? Ask Ujiajiri for a private curated introduction: Ujiajiri proposes one suitable independent provider, asks your permission before sharing your information, and the provider contracts and delivers directly. HOSTAFRICA product enquiries continue through the approved official HOSTAFRICA route.",
           "Onduu does not automatically transmit your assessment answers to either destination. Nothing you enter here is shared with Ujiajiri or anyone else — the routes are plain outbound links you follow yourself.",
         ],
         links: [
-          { label: "Find a Delivery Partner", href: "https://ujiajiri.ke/partners/", external: true },
+          { label: "Request an Implementation Introduction", href: "https://ujiajiri.ke/request-an-introduction/", external: true },
         ],
       },
     ],
@@ -538,7 +540,7 @@ export const strategyPages: Record<string, PageContent> = {
           },
           {
             title: "Website or digital-marketing implementation",
-            body: "Independent providers are listed on the Ujiajiri directory. Compare them there and contract directly; the form below can still point you at the next step if you are unsure.",
+            body: "Ask Ujiajiri for a private curated introduction to a suitable independent provider — you approve before anything is shared, and the provider contracts with you directly. The form below can still point you at the next step if you are unsure.",
           },
           {
             title: "HOSTAFRICA products or support",
