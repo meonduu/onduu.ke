@@ -1,6 +1,21 @@
 # Changelog
 
-CURRENT VERSION: v4.36.0 — 1621hrs:19th August2026
+CURRENT VERSION: v4.36.1 — 1651hrs:19th August2026
+
+## v4.36.1 — 1651hrs:19th August2026
+
+The header linked /readiness twice: the nav's "Readiness" text link and
+the "Check Your Digital Readiness" CTA, spotted by the owner. The pair
+dates from the v4.0.0 repositioning, whose nav was specified with both;
+it only became conspicuous once About and How It Works moved to the
+footer and the tools came in, leaving "Readiness" as the nav's first word
+beside a button ending in the same word.
+
+The nav link is removed and the CTA keeps the job, per the one-primary-CTA
+rule. The nav reads Paths, Guides, DNS, Email, Domains. /readiness stays
+reachable from the CTA on every page and from the footer's Start column.
+174 tests pass.
+
 
 ## v4.36.0 — 1621hrs:19th August2026
 
