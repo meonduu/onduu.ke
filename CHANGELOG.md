@@ -1,6 +1,22 @@
 # Changelog
 
-CURRENT VERSION: v4.34.0 — 1611hrs:19th August2026
+CURRENT VERSION: v4.35.0 — 1621hrs:19th August2026
+
+## v4.35.0 — 1621hrs:19th August2026
+
+"How it works" leaves the primary navigation for the footer's **Choose a
+Path** column, on the owner's instruction. It sits first in that column,
+ahead of Ujiajiri Introductions and HOSTAFRICA Infrastructure, since it
+explains the choice those two links represent. It also leaves the Start
+column, where it used to sit, so it appears once in the footer rather
+than twice.
+
+The header is now Readiness, Paths, Guides, plus the readiness CTA. The
+page is unchanged, still returns 200 and stays in the sitemap; only its
+promotion changed, as with About in v4.28.0.
+
+174 tests pass; lint clean.
+
 
 ## v4.34.0 — 1611hrs:19th August2026
 
