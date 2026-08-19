@@ -279,9 +279,11 @@ caught the navigation defect below.
   websites (`/guides/website-revenue-system`), Kenyan infrastructure
   (`/guides/kenyan-vps`), supervised agents (`/guides/agents-on-vps`).
 
-**Buzz — a conditional content area, not a missing guide.** The guide list
-above comes from the 15 August brief, which named Buzz alongside the
-others. Do not treat its absence as a gap to fill: the Current Version
+**Buzz — a conditional content area.** An educational guide now exists at
+`/guides/buzz-workspaces` (v4.45.0, 19 Aug 2026), written on the owner's
+instruction from the brief's approved wording, with the service framing
+removed. The conditions below still govern anything further. The Current
+Version
 strategy permits Buzz only as a **content area "presented responsibly"**,
 and its "Buzz Fit Lab" belongs to the programmes that "should be
 educational methods, controlled demonstrations or approved labs — not
@@ -292,12 +294,16 @@ in v4.0.0 and 301s to `/guides/agents-on-vps`. `CLAUDE.md` also names Buzz
 among the things the site must not lead with, and the site's own "claims we
 will not make" includes "Every client needs Buzz or a new website".
 
-If Buzz content is ever wanted, it needs the owner's source material and
-must take the educational or approved-lab form the strategy describes — a
-pilot-assessment offer must not be rebuilt without separate approval. This
-wording replaces a v4.44.0 note that called Buzz "the one item from the
-original list still unwritten", which read as a to-do and invited exactly
-that rebuild.
+Any further Buzz content must keep the educational or approved-lab form
+the strategy describes; a pilot-assessment offer must not be rebuilt
+without separate approval. Two open points on the published guide, for the
+owner: its protocol section states general Nostr behaviour (key-pair
+identity, relay storage, deletion as a request) that has **not** been
+verified against the deployed Buzz build, and the brief's instruction to
+"mark infrastructure, Buzz deployment and managed-agent commercial copy as
+draft or hide those CTAs from production" was read as covering commercial
+copy only — the guide carries no Buzz CTA, so it ships ungated. Say if you
+want it gated instead.
 - [x] One relevant next path per article — every guide carries the standard
   closing CTA through `StandardPage`.
 - [x] Guides reachable by clicking (v4.44.0, 19 Aug 2026): the index printed
