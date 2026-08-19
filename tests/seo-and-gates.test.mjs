@@ -301,6 +301,25 @@ test("no direct-delivery promise survives on the homepage", async () => {
   assert.doesNotMatch(home, /Agent Workflow Pilot/i);
 });
 
+test("every guide is reachable by clicking from the guides index", async () => {
+  // v4.44.0: the index printed each guide's URL as plain text, leaving four
+  // of five guides with no clickable route anywhere on the site.
+  const guides = await (await fetchPath("/guides")).text();
+  const routes = [
+    "/guides/website-revenue-system",
+    "/guides/domains-and-dns",
+    "/guides/email-and-trust",
+    "/guides/kenyan-vps",
+    "/guides/agents-on-vps",
+  ];
+  for (const route of routes) {
+    assert.match(guides, new RegExp(`href="${route}"`), `${route} must be linked from /guides`);
+    assert.equal((await fetchPath(route)).status, 200, `${route} must still resolve`);
+  }
+  // The bare URL must not be printed as a label any more.
+  assert.doesNotMatch(guides, /<small>\/guides\//, "guide URLs must not render as plain text");
+});
+
 test("the header carries the no-JS mobile disclosure menu", async () => {
   // Below 1000px the inline nav is display:none; the same five links must be
   // reachable through the <details> disclosure (v4.43.0, 19 Aug 2026).

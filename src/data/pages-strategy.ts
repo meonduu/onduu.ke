@@ -169,27 +169,27 @@ export const strategyPages: Record<string, PageContent> = {
           {
             title: "The Website Revenue System",
             body: "Treat the website as a commercial system, the framework for aligning audience, offer, proof, journey, enquiry route and measurement.",
-            meta: "/guides/website-revenue-system",
+            href: "/guides/website-revenue-system",
           },
           {
             title: "Domains and DNS",
             body: "Who really controls your domain: registrant, registrar account, lock, expiry and nameservers, and how to check yours today.",
-            meta: "/guides/domains-and-dns",
+            href: "/guides/domains-and-dns",
           },
           {
             title: "Email and trust",
             body: "What SPF, DKIM and DMARC actually decide, what a clean check proves, and what it deliberately cannot.",
-            meta: "/guides/email-and-trust",
+            href: "/guides/email-and-trust",
           },
           {
             title: "Choosing Kenyan VPS infrastructure",
             body: "Map the workload, the data journey and the responsibilities before deciding where anything should run.",
-            meta: "/guides/kenyan-vps",
+            href: "/guides/kenyan-vps",
           },
           {
             title: "Agents on a VPS",
             body: "What an always-on AI agent needs beyond a server: boundaries, supervision, measurement and a way to stop it.",
-            meta: "/guides/agents-on-vps",
+            href: "/guides/agents-on-vps",
           },
         ],
       },

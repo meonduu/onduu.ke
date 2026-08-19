@@ -1,6 +1,33 @@
 # Changelog
 
-CURRENT VERSION: v4.43.1 — 2020hrs:19th August2026
+CURRENT VERSION: v4.44.0 — 2031hrs:19th August2026
+
+## v4.44.0 — 2031hrs:19th August2026
+
+**The guides were unreachable.** `/guides` showed five cards, each printing
+its guide's URL as plain `<small>` text above the title — a label, not a
+link. Nothing on the page was clickable. Four of the five guides
+(Domains and DNS, Email and trust, Kenyan VPS, Agents on a VPS) therefore
+had no clickable route anywhere on the site; the fifth was reachable only
+through the footer. All five were written, live and in the sitemap the
+whole time, so search engines could reach them and visitors could not.
+
+Cause: the card destinations were stored as `meta`, which `StandardPage`
+renders as descriptive text. They are now a proper `href` on the card type,
+and a card with one links from its heading. The heading link carries the
+accessible name and the focus ring, while its `::after` stretches over the
+tile so the whole card is clickable — verified by hit-testing the card's
+corners and body area, not just the heading. Cards without an `href`
+(contact, readiness) render exactly as before.
+
+Also corrected: `ROADMAP.md` had Phase 5 as `not started` while five guides
+were already published. It is now `in progress`, with the guide list ticked
+off against what actually exists and Buzz recorded as the one guide from
+the original list still unwritten.
+
+A new test pins every guide as linked from the index, resolving with 200,
+and the bare URLs as gone (178 tests). Lint clean. Verified at 375px and
+1280px: two-column grid intact, whole card clickable at both widths.
 
 ## v4.43.1 — 2020hrs:19th August2026
 
