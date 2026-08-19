@@ -6,7 +6,7 @@ import { makeBudget } from "../worker/scan/net.ts";
 /* ── fixture fetcher ─────────────────────────────────────────────────── */
 
 // DNS record type numbers as DoH JSON uses them.
-const T = { A: 1, NS: 2, SOA: 6, MX: 15, AAAA: 28, DS: 43, DNSKEY: 48 };
+const T = { A: 1, NS: 2, SOA: 6, PTR: 12, MX: 15, AAAA: 28, DS: 43, DNSKEY: 48 };
 
 const jsonResponse = (body, status = 200, contentType = "application/json") =>
   new Response(JSON.stringify(body), { status, headers: { "content-type": contentType } });
@@ -62,6 +62,11 @@ function healthyConfig() {
       [`${DOMAIN} DS`]: { answers: [] },
       [`${DOMAIN} DNSKEY`]: { answers: [] },
       [`www.${DOMAIN} A`]: { answers: [[T.A, "197.248.10.10"]] },
+      // Second round: nameserver and mail-server addresses, reverse DNS.
+      ["ns1.host.co.ke A"]: { answers: [[T.A, "197.248.5.1"]] },
+      ["ns2.host.co.ke A"]: { answers: [[T.A, "197.248.5.2"]] },
+      ["mail.example.co.ke A"]: { answers: [[T.A, "197.248.9.9"]] },
+      ["9.9.248.197.in-addr.arpa PTR"]: { answers: [[T.PTR, "mail.example.co.ke."]] },
     },
     rdap: {
       nameservers: [{ ldhName: "NS1.host.co.ke." }, { ldhName: "ns2.host.co.ke" }],
@@ -91,7 +96,76 @@ test("a healthy domain reports coherent foundations", async () => {
   // Single provider and unsigned zone are observations, never faults.
   assert.equal(severityOf(report, "NS_PROVIDER_SINGLE"), "info");
   assert.equal(severityOf(report, "DNSSEC_ABSENT"), "info");
+  // Reverse DNS on the mail server passes; no dead nameserver names.
+  assert.equal(severityOf(report, "MX_PTR_OK"), "pass");
+  assert.equal(findingBy(report, "NS_HOST_UNRESOLVED"), undefined);
   assert.match(report.headline, /coherent/);
+});
+
+test("the detail payload carries the table and diagram data", async () => {
+  const report = await run(healthyConfig());
+  const d = report.detail;
+  assert.equal(d.registryObservable, true);
+  assert.deepEqual(d.registryNs.sort(), ["ns1.host.co.ke", "ns2.host.co.ke"]);
+  const ns1 = d.nsHosts.find((h) => h.host === "ns1.host.co.ke");
+  assert.deepEqual(ns1.ips, ["197.248.5.1"]);
+  assert.equal(ns1.inRegistry, true);
+  assert.equal(ns1.answering, true);
+  assert.equal(d.soa.mname, "ns1.host.co.ke");
+  assert.equal(d.soa.serial, "2024010101");
+  assert.equal(d.soa.expire, 1209600);
+  assert.deepEqual(d.soaAdvice, [], "healthy SOA values need no advice");
+  assert.equal(d.mx[0].host, "mail.example.co.ke");
+  assert.deepEqual(d.mx[0].ips, ["197.248.9.9"]);
+  assert.equal(d.mx[0].ptr[0].name, "mail.example.co.ke");
+  assert.deepEqual(d.apexAddresses, ["197.248.10.10"]);
+  // Every finding is filed under a presentation category.
+  assert.ok(report.findings.every((f) => f.category), "all findings categorised");
+  assert.equal(findingBy(report, "DELEGATION_MATCH").category, "registry");
+  assert.equal(findingBy(report, "MX_PTR_OK").category, "mail");
+});
+
+test("a registry-only nameserver appears in the table as not answering", async () => {
+  const config = healthyConfig();
+  config.rdap.nameservers = [
+    { ldhName: "ns1.host.co.ke" },
+    { ldhName: "ns2.host.co.ke" },
+    { ldhName: "ns3.host.co.ke" },
+  ];
+  const report = await run(config);
+  const stale = report.detail.nsHosts.find((h) => h.host === "ns3.host.co.ke");
+  assert.equal(stale.answering, false);
+  assert.equal(stale.inRegistry, true);
+  assert.equal(severityOf(report, "DELEGATION_MISMATCH"), "fail");
+});
+
+test("a mail server without reverse DNS is an advisory", async () => {
+  const config = healthyConfig();
+  delete config.dns["9.9.248.197.in-addr.arpa PTR"];
+  const report = await run(config);
+  const finding = findingBy(report, "MX_PTR_MISSING");
+  assert.equal(finding.severity, "warn");
+  assert.deepEqual(finding.evidence, ["197.248.9.9"]);
+});
+
+test("a published nameserver whose own name does not resolve is an advisory", async () => {
+  const config = healthyConfig();
+  delete config.dns["ns2.host.co.ke A"];
+  const report = await run(config);
+  const finding = findingBy(report, "NS_HOST_UNRESOLVED");
+  assert.equal(finding.severity, "warn");
+  assert.deepEqual(finding.evidence, ["ns2.host.co.ke"]);
+});
+
+test("unusual SOA timing values earn plain-language advice, not findings", async () => {
+  const config = healthyConfig();
+  config.dns[`${DOMAIN} SOA`] = {
+    answers: [[T.SOA, "ns1.host.co.ke. admin.host.co.ke. 2024010101 7200 900 1209600 86400"]],
+  };
+  const report = await run(config);
+  assert.equal(severityOf(report, "SOA_OK"), "pass", "advice does not fail the check");
+  assert.equal(report.detail.soaAdvice.length, 1);
+  assert.match(report.detail.soaAdvice[0], /Negative-caching TTL is 86400s/);
 });
 
 test("registry-vs-live delegation mismatch is an attention finding with both lists", async () => {
@@ -220,7 +294,9 @@ test("the handler normalises pasted URLs and returns a full report", async () =>
   const body = await response.json();
   assert.equal(body.ok, true);
   assert.equal(body.domain, DOMAIN);
-  assert.equal(body.findings.length, 8);
+  // The eight rules plus the reverse-DNS finding on a mail-bearing domain.
+  assert.equal(body.findings.length, 9);
+  assert.ok(body.detail, "the table/diagram payload is included");
 });
 
 test("an unregistered domain returns 404 with a human explanation", async () => {

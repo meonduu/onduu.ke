@@ -1,6 +1,37 @@
 # Changelog
 
-CURRENT VERSION: v4.16.3 — 0650hrs:19th August2026
+CURRENT VERSION: v4.18.0 — 0702hrs:19th August2026
+(v4.17.0 is reserved by the unmerged branch `feat/introduction-routing`.)
+
+## v4.18.0 — 0702hrs:19th August2026
+
+`/dns` Phase 1: LeafDNS-style graphical results (owner request, spec §3/§6
+amended — "build phase 1").
+
+- Results are now grouped into six category blocks — Registry & delegation,
+  Nameservers, Zone record (SOA), Web addresses, Mail, DNSSEC — each with
+  its own status counts, data table and findings.
+- New data behind the tables, still recursive DoH only: each nameserver's
+  own addresses, the full SOA field table with RFC 1912-style advice lines
+  (advice, never findings), MX hosts resolved with reverse-DNS (PTR)
+  checks on their addresses, and registry-only nameservers shown as "not
+  answering".
+- Two findings joined the rule set: NS_HOST_UNRESOLVED (a published
+  nameserver name that doesn't resolve, advisory) and MX_PTR_OK/MISSING
+  (mail reverse-DNS hygiene, advisory).
+- An SVG delegation diagram sits above the blocks: registry → nameservers
+  (with IPs) → apex/www/mail, every node and edge coloured by status, so a
+  registry/live mismatch reads as a broken path. Scrolls sideways on
+  mobile instead of breaking the page.
+- Budget raised to ≤45 subrequests/15s for the table round (≤6 NS hosts,
+  ≤3 MX hosts, ≤4 PTRs). Parent-side glue and per-server consistency
+  remain the Phase 2 owner gate (DNS-over-TCP), recorded in the spec.
+
+Verified: 159 tests pass (five new: detail payload, registry-only NS,
+missing PTR, dead NS name, SOA advice); lint clean; live check of
+kenic.or.ke on the production build renders all six blocks, five tables
+and the diagram, with real registry data, Outlook PTR names and no
+horizontal overflow.
 
 ## v4.16.3 — 0650hrs:19th August2026
 

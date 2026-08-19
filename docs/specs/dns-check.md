@@ -76,9 +76,18 @@ the Public Signal Score; the summary line is counts ("6 ok · 1 advisory ·
 | 7 | MX present | DoH `MX` | Presence only; the finding **links to `/email-security`** for SPF/DKIM/DMARC — no duplication (cannibalisation guard) |
 | 8 | DNSSEC adoption | DoH `DS` + `DNSKEY` | Detection only: DS present without DNSKEY answers = warning; absent entirely = observation ("most .ke domains do not yet sign; here is what it adds") |
 
-Fetch surface: ≤ 12 DoH queries + 1 RDAP request per check, GET only,
-existing budget/timeout machinery. **Nothing else** — no AXFR attempts, no
-port scans, no queries to authoritative servers directly.
+Fetch surface (amended for the Phase 1 rendering, owner-approved 19 Aug
+2026 "build phase 1"): the 8 rule queries + RDAP as before, **plus** the
+table round — each answering nameserver's A/AAAA (≤6 hosts), the first
+≤3 MX hosts' A records, and PTR lookups on ≤4 mail addresses. All still
+DoH to the recursive resolver, GET only, ≤45 subrequests/15s budget.
+Two findings joined the rule set with the amendment: `NS_HOST_UNRESOLVED`
+(advisory) and `MX_PTR_OK`/`MX_PTR_MISSING` (reverse-DNS hygiene,
+advisory). **Still nothing else** — no AXFR attempts, no port scans, no
+queries to authoritative or parent servers directly. Parent-side glue and
+per-server consistency (LeafDNS parity) remain a **Phase 2 owner gate**:
+they require DNS-over-TCP via Workers `connect()` and their own spec
+amendment before any build.
 
 ## 4. Architecture
 
@@ -120,6 +129,16 @@ powering the dashboard aggregates like the other tools.
 - Plain-language findings first, technical evidence expandable — the
   audience is a business decision-maker, not a DNS engineer.
 - Footer link under **Learn**, alongside the other checks.
+- **Phase 1 rendering (19 Aug 2026):** results are grouped LeafDNS-style
+  into six category blocks — Registry & delegation, Nameservers, SOA, Web
+  addresses, Mail, DNSSEC — each with per-block status counts, a data
+  table (nameservers with addresses and registry presence; full SOA field
+  table with RFC 1912-style *advice* lines that never count as findings;
+  MX with addresses and reverse DNS; apex/www addresses) and its findings.
+  Above them, an SVG **delegation diagram**: registry → nameservers →
+  services (apex, www, mail), every edge and node coloured by status, so a
+  registry/live mismatch is visible as a broken path rather than a
+  sentence. The diagram scrolls horizontally on narrow screens.
 
 ## 7. Copy rules
 

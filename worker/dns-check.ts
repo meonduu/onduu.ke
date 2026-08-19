@@ -27,14 +27,54 @@ import { collectRdap } from "./scan/collect.ts";
 
 export type Severity = "pass" | "warn" | "fail" | "info";
 
+/** Presentation groups, LeafDNS-style (spec §6, Phase 1 rendering). */
+export type Category = "registry" | "nameservers" | "soa" | "web" | "mail" | "dnssec";
+
 export interface DnsFinding {
   code: string;
   severity: Severity;
+  category?: Category;
   title: string;
   detail: string;
   evidence?: string[];
   limitation?: string;
   link?: { href: string; label: string };
+}
+
+export interface NsHostInfo {
+  host: string;
+  ips: string[];
+  /** null when the registry side is not observable for this domain. */
+  inRegistry: boolean | null;
+  answering: boolean;
+}
+
+export interface MxInfo {
+  priority: number;
+  host: string;
+  ips: string[];
+  ptr: { ip: string; name: string | null }[];
+}
+
+/** Structured data behind the findings, for tables and the diagram. */
+export interface DnsDetail {
+  registryNs: string[];
+  registryObservable: boolean;
+  nsHosts: NsHostInfo[];
+  soa: {
+    mname: string;
+    rname: string;
+    serial: string;
+    refresh: number;
+    retry: number;
+    expire: number;
+    minimum: number;
+  } | null;
+  /** Plain-language RFC 1912-style notes on SOA values. Advice, not findings. */
+  soaAdvice: string[];
+  mx: MxInfo[];
+  apexAddresses: string[];
+  wwwAddresses: string[];
 }
 
 export interface DnsReport {
@@ -43,6 +83,7 @@ export interface DnsReport {
   headline: string;
   summary: { pass: number; warn: number; fail: number; info: number };
   findings: DnsFinding[];
+  detail: DnsDetail;
 }
 
 /* ── helpers ─────────────────────────────────────────────────────────── */
@@ -116,6 +157,108 @@ export async function runDnsCheck(
   const apexAddresses = [...recordsOf(a, 1), ...recordsOf(aaaa, 28)];
   const wwwAddresses = recordsOf(wwwA, 1);
   const findings: DnsFinding[] = [];
+
+  /* ── second round: table data (spec §6 Phase 1 rendering) ──────────── */
+
+  // Each nameserver's own addresses — the "live IP" column of the NS table.
+  const nsHostList = liveNs.slice(0, 6);
+  const nsAddressAnswers = await Promise.all(
+    nsHostList.map(async (host) => {
+      const [ha, haaaa] = await Promise.all([
+        dohQuery(host, "A", budget, fetcher),
+        dohQuery(host, "AAAA", budget, fetcher),
+      ]);
+      return {
+        host,
+        queried: ha !== null || haaaa !== null,
+        ips: [...recordsOf(ha, 1), ...recordsOf(haaaa, 28)].slice(0, 4),
+      };
+    }),
+  );
+  const registrySet = new Set(registryNs);
+  const nsHosts: NsHostInfo[] = nsAddressAnswers.map(({ host, ips }) => ({
+    host,
+    ips,
+    inRegistry: registryNs.length ? registrySet.has(host) : null,
+    answering: true,
+  }));
+  for (const host of registryNs) {
+    if (!liveNs.includes(host)) {
+      nsHosts.push({ host, ips: [], inRegistry: true, answering: false });
+    }
+  }
+
+  // MX hosts resolved, then reverse DNS on their addresses (mail servers
+  // without PTR records are commonly distrusted by receivers).
+  const mxParsed = recordsOf(mx, 15)
+    .map((r) => {
+      const [prio, host] = r.split(/\s+/);
+      return { priority: Number(prio), host: normaliseNsHost(host ?? "") };
+    })
+    .filter((m) => m.host)
+    .sort((x, y) => x.priority - y.priority)
+    .slice(0, 3);
+  const mxDetail: MxInfo[] = await Promise.all(
+    mxParsed.map(async ({ priority, host }) => {
+      const ha = await dohQuery(host, "A", budget, fetcher);
+      return { priority, host, ips: recordsOf(ha, 1).slice(0, 4), ptr: [] };
+    }),
+  );
+  const ptrTargets = mxDetail.flatMap((m) => m.ips.map((ip) => ({ m, ip }))).slice(0, 4);
+  await Promise.all(
+    ptrTargets.map(async ({ m, ip }) => {
+      const reverse = `${ip.split(".").reverse().join(".")}.in-addr.arpa`;
+      const res = await dohQuery(reverse, "PTR", budget, fetcher);
+      m.ptr.push({
+        ip,
+        name: res === null ? null : (recordsOf(res, 12)[0]?.replace(/\.$/, "") ?? null),
+      });
+    }),
+  );
+
+  // Full SOA fields for the table, with plain-language RFC 1912 advice.
+  const soaRaw = recordsOf(soa, 6)[0];
+  const soaParts = soaRaw?.split(/\s+/) ?? [];
+  const soaDetail: DnsDetail["soa"] =
+    soaParts.length >= 7
+      ? {
+          mname: normaliseNsHost(soaParts[0]),
+          rname: soaParts[1].replace(/\.$/, ""),
+          serial: soaParts[2],
+          refresh: Number(soaParts[3]),
+          retry: Number(soaParts[4]),
+          expire: Number(soaParts[5]),
+          minimum: Number(soaParts[6]),
+        }
+      : null;
+  const soaAdvice: string[] = [];
+  if (soaDetail) {
+    if (soaDetail.refresh < 1200 || soaDetail.refresh > 43200)
+      soaAdvice.push(
+        `Refresh is ${soaDetail.refresh}s; 1200–43200 (20 minutes to 12 hours) is the usual range.`,
+      );
+    if (soaDetail.retry < 120 || soaDetail.retry > 7200)
+      soaAdvice.push(`Retry is ${soaDetail.retry}s; 120–7200 is the usual range.`);
+    if (soaDetail.expire < 604800 || soaDetail.expire > 2419200)
+      soaAdvice.push(
+        `Expire is ${soaDetail.expire}s; two to four weeks (1209600–2419200) is the usual range.`,
+      );
+    if (soaDetail.minimum > 10800 || soaDetail.minimum < 300)
+      soaAdvice.push(
+        `Negative-caching TTL is ${soaDetail.minimum}s; 300–10800 (5 minutes to 3 hours) is the usual range — it controls how long "this record does not exist" answers are remembered.`,
+      );
+  }
+
+  const detail: DnsDetail = {
+    registryNs,
+    registryObservable: registryNs.length > 0,
+    nsHosts,
+    soa: soaDetail,
+    soaAdvice,
+    mx: mxDetail,
+    apexAddresses,
+    wwwAddresses,
+  };
 
   /* 1 — nameservers exist, and more than one */
   if (ns === null) {
@@ -363,6 +506,59 @@ export async function runDnsCheck(
     });
   }
 
+  /* 9 — every answering nameserver's own name resolves */
+  const deadNsHosts = nsAddressAnswers.filter((h) => h.queried && h.ips.length === 0);
+  if (deadNsHosts.length > 0) {
+    findings.push({
+      code: "NS_HOST_UNRESOLVED",
+      severity: "warn",
+      title: "Nameserver addresses",
+      detail:
+        "One or more of the published nameserver names does not itself resolve to an address. Resolvers that pick that server will fail and retry elsewhere, which slows every lookup down.",
+      evidence: deadNsHosts.map((h) => h.host),
+    });
+  }
+
+  /* 10 — reverse DNS on the mail servers' addresses */
+  const ptrChecked = mxDetail.flatMap((m) => m.ptr);
+  if (ptrChecked.length > 0) {
+    const missing = ptrChecked.filter((p) => p.name === null);
+    findings.push(
+      missing.length === 0
+        ? {
+            code: "MX_PTR_OK",
+            severity: "pass",
+            title: "Mail server reverse DNS",
+            detail: "The mail servers' addresses have matching reverse-DNS (PTR) records — a hygiene signal receiving servers check before trusting mail.",
+            evidence: ptrChecked.map((p) => `${p.ip} → ${p.name}`),
+          }
+        : {
+            code: "MX_PTR_MISSING",
+            severity: "warn",
+            title: "Mail server reverse DNS",
+            detail:
+              "Some mail-server addresses have no reverse-DNS (PTR) record. Many receiving servers treat that as a spam signal, so delivery can suffer even with correct MX records. Usually fixed by the mail host, not by you.",
+            evidence: missing.map((p) => p.ip),
+            limitation: "Checked for the first few addresses only; IPv6 reverse zones are not probed.",
+          },
+    );
+  }
+
+  // Presentation category by finding code (spec §6 Phase 1).
+  const categoryOf = (code: string): Category =>
+    code.startsWith("DELEGATION")
+      ? "registry"
+      : code.startsWith("NS")
+        ? "nameservers"
+        : code.startsWith("SOA")
+          ? "soa"
+          : code.startsWith("MX")
+            ? "mail"
+            : code.startsWith("DNSSEC")
+              ? "dnssec"
+              : "web";
+  for (const f of findings) f.category = categoryOf(f.code);
+
   const summary = { pass: 0, warn: 0, fail: 0, info: 0 };
   for (const f of findings) summary[f.severity] += 1;
 
@@ -373,7 +569,7 @@ export async function runDnsCheck(
         ? `${domain} looks broadly coherent, with ${summary.warn} advisory ${summary.warn === 1 ? "finding" : "findings"}.`
         : `${domain}'s DNS foundations look coherent.`;
 
-  return { ok: true, domain, headline, summary, findings };
+  return { ok: true, domain, headline, summary, findings, detail };
 }
 
 /* ── per-isolate rate limiting (same shape as the domain search) ─────── */
@@ -425,9 +621,9 @@ export async function handleDnsCheck(
     return json({ ok: false, error: "Too many checks from this connection. Please try again later." }, 429);
   }
 
-  // 8 DoH queries for the rules + RDAP (up to 3 guarded fetches, each with
-  // its own resolve-and-validate lookups) fit comfortably in this budget.
-  const budget = makeBudget(12_000, 22);
+  // 8 rule queries + RDAP (≤3 guarded fetches with their own resolve
+  // lookups) + the table round: ≤6 NS hosts × 2, ≤3 MX hosts, ≤4 PTRs.
+  const budget = makeBudget(15_000, 45);
   const result = await runDnsCheck(domain, budget, fetcher);
   if (!result.ok) return json({ ok: false, error: result.error }, result.status);
   return json(result);
