@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.44.0 — 2031hrs:19th August2026
+CURRENT VERSION: v4.44.1 — 2038hrs:19th August2026
+
+## v4.44.1 — 2038hrs:19th August2026
+
+A misleading roadmap note corrected, raised by the owner asking what "the
+Buzz guide" was. v4.44.0 recorded "Buzz has no guide — the one item from
+the original list still unwritten", which framed it as a gap to fill.
+Checking the sources shows that is wrong in a way that could cause real
+damage: a future session could read "still unwritten" as a to-do and
+rebuild content Phase 1 deliberately removed.
+
+What the sources actually say:
+
+- The Current Version strategy permits Buzz as a content area "presented
+  responsibly", and puts its "Buzz Fit Lab" among programmes that "should
+  be educational methods, controlled demonstrations or approved labs — not
+  unsupported service promises".
+- Phase 1 (v4.0.0) removed `/infrastructure/buzz-agent-collaboration`,
+  whose CTA was "Assess a Buzz pilot" with a Fit / Pilot / Not yet verdict;
+  it 301s to `/guides/agents-on-vps`.
+- `CLAUDE.md` names Buzz among the things the site must not lead with, and
+  the site's own "claims we will not make" includes "Every client needs
+  Buzz or a new website".
+- The guide list naming Buzz comes from the 15 August brief, which the
+  18 August strategy supersedes where they conflict.
+
+Phase 5 now describes Buzz as a conditional content area rather than a
+missing guide, and the gated list gains the Buzz pilot-assessment offer so
+the retired service framing cannot return unnoticed. Documentation only;
+no site changes.
 
 ## v4.44.0 — 2031hrs:19th August2026
 
