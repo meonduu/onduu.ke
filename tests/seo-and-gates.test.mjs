@@ -320,6 +320,21 @@ test("legal pages are still marked as drafts", async () => {
   }
 });
 
+test("assessment terms match the privacy notice and the running code", async () => {
+  // Terms 0.2 (19 Aug 2026): the false two-year retention claim is gone —
+  // the privacy notice states there is no automatic deletion schedule — and
+  // the free tools are governed by the tool limitations page, not these terms.
+  const terms = await (await fetchPath("/legal/assessment-terms")).text();
+  assert.doesNotMatch(terms, /kept for two years/i, "the false retention claim is back");
+  assert.match(terms, /no automatic deletion schedule/i, "retention must match the privacy notice");
+  assert.match(terms, /tool limitations page/i, "tools must be pointed at the tool limitations page");
+  assert.doesNotMatch(terms, /where a selector can be guessed/i, "DKIM wording must match the code");
+
+  const privacy = await (await fetchPath("/legal/privacy")).text();
+  assert.match(privacy, /no automatic deletion schedule|no fixed retention period/i,
+    "if the privacy notice gains a retention schedule, update the assessment terms with it");
+});
+
 test("the homepage and the email checker carry canonical and Open Graph", async () => {
   // These two shipped without canonical/OG under vinext; fixed post-migration.
   for (const { path, canonical } of [
