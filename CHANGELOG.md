@@ -1,6 +1,33 @@
 # Changelog
 
-CURRENT VERSION: v4.27.0 — 1315hrs:19th August2026
+CURRENT VERSION: v4.28.0 — 1331hrs:19th August2026
+
+## v4.28.0 — 1331hrs:19th August2026
+
+Three owner-requested changes.
+
+About moves out of the primary navigation and into the footer, in the
+Start column beside Contact. The header is now Readiness, How it works,
+Paths, Guides, plus the readiness CTA. The page itself is unchanged and
+still indexed and in the sitemap; only its promotion changed.
+
+On `/paths/hostafrica-infrastructure` the title drops its second sentence,
+from "HOSTAFRICA supplies the products. Onduu explains the decisions." to
+"HOSTAFRICA supplies the products.", and the lede's closing sentence
+("Onduu helps you understand which product fits which workload, and what
+responsibility comes with it.") is deleted. The lede now ends on the
+factual statement that HOSTAFRICA provides, bills and supports the
+products. The disclosure section and the boundary list below are
+untouched, so who-does-what is still stated on the page.
+
+173 tests pass; lint clean.
+
+**Flaky test, second sighting:** "without SCAN_ENABLED the endpoint is
+indistinguishable from a missing route" failed once then passed on two
+clean re-runs, the same way "robots disallows the dashboard" did earlier
+today. Both use the `startWorker`/`fetchPath` fixture, so the race is in
+worker startup rather than in either assertion. Worth hardening.
+
 
 ## v4.27.0 — 1315hrs:19th August2026
 

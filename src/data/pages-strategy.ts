@@ -108,9 +108,9 @@ export const strategyPages: Record<string, PageContent> = {
 
   "paths/hostafrica-infrastructure": {
     eyebrow: "PATHS / INFRASTRUCTURE",
-    title: "HOSTAFRICA supplies the products. Onduu explains the decisions.",
+    title: "HOSTAFRICA supplies the products.",
     intro:
-      "Domains, hosting, business email and VPS products are provided, sold, billed, provisioned, renewed and supported by HOSTAFRICA through its official channels. Onduu helps you understand which product fits which workload, and what responsibility comes with it.",
+      "Domains, hosting, business email and VPS products are provided, sold, billed, provisioned, renewed and supported by HOSTAFRICA through its official channels.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
