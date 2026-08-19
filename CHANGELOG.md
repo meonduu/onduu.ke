@@ -1,6 +1,33 @@
 # Changelog
 
-CURRENT VERSION: v4.35.0 — 1621hrs:19th August2026
+CURRENT VERSION: v4.36.0 — 1621hrs:19th August2026
+
+## v4.36.0 — 1621hrs:19th August2026
+
+The three free tools join the primary navigation, which now reads
+Readiness, Paths, Guides, DNS, Email, Domains, plus the readiness CTA.
+
+Two decisions the instruction did not cover, both made from measurement
+rather than taste:
+
+**Short labels.** With the footer's names ("DNS Check", "Email Security",
+"Domain Search") the nav needed 293px more than it had. At 1024px the
+wordmark touched "Readiness" and "Domain Search" touched the CTA button,
+with literally zero visual gap on both sides. "DNS", "Email" and
+"Domains" fit and still read clearly in a row of six.
+
+**Header spacing.** Even shortened, the last link still met the CTA at
+1024px. The header's side padding grew as 5vw, so a wider viewport spent
+its extra width on margins and starved the middle column. It now grows as
+3.5vw with an explicit 32px column gap, so the three regions cannot touch.
+
+Measured after: 1024px gives 108px left and 32px right; 1100px gives 143
+and 50; 1280px gives 227 and 134. No wrapping, no horizontal overflow,
+and the CTA text still fits its button at every width. The nav continues
+to hide below 1000px, as before.
+
+174 tests pass; lint clean.
+
 
 ## v4.35.0 — 1621hrs:19th August2026
 
