@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.43.0 — 2002hrs:19th August2026
+CURRENT VERSION: v4.43.1 — 2020hrs:19th August2026
+
+## v4.43.1 — 2020hrs:19th August2026
+
+The mobile menu control now meets the 44px touch-target guideline, found
+when checking v4.43.0 on the live site: it measured 60×42, two pixels
+short (it already passed the WCAG 2.2 AA minimum of 24px, so this is
+comfort rather than conformance).
+
+Vertical padding 12px → 13px with an explicit `min-height:44px`, so the
+target does not depend on the font's line box; horizontal padding 4px →
+8px. The summary becomes a flex row to centre its label and caret against
+that min-height, and the caret's leading space moves into a `gap`, since
+flex would collapse it. Measured 70×44 after the change.
+
+Verified at 375px: the control fits the 72px header, the label stays on
+one line, the menu still opens and the caret still flips; link targets
+unchanged at 47px; no horizontal overflow. Desktop unaffected — the rule
+lives inside the max-width:1000px query. 177 tests, lint clean.
 
 ## v4.43.0 — 2002hrs:19th August2026
 
