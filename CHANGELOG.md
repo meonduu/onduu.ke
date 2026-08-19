@@ -1,6 +1,18 @@
 # Changelog
 
-CURRENT VERSION: v4.37.0 — 1702hrs:19th August2026
+CURRENT VERSION: v4.37.1 — 1709hrs:19th August2026
+
+## v4.37.1 — 1709hrs:19th August2026
+
+The registrar link now looks like a link. It always was one — HOSTAFRICA
+EAC opened the registrar's site in a new tab — but the global reset
+(`a{color:inherit;text-decoration:none}`) left it identical to body text,
+so the only clue was the arrow. Links inside result cards (excluding
+buttons and .text-links, which style themselves) are now copper, bold and
+underlined, with a carbon hover. One CSS rule, so it applies to every
+tool's result cards, including the email-check cross-link on /dns
+findings. 174 tests pass.
+
 
 ## v4.37.0 — 1702hrs:19th August2026
 

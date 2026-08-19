@@ -88,3 +88,10 @@ footer .wordmark .track{stroke:#28323C}footer .wordmark .arc{stroke:#CD7A50}foot
    phone it only forces the heading onto its own line, so let the badge
    size to its text there. */
 @media(max-width:760px){.check-badge{min-width:0}}
+
+/* Links inside result cards must look like links (19 Aug 2026): the
+   global reset leaves them indistinguishable from body text, so the
+   registrar link read as plain copy. Copper + underline, like article
+   prose links. Excludes .button and .text-link, which style themselves. */
+.check-list a:not(.button):not(.text-link){color:var(--copper);text-decoration:underline;text-underline-offset:3px;font-weight:700}
+.check-list a:not(.button):not(.text-link):hover{color:var(--carbon)}
