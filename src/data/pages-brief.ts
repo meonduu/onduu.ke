@@ -511,7 +511,7 @@ export const briefPages: Record<string, PageContent> = {
   "legal/assessment-terms": {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Assessment terms.",
-    "intro": "The terms that apply when you request a Digital Readiness Score, use the email security checker, or commission a review.",
+    "intro": "The terms that apply when you request a human-reviewed Digital Readiness assessment, or when a deeper piece of work is separately scoped and agreed in writing. The free tools on this site are covered by the tool limitations page.",
     "gate": "Draft for professional review. Items marked TO CONFIRM need the owner's input before this can be relied on.",
     "sections": [
       {
@@ -535,13 +535,13 @@ export const briefPages: Record<string, PageContent> = {
         "body": [
           "By submitting a domain or website you confirm that you own it or are authorised by the owner to have it assessed. If you are acting for a client, that authority must come from the client."
         ],
-        "note": "The email security checker reads only records that are already published publicly, so using it does not require access to anyone's systems. It should still not be used to build a target list or to profile a business you have no relationship with."
+        "note": "The free tools on this site read only records that are already published publicly and are governed by the tool limitations page rather than these terms. They should still not be used to build a target list or to profile a business you have no relationship with."
       },
       {
         "eyebrow": "03 / WHAT IS OBSERVED",
         "title": "Public records, read without touching your systems.",
         "items": [
-          "Published DNS records, including MX, SPF, DKIM where a selector can be guessed, and DMARC",
+          "Published DNS records, including MX, SPF, DKIM for common selectors, and DMARC",
           "Publicly reachable pages and their responses",
           "Information you provide in the request form",
           "Anything an Onduu reviewer verifies with you directly"
@@ -602,7 +602,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "08 / RETENTION AND CORRECTIONS",
         "title": "How long it is kept, and fixing what is wrong.",
         "body": [
-          "Information submitted through the request forms is kept for two years and then deleted, as described in the privacy notice. You can ask for it to be removed sooner.",
+          "Information submitted through the request forms is kept until it is deleted; there is currently no automatic deletion schedule, as the privacy notice describes. You can ask at any time for it to be deleted, and it will be.",
           "If you believe a finding is wrong, say so and it will be re-examined. A finding based on a declaration you correct will be updated on the corrected basis."
         ]
       },
@@ -617,7 +617,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "10 / VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.1, prepared 16 August 2026. No effective date until reviewed and the TO CONFIRM items are answered."
+          "Draft version 0.2, prepared 16 August 2026 and re-checked against the live site on 19 August 2026. No effective date until reviewed and the TO CONFIRM items are answered.",
+          "What changed in 0.2: a retention claim was corrected — draft 0.1 stated a fixed two-year retention period and cited the privacy notice, which actually states there is no automatic deletion schedule; the terms now match the notice and the running code. The scope was narrowed to the human-reviewed assessment and separately agreed work, with the four free tools pointed at the tool limitations page that already governs them. The DKIM wording now matches the code (common selectors)."
         ]
       }
     ]

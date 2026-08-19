@@ -194,8 +194,12 @@ Remaining:
   the introduction model; what Onduu contracts for corrected to match the
   live positioning. Tests now pin all of it. **Still drafts** — the pages
   remain marked for professional review and the TO CONFIRM items stand.
-- [ ] Assessment Terms: re-read against current behaviour (it predates the
-  scan, the DNS check and the introduction routing).
+- [x] Assessment Terms: re-read against current behaviour and corrected to
+  draft 0.2 (v4.39.0, 19 Aug 2026): the false two-year retention claim now
+  matches the privacy notice (no automatic deletion schedule); scope
+  narrowed to the human-reviewed assessment with the free tools pointed at
+  the tool limitations page; DKIM wording matches the code. Still a draft;
+  TO CONFIRM items stand for professional review.
 - [ ] Define and document retention, deletion, consent, processors and
   transfer behaviour; enforce `retain_until`.
 - [ ] Accessibility pass over the important flows (keyboard, screen reader).

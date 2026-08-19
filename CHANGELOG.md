@@ -1,6 +1,34 @@
 # Changelog
 
-CURRENT VERSION: v4.38.0 — 1853hrs:19th August2026
+CURRENT VERSION: v4.39.0 — 1903hrs:19th August2026
+
+## v4.39.0 — 1903hrs:19th August2026
+
+Assessment Terms re-read against current behaviour (ROADMAP Phase 3 item)
+and corrected to 0.2, with all six findings owner-approved:
+
+- **The false retention claim is gone.** The terms said form submissions
+  were "kept for two years and then deleted, as described in the privacy
+  notice" — but the privacy notice states there is no automatic deletion
+  schedule and no fixed retention period, and nothing in the code enforces
+  two years. The terms now match the notice: kept until deleted, deletion
+  honoured on request. When the Phase 3 retention decision sets a real
+  period, both pages and the enforcement change together.
+- **Scope narrowed to what the terms actually govern**: the human-reviewed
+  assessment and separately agreed written work. The intro's stale
+  "email security checker … or commission a review" framing (written when
+  there was one tool) is replaced; the four free tools are pointed at the
+  tool limitations page that already governs them, resolving the authority
+  contradiction with the scan's any-domain model.
+- **DKIM wording matches the code**: "for common selectors", not "where a
+  selector can be guessed".
+- Version section bumped to draft 0.2 with a "What changed" note, matching
+  the sibling legal pages' convention. Still a draft; the TO CONFIRM items
+  (report storage/access, anonymised examples, IP ownership) remain for
+  professional review by the owner's decision.
+
+A new test pins the retention consistency between the two pages, the
+tool-limitations pointer and the DKIM wording (176 tests).
 
 ## v4.38.0 — 1853hrs:19th August2026
 
