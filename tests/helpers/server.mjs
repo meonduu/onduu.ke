@@ -100,8 +100,15 @@ async function spawnWorker(extraArgs) {
       }
       // Our own child must claim this port before we trust anything on it.
       if (log.includes(`:${port}`)) {
-        const res = await fetch(`http://127.0.0.1:${port}/robots.txt`).catch(() => null);
-        if (res?.ok && !exited) return `http://127.0.0.1:${port}`;
+        // Two probes, spaced apart. One success is not enough: wrangler can
+        // answer while still settling, and a request landing in that window
+        // came back as a 500 rather than the routed response (seen 19 Aug
+        // 2026 on the SCAN_ENABLED gate test, which asserts a 404).
+        const ok = async () => (await fetch(`http://127.0.0.1:${port}/robots.txt`).catch(() => null))?.ok;
+        if (await ok()) {
+          await new Promise((r) => setTimeout(r, 250));
+          if ((await ok()) && !exited) return `http://127.0.0.1:${port}`;
+        }
       }
       await new Promise((r) => setTimeout(r, 200));
     }

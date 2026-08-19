@@ -14,9 +14,8 @@ export function DnsPage({ children }: { children?: ReactNode }) {
             <p className="eyebrow">ONDUU / FREE TOOL</p>
             <h1>Is your domain actually wired up correctly?</h1>
             <p className="lede">
-              Enter your domain. This reads the public DNS and registry records that decide whether
-              your website and email work reliably (nameservers, delegation, addresses and DNSSEC) 
-              and explains what they mean for the business, in plain English.
+              This reads the public DNS and registry records that decide whether your website
+              and email work reliably.
             </p>
           </div>
         </section>
@@ -32,12 +31,9 @@ export function DnsPage({ children }: { children?: ReactNode }) {
           </div>
           <div className="section-body">
             <p>
-              Everything checked here is already public. DNS answers anyone can query, and the
-              registry record anyone can read over RDAP. What makes the check useful is the
-              comparison: the nameservers the registry has on file against the ones actually
-              answering, the bare domain against its www, the DNSSEC fingerprint against the keys
-              in the zone. The domain checked and the result are kept so Onduu can see which checks
-              are run and which failures are common; nothing about you is recorded with them.
+              DNS answers anyone can query, and the registry record anyone can read. What makes
+              the check useful is the comparison: the nameservers the registry has on file against
+              the ones actually answering.
             </p>
             <ul>
               <li>Nameservers: how many answer, and whether one provider carries everything</li>

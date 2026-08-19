@@ -1,6 +1,41 @@
 # Changelog
 
-CURRENT VERSION: v4.30.1 — 1502hrs:19th August2026
+CURRENT VERSION: v4.31.0 — 1512hrs:19th August2026
+
+## v4.31.0 — 1512hrs:19th August2026
+
+Three copy trims on `/dns`, as instructed.
+
+- Lede: "This reads the public DNS and registry records that decide whether
+  your website and email work reliably." The "Enter your domain" opener,
+  the bracketed list and the "in plain English" clause are gone.
+- Form microcopy: removed. The element stays in the DOM because it is the
+  aria-live region that announces "Querying public DNS and the registry…",
+  but it now shows nothing when idle.
+- Section 01: keeps the first comparison only, and no longer mentions RDAP.
+
+As on `/email-security` in v4.30.1, the deleted section-01 text carried the
+storage disclosure. It is still stated in `/legal/privacy` §04 and
+`/legal/tool-limitations` §04, both linked from this page's footer.
+
+**Correction to v4.29.2.** That entry claimed the flaky fixture was fixed.
+It was not: the SCAN_ENABLED gate test failed again afterwards, under load.
+The two races fixed there were real, but they were not the cause.
+
+The cause is now better understood, and it was never the flag.
+`SCAN_ENABLED` appears in neither `.dev.vars` nor the built config, and the
+route treats anything other than the string "true" as off, so the endpoint
+would 404 even if `--var` never applied. The non-404 must therefore be the
+worker answering while still settling. Readiness now requires two
+successful probes 250ms apart rather than one, and the assertion reports
+the status and body it actually received, so the next occurrence explains
+itself instead of needing to be reproduced.
+
+Honest limit: the flake appears roughly once in ten full-suite runs and
+only under load. Twelve clean runs followed this change, which is not proof.
+
+174 tests pass; lint clean.
+
 
 ## v4.30.1 — 1502hrs:19th August2026
 

@@ -29,7 +29,10 @@ test("without SCAN_ENABLED the endpoint is indistinguishable from a missing rout
     headers: { "content-type": "application/json" },
     body: JSON.stringify({ domain: "example.co.ke" }),
   });
-  assert.equal(post.status, 404, "POST must 404 while the flag is off");
+  // The message carries the body: SCAN_ENABLED is absent from both the built
+  // config and .dev.vars, and the route treats anything but "true" as off, so
+  // a non-404 here is the harness or the worker misbehaving, not the gate.
+  assert.equal(post.status, 404, `POST must 404 while the flag is off, got ${post.status}: ${(await post.clone().text()).slice(0, 160)}`);
 
   const get = await fetchPath("/api/scan", "application/json");
   assert.equal(get.status, 404, "GET must 404 while the flag is off");
