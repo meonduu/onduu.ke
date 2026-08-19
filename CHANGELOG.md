@@ -1,6 +1,15 @@
 # Changelog
 
-CURRENT VERSION: v4.36.2 — 1638hrs:19th August2026
+CURRENT VERSION: v4.36.3 — 1645hrs:19th August2026
+
+## v4.36.3 — 1645hrs:19th August2026
+
+The tool's name is "DNS Checker" everywhere, on the owner's decision:
+footer link (was "DNS Check"), the /dns page title, and the private
+dashboard's nav and section heading. The header already said it. The spec
+file keeps its historical name; it records decisions, not live copy.
+174 tests pass.
+
 
 ## v4.36.2 — 1638hrs:19th August2026
 

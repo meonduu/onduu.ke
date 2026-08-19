@@ -57,7 +57,7 @@ const SECTIONS: [slug: string, label: string][] = [
   ["enquiries", "Enquiries"],
   ["scans", "Readiness scans"],
   ["email-security", "Email checker"],
-  ["dns", "DNS check"],
+  ["dns", "DNS checker"],
   ["kedomains", "Domain search"],
   ["analytics", "Analytics"],
   ["routing", "Routed clicks"],
@@ -185,7 +185,7 @@ ${table(
     ['<a href="/go/enquiries">Enquiries</a>', "Assessment and contact submissions, with the source that produced them", publicLink("/readiness") + " · " + publicLink("/contact")],
     ['<a href="/go/scans">Readiness scans</a>', "Stored scan results: domain, score, coverage, rubric version", publicLink("/scan")],
     ['<a href="/go/email-security">Email checker</a>', "SPF/DKIM/DMARC checks run, most-checked domains, daily trend", publicLink("/email-security")],
-    ['<a href="/go/dns">DNS check</a>', "DNS health checks run, most-checked domains, daily trend", publicLink("/dns")],
+    ['<a href="/go/dns">DNS checker</a>', "DNS health checks run, most-checked domains, daily trend", publicLink("/dns")],
     ['<a href="/go/kedomains">Domain search</a>', "Domain searches run, most-searched names, daily trend", publicLink("/kedomains")],
     ['<a href="/go/analytics">Analytics</a>', "First-party page views: pages, referrers, countries, devices, daily trend", publicLink("/", "onduu.ke (all pages)")],
     ['<a href="/go/routing">Routed clicks</a>', "Outbound clicks to HOSTAFRICA and other routed destinations", publicLink("/paths/hostafrica-infrastructure")],
@@ -647,7 +647,7 @@ export async function handleDashboard(
       return toolUsage(db, {
         slug: "dns",
         tool: "dns",
-        title: "DNS check",
+        title: "DNS checker",
         paths: ["/dns"],
         blurb: "DNS health checks run by visitors: nameservers, delegation, addresses, DNSSEC.",
       });
