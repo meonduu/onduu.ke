@@ -1,6 +1,31 @@
 # Changelog
 
-CURRENT VERSION: v4.26.1 — 1317hrs:19th August2026
+CURRENT VERSION: v4.27.0 — 1315hrs:19th August2026
+
+## v4.27.0 — 1315hrs:19th August2026
+
+Hero spacing evened out sitewide, on the owner's instruction after
+spotting it on /kedomains.
+
+Measured before changing anything: the eyebrow sat **10px** above the
+headline while the paragraph floated **45px** below it, a 1:4.5 split. The
+box margins were all zero, so the gaps were coming entirely from Georgia's
+internal leading. The headline was wedged against its own kicker and
+adrift from the sentence it introduces.
+
+Two rules now govern all three hero types (`.page-hero` for content and
+tool pages, `.hero-copy` on the homepage, `.article-head` on insights):
+6px below the eyebrow and 14px above the lede. Measured after: 16px above
+and 27px below on content and tool pages, 29/29 on the homepage, 26/30 on
+articles. The kicker still reads as attached to the headline, which is the
+point of a kicker, but the block no longer looks broken in the middle.
+
+Affected: 35 pages. The homepage, four tool pages, eighteen standard
+content pages (paths, guides, legal, readiness, contact, about,
+how-it-works, insights index) and twelve articles.
+
+The homepage hero CTA is still above the fold. 173 tests pass; lint clean.
+
 
 ## v4.26.1 — 1317hrs:19th August2026
 
