@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.33.0 — 1557hrs:19th August2026
+CURRENT VERSION: v4.34.0 — 1611hrs:19th August2026
+
+## v4.34.0 — 1611hrs:19th August2026
+
+Meta descriptions trimmed to match the pages, and a broken sentence found
+while doing it.
+
+**The broken sentence.** `/scan` opened "Onduu reads the public records.
+Registry, DNS, email and your homepage, and reports what anyone on the
+internet can already observe" — a fragment with no subject. It is another
+casualty of the v4.25.0 dash removal: the aside wrapped across two source
+lines, so the pairing rule did not see it and each dash was converted on
+its own. It reads "the public records (registry, DNS, email and your
+homepage) and reports…" again.
+
+Two earlier sweeps missed this because both worked line by line. A
+whole-file sweep against the pre-removal sources found six multi-line
+asides in total: this one, two already repaired by hand, one that reads
+correctly as two sentences, and two inside code comments, which the
+removal never touched. All six are now accounted for.
+
+**Descriptions**, each cut to what its page now claims and to a length
+that survives a search result:
+
+- `/kedomains` 145 to 156 chars, dropping "free, no signup, no account"
+  and picking up the twin-ownership point the lede actually makes.
+- `/dns` 164 to 160, dropping "in plain English" and "no signup".
+- `/email-security` 148 to 122, same two removals.
+- `/scan` 212 to 157. Nothing on that page contradicted it, but 212
+  characters is cut off in a result listing, so it was losing its ending.
+
+174 tests pass; lint clean.
+
 
 ## v4.33.0 — 1557hrs:19th August2026
 

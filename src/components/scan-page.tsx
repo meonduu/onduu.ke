@@ -16,8 +16,8 @@ export function ScanPage({ children }: { children?: ReactNode }) {
             <p className="eyebrow">ONDUU / INSTANT PUBLIC SCAN</p>
             <h1>See what your domain shows the public.</h1>
             <p className="lede">
-              Enter your domain. Onduu reads the public records. Registry, DNS, email and your
-              homepage, and reports what anyone on the internet can already observe, as a Public
+              Enter your domain. Onduu reads the public records (registry, DNS, email and your
+              homepage) and reports what anyone on the internet can already observe, as a Public
               Signal Score with an honest coverage figure. It is a starting point, not a verdict.
             </p>
           </div>
