@@ -1,6 +1,15 @@
 # Changelog
 
-CURRENT VERSION: v4.36.1 — 1651hrs:19th August2026
+CURRENT VERSION: v4.36.2 — 1638hrs:19th August2026
+
+## v4.36.2 — 1638hrs:19th August2026
+
+The nav's tool labels get their full names back: DNS Checker, Email
+Security, Domain Search. The v4.36.0 short forms existed only because the
+row did not fit at 1024px; removing the duplicate Readiness link in
+v4.36.1 freed the width. Measured at 1024px: 67px clear on the left, 32px
+on the right, no wrapping, no overflow. 174 tests pass.
+
 
 ## v4.36.1 — 1651hrs:19th August2026
 
