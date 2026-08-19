@@ -61,5 +61,11 @@ const { title, description, canonical, author, noindex = false } = Astro.props;
       import { capture } from "../components/attribution";
       capture();
     </script>
+    <script>
+      // First-party engagement tracker (see components/analytics.ts). Also a
+      // plain script; it stays silent for GPC/DNT and never runs on /go.
+      import { initAnalytics } from "../components/analytics";
+      initAnalytics();
+    </script>
   </body>
 </html>

@@ -1,6 +1,64 @@
 # Changelog
 
-CURRENT VERSION: v4.45.1 — 2113hrs:19th August2026
+CURRENT VERSION: v4.46.0 — 2127hrs:19th August2026
+
+## v4.46.0 — 2127hrs:19th August2026
+
+Analytics Phase 1 (spec: `docs/specs/analytics-dashboard.md`, owner
+decisions recorded 19 Aug 2026: D1 not Analytics Engine, no browser/OS
+dimension, new-vs-returning dropped, sessionStorage session id approved).
+
+- `migrations/0007_analytics_events.sql`: `events`, `event_throttle` and
+  `event_health` tables. No IP, no user-agent, no persistent identifier;
+  session ids are tab-scoped and cannot link visits.
+- `worker/events.ts`: allowlist validation, path/label/session
+  sanitisation, engaged-time clamping, sliding-window rate limit
+  (fail-open), batched recording, received/rejected counters. Rejected
+  payloads are counted, never stored.
+- `/api/event` (`src/pages/api/event.ts`): POST-only, same-origin,
+  JSON-only, 8KB cap, bot-filtered, GPC/DNT acknowledged and dropped;
+  recording via `waitUntil`, never blocking a response.
+- `src/components/analytics.ts` + a plain Layout script: page views,
+  engaged time (visibility-, focus- and idle-aware; heartbeats;
+  sendBeacon exit with keepalive fallback; bfcache-aware dedupe), clicks
+  only on elements carrying `data-analytics-event`. Never on `/go`;
+  silent under GPC/DNT.
+- Privacy notice bumped to draft 0.3: the cookies-and-analytics section
+  now describes the measurement script, its tab-scoped label and the
+  GPC/DNT behaviour. **Owner review of this copy is required before
+  merge** (REVIEW.md: notice must match running code).
+- Three further privacy-notice sections corrected, found in review after
+  the session that wrote the tracker was stopped. Section 05 described the
+  new script while the rest of the notice still described a site that had
+  none, so the document contradicted itself:
+  - **§02 "What is collected"** claimed "Nothing else about you is
+    gathered as you browse", which the tracker makes false. Retitled from
+    "Only what you type into a form" and rewritten to state the
+    measurement and point at §05.
+  - **§03 "Why, and on what basis"** states one basis per activity but had
+    no entry for the measurement. A fifth card gives the legitimate
+    interest relied on, and records that it stops under GPC/DNT.
+  - **§08 "How long it is kept"** covered submissions only. It now covers
+    the counted views and events, which nothing prunes on a timer and
+    which accumulate with every visit rather than only when somebody
+    writes in.
+  Four assertions pin all of it, so §05 cannot drift away from the rest
+  of the notice again.
+- `tests/events.test.mjs`: the control-character fixture embedded a raw
+  NUL byte in the source, so git classified the file as binary and would
+  never have shown a textual diff of it. Escaped as `\u0000` — identical
+  to the runtime, reviewable to a human.
+- `worker/pageviews.ts`: BOT, deviceFrom and referrerHost exported for
+  reuse; behaviour unchanged.
+- Tests: 19 new in `tests/events.test.mjs` (sanitisation, batch
+  validation, throttle window, engaged-time timer, endpoint behaviour
+  against the real worker). Full suite 198 + 19; build and lint clean.
+
+Verified in the built worker (wrangler dev + browser): page_view /
+page_exit with engaged time and a stable per-tab session id across
+pages, conversion click with label, rejected event counted in
+`event_health`, mobile device classification, no new console errors.
+Dashboard section, CTA wiring and GraphQL panels are Phases 2–4.
 
 ## v4.45.1 — 2113hrs:19th August2026
 
