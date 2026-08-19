@@ -9,7 +9,7 @@ export function DnsPage({ children }: { children?: ReactNode }) {
     <>
       <Header />
       <main id="main">
-        <section className="page-hero">
+        <section className="page-hero page-hero--tool">
           <div>
             <p className="eyebrow">ONDUU / FREE TOOL</p>
             <h1>Is your domain actually wired up correctly?</h1>
@@ -19,12 +19,6 @@ export function DnsPage({ children }: { children?: ReactNode }) {
               and explains what they mean for the business, in plain English.
             </p>
           </div>
-          <aside className="hero-index">
-            <span>NAMESERVERS</span>
-            <span>DELEGATION</span>
-            <span>ADDRESSES</span>
-            <span>DNSSEC</span>
-          </aside>
         </section>
 
         <section className="check-section">

@@ -1,6 +1,42 @@
 # Changelog
 
-CURRENT VERSION: v4.21.0 — 0757hrs:19th August2026
+CURRENT VERSION: v4.22.0 — 0943hrs:19th August2026
+
+## v4.22.0 — 0943hrs:19th August2026
+
+Tool-first heroes, and a sitewide reduction in display type (owner
+request: "the text are too imposing… the tool itself is hidden").
+
+**The defect.** On a 1280x800 laptop the fold fell just below the "DOMAIN
+NAME" label on all four tool pages: a visitor who clicked through to run a
+check arrived at an essay and had to scroll to find the input. The hero
+was spending the whole first viewport on a 90px headline, 90px of padding
+and a decorative right-hand index listing what the results would show.
+
+**Tool pages** (`/dns`, `/email-security`, `/scan`, `/kedomains`) now use a
+`page-hero--tool` variant: single column, headline capped at 44px, tighter
+padding, no bottom border, and the decorative index removed — the results
+are their own index. The form section follows immediately, so headline,
+lede, input, button and the "public records only, no signup" line all sit
+in the first viewport. Verified: input top 477px and button bottom 533px
+at 1280x800 (was below 800px entirely); at 375x812 both are visible with
+no horizontal overflow.
+
+**Sitewide** the display scale comes down roughly a third at the top end,
+keeping the Georgia editorial character without shouting: page-hero h1
+90→56px, homepage h1 96→64px, section h2s 68-80→46-52px, article h1
+74→52px, with hero and section padding reduced to match. The homepage hero
+now fits headline, lede, both CTAs and the whole sample scorecard above
+the fold.
+
+Content pages keep their editorial hero and index column — only the tool
+pages hand the first screen to the tool. 168 tests pass; lint clean.
+
+One cascade note for future work: `.page-hero--tool` rules share
+specificity with the `.page-hero` rules they override, so they live at the
+end of `site.css` deliberately. Moving them earlier silently restores the
+old type sizes — which is exactly what happened on the first attempt here.
+
 
 ## v4.21.0 — 0757hrs:19th August2026
 

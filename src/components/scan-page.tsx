@@ -11,7 +11,7 @@ export function ScanPage({ children }: { children?: ReactNode }) {
     <>
       <Header />
       <main id="main">
-        <section className="page-hero">
+        <section className="page-hero page-hero--tool">
           <div>
             <p className="eyebrow">ONDUU / INSTANT PUBLIC SCAN</p>
             <h1>See what your domain shows the public.</h1>
@@ -21,14 +21,6 @@ export function ScanPage({ children }: { children?: ReactNode }) {
               Signal Score with an honest coverage figure. It is a starting point, not a verdict.
             </p>
           </div>
-          <aside className="hero-index">
-            <span>Control</span>
-            <span>Trust</span>
-            <span>Speed</span>
-            <span>Conversion</span>
-            <span>Resilience</span>
-            <span>Agent readiness</span>
-          </aside>
         </section>
 
         <section className="check-section">{children}</section>

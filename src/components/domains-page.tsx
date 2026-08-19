@@ -10,7 +10,7 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
     <>
       <Header />
       <main id="main">
-        <section className="page-hero">
+        <section className="page-hero page-hero--tool">
           <div>
             <p className="eyebrow">ONDUU / FREE TOOL</p>
             <h1>Is your business name protected in .ke too?</h1>
@@ -20,13 +20,6 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
               domains show their registrar, transfer lock and expiry from public records.
             </p>
           </div>
-          <aside className="hero-index">
-            <span>.co.ke</span>
-            <span>.ke</span>
-            <span>Registrar</span>
-            <span>Lock</span>
-            <span>Expiry</span>
-          </aside>
         </section>
 
         <section className="check-section">{children}</section>

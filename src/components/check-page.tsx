@@ -9,7 +9,7 @@ export function CheckPage({ children }: { children?: ReactNode }) {
     <>
       <Header />
       <main id="main">
-        <section className="page-hero">
+        <section className="page-hero page-hero--tool">
           <div>
             <p className="eyebrow">ONDUU / FREE TOOL</p>
             <h1>Can someone send email pretending to be you?</h1>
@@ -19,12 +19,6 @@ export function CheckPage({ children }: { children?: ReactNode }) {
               what to fix.
             </p>
           </div>
-          <aside className="hero-index">
-            <span>SPF</span>
-            <span>DKIM</span>
-            <span>DMARC</span>
-            <span>MX</span>
-          </aside>
         </section>
 
         <section className="check-section">
