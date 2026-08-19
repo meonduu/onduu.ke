@@ -200,20 +200,28 @@ test("the approved HOSTAFRICA destination is UTM-tagged with no affiliate parame
 });
 
 test("Ujiajiri cross-links are present, plain, and honestly worded", async () => {
-  const partnersUrl = "https://ujiajiri.ke/partners/";
+  // Private curated introductions (19 Aug 2026 brief): the public directory
+  // is gone; every implementation CTA requests an introduction instead.
+  const introUrl = "https://ujiajiri.ke/request-an-introduction/";
   const youthUrl = "https://ujiajiri.ke/for-youth/";
 
   const paths = await (await fetchPath("/paths/website-and-digital-marketing")).text();
-  assert.ok(paths.includes(partnersUrl), "partner path must link the Ujiajiri directory");
-  assert.match(paths, /Find a Delivery Partner/);
+  assert.ok(paths.includes(introUrl), "partner path must link the introduction route");
+  assert.match(paths, /Request an Implementation Introduction/);
+  assert.match(paths, /permission before sharing/i, "consent step must be stated");
+  assert.match(paths, /referral fee/i, "referral-fee existence must be disclosed");
+  assert.doesNotMatch(paths, /referral fee[^.]*\d+\s*%|\d+\s*%[^.]*referral/i, "no fee amount published");
+  assert.doesNotMatch(paths, /ujiajiri\.ke\/partners/, "public directory link must be gone");
   assert.doesNotMatch(paths, /directory is being established/i, "stale status must be gone");
 
   const readiness = await (await fetchPath("/readiness")).text();
-  assert.ok(readiness.includes(partnersUrl), "readiness page must offer the implementation route");
+  assert.ok(readiness.includes(introUrl), "readiness page must offer the introduction route");
+  assert.match(readiness, /does not automatically transmit/i, "no-auto-transfer promise stays");
 
   const home = await (await fetchPath("/")).text();
   assert.ok(home.includes(youthUrl), "homepage skills section must link the youth pathway");
-  assert.ok(home.includes(partnersUrl), "homepage status must link the live directory");
+  assert.ok(home.includes(introUrl), "homepage status must link the introduction route");
+  assert.doesNotMatch(home, /ujiajiri\.ke\/partners/, "homepage must not link the retired directory");
 
   // Plain links only: no query strings, no parameters, targets keep the slash.
   for (const html of [paths, readiness, home]) {

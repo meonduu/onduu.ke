@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.16.2 — 0636hrs:19th August2026
+CURRENT VERSION: v4.17.0 — 0641hrs:19th August2026 (branch feat/introduction-routing — NOT MERGED; see below)
+
+## v4.17.0 — 0641hrs:19th August2026 — UNMERGED
+
+Onduu's side of the 19 August developer brief (private curated
+introductions): every implementation route now describes Ujiajiri's
+introduction model instead of the retired public directory.
+
+- Paths hub card, `/paths/website-and-digital-marketing` (intro, "how it
+  works" list rewritten to the §2 business rules, "THE DIRECTORY" section
+  replaced by "THE INTRODUCTION" carrying the brief's recommended wording
+  and the no-guarantee/worldwide-scope sentence), `/readiness` after-score
+  section, `/contact` implementation card, homepage status paragraph.
+- All links now target `https://ujiajiri.ke/request-an-introduction/` with
+  the label "Request an Implementation Introduction"; no
+  `ujiajiri.ke/partners/` link remains anywhere (published articles never
+  linked it).
+- Disclosure updated per §2/§9: the possible referral fee's existence is
+  stated at the decision point, its amount is not, and the provider's duty
+  to explain price impact is named. The "no automatic transfer of
+  assessment answers" promise is retained on /readiness.
+- The cross-link test suite now pins the new model: introduction URL and
+  label present, consent step stated, fee disclosed without an amount,
+  directory links banned, youth-page link and plain-URL rules unchanged.
+  154 tests pass; lint clean; copy verified on the production build.
+
+**Held on branch `feat/introduction-routing`, deliberately unmerged**: the
+brief forbids deployment before the owner approves implementation and
+legal wording, and the target route on ujiajiri.ke is not live yet (that
+repo has separate work in progress). Merge after both are true.
 
 ## v4.16.2 — 0636hrs:19th August2026
 
