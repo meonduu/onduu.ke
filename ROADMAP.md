@@ -218,10 +218,9 @@ Remaining:
   tint for labels on dark grounds); select error wiring completed. Already
   solid: skip link, `:focus-visible`, reduced-motion, labelled fields, the
   submission form's error summary.
-- [ ] Mobile navigation: the header nav is hidden below 1000px with no
-  toggle (found in the 19 Aug accessibility pass) — mobile users reach
-  Paths/Guides/tools only via the CTA and footer. Owner decision: add a
-  small disclosure menu, or accept and record.
+- [x] Mobile navigation (found in the 19 Aug accessibility pass, owner
+  chose to build it): a no-JS `<details>` disclosure menu below 1000px
+  carries the five nav links (v4.43.0). Content pages stay JS-free.
 
 **Acceptance:** every legal statement matches observed behaviour; no draft
 labels on production claims without owner sign-off; passes `REVIEW.md`.

@@ -1,6 +1,23 @@
 # Changelog
 
-CURRENT VERSION: v4.42.0 — 1941hrs:19th August2026
+CURRENT VERSION: v4.43.0 — 2002hrs:19th August2026
+
+## v4.43.0 — 2002hrs:19th August2026
+
+Mobile navigation restored (owner decision on the v4.42.0 accessibility
+finding: build it). Below 1000px the header now shows a "Menu" disclosure
+— a native `<details>/<summary>` element, so it is keyboard-accessible and
+announced as expanded/collapsed with **no client JavaScript**, preserving
+the zero-JS content pages. It opens a full-width panel with the same five
+links as the desktop nav (Paths, Guides, DNS Checker, Email Security,
+Domain Search), styled to the letterhead identity: uppercase labels,
+hairline separators, carbon bottom border, ▾/▴ state marker.
+
+Verified in the emulated mobile viewport (menu opens with all five links;
+single-line summary) and at desktop (disclosure hidden, inline nav
+unchanged). Known limit of the no-JS pattern: the panel closes by toggling
+the summary, not on outside-click or Escape. A new test pins the
+disclosure and that every nav link appears in both navs (177 tests).
 
 ## v4.42.0 — 1941hrs:19th August2026
 

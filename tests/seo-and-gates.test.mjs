@@ -301,6 +301,17 @@ test("no direct-delivery promise survives on the homepage", async () => {
   assert.doesNotMatch(home, /Agent Workflow Pilot/i);
 });
 
+test("the header carries the no-JS mobile disclosure menu", async () => {
+  // Below 1000px the inline nav is display:none; the same five links must be
+  // reachable through the <details> disclosure (v4.43.0, 19 Aug 2026).
+  const home = await (await fetchPath("/")).text();
+  assert.match(home, /<details class="mobile-nav"><summary>Menu<\/summary>/);
+  for (const href of ["/paths", "/guides", "/dns", "/email-security", "/kedomains"]) {
+    const links = home.match(new RegExp(`href="${href}"`, "g")) ?? [];
+    assert.ok(links.length >= 2, `${href} must appear in both the inline nav and the disclosure`);
+  }
+});
+
 test("the contact hero recommends routes, not superseded offers", async () => {
   // Phase 2 sign-off (19 Aug 2026): the prototype hero's "score, review,
   // system, programme, pilot" echoed the superseded direct-delivery offers.
