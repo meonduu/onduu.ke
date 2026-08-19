@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.44.1 — 2038hrs:19th August2026
+CURRENT VERSION: v4.45.0 — 2050hrs:19th August2026
+
+## v4.45.0 — 2050hrs:19th August2026
+
+The Buzz guide, written as an educational piece on the owner's
+instruction: `/guides/buzz-workspaces` — "Before your team and its agents
+share one workspace." It is the sixth guide, linked from the index and in
+the sitemap.
+
+Sourcing, given this is content about a third-party evolving platform:
+
+- Every product statement is the brief's own owner-approved wording
+  (section 19 and section 9): what Buzz is, the ten things to examine, and
+  the honest-limitations paragraph, all carried over close to verbatim.
+- The service framing is gone. The brief's "What the assessment covers"
+  becomes "What to test" — things the business proves for itself — and the
+  CTA is the standard Check Your Digital Readiness, not the "Assess a Buzz
+  pilot" offer retired in v4.0.0. Fit / Pilot / Not yet survive as honest
+  conclusions a reader can reach, not as a service output.
+- One section explains the architecture in protocol terms — key-pair
+  identity with no administrator reset, signed events on independent
+  relays, deletion as a request rather than a guarantee, and self-hosting
+  moving backup and incident duties to a named person. **These are general
+  Nostr statements, not verified against the deployed Buzz build**, which
+  is why the guide tells the reader to prove behaviour against the deployed
+  version rather than the description.
+
+Two tests pin the framing: the retired CTA must not return, the readiness
+CTA and the evolving-platform limitation must stay, and no compliance
+guarantee or universal-replacement claim may appear. The first draft of
+that test failed against my own copy — its regex matched the honest
+limitation "not an unconditional replacement" as though it were the claim;
+the assertion now distinguishes the negation. 179 tests, lint clean.
 
 ## v4.44.1 — 2038hrs:19th August2026
 

@@ -191,6 +191,11 @@ export const strategyPages: Record<string, PageContent> = {
             body: "What an always-on AI agent needs beyond a server: boundaries, supervision, measurement and a way to stop it.",
             href: "/guides/agents-on-vps",
           },
+          {
+            title: "Shared workspaces and Buzz",
+            body: "What a self-hostable, protocol-based workspace changes about identity, retention and responsibility, and what to test before moving real work into one.",
+            href: "/guides/buzz-workspaces",
+          },
         ],
       },
       {
@@ -270,6 +275,84 @@ export const strategyPages: Record<string, PageContent> = {
           "A fit / pilot / alternative conclusion",
         ],
         note: "Product supply, billing and support for VPS infrastructure sit with HOSTAFRICA through its official route. See the infrastructure path for the responsibility split and disclosure.",
+      },
+    ],
+  },
+
+  // Educational guide only. The 18 Aug strategy permits Buzz as a content
+  // area "presented responsibly"; the service-shaped page it replaces
+  // ("Assess a Buzz pilot") was retired in v4.0.0 and must not return.
+  // Product statements here are the brief's own approved wording (section 19);
+  // everything else is framed as what the business should test for itself.
+  "guides/buzz-workspaces": {
+    eyebrow: "GUIDES / SHARED WORKSPACES",
+    title: "Before your team and its agents share one workspace.",
+    intro:
+      "Buzz is a self-hostable, Nostr-based workspace where people and agents can collaborate in shared channels. This guide explains what that architecture changes about ownership, identity and retention, and what any business should test for itself before moving real work into a workspace of this kind.",
+    cta: "Check Your Digital Readiness",
+    ctaHref: "/readiness",
+    sections: [
+      {
+        eyebrow: "WHAT IT IS",
+        title: "A workspace you can host, on an open protocol.",
+        body: [
+          "The shared workspace is where a team's decisions get made and recorded: channels, messages, files, and increasingly the agents working alongside people. Buzz is one option in that category, and two properties separate it from the familiar tools. It is self-hostable, so the business can run it on infrastructure it controls rather than on a supplier's platform. And it is built on Nostr, an open protocol, rather than on one company's account system.",
+          "Neither property is an advantage by itself. Both move responsibility from a supplier to the business, and where responsibility lands is the entire question worth asking.",
+        ],
+      },
+      {
+        eyebrow: "WHAT THE ARCHITECTURE CHANGES",
+        title: "Identity, storage and deletion behave differently.",
+        items: [
+          "Identity is a cryptographic key pair rather than an account on a supplier's server. No administrator can reset it for you, and whoever holds the private key holds that identity until the key is replaced",
+          "Messages are signed events published to relays: independent servers that store and serve them. Which relays a workspace uses decides where its record actually lives",
+          "Deletion is a request to relays rather than a guarantee. A relay may honour it, and a relay that already served an event to someone cannot unsend it",
+          "Self-hosting moves backup, upgrade, incident and recovery duties to whoever runs the server. That is real control, and it is also work that a named person has to own",
+        ],
+        note: "None of this makes the model better or worse than a hosted product. It makes the failure modes different and the responsibilities explicit rather than assumed, which is the point of examining them before the work moves.",
+      },
+      {
+        eyebrow: "WHAT TO TEST",
+        title: "Prove these against the deployed version, not the description.",
+        items: [
+          "The workflow: one real process, what it costs today in time and errors, and the outcome that would count as an improvement",
+          "Channel and membership design: who can see what, and what changes when somebody joins or leaves",
+          "Agent identity and permissions: what each agent may read, may recommend, and may do without a person approving it first",
+          "Relay and hosting responsibilities: which relays hold the record, who operates them, and who is called when one stops responding",
+          "Data sensitivity and retention: what may enter the workspace, what must never, and how long each kind of thing stays",
+          "Integrations and connector gaps: what genuinely connects to the systems already in use, and what would have to be built",
+          "Audit, backup and recovery: export the record, restore it somewhere else, and confirm what came back is complete",
+          "Migration from email, WhatsApp, Slack or Teams: what moves, what is left behind, and who tells customers where to reach you",
+          "Support, upgrade and incident ownership: named people, agreed response expectations, and a path that works when something breaks",
+          "Cost and success measures, written down before a trial starts rather than argued about afterwards",
+        ],
+        note: "A workspace holding a team's decisions is a system of record. Treat a change of workspace the way you would treat a change of accounting system, not the way you would treat trying a new chat app.",
+      },
+      {
+        eyebrow: "HONEST LIMITATIONS",
+        title: "What this guide does not claim.",
+        body: [
+          "Buzz should be treated as an evolving platform. The deployed version, approval enforcement, export, retention, security and operational behaviour must be tested before anyone relies on them contractually.",
+          "It is not an unconditional replacement for every Slack or Teams workflow, and no workspace choice creates compliance, security or data-location guarantees on its own. Not every business needs a different workspace: the honest starting question is whether the current one is actually causing the problem.",
+        ],
+      },
+      {
+        eyebrow: "THE HONEST CONCLUSIONS",
+        title: "Three answers worth reaching.",
+        cards: [
+          {
+            title: "Fit",
+            body: "The workflow and the controls suit each other. Move deliberately, with the responsibilities written down before the work moves.",
+          },
+          {
+            title: "Pilot",
+            body: "A limited test is justified: one real workflow, a defined period, and success measures agreed before it begins.",
+          },
+          {
+            title: "Not yet",
+            body: "Keep the current tools and close the process, data or control gaps first. This is a legitimate conclusion, not a failure.",
+          },
+        ],
       },
     ],
   },

@@ -301,6 +301,27 @@ test("no direct-delivery promise survives on the homepage", async () => {
   assert.doesNotMatch(home, /Agent Workflow Pilot/i);
 });
 
+test("the Buzz guide stays educational and never becomes an offer", async () => {
+  // v4.45.0: permitted as a content area "presented responsibly"; the
+  // service-shaped page retired in v4.0.0 must not return through this guide.
+  const guide = await (await fetchPath("/guides/buzz-workspaces")).text();
+  assert.doesNotMatch(guide, /assess a buzz pilot/i, "the retired service CTA is back");
+  assert.match(guide, /href="\/readiness"/, "CTA must be the standard readiness route");
+  assert.match(guide, /evolving platform/i, "the honest-limitations wording must stay");
+  assert.match(
+    guide,
+    /not an unconditional replacement/i,
+    "the not-a-Slack-replacement limitation must stay",
+  );
+  // Note the negation: "is not an unconditional replacement" is the honest
+  // limitation and must pass; only the positive claim fails.
+  assert.doesNotMatch(
+    guide,
+    /guarantees? compliance|is an unconditional replacement/i,
+    "no compliance guarantee or universal-replacement claim",
+  );
+});
+
 test("every guide is reachable by clicking from the guides index", async () => {
   // v4.44.0: the index printed each guide's URL as plain text, leaving four
   // of five guides with no clickable route anywhere on the site.
@@ -311,6 +332,7 @@ test("every guide is reachable by clicking from the guides index", async () => {
     "/guides/email-and-trust",
     "/guides/kenyan-vps",
     "/guides/agents-on-vps",
+    "/guides/buzz-workspaces",
   ];
   for (const route of routes) {
     assert.match(guides, new RegExp(`href="${route}"`), `${route} must be linked from /guides`);
