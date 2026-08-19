@@ -3329,7 +3329,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "In today’s digital age, a SME’s online presence is as crucial as its physical operations. For Kenyan entrepreneurs, establishing and safeguarding this presence begins with one fundamental step: securing your domain name."
+            "v": "An SME’s online presence now matters as much as its physical operations. For Kenyan entrepreneurs, establishing and safeguarding this presence begins with one fundamental step: securing your domain name."
           }
         ]
       },
@@ -3627,7 +3627,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "In today’s digital age, your business’s domain name is not just an address; it’s a critical asset. Yet, many business owners overlook the importance of managing and securing their domains effectively."
+            "v": "Your domain name is one of your business’s most important assets. Yet many business owners overlook the importance of managing and securing their domains effectively."
           }
         ]
       },

@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.23.2 — 1148hrs:19th August2026
+CURRENT VERSION: v4.24.0 — 1213hrs:19th August2026
+
+## v4.24.0 — 1213hrs:19th August2026
+
+Two article opening sentences rewritten to drop "In today's digital age",
+on the owner's explicit approval. Both were first lines, which is where a
+filler opener costs the most credibility.
+
+- *Startup founders — securing your digital identity*: "In today's digital
+  age, a SME's online presence is as crucial as its physical operations."
+  becomes "An SME's online presence now matters as much as its physical
+  operations." The following sentence already says "Kenyan", so this one
+  no longer repeats it, and the a/an agreement is fixed.
+- *Top 10 items every business owner must know about their domain*: "In
+  today's digital age, your business's domain name is not just an address;
+  it's a critical asset." becomes "Your domain name is one of your
+  business's most important assets." This also removes a second tell (the
+  "not just X; it's Y" construction). The existing next sentence already
+  made the point my first draft would have duplicated, so only the opener
+  changed.
+
+No claims were added or removed; both paragraphs keep their meaning.
+The remaining mild words ("crucial" x4, "leverage" x3) sit mid-paragraph
+where they cost nothing, and were deliberately left.
+
+**Rule note:** CLAUDE.md says article prose is regenerated, never
+hand-edited. There is no regeneration script in the repo, and the owner
+approved these two edits directly after seeing the exact wording. Recorded
+here so the exception is visible rather than silent. 170 tests pass.
+
 
 ## v4.23.2 — 1148hrs:19th August2026
 
