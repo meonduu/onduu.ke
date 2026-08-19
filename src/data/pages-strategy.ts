@@ -85,7 +85,7 @@ export const strategyPages: Record<string, PageContent> = {
     sections: [
       {
         eyebrow: "HOW IT WORKS",
-        title: "The introduction, plainly.",
+        title: "The introduction.",
         items: [
           "You tell Ujiajiri what the business needs",
           "Ujiajiri proposes one suitable provider from its private network and tells you who it is",

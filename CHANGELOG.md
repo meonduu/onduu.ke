@@ -1,6 +1,14 @@
 # Changelog
 
-CURRENT VERSION: v4.29.0 — 1418hrs:19th August2026
+CURRENT VERSION: v4.29.1 — 1425hrs:19th August2026
+
+## v4.29.1 — 1425hrs:19th August2026
+
+"The introduction, plainly." becomes "The introduction." on
+`/paths/website-and-digital-marketing`, matching the change made to its
+sibling heading on the infrastructure path in v4.29.0. No "plainly"
+headings remain anywhere. 173 tests pass.
+
 
 ## v4.29.0 — 1418hrs:19th August2026
 
