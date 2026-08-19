@@ -1,6 +1,25 @@
 # Changelog
 
-CURRENT VERSION: v4.16.2 — 0636hrs:19th August2026
+CURRENT VERSION: v4.16.3 — 0650hrs:19th August2026
+
+## v4.16.3 — 0650hrs:19th August2026
+
+Two owner-requested dashboard improvements on `/go`:
+
+- The overview's sections table gained a right-hand **"Client-facing
+  page"** column linking each dashboard section to the public page it
+  describes (readiness/contact for enquiries, /scan, /email-security,
+  /dns, /kedomains, the whole site for analytics, the infrastructure path
+  for routed clicks, tool-limitations for the opt-out list). The same
+  link appears in each tool section's header line. Links open in a new
+  tab.
+- The dashboard pages now declare the site favicon — their minimal head
+  never did, so `/go` tabs showed a blank icon while the rest of the site
+  showed the Dial.
+
+Verified on the production build locally: overview and section links
+render, favicon declared, and every `/go` route still refuses with 403
+without Cloudflare Access headers (154 tests pass).
 
 ## v4.16.2 — 0636hrs:19th August2026
 

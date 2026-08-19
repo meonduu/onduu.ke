@@ -48,6 +48,10 @@ const escape = (value: unknown) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
+/** A link from a dashboard row to the visitor-facing page it describes. */
+const publicLink = (path: string, label = `onduu.ke${path === "/" ? "" : path}`) =>
+  `<a href="${path}" target="_blank" rel="noopener">${escape(label)}</a>`;
+
 const SECTIONS: [slug: string, label: string][] = [
   ["", "Overview"],
   ["enquiries", "Enquiries"],
@@ -70,6 +74,7 @@ function page(title: string, body: string, current: string): Response {
     `<!doctype html><html lang="en"><head><meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex, nofollow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <title>${escape(title)} | Onduu</title>
 <style>
 :root{--carbon:#101820;--ivory:#F5F1E8;--copper:#B8643B;--green:#2F6B5B;--slate:#60707C;--mist:#DDE3E1}
@@ -175,16 +180,16 @@ async function overview(db: D1Database, identity: string): Promise<Response> {
 
 <h2>Sections</h2>
 ${table(
-  ["Section", "What it shows", ""],
+  ["Section", "What it shows", "Client-facing page"],
   [
-    ['<a href="/go/enquiries">Enquiries</a>', "Assessment and contact submissions, with the source that produced them", ""],
-    ['<a href="/go/scans">Readiness scans</a>', "Stored scan results: domain, score, coverage, rubric version", ""],
-    ['<a href="/go/email-security">Email checker</a>', "SPF/DKIM/DMARC checks run, most-checked domains, daily trend", ""],
-    ['<a href="/go/dns">DNS check</a>', "DNS health checks run, most-checked domains, daily trend", ""],
-    ['<a href="/go/kedomains">Domain search</a>', "Domain searches run, most-searched names, daily trend", ""],
-    ['<a href="/go/analytics">Analytics</a>', "First-party page views: pages, referrers, countries, devices, daily trend", ""],
-    ['<a href="/go/routing">Routed clicks</a>', "Outbound clicks to HOSTAFRICA and other routed destinations", ""],
-    ['<a href="/go/blocklist">Do-not-scan</a>', "Domains that asked not to be scanned", ""],
+    ['<a href="/go/enquiries">Enquiries</a>', "Assessment and contact submissions, with the source that produced them", publicLink("/readiness") + " · " + publicLink("/contact")],
+    ['<a href="/go/scans">Readiness scans</a>', "Stored scan results: domain, score, coverage, rubric version", publicLink("/scan")],
+    ['<a href="/go/email-security">Email checker</a>', "SPF/DKIM/DMARC checks run, most-checked domains, daily trend", publicLink("/email-security")],
+    ['<a href="/go/dns">DNS check</a>', "DNS health checks run, most-checked domains, daily trend", publicLink("/dns")],
+    ['<a href="/go/kedomains">Domain search</a>', "Domain searches run, most-searched names, daily trend", publicLink("/kedomains")],
+    ['<a href="/go/analytics">Analytics</a>', "First-party page views: pages, referrers, countries, devices, daily trend", publicLink("/", "onduu.ke (all pages)")],
+    ['<a href="/go/routing">Routed clicks</a>', "Outbound clicks to HOSTAFRICA and other routed destinations", publicLink("/paths/hostafrica-infrastructure")],
+    ['<a href="/go/blocklist">Do-not-scan</a>', "Domains that asked not to be scanned", publicLink("/legal/tool-limitations")],
   ],
   "",
 )}`,
@@ -213,7 +218,8 @@ async function enquiries(db: D1Database): Promise<Response> {
   return page(
     "Enquiries",
     `<h1>Enquiries</h1>
-<p class="sub">Assessment and contact submissions. Personal data — do not export or forward.</p>
+<p class="sub">Assessment and contact submissions. Personal data — do not export or forward.
+Client-facing pages: ${publicLink("/readiness")} · ${publicLink("/contact")}</p>
 
 <h2>Which source produced enquiries</h2>
 ${table(
@@ -282,7 +288,8 @@ async function scans(db: D1Database): Promise<Response> {
   return page(
     "Readiness scans",
     `<h1>Readiness scans</h1>
-<p class="sub">Fresh runs only — a repeat scan inside 24 hours serves the cached result and writes no row.</p>
+<p class="sub">Fresh runs only — a repeat scan inside 24 hours serves the cached result and writes no row.
+Client-facing page: ${publicLink("/scan")}</p>
 
 <div class="cards">
   <div class="card"><b>${c.all_time}</b><span>Scans, all time</span></div>
@@ -393,7 +400,8 @@ async function toolUsage(
   return page(
     opts.title,
     `<h1>${escape(opts.title)}</h1>
-<p class="sub">${escape(opts.blurb)} Stored rows carry the domain and the outcome only — never who ran the check.</p>
+<p class="sub">${escape(opts.blurb)} Stored rows carry the domain and the outcome only — never who ran the check.
+Client-facing page: ${publicLink(opts.paths[0])}</p>
 
 <div class="cards">
   <div class="card"><b>${c.all_time}</b><span>Checks, all time</span></div>
