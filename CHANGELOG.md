@@ -1,6 +1,20 @@
 # Changelog
 
-CURRENT VERSION: v4.39.1 — 1909hrs:19th August2026
+CURRENT VERSION: v4.40.0 — 1917hrs:19th August2026
+
+## v4.40.0 — 1917hrs:19th August2026
+
+`security.checkOrigin` enabled (owner-approved 19 Aug 2026), closing the
+last Phase 0 deferral. It was disabled during the Astro migration for
+behaviour parity with the vinext Worker; now a POST whose Origin header
+does not match the site is refused with 403 before any route handler runs.
+
+Nothing legitimate is affected: the site's own forms and tools all post
+same-origin JSON, and the full suite — including the end-to-end form
+submissions against the built Worker — passes unchanged. The one test that
+pinned the old parity behaviour (bare POST to /api/check → 405) now pins
+both layers: cross-origin POST → 403 from the hardening, same-origin
+POST → 405 from the handler's method check. 176 tests, lint clean.
 
 ## v4.39.1 — 1909hrs:19th August2026
 

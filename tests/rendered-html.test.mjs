@@ -104,8 +104,18 @@ test("the check API rejects bad input without touching DNS", async () => {
   assert.equal(invalid.status, 400);
   assert.match((await invalid.json()).error, /valid domain name/i);
 
+  // checkOrigin hardening (19 Aug 2026): a POST whose Origin header does not
+  // match the site is refused with 403 before any handler runs; a
+  // same-origin POST still reaches the handler's own method check (405).
+  const crossOrigin = await fetchPath("/api/check?domain=example.ke", "application/json", {
+    method: "POST",
+    headers: { origin: "https://evil.example" },
+  });
+  assert.equal(crossOrigin.status, 403);
+
   const wrongMethod = await fetchPath("/api/check?domain=example.ke", "application/json", {
     method: "POST",
+    headers: { origin: new URL(crossOrigin.url).origin },
   });
   assert.equal(wrongMethod.status, 405);
 });
