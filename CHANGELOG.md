@@ -1,6 +1,21 @@
 # Changelog
 
-CURRENT VERSION: v4.31.0 — 1512hrs:19th August2026
+CURRENT VERSION: v4.31.1 — 1523hrs:19th August2026
+
+## v4.31.1 — 1523hrs:19th August2026
+
+The storage disclosure returns to both tool pages as one sentence, closing
+the gap opened by the v4.30.1 and v4.31.0 trims: "The domain checked and
+the result are kept; nothing about you is."
+
+It sits at the end of section 01 on `/email-security` and `/dns`, which is
+where the longer version used to be. Both halves of the original statement
+survive, what is kept and what is not, in a form short enough not to
+reintroduce the bulk the owner removed. The v4.9.x decision that the
+privacy notice and both tool pages disclose the storage holds again.
+
+174 tests pass; lint clean.
+
 
 ## v4.31.0 — 1512hrs:19th August2026
 

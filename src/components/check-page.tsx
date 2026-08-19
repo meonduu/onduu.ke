@@ -32,7 +32,7 @@ export function CheckPage({ children }: { children?: ReactNode }) {
           <div className="section-body">
             <p>
               Every record checked here is already public. Anyone can look them up, including the
-              people who would spoof your domain.
+              people who would spoof your domain. The domain checked and the result are kept; nothing about you is.
             </p>
             <ul>
               <li>SPF: which servers are allowed to send mail as your domain</li>

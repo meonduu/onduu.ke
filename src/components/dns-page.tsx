@@ -33,7 +33,7 @@ export function DnsPage({ children }: { children?: ReactNode }) {
             <p>
               DNS answers anyone can query, and the registry record anyone can read. What makes
               the check useful is the comparison: the nameservers the registry has on file against
-              the ones actually answering.
+              the ones actually answering. The domain checked and the result are kept; nothing about you is.
             </p>
             <ul>
               <li>Nameservers: how many answer, and whether one provider carries everything</li>
