@@ -1,6 +1,36 @@
 # Changelog
 
-CURRENT VERSION: v4.29.2 — 1430hrs:19th August2026
+CURRENT VERSION: v4.30.0 — 1447hrs:19th August2026
+
+## v4.30.0 — 1447hrs:19th August2026
+
+The last two gated pages are removed on the owner's instruction, so
+nothing on the site is now "reachable but hidden".
+
+- **Managed Website Operations** described a service that was never
+  staffed, priced or contracted. It 301s to
+  `/paths/website-and-digital-marketing`, since ongoing website work is
+  now an independent-provider route.
+- **Results** promised case evidence that does not exist yet. It 301s to
+  `/insights`, which is where published evidence actually lives.
+
+Retired the same way as `/labs` and the managed service terms: content
+deleted, routes added to `REMOVED_ROUTES` so they leave the page table and
+the sitemap, and a redirect each. `GATED_ROUTES` is now empty. The gating
+mechanism itself is kept, so a future page can be gated without rebuilding
+it.
+
+That left four tests looping over an empty set and therefore asserting
+nothing, which is worse than no test. A new test now states the real
+expectation: the set is empty, and all three retired routes are absent
+from the sitemap and unlinked. If a route is gated again, the existing
+loops resume doing their job.
+
+174 tests pass. Verified on the build: all four retired routes
+(`/labs`, `/legal/managed-service-terms`, `/managed-website-operations`,
+`/results`) 301 to live successors, none appear in the sitemap, and
+robots.txt is unaffected.
+
 
 ## v4.29.2 — 1430hrs:19th August2026
 

@@ -18,10 +18,10 @@
 //
 // The legal routes are still marked as drafts on the pages themselves — that
 // is separate from this gate and unaffected.
-export const GATED_ROUTES = new Set<string>([
-  "managed-website-operations",
-  "results",
-]);
+// Empty since 19 August 2026: the last two gated pages (Managed Website
+// Operations and Results) were removed rather than left reachable. The
+// mechanism stays, so a future page can be gated without rebuilding it.
+export const GATED_ROUTES = new Set<string>([]);
 
 export function isGated(route: string) {
   return GATED_ROUTES.has(route.replace(/^\/|\/$/g, ""));

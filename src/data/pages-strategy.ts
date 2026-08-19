@@ -26,6 +26,12 @@ export const REMOVED_ROUTES = [
   // 2026: the service was never contracted, so terms for it should not be
   // reachable at all.
   "legal/managed-service-terms",
+  // The last two gated pages, removed 19 August 2026 on the owner's
+  // instruction. Managed Website Operations described a service that was
+  // never staffed or contracted; Results promised case evidence that does
+  // not exist yet. Neither should be reachable.
+  "managed-website-operations",
+  "results",
   "solutions",
   "solutions/digital-revenue-risk-review",
   "solutions/website-revenue-system",

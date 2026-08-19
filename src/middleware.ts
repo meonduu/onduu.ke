@@ -29,6 +29,11 @@ const REDIRECTS: Record<string, string> = {
   // Managed service terms removed 19 Aug 2026 (owner); the assessment terms
   // are the live terms document.
   "/legal/managed-service-terms": "/legal/assessment-terms",
+  // The last two gated pages, removed 19 Aug 2026 (owner). Ongoing website
+  // work is now an independent-provider route; published evidence lives in
+  // Insights.
+  "/managed-website-operations": "/paths/website-and-digital-marketing",
+  "/results": "/insights",
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {

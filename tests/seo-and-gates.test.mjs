@@ -32,6 +32,8 @@ const REDIRECTED = {
   "/infrastructure/buzz-agent-collaboration": "/guides/agents-on-vps",
   "/labs": "/guides",
   "/legal/managed-service-terms": "/legal/assessment-terms",
+  "/managed-website-operations": "/paths/website-and-digital-marketing",
+  "/results": "/insights",
 };
 
 
@@ -115,6 +117,20 @@ test("the legal routes in the footer exclude the gated managed-service terms", a
   // Removed 19 Aug 2026: the managed service was never contracted, so its
   // terms are gone rather than merely unlinked (the redirect is covered above).
   assert.doesNotMatch(home, /managed-service-terms/, "the retired terms page must not be linked");
+});
+
+test("no route is gated any more, and the retired ones are gone for good", async () => {
+  // The gating mechanism is kept for future use, but nothing uses it today:
+  // the loops over GATED_ROUTES elsewhere in this file are therefore
+  // deliberately vacuous, and this test is what holds the line.
+  assert.equal(GATED_ROUTES.size, 0, "a newly gated route needs a deliberate decision");
+
+  const xml = await (await fetchPath("/sitemap.xml")).text();
+  const home = await (await fetchPath("/")).text();
+  for (const route of ["managed-website-operations", "results", "legal/managed-service-terms"]) {
+    assert.ok(!xml.includes(`${SITE_URL}/${route}`), `${route} must not be in the sitemap`);
+    assert.doesNotMatch(home, new RegExp(`href="/${route}"`), `${route} must not be linked`);
+  }
 });
 
 test("tool limitations page states the honest limits of all four tools", async () => {
