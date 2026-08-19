@@ -250,8 +250,9 @@ Remaining:
   scan's networking layer with registry-vs-live delegation via RDAP
   (v4.16.0), `DNS_CHECK_ENABLED` production secret set, verified live,
   `/go/dns` dashboard section added (v4.16.1).
-- [ ] Decide whether the "Three free checks" launch article gets a
-  follow-up now that there are four tools (owner content decision).
+- [x] "Three free checks" article: owner decided 19 August 2026 on a dated
+  postscript rather than a follow-up article — shipped in v4.41.0 with a
+  single /dns link; the historical prose is untouched.
 - [ ] Shareable DNS result IDs (spec `docs/specs/dns-check.md` §5) —
   deferred to v2 behind an owner gate.
 
@@ -307,5 +308,5 @@ owner approves:
 | Instant-scan specification approval | Phase 4 | **approved 18 Aug 2026** (spec + psr-v1 rubric) |
 | Scanner public launch approval | Phase 4 | **approved and launched 18 Aug 2026** (v4.2.0, `SCAN_ENABLED` set) |
 | DNS Health Check spec, URL and launch | Phase 4 | **decided 18 Aug 2026**: spec approved, owner set the URL to `/dns`, launched (v4.15.4–v4.16.1) |
-| "Three free checks" article: acknowledge the fourth tool | Phase 4/5 | outstanding |
+| "Three free checks" article: acknowledge the fourth tool | Phase 4/5 | **decided 19 Aug 2026** — dated postscript, shipped v4.41.0 |
 | Shareable DNS result IDs (dns-check spec §5) | Phase 4 | outstanding — deferred to v2 |
