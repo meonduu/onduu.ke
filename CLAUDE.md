@@ -71,13 +71,13 @@ Disclosure and claims:
 
 ## Technical working rules
 
-**Stack (current):** vinext 1.0.0-beta.2 (Next.js App Router semantics on
-Vite) on Cloudflare Workers. **Stack (approved direction):** migration to
-Astro + `@astrojs/cloudflare`, decided by the owner on 18 August 2026 because
-the site is ~95% static content on a beta framework that has twice broken
+**Stack (current):** Astro 5 + `@astrojs/cloudflare` on Cloudflare Workers,
+with React 19 islands only on the form pages. Live since 18 August 2026
+(Phase 0.5 migration, PR #1, v3.0.0), decided by the owner because the site
+is ~95% static content and the previous beta framework (vinext) twice broke
 production (v1.3.1 dead nav links, v1.1.0 stale-cache build missing /check).
-See `ROADMAP.md` Phase 0.5. After cutover, preserve the Astro/Cloudflare
-architecture unless an approved plan changes it.
+Preserve the Astro/Cloudflare architecture unless an approved plan changes
+it.
 
 Hard-won operational rules — keep these:
 

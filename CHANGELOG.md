@@ -1,6 +1,28 @@
 # Changelog
 
-CURRENT VERSION: v4.37.3 — 1727hrs:19th August2026
+CURRENT VERSION: v4.37.4 — 1838hrs:19th August2026
+
+## v4.37.4 — 1838hrs:19th August2026
+
+Documentation catch-up, no site changes. Found by a full-repo audit against
+the live state; approved by the owner:
+
+- `CLAUDE.md` stack section now states Astro 5 + `@astrojs/cloudflare` as the
+  current stack (live since v3.0.0, 18 Aug). It still described vinext as
+  current and the migration as a future direction, a day after the
+  migration shipped.
+- `ROADMAP.md` "Current website state" no longer pins a stale version
+  (v4.16.1) — it points at `CHANGELOG.md` — and the test count is corrected
+  from 154 to 174.
+- Phase 0 marked `done` with owner approval: all items complete, acceptance
+  criteria met. Its two deferred parity findings (homepage/`/check`
+  canonical + Open Graph, 404 title) are struck through as fixed in v3.0.1;
+  the `security.checkOrigin` hardening remains the one open thread.
+
+Verified before this entry: clean build, 174/174 tests, lint clean,
+production serving v4.37.3 copy, `wrangler.jsonc` name and `workers_dev`
+correct.
+
 
 ## v4.37.3 — 1727hrs:19th August2026
 
