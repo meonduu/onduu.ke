@@ -55,6 +55,28 @@ twin), `/robots.txt`, `/sitemap.xml`, one deliberately missing path for
 404 behaviour. **Nothing else** — no crawling, no login pages, no form
 submission, no ports beyond 80/443, GET only.
 
+## 2a. Existence pre-flight (added 19 August 2026)
+
+Before any scoring, the scan establishes that there is something to scan.
+DNS alone cannot answer this, because a registered domain with no
+nameservers also returns NXDOMAIN, so when DNS is empty the registry is
+asked over RDAP:
+
+- **Unregistered** (NXDOMAIN and RDAP 404): refused with "not registered,
+  nothing to scan yet" and a link to the domain search. Nothing is scored
+  or stored.
+- **Reserved** (RDAP object with no registration): refused, quoting the
+  registry's reason.
+- **Registered but not resolving**: scanned normally. There is a
+  registration to observe, and low coverage is the honest result.
+- **Registry unreachable**: refused, saying so, rather than scoring an
+  absence.
+
+This exists because example.ke, which is not registered, was returned as
+0/100 at 4% coverage. A zero reads as "this domain is bad" rather than
+"this domain does not exist", which breaks the rule that missing evidence
+is never scored as a failure.
+
 ## 3. Scoring model
 
 - **Public Signal Score (0–100).** Weighted sum over *observed* signals

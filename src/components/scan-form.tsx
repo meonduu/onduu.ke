@@ -59,6 +59,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
   const [domain, setDomain] = useState("");
   const [state, setState] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
+  const [next, setNext] = useState<{ label: string; href: string } | null>(null);
   const [result, setResult] = useState<ScanResult | null>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | undefined>(undefined);
@@ -87,6 +88,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
 
     setState("loading");
     setError(null);
+    setNext(null);
     setResult(null);
 
     try {
@@ -95,8 +97,13 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ domain: domain.trim(), "cf-turnstile-response": token }),
       });
-      const data = (await response.json()) as ScanResult | { ok: false; error?: string };
-      if (!data.ok) setError(data.error || "That scan could not be completed.");
+      const data = (await response.json()) as
+        | ScanResult
+        | { ok: false; error?: string; next?: { label: string; href: string } };
+      if (!data.ok) {
+        setError(data.error || "That scan could not be completed.");
+        setNext(data.next ?? null);
+      }
       else setResult(data);
     } catch {
       setError("The scan could not run just now. Please try again in a moment.");
@@ -146,6 +153,13 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
       {error && (
         <div className="check-error" role="alert">
           {error}
+          {next && (
+            <p>
+              <a className="text-link" href={next.href}>
+                {next.label} ↗
+              </a>
+            </p>
+          )}
         </div>
       )}
 

@@ -184,6 +184,72 @@ test("a cached domain is answered without any collection or storage", async () =
   assert.equal(db.scans.length, before, "no new row was written");
 });
 
+/* ── the existence pre-flight ── */
+
+// Stub the network so the pre-flight can be driven precisely: DoH answers
+// NXDOMAIN, and RDAP answers whatever the case under test needs.
+function stubNet({ rdapStatus = 404, rdapBody = { errorCode: 404 } } = {}) {
+  const real = globalThis.fetch;
+  globalThis.fetch = async (input) => {
+    const u = new URL(typeof input === "string" ? input : input.url);
+    if (u.hostname === "cloudflare-dns.com") {
+      const name = (u.searchParams.get("name") || "").toLowerCase();
+      // RDAP hostnames must resolve for the guarded fetch's pre-flight.
+      if (name.startsWith("rdap.")) return Response.json({ Status: 0, Answer: [{ name, type: 1, data: "197.248.1.1" }] });
+      return Response.json({ Status: 3, Answer: [] });   // NXDOMAIN
+    }
+    if (u.hostname.startsWith("rdap."))
+      return Response.json(rdapBody, { status: rdapStatus, headers: { "content-type": "application/rdap+json" } });
+    return Response.json({}, { status: 404 });
+  };
+  return () => { globalThis.fetch = real; };
+}
+
+test("an unregistered domain is reported as such, never scored", async () => {
+  // Reported 19 Aug 2026: example.ke came back 0/100 at 4% coverage, which
+  // reads as a terrible domain rather than one that does not exist.
+  const db = fakeDb();
+  const restore = stubNet();
+  try {
+    const outcome = await runScan("example.ke", db);
+    assert.equal(outcome.ok, false);
+    assert.equal(outcome.status, 404);
+    assert.match(outcome.error, /is not registered/i);
+    assert.equal(outcome.next.href, "/kedomains", "the visitor is sent somewhere useful");
+    assert.equal(db.scans.length, 0, "nothing may be stored for a domain that does not exist");
+  } finally { restore(); }
+});
+
+test("a reserved name says so, and is not scored either", async () => {
+  const db = fakeDb();
+  const restore = stubNet({
+    rdapStatus: 200,
+    rdapBody: {
+      objectClassName: "domain",
+      ldhName: "simba.ke",
+      notices: [{ title: "Prohibited String", description: ["This domain is not allowed under registry policy (2306)."] }],
+      variants: [{ relations: ["RESTRICTED_REGISTRATION"] }],
+    },
+  });
+  try {
+    const outcome = await runScan("simba.ke", db);
+    assert.equal(outcome.ok, false);
+    assert.match(outcome.error, /does not allow it to be registered/i);
+    assert.equal(db.scans.length, 0);
+  } finally { restore(); }
+});
+
+test("when the registry cannot be reached, the scan says so instead of scoring zero", async () => {
+  const db = fakeDb();
+  const restore = stubNet({ rdapStatus: 500, rdapBody: {} });
+  try {
+    const outcome = await runScan("unreachable.co.ke", db);
+    assert.equal(outcome.ok, false);
+    assert.match(outcome.error, /did not answer/i);
+    assert.equal(db.scans.length, 0);
+  } finally { restore(); }
+});
+
 /* ── input validation and the do-not-scan list ── */
 
 test("invalid targets are refused before any database or network use", async () => {

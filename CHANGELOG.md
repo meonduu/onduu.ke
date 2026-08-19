@@ -1,6 +1,34 @@
 # Changelog
 
-CURRENT VERSION: v4.25.1 — 1246hrs:19th August2026
+CURRENT VERSION: v4.26.0 — 1303hrs:19th August2026
+
+## v4.26.0 — 1303hrs:19th August2026
+
+`/scan` now checks that a domain exists before scoring it (owner report:
+example.ke, which is not registered, came back as 0/100 at 4% coverage).
+
+A zero on a domain that does not exist reads as "this domain is terrible"
+rather than "this domain is not there", and it breaks the scan's own rule
+that missing evidence is never counted as a failure. The same flaw applied
+to reserved names.
+
+The pre-flight runs before collection, and DNS alone cannot decide it: a
+registered domain with no nameservers also returns NXDOMAIN. So when DNS
+is empty, the registry is asked over RDAP:
+
+- Not registered: refused with "there is nothing to scan yet" and a link
+  to the domain search, which is what the visitor actually needs. Nothing
+  is scored, nothing is stored.
+- Reserved: refused, quoting the registry's own reason.
+- Registered but not resolving: scanned as normal, because there is a
+  registration to observe and low coverage is then the honest answer.
+- Registry unreachable: says so, rather than scoring an absence.
+
+Verified against live DNS and KeNIC: example.ke and simba.ke are refused
+in about a second each, and onduu.ke still scans normally (98/100 at 100%
+coverage). The scan form renders the suggested next step as a link. Spec
+§2a records the behaviour; three tests cover the outcomes. 173 tests pass.
+
 
 ## v4.25.1 — 1246hrs:19th August2026
 

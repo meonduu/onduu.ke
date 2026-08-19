@@ -5,7 +5,8 @@
  * result. Launch remains gated (spec §7) — this module has no route of its
  * own and is reachable only through the flag-guarded endpoint.
  */
-import { makeBudget, normaliseHost, isScannableHost } from "./net.ts";
+import { type Budget, makeBudget, normaliseHost, isScannableHost, dohQuery } from "./net.ts";
+import { collectRdap } from "./collect.ts";
 import { collectObservations } from "./collect.ts";
 import { evaluateSignals } from "./signals.ts";
 import { scoreSignals, CURRENT_RUBRIC, type SignalResult } from "./rubric.ts";
@@ -39,7 +40,7 @@ export interface ScanResponseBody {
 
 export type ScanOutcome =
   | { ok: true; body: ScanResponseBody }
-  | { ok: false; status: number; error: string };
+  | { ok: false; status: number; error: string; next?: { label: string; href: string } };
 
 const STATEMENT =
   "Public observations only, made at the time shown. This is a Public Signal Score, not a " +
@@ -65,6 +66,52 @@ function shape(stored: StoredScan, cached: boolean): ScanResponseBody {
   };
 }
 
+
+/**
+ * Is there anything here to scan?
+ *
+ * A name that is not registered has no records to observe, so scoring it
+ * produced a meaningless 0/100 at 4% coverage that read as "this domain is
+ * terrible" rather than "this domain does not exist" (reported 19 Aug 2026
+ * for example.ke). DNS alone cannot answer it: a registered domain with no
+ * nameservers also returns NXDOMAIN, so the registry is asked as well.
+ */
+async function preflight(
+  domain: string,
+  budget: Budget,
+): Promise<{ scannable: true } | { scannable: false; error: string; next?: { label: string; href: string } }> {
+  const [ns, a] = await Promise.all([
+    dohQuery(domain, "NS", budget),
+    dohQuery(domain, "A", budget),
+  ]);
+  const resolves =
+    (ns?.Answer?.length ?? 0) > 0 || (a?.Answer?.length ?? 0) > 0 || ns?.Status === 0 || a?.Status === 0;
+  if (resolves) return { scannable: true };
+
+  // Nothing in DNS. Ask the registry before concluding anything.
+  const rdap = await collectRdap(domain, budget);
+  if (rdap.fetched && rdap.registered === false) {
+    return {
+      scannable: false,
+      error: `${domain} is not registered, and the registry does not allow it to be registered${rdap.reservedNote ? `: ${rdap.reservedNote.toLowerCase()}` : ""}. There is nothing to scan.`,
+      next: { label: "Search Kenyan domains", href: "/kedomains" },
+    };
+  }
+  if (rdap.fetched) return { scannable: true }; // registered, simply not pointing anywhere yet
+  if (rdap.error === "rdap-not-found") {
+    return {
+      scannable: false,
+      error: `${domain} is not registered, so there is nothing to scan yet. If you are thinking of using this name, check whether it is still available.`,
+      next: { label: "Check availability", href: "/kedomains" },
+    };
+  }
+  // The registry did not answer. Say so rather than scoring an absence.
+  return {
+    scannable: false,
+    error: `${domain} does not resolve, and the registry did not answer just now, so this scan cannot tell you whether the domain exists. Try again in a moment.`,
+  };
+}
+
 export async function runScan(rawInput: string, db: D1Database): Promise<ScanOutcome> {
   const domain = normaliseHost(rawInput);
   if (!domain || !isScannableHost(domain)) {
@@ -81,6 +128,13 @@ export async function runScan(rawInput: string, db: D1Database): Promise<ScanOut
   if (cached) return { ok: true, body: shape(cached, true) };
 
   const budget = makeBudget(WALL_MS, SUBREQUESTS);
+
+  // Nothing is scored until we know the domain exists.
+  const exists = await preflight(domain, budget);
+  if (!exists.scannable) {
+    return { ok: false, status: 404, error: exists.error, next: exists.next };
+  }
+
   const observations = await collectObservations(domain, budget);
   const signals = evaluateSignals(observations);
   const { score, coverage } = scoreSignals(signals, CURRENT_RUBRIC);

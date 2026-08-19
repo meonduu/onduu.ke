@@ -62,6 +62,7 @@ export const ALL: APIRoute = async ({ request }) => {
   }
 
   const outcome = await runScan(typeof body.domain === "string" ? body.domain : "", e.onduu_leads);
-  if (!outcome.ok) return json({ ok: false, error: outcome.error }, outcome.status);
+  if (!outcome.ok)
+    return json({ ok: false, error: outcome.error, next: outcome.next }, outcome.status);
   return json(outcome.body);
 };
