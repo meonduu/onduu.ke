@@ -16,15 +16,16 @@ interface Env {
 }
 
 // Cheap heuristic. The user agent is read here and never stored.
-const BOT = /bot|crawl|spider|slurp|bingpreview|headless|curl|wget|python-requests|monitor|pingdom|uptime|lighthouse|gtmetrix|semrush|ahrefs|facebookexternalhit|preview/i;
+// Shared with worker/events.ts so both recorders classify identically.
+export const BOT = /bot|crawl|spider|slurp|bingpreview|headless|curl|wget|python-requests|monitor|pingdom|uptime|lighthouse|gtmetrix|semrush|ahrefs|facebookexternalhit|preview/i;
 
-function deviceFrom(userAgent: string): string {
+export function deviceFrom(userAgent: string): string {
   if (/mobile|iphone|android(?!.*tablet)/i.test(userAgent)) return "mobile";
   if (/ipad|tablet/i.test(userAgent)) return "tablet";
   return "desktop";
 }
 
-function referrerHost(referrer: string | null, ownHost: string): string | null {
+export function referrerHost(referrer: string | null, ownHost: string): string | null {
   if (!referrer) return null;
   try {
     const host = new URL(referrer).host;
