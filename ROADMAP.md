@@ -51,7 +51,7 @@ Marked done 19 August 2026 with owner approval: every item complete and the
 acceptance criteria met (baseline snapshots in the repo, rollback documented,
 clean status). The two deferred findings below are tracked in their target
 phases: the homepage/`/check` canonical + Open Graph gaps and the 404 title
-were fixed in v3.0.1; `security.checkOrigin` hardening remains open.
+were fixed in v3.0.1; `security.checkOrigin` was enabled in v4.40.0.
 
 - [x] Audit repository, routes, deployment, forms, analytics (recorded in
   `CHANGELOG.md` v1.0.0–v2.10.2 and README).
@@ -79,8 +79,9 @@ were fixed in v3.0.1; `security.checkOrigin` hardening remains open.
   the Astro adapter's newer workerd.~~ Upgraded to 4.123.0 (with
   workers-types 5.x) in v3.0.1; verified against the dev state and the full
   test suite.
-- Astro's cross-origin POST protection (`security.checkOrigin`) is disabled
-  for behaviour parity; consider enabling it as a hardening change later.
+- ~~Astro's cross-origin POST protection (`security.checkOrigin`) is
+  disabled for behaviour parity.~~ Enabled in v4.40.0 (owner-approved
+  19 Aug 2026); cross-origin form POSTs now get 403 before any handler.
 
 **Acceptance:** baseline snapshots exist in the repo or scratch archive;
 `git status` clean; rollback steps written down.

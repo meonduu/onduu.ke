@@ -14,9 +14,10 @@ export default defineConfig({
   // SESSION KV binding that wrangler would auto-provision on deploy — a
   // production resource this project has not approved.
   session: false,
-  // Parity with the vinext Worker: bare cross-origin POSTs reach the route
-  // handlers (405 from /api/check, Turnstile + validation on /api/submit)
-  // instead of a blanket 403. Revisit as a hardening option post-migration.
+  // Hardening (owner-approved 19 Aug 2026, closing the Phase 0 deferral):
+  // form-encoded POSTs whose Origin header does not match the site are
+  // rejected with 403 before any handler runs. The site's own forms and
+  // tools all post same-origin JSON, so nothing legitimate is affected.
   //
   // CSP (owner-approved 18 Aug 2026): Astro hashes its own inline hydration
   // scripts automatically; the allowances below are Turnstile (script,
@@ -24,7 +25,7 @@ export default defineConfig({
   // frame-ancestors is intentionally absent — meta CSP cannot carry it, and
   // the X-Frame-Options header (worker/security-headers.ts) covers it.
   security: {
-    checkOrigin: false,
+    checkOrigin: true,
     csp: {
       directives: [
         "default-src 'self'",
