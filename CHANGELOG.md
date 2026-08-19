@@ -1,6 +1,23 @@
 # Changelog
 
-CURRENT VERSION: v4.19.2 — 0732hrs:19th August2026
+CURRENT VERSION: v4.20.0 — 0742hrs:19th August2026
+
+## v4.20.0 — 0742hrs:19th August2026
+
+`/labs` removed on the owner's instruction. The page described six manual
+tests (Developer Disappeared Test, Invisible Lead Leak Review, Restore
+Don't Assume, Kenyan Data Journey Map, Brand Consistency Review, Agent
+Readiness Workshop) that were never staffed or contracted; the free tools
+and the guides now cover that ground honestly.
+
+- Page content deleted from `site-data.ts`; `labs` added to
+  `REMOVED_ROUTES`, so it leaves the page table and the sitemap.
+- `/labs` 301s to `/guides` (middleware), keeping inbound links alive.
+- Footer "Labs" link removed from the Learn column; the homepage's
+  "Explore Guides and Labs" now reads "Explore the Guides".
+- New test asserts the route redirects, is absent from the sitemap, and is
+  advertised nowhere. 167 tests pass; lint clean; verified on the
+  production build (301 → /guides, zero references, /guides still 200).
 
 ## v4.19.2 — 0732hrs:19th August2026
 

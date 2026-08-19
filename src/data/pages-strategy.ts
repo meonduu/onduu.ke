@@ -18,6 +18,10 @@ import { pages as prototypePages } from "./site-data";
 /** Routes the strategy removes outright; their keys are dropped from the
  * merged page table so they 301 via middleware instead of rendering. */
 export const REMOVED_ROUTES = [
+  // Labs (service descriptions for manual tests that were never staffed)
+  // removed on the owner's instruction, 19 August 2026; the free tools and
+  // guides now carry that ground.
+  "labs",
   "solutions",
   "solutions/digital-revenue-risk-review",
   "solutions/website-revenue-system",

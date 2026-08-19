@@ -23,6 +23,9 @@ const REDIRECTS: Record<string, string> = {
   "/infrastructure": "/paths/hostafrica-infrastructure",
   "/infrastructure/kenyan-vps-data-location": "/guides/kenyan-vps",
   "/infrastructure/buzz-agent-collaboration": "/guides/agents-on-vps",
+  // Labs removed 19 Aug 2026 (owner): its ground is covered by the guides
+  // and the free tools, so inbound links land on the guides index.
+  "/labs": "/guides",
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {

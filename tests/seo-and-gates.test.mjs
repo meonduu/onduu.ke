@@ -30,6 +30,7 @@ const REDIRECTED = {
   "/infrastructure": "/paths/hostafrica-infrastructure",
   "/infrastructure/kenyan-vps-data-location": "/guides/kenyan-vps",
   "/infrastructure/buzz-agent-collaboration": "/guides/agents-on-vps",
+  "/labs": "/guides",
 };
 
 
@@ -80,6 +81,19 @@ test("old delivery-offer routes 301 to their strategy successors", async () => {
     assert.equal(res.status, 301, `${from} should redirect`);
     const location = res.headers.get("location") ?? "";
     assert.ok(new URL(location).pathname === to, `${from} should land on ${to}, got ${location}`);
+  }
+});
+
+test("the retired Labs route leaves nothing behind", async () => {
+  // Removed 19 Aug 2026 (owner): the page is gone, the redirect is covered
+  // above, and no page may still advertise it.
+  const xml = await (await fetchPath("/sitemap.xml")).text();
+  assert.ok(!xml.includes(`${SITE_URL}/labs`), "labs must not be in the sitemap");
+
+  for (const path of ["/", "/guides", "/readiness"]) {
+    const html = await (await fetchPath(path)).text();
+    assert.doesNotMatch(html, /href="\/labs"/, `${path} still links the retired Labs route`);
+    assert.doesNotMatch(html, /Guides and Labs/, `${path} still advertises Labs`);
   }
 });
 
