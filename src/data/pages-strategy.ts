@@ -138,7 +138,7 @@ export const strategyPages: Record<string, PageContent> = {
           },
           { label: "Search Kenyan domains first", href: "/kedomains" },
         ],
-        note: "Destination approved by the owner on 18 August 2026 (docs/strategy/ decision log in CHANGELOG v4.1.0). Product information, ordering, billing, provisioning, renewal and support all happen at HOSTAFRICA.",
+        note: "Product information, ordering, billing, provisioning, renewal and support all happen at HOSTAFRICA.",
       },
     ],
   },

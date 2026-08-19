@@ -1,6 +1,30 @@
 # Changelog
 
-CURRENT VERSION: v4.28.0 — 1331hrs:19th August2026
+CURRENT VERSION: v4.28.1 — 1359hrs:19th August2026
+
+## v4.28.1 — 1359hrs:19th August2026
+
+Internal bookkeeping removed from a public page, spotted by the owner. The
+disclosure note on `/paths/hostafrica-infrastructure` opened with
+"Destination approved by the owner on 18 August 2026 (docs/strategy/
+decision log in CHANGELOG v4.1.0)" — a repository path and a version
+number, which mean nothing to a visitor and read as an internal ticket. The
+note now begins at the sentence that is actually for the reader: "Product
+information, ordering, billing, provisioning, renewal and support all
+happen at HOSTAFRICA." The approval itself stays recorded where it
+belongs, in this changelog at v4.1.0.
+
+Swept the rest of the site for the same problem. One other instance exists
+in `site-data.ts` ("Biography facts, dates, titles and relationship
+wording are an owner approval gate") but it never renders: the strategy
+layer overrides that About entry, so it is dead prototype copy. No page
+now shows a CHANGELOG version, a docs/ path, an internal decision log or
+an approval date.
+
+Deliberately left: the "PREVIEW / APPROVAL GATE" banner on
+`/legal/managed-service-terms`. That page is noindex, out of the nav and
+sitemap, and the banner is the point of it. 173 tests pass.
+
 
 ## v4.28.0 — 1331hrs:19th August2026
 
