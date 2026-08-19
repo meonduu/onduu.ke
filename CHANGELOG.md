@@ -1,8 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.37.4 — 1838hrs:19th August2026
+CURRENT VERSION: v4.38.0 — 1853hrs:19th August2026
 
-## v4.37.4 — 1838hrs:19th August2026
+## v4.38.0 — 1853hrs:19th August2026
+
+Phase 2 closed with owner sign-off. The owner reviewed every routing
+decision point's destination, disclosure and consent wording (quoted
+verbatim from the live site in the Phase 2 sign-off review document) and
+approved all six: the Ujiajiri introduction path, the HOSTAFRICA path page,
+the domain-search routing, the contact three-destination split, the
+readiness after-score block and the sitewide footer disclosure. Two
+owner-approved fixes shipped with the closure:
+
+- **Contact hero** no longer says Onduu "will recommend a score, review,
+  system, programme, pilot or 'not yet'" — "system, programme, pilot"
+  echoed the superseded direct-delivery offers (Website Revenue System
+  implementation, Agent Workflow Pilot) that Phase 1 removed everywhere
+  else. It now uses the form's own approved formula: "…recommend the
+  readiness assessment, a guide, an independent partner route, the official
+  infrastructure route or 'not yet'." Overridden in the strategy layer
+  (`pages-strategy.ts`), leaving the prototype copy as history.
+- **Readiness after-score block** now discloses the referral fee's
+  existence beside its "Request an Implementation Introduction" CTA — one
+  sentence, no amount — so the disclosure sits at that decision point too,
+  not only on the implementation path page.
+
+Also fixed while touching the templates: the closing "See the
+implementation path" link on `/paths/website-and-digital-marketing`
+pointed at the page itself; it now points at the infrastructure path
+instead (`StandardPage` passes the route through to `FinalCta`).
+
+`ROADMAP.md` Phase 2 marked `done` with the approval recorded. New test
+assertions pin the contact formula and the readiness fee disclosure
+(175 tests total).
 
 Documentation catch-up, no site changes. Found by a full-repo audit against
 the live state; approved by the owner:

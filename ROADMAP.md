@@ -141,7 +141,16 @@ approval (the path page says so); Ujiajiri partner directory described as
 "being established" — no link to the current ujiajiri.ke clone; the youth
 section carries no external link for the same reason.
 
-## Phase 2 — Separate routes and responsibilities — `in progress`
+## Phase 2 — Separate routes and responsibilities — `done`
+
+Closed 19 August 2026: the owner reviewed every decision point's destination,
+disclosure and consent wording (captured verbatim from the live site in the
+Phase 2 sign-off review) and approved all six — the Ujiajiri introduction
+path, the HOSTAFRICA path page, the domain-search routing, the contact
+three-destination split, the readiness after-score block and the sitewide
+footer disclosure — with two owner-approved fixes applied in v4.38.0: the
+contact hero drops the superseded "system, programme, pilot" echo, and the
+readiness introduction CTA gains the one-sentence referral-fee disclosure.
 
 Former blockers resolved 18 August 2026: the strategy documents are filed
 under `docs/strategy/`, and the HOSTAFRICA destination is decided

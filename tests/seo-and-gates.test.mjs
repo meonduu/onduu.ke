@@ -274,6 +274,10 @@ test("Ujiajiri cross-links are present, plain, and honestly worded", async () =>
   const readiness = await (await fetchPath("/readiness")).text();
   assert.ok(readiness.includes(introUrl), "readiness page must offer the introduction route");
   assert.match(readiness, /does not automatically transmit/i, "no-auto-transfer promise stays");
+  // Phase 2 sign-off (19 Aug 2026): the fee's existence is disclosed at this
+  // decision point too, not only on the implementation path page.
+  assert.match(readiness, /referral fee/i, "fee existence disclosed beside the readiness CTA");
+  assert.doesNotMatch(readiness, /referral fee[^.]*\d+\s*%|\d+\s*%[^.]*referral/i, "no fee amount published");
 
   const home = await (await fetchPath("/")).text();
   assert.ok(home.includes(youthUrl), "homepage skills section must link the youth pathway");
@@ -295,6 +299,18 @@ test("no direct-delivery promise survives on the homepage", async () => {
   assert.doesNotMatch(home, /finds and fixes/i, "the banned phrase is back");
   assert.doesNotMatch(home, /Managed Website Operations/i);
   assert.doesNotMatch(home, /Agent Workflow Pilot/i);
+});
+
+test("the contact hero recommends routes, not superseded offers", async () => {
+  // Phase 2 sign-off (19 Aug 2026): the prototype hero's "score, review,
+  // system, programme, pilot" echoed the superseded direct-delivery offers.
+  const contact = await (await fetchPath("/contact")).text();
+  assert.doesNotMatch(contact, /system, programme, pilot/i, "superseded-offer echo is back");
+  assert.match(
+    contact,
+    /an independent partner route, the official infrastructure route/i,
+    "hero must use the approved route-recommendation formula",
+  );
 });
 
 test("legal pages are still marked as drafts", async () => {
