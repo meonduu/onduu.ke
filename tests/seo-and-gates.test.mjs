@@ -31,6 +31,7 @@ const REDIRECTED = {
   "/infrastructure/kenyan-vps-data-location": "/guides/kenyan-vps",
   "/infrastructure/buzz-agent-collaboration": "/guides/agents-on-vps",
   "/labs": "/guides",
+  "/legal/managed-service-terms": "/legal/assessment-terms",
 };
 
 
@@ -111,7 +112,9 @@ test("the legal routes in the footer exclude the gated managed-service terms", a
   for (const route of ["legal/commercial-relationships", "legal/privacy", "legal/assessment-terms", "legal/tool-limitations"]) {
     assert.match(home, new RegExp(`href="/${route}"`), `footer missing ${route}`);
   }
-  assert.doesNotMatch(home, /href="\/legal\/managed-service-terms"/, "gated terms must not be linked");
+  // Removed 19 Aug 2026: the managed service was never contracted, so its
+  // terms are gone rather than merely unlinked (the redirect is covered above).
+  assert.doesNotMatch(home, /managed-service-terms/, "the retired terms page must not be linked");
 });
 
 test("tool limitations page states the honest limits of all four tools", async () => {

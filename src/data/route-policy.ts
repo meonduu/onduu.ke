@@ -21,7 +21,6 @@
 export const GATED_ROUTES = new Set<string>([
   "managed-website-operations",
   "results",
-  "legal/managed-service-terms",
 ]);
 
 export function isGated(route: string) {

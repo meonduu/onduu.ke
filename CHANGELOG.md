@@ -1,6 +1,30 @@
 # Changelog
 
-CURRENT VERSION: v4.28.1 — 1359hrs:19th August2026
+CURRENT VERSION: v4.29.0 — 1418hrs:19th August2026
+
+## v4.29.0 — 1418hrs:19th August2026
+
+`/legal/managed-service-terms` removed on the owner's instruction. The
+managed service was never contracted or priced, so terms for it had no
+business being reachable, even behind noindex.
+
+Retired the same way as `/labs`: the content is deleted from both the
+brief and prototype layers, the route joins `REMOVED_ROUTES` so it leaves
+the page table and the sitemap, it drops out of `GATED_ROUTES`, and
+`/legal/managed-service-terms` now 301s to `/legal/assessment-terms`,
+which is the terms document that does exist. Two gated routes remain
+(`managed-website-operations` and `results`).
+
+Also on `/paths/hostafrica-infrastructure`, the section heading "The
+boundary, plainly." becomes "The boundary."
+
+The sibling heading on the implementation path, "The introduction,
+plainly.", was left as it is, since the instruction named only the
+boundary one. Say the word if it should match.
+
+173 tests pass; the redirect and the absent sitemap entry are covered by
+the existing route tests.
+
 
 ## v4.28.1 — 1359hrs:19th August2026
 

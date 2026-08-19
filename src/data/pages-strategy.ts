@@ -22,6 +22,10 @@ export const REMOVED_ROUTES = [
   // removed on the owner's instruction, 19 August 2026; the free tools and
   // guides now carry that ground.
   "labs",
+  // Managed service terms removed on the owner's instruction, 19 August
+  // 2026: the service was never contracted, so terms for it should not be
+  // reachable at all.
+  "legal/managed-service-terms",
   "solutions",
   "solutions/digital-revenue-risk-review",
   "solutions/website-revenue-system",
@@ -116,7 +120,7 @@ export const strategyPages: Record<string, PageContent> = {
     sections: [
       {
         eyebrow: "WHO DOES WHAT",
-        title: "The boundary, plainly.",
+        title: "The boundary.",
         items: [
           "HOSTAFRICA provides, bills, provisions, renews and supports its products",
           "Onduu explains use cases, trade-offs and operating responsibilities",

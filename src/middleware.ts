@@ -26,6 +26,9 @@ const REDIRECTS: Record<string, string> = {
   // Labs removed 19 Aug 2026 (owner): its ground is covered by the guides
   // and the free tools, so inbound links land on the guides index.
   "/labs": "/guides",
+  // Managed service terms removed 19 Aug 2026 (owner); the assessment terms
+  // are the live terms document.
+  "/legal/managed-service-terms": "/legal/assessment-terms",
 };
 
 export const onRequest = defineMiddleware(async (context, next) => {
