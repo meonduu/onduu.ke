@@ -1,6 +1,27 @@
 # Changelog
 
-CURRENT VERSION: v4.45.0 — 2050hrs:19th August2026
+CURRENT VERSION: v4.45.1 — 2113hrs:19th August2026
+
+## v4.45.1 — 2113hrs:19th August2026
+
+Paragraphs in content sections no longer run together. `.section-body > p`
+set `margin-top: 0` and never restored a bottom margin, while the bundled
+reset had already zeroed the browser default — so consecutive paragraphs
+sat flush against each other with no separation at all. Insights escaped it
+because `.article-prose p` carries its own `margin: 0 0 26px`.
+
+Pre-existing and sitewide, not introduced by the Buzz guide; it surfaced
+while checking that guide on a phone viewport, where its two-paragraph
+limitations section read as one block. Measured on the live site before the
+fix: 13 affected paragraph pairs on `/legal/privacy`, 4 on `/about`, 3 on
+`/readiness`, 1 on the new guide. The privacy notice was the worst case,
+which is the page where careful reading matters most.
+
+The rule now uses `margin: 0 0 26px`, matching article prose, with
+`:last-child` kept flush so a section's own padding is not doubled.
+Verified at 375px and 1280px: eight paragraph gaps on the privacy notice
+now measure 26px, and a section ending in a paragraph shows no extra slack.
+179 tests, lint clean.
 
 ## v4.45.0 — 2050hrs:19th August2026
 
