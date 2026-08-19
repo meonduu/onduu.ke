@@ -63,6 +63,14 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
   const [result, setResult] = useState<ScanResult | null>(null);
   const widgetRef = useRef<HTMLDivElement>(null);
   const widgetId = useRef<string | undefined>(undefined);
+  const outcomeRef = useRef<HTMLDivElement>(null);
+
+  // The submit button disables while loading, which drops keyboard focus to
+  // the body; moving focus to the outcome restores the keyboard position and
+  // makes screen readers land on the result instead of hearing nothing.
+  useEffect(() => {
+    if (result || error) outcomeRef.current?.focus();
+  }, [result, error]);
 
   // Turnstile, rendered explicitly so the token can be read on submit — same
   // pattern as the enquiry forms.
@@ -151,7 +159,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
       </p>
 
       {error && (
-        <div className="check-error" role="alert">
+        <div className="check-error" role="alert" tabIndex={-1} ref={outcomeRef}>
           {error}
           {next && (
             <p>
@@ -164,7 +172,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
       )}
 
       {result && (
-        <div className="check-result">
+        <div className="check-result" tabIndex={-1} ref={outcomeRef}>
           <div className="check-headline">
             <div className="check-score">
               <b>{result.publicSignalScore}</b>

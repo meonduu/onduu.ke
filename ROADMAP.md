@@ -212,7 +212,16 @@ Remaining:
   both legal pages and building enforcement together.
 - [ ] Document processors and transfer behaviour beyond what the privacy
   notice already covers, if the professional review asks for it.
-- [ ] Accessibility pass over the important flows (keyboard, screen reader).
+- [x] Accessibility pass over the important flows (v4.42.0, 19 Aug 2026):
+  tool results now take focus and are announced on all four tools; copper
+  text and buttons meet WCAG AA contrast (`--copper` darkened, with a light
+  tint for labels on dark grounds); select error wiring completed. Already
+  solid: skip link, `:focus-visible`, reduced-motion, labelled fields, the
+  submission form's error summary.
+- [ ] Mobile navigation: the header nav is hidden below 1000px with no
+  toggle (found in the 19 Aug accessibility pass) — mobile users reach
+  Paths/Guides/tools only via the CTA and footer. Owner decision: add a
+  small disclosure menu, or accept and record.
 
 **Acceptance:** every legal statement matches observed behaviour; no draft
 labels on production claims without owner sign-off; passes `REVIEW.md`.

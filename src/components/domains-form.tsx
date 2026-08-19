@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface DomainResult {
   domain: string;
@@ -60,6 +60,14 @@ export function DomainsForm() {
   const [state, setState] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
   const [results, setResults] = useState<DomainResult[] | null>(null);
+  const outcomeRef = useRef<HTMLDivElement>(null);
+
+  // The submit button disables while loading, which drops keyboard focus to
+  // the body; moving focus to the outcome restores the keyboard position and
+  // makes screen readers land on the result instead of hearing nothing.
+  useEffect(() => {
+    if (results || error) outcomeRef.current?.focus();
+  }, [results, error]);
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();
@@ -115,13 +123,13 @@ export function DomainsForm() {
       </p>
 
       {error && (
-        <div className="check-error" role="alert">
+        <div className="check-error" role="alert" tabIndex={-1} ref={outcomeRef}>
           {error}
         </div>
       )}
 
       {results && (
-        <div className="check-result">
+        <div className="check-result" tabIndex={-1} ref={outcomeRef}>
           <ul className="check-list">
             {results.map((r) => (
               <li

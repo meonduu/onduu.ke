@@ -1,6 +1,36 @@
 # Changelog
 
-CURRENT VERSION: v4.41.0 — 1920hrs:19th August2026
+CURRENT VERSION: v4.42.0 — 1941hrs:19th August2026
+
+## v4.42.0 — 1941hrs:19th August2026
+
+Accessibility pass over the important flows (ROADMAP Phase 3 item), with
+three owner-approved fixes:
+
+- **Tool results are now announced and keyboard focus is preserved** on all
+  four tools (/email-security, /dns, /kedomains, /scan). Before: submitting
+  disabled the button, dropping focus to the body, and when the result
+  rendered nothing announced it — the polite live region reverted to the
+  static helper line. Now the result (or error) container takes focus when
+  it arrives, the same pattern the submission form already used for its
+  error summary. Verified live in the browser: focus lands on
+  `.check-result` after a check completes.
+- **WCAG AA contrast**: `--copper` darkened `#B8643B` → `#A0522C` so copper
+  text (eyebrows, section numbers, links, badges) and the white-on-copper
+  buttons meet 4.5:1 on the ivory ground (measured 3.78:1 and 4.26:1
+  before; 4.99:1 and 5.62:1 after). Copper labels sitting on dark grounds
+  (carbon scorecard/stakes, green final CTA), where a dark copper cannot
+  pass, use a new light tint `--copper-tint: #F2DCCB` (4.71:1 on green,
+  13.5:1 on carbon; the old copper on green measured 1.46:1 — near
+  invisible to low vision).
+- The submission form's `<select>`s gain the `aria-describedby` error
+  wiring their sibling inputs already had.
+
+Found and recorded, not changed: the primary nav is hidden below 1000px
+with no toggle — mobile users navigate via the CTA and footer only. Owner
+decision pending (ROADMAP Phase 3). Audit positives recorded there too:
+skip link, `:focus-visible`, reduced-motion, labelled fields, the form
+error-summary pattern. 176 tests, lint clean.
 
 ## v4.41.0 — 1920hrs:19th August2026
 

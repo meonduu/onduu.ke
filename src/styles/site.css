@@ -95,3 +95,5 @@ footer .wordmark .track{stroke:#28323C}footer .wordmark .arc{stroke:#CD7A50}foot
    prose links. Excludes .button and .text-link, which style themselves. */
 .check-list a:not(.button):not(.text-link),.section-body a:not(.button):not(.text-link),.check-headline a:not(.button):not(.text-link){color:var(--copper);text-decoration:underline;text-underline-offset:3px;font-weight:700}
 .check-list a:not(.button):not(.text-link):hover,.section-body a:not(.button):not(.text-link):hover,.check-headline a:not(.button):not(.text-link):hover{color:var(--carbon)}
+/* Copper labels on dark grounds (carbon scorecard/stakes, green final CTA): the darkened text copper cannot reach WCAG AA there, so these use the light tint. */
+.stakes .section-number,.dark-feature .section-number,.final-cta .section-number,.priority b{color:var(--copper-tint)}

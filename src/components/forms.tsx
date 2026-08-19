@@ -242,6 +242,7 @@ export function SubmissionForm({
               name={field.name}
               defaultValue=""
               aria-invalid={errors[field.name] ? true : undefined}
+              aria-describedby={errors[field.name] ? `${field.name}-error` : undefined}
             >
               <option value="">Select one</option>
               {field.options?.map((option) => (
