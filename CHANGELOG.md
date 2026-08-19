@@ -1,6 +1,23 @@
 # Changelog
 
-CURRENT VERSION: v4.39.0 — 1903hrs:19th August2026
+CURRENT VERSION: v4.39.1 — 1909hrs:19th August2026
+
+## v4.39.1 — 1909hrs:19th August2026
+
+Two owner decisions recorded, no site changes:
+
+- **Governance files signed off.** Explicit owner approval of `CLAUDE.md`,
+  `ROADMAP.md` and `REVIEW.md` recorded; the decisions-table row that had
+  been outstanding since 18 August closes.
+- **Retention policy decided: deletion on request, no fixed period.**
+  Submissions and stored tool results are kept until deleted, and deletion
+  requests are honoured — which is what the privacy notice, the Assessment
+  Terms 0.2 and the code already do, so nothing changes on the site. The
+  `retain_until` column (found during this decision to be stamped two years
+  from submission in `worker/submissions.ts`, unenforced — the likely
+  origin of the false claim fixed in v4.39.0) is recorded as an advisory
+  marker only. Adopting a fixed period later means changing both legal
+  pages and building enforcement together.
 
 ## v4.39.0 — 1903hrs:19th August2026
 
