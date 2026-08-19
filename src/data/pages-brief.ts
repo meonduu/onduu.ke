@@ -362,9 +362,10 @@ export const briefPages: Record<string, PageContent> = {
       },
       {
         "eyebrow": "02 / WHAT IS COLLECTED",
-        "title": "Only what you type into a form.",
+        "title": "What you type, and how the pages are used.",
         "body": [
-          "The Digital Readiness Score request and the contact form collect the fields you complete. Nothing else about you is gathered as you browse."
+          "The Digital Readiness Score request and the contact form collect the fields you complete. Those fields are listed below.",
+          "Separately, how the pages themselves are used is measured: which page was opened, roughly how long it was on screen, and clicks on the few elements this site marks for counting. That measurement holds no name, address or identifier, and cannot recognise you on a later visit. Section 05 describes exactly how it works and how to switch it off."
         ],
         "items": [
           "Full name",
@@ -398,6 +399,10 @@ export const briefPages: Record<string, PageContent> = {
           {
             "title": "To know which content works",
             "body": "Where you came from is stored with your enquiry so it is possible to tell which article or link produced it. This is kept in first-party records rather than sent to an analytics company. The basis is a legitimate interest in knowing which work is worth continuing."
+          },
+          {
+            "title": "To see which pages are read",
+            "body": "How the pages are used is measured: which page was opened, roughly how long it was on screen, and clicks on the elements this site marks for counting. Nothing in it identifies you or links one visit to another. The basis is a legitimate interest in improving what is published here, and the measurement stops entirely for a browser sending Global Privacy Control or Do Not Track."
           }
         ]
       },
@@ -453,6 +458,7 @@ export const briefPages: Record<string, PageContent> = {
         "title": "Kept until deleted.",
         "body": [
           "There is no automatic deletion schedule. Submissions stay in the database until they are deleted by hand, and no fixed retention period is currently set.",
+          "The same applies to the counted page views and the engagement measurement: nothing prunes them on a timer, and they are removed by hand. They hold no name, address or identifier, so there is nothing in them to trace back to a person, but they do accumulate with every visit rather than only when somebody writes in.",
           "You can ask at any time for information about you to be deleted, and it will be. That is the practical control available to you, and it is honoured on request rather than on a timer."
         ],
         "note": "TO CONFIRM: whether a retention limit should be introduced later. Holding personal data indefinitely is a weaker position under the Data Protection Act than deleting it on a defined schedule."
@@ -503,7 +509,7 @@ export const briefPages: Record<string, PageContent> = {
         "title": "Version and effective date.",
         "body": [
           "Draft version 0.3, prepared 19 August 2026 and checked against the running code the same day. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
-          "What changed in 0.3: the cookies and analytics section now describes the first-party measurement script this site runs in the browser — which pages were opened, roughly how long each was on screen, and clicks on explicitly marked elements, with a tab-scoped label in session storage and nothing that can recognise a returning visitor — and records that the script honours the Global Privacy Control and Do Not Track signals.",
+          "What changed in 0.3: the cookies and analytics section now describes the first-party measurement script this site runs in the browser — which pages were opened, roughly how long each was on screen, and clicks on explicitly marked elements, with a tab-scoped label in session storage and nothing that can recognise a returning visitor — and records that the script honours the Global Privacy Control and Do Not Track signals. Three further sections were corrected to match it: what is collected no longer claims nothing is gathered as you browse, why-and-on-what-basis states the legitimate interest relied on for the measurement, and how-long-it-is-kept covers the counted views and events rather than form submissions alone.",
           "What changed in 0.2: the DNS health check at /dns was added to the tools section, including the direct questions it asks parent and authoritative nameservers; an inaccurate claim that this site used a cookieless analytics product was removed, because it does not, no analytics script runs in the browser at all, and the content-security policy would refuse one; and the third parties section now names the registries and nameservers the tools contact.",
           "The consent wording shown on the forms is versioned separately, so a record exists of the exact text each person agreed to."
         ]

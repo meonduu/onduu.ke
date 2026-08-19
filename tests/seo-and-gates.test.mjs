@@ -156,6 +156,26 @@ test("the legal pages describe behaviour that actually exists", async () => {
   // It must not claim analytics products the site does not run: the CSP
   // permits no third-party analytics script, so a claim would be false.
   assert.doesNotMatch(privacy, /Cloudflare Web Analytics runs/, "no analytics product is in use");
+  // The notice must stay internally consistent about the first-party
+  // measurement script: section 05 describes it, so section 02 cannot claim
+  // nothing is gathered while browsing, section 03 must state a basis for it,
+  // and section 08 must cover what it accumulates.
+  assert.doesNotMatch(
+    privacy,
+    /Nothing else about you is gathered as you browse/i,
+    "section 02 contradicts the measurement described in section 05",
+  );
+  assert.match(privacy, /Global Privacy Control/i, "the opt-out signal must be disclosed");
+  assert.match(
+    privacy,
+    /legitimate interest in improving what is published here/i,
+    "the measurement needs a stated legal basis",
+  );
+  assert.match(
+    privacy,
+    /engagement measurement: nothing prunes them on a timer/i,
+    "retention must cover the counted views and events",
+  );
 
   const commercial = await (await fetchPath("/legal/commercial-relationships")).text();
   // The referral fee must be disclosed, without an amount, and the shared
