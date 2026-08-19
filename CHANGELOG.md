@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.29.1 — 1425hrs:19th August2026
+CURRENT VERSION: v4.29.2 — 1430hrs:19th August2026
+
+## v4.29.2 — 1430hrs:19th August2026
+
+The flaky test fixture is fixed. Two tests failed once each today and
+passed on re-run ("robots disallows the dashboard", and the SCAN_ENABLED
+launch gate). Both use `tests/helpers/server.mjs`, so the race was in the
+harness, not in either assertion.
+
+Two defects, both in how a worker was claimed:
+
+1. **The port was picked at random with no check that it was free.** Test
+   files run in parallel, each spawning its own `wrangler dev`, so two
+   processes could choose the same port.
+2. **Readiness was "GET /robots.txt returned ok" on that port, from any
+   server at all.** The process that lost the bind could therefore adopt
+   the winner's worker. That is exactly how a file spawning with
+   `--var SCAN_ENABLED:false` could end up asserting against a worker
+   started without it, and see `/api/scan` answer instead of 404 — the
+   failure observed.
+
+Now the port comes from the OS (bind to :0, read the assigned number,
+release it), and readiness additionally requires this child's own log to
+name that port, which only happens when this child is the one serving it.
+A bind conflict is detected from the log and abandoned immediately instead
+of waiting out a 60-second deadline. Concurrent callers in one process
+share a single spawn, so a `fetchPath()` racing a `startWorker([...])` can
+no longer start a second, differently configured worker.
+
+Verified: 8 consecutive full runs, 173/173 each. The failure path was
+tested too — pointed at a missing config, the helper now fails in about 6
+seconds with the log tail rather than hanging. No site behaviour changed.
+
 
 ## v4.29.1 — 1425hrs:19th August2026
 
