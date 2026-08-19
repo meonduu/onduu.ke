@@ -220,7 +220,7 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
       body: JSON.stringify({
         from: { address: env.NOTIFY_EMAIL },
         to: [{ email_address: { address: env.NOTIFY_EMAIL } }],
-        subject: `New ${kind} request — ${ref}`,
+        subject: `New ${kind} request. ${ref}`,
         textbody: `A new ${kind} request was received.\n\nReference: ${ref}\n\nThe submitted details are stored in the onduu-leads database. This message intentionally contains no personal data.`,
       }),
     });

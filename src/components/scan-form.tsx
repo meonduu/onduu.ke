@@ -139,7 +139,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
 
       <p className="check-note" role="status" aria-live="polite">
         {state === "loading"
-          ? "Reading public records — registry, DNS, email and the homepage…"
+          ? "Reading public records: registry, DNS, email and the homepage…"
           : "This reads public information only. It touches nothing private and never asks you to log in."}
       </p>
 
@@ -159,7 +159,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
             <div>
               <h2>What the public signals show for {result.domain}.</h2>
               <p>
-                Evidence coverage {result.evidenceCoverage}% — the share of the readiness picture
+                Evidence coverage {result.evidenceCoverage}%. The share of the readiness picture
                 that is publicly observable. {result.statement}
               </p>
             </div>
@@ -191,7 +191,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
 
           <div className="note">
             This is a Public Signal Score, not a Digital Readiness Score. Items marked NOT PUBLIC
-            could not be seen from outside and neither helped nor hurt the score — they are exactly
+            could not be seen from outside and neither helped nor hurt the score. They are exactly
             what the human-reviewed Verified assessment covers. Scan reference {result.reference},
             run {new Date(result.scannedAt).toLocaleString()}
             {result.cached ? " (a recent result for this domain)." : "."}

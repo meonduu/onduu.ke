@@ -105,7 +105,7 @@ export function analyseMx(records) {
       status: 'fail',
       records: [],
       detail:
-        'No MX records found. Mail sent to this domain has nowhere to go — it will bounce. If you use email on this domain at all, this is the first thing to fix.',
+        'No MX records found. Mail sent to this domain has nowhere to go. It will bounce. If you use email on this domain at all, this is the first thing to fix.',
     };
   }
   const hosts = records.map((r) => r.host).join(' ');
@@ -222,7 +222,7 @@ export function analyseSpf(txtRecords, expansion) {
       status: 'fail',
       record: spf.join(' | '),
       detail:
-        'More than one SPF record. This is invalid — receiving servers ignore all of them, so you effectively have no SPF at all. Merge them into a single record.',
+        'More than one SPF record. This is invalid. Receiving servers ignore all of them, so you effectively have no SPF at all. Merge them into a single record.',
     };
   }
 
@@ -264,7 +264,7 @@ export function analyseSpf(txtRecords, expansion) {
       lookups,
       duplicates,
       unresolved,
-      detail: `This record needs ${lookups} DNS lookups. SPF allows 10 — past that it fails with a permanent error and stops working entirely, so your legitimate mail is no longer authenticated.${
+      detail: `This record needs ${lookups} DNS lookups. SPF allows 10. Past that it fails with a permanent error and stops working entirely, so your legitimate mail is no longer authenticated.${
         duplicates.length ? ` It also includes ${duplicates.join(' and ')} more than once.` : ''
       } Remove senders you no longer use, or flatten the record to IP addresses.`,
     };
@@ -282,7 +282,7 @@ export function analyseSpf(txtRecords, expansion) {
     );
   }
   if (lookups >= 8) {
-    notes.push(`You are at ${lookups} of 10 lookups — close enough that adding one more service could break the record.`);
+    notes.push(`You are at ${lookups} of 10 lookups. Close enough that adding one more service could break the record.`);
   }
 
   // Both "-all" and "~all" are valid, working configurations. Softfail is a
@@ -299,7 +299,7 @@ export function analyseSpf(txtRecords, expansion) {
     detail: [
       qualifier === '-'
         ? `A single valid SPF record ending in "-all", using ${lookups} of the 10 permitted DNS lookups. This is correct.`
-        : `A single valid SPF record ending in "~all" (softfail), using ${lookups} of the 10 permitted DNS lookups — unauthorised mail is marked suspicious rather than refused. This is a legitimate, working setup; once you are confident every real sender is listed, "-all" is the recommended endpoint because it refuses unauthorised mail outright.`,
+        : `A single valid SPF record ending in "~all" (softfail), using ${lookups} of the 10 permitted DNS lookups. Unauthorised mail is marked suspicious rather than refused. This is a legitimate, working setup; once you are confident every real sender is listed, "-all" is the recommended endpoint because it refuses unauthorised mail outright.`,
       ...notes,
     ].join(' '),
   };
@@ -312,8 +312,8 @@ export function analyseDkim(found, provider, dmarcEnforcing) {
       selectors: [],
       undetectable: !!dmarcEnforcing,
       detail: dmarcEnforcing
-        ? 'We could not find a DKIM key, but this is very likely a limit of the check rather than a fault on your domain. Selectors cannot be discovered from DNS — only guessed — and several providers issue unguessable ones (ZeptoMail and SparkPost use numbers like "28419" or "scph0526"). Since your DMARC policy is already enforcing, your own mail would be bouncing if signing were broken. Confirm the selector in your mail provider\'s console.'
-        : 'No DKIM key found on the selectors we checked. DKIM selectors cannot be discovered from DNS — they can only be guessed — so this is not proof that DKIM is missing. But if you have not deliberately switched DKIM on with your mail provider, it almost certainly is.',
+        ? 'We could not find a DKIM key, but this is very likely a limit of the check rather than a fault on your domain. Selectors cannot be discovered from DNS, only guessed, and several providers issue unguessable ones (ZeptoMail and SparkPost use numbers like "28419" or "scph0526"). Since your DMARC policy is already enforcing, your own mail would be bouncing if signing were broken. Confirm the selector in your mail provider\'s console.'
+        : 'No DKIM key found on the selectors we checked. DKIM selectors cannot be discovered from DNS, they can only be guessed, so this is not proof that DKIM is missing. But if you have not deliberately switched DKIM on with your mail provider, it almost certainly is.',
     };
   }
 
@@ -325,7 +325,7 @@ export function analyseDkim(found, provider, dmarcEnforcing) {
       status: 'warn',
       selectors: found,
       missingProvider: expected[2],
-      detail: `A DKIM key is published (${found.join(', ')}), but not on the "${expected[1]}" selector that ${expected[2]} uses — so your ${expected[2]} mail is not being signed. It still passes today because SPF covers it, but SPF breaks whenever a message is forwarded. With an enforcing DMARC policy, forwarded mail would then be refused outright. Switch DKIM on in your ${expected[2]} admin console.`,
+      detail: `A DKIM key is published (${found.join(', ')}), but not on the "${expected[1]}" selector that ${expected[2]} uses, so your ${expected[2]} mail is not being signed. It still passes today because SPF covers it, but SPF breaks whenever a message is forwarded. With an enforcing DMARC policy, forwarded mail would then be refused outright. Switch DKIM on in your ${expected[2]} admin console.`,
     };
   }
 
@@ -343,7 +343,7 @@ export function analyseDmarc(txtRecords) {
     return {
       status: 'fail',
       detail:
-        'No DMARC record. Receiving servers have no instruction about what to do with forged mail claiming to be from you — so most will deliver it. You also get no reports, meaning spoofing of your domain is invisible to you.',
+        'No DMARC record. Receiving servers have no instruction about what to do with forged mail claiming to be from you, so most will deliver it. You also get no reports, meaning spoofing of your domain is invisible to you.',
     };
   }
   if (dmarc.length > 1) {
@@ -370,7 +370,7 @@ export function analyseDmarc(txtRecords) {
       pct,
       rua,
       detail: rua
-        ? 'DMARC is in monitoring mode (p=none). This collects reports but does not stop anyone spoofing your domain. Monitoring is the correct first step — the mistake is stopping here. Once the reports show every real sender passing, move to quarantine, then reject.'
+        ? 'DMARC is in monitoring mode (p=none). This collects reports but does not stop anyone spoofing your domain. Monitoring is the correct first step. The mistake is stopping here. Once the reports show every real sender passing, move to quarantine, then reject.'
         : 'DMARC is in monitoring mode (p=none) and has no rua= reporting address, so it is neither blocking spoofing nor collecting evidence. Add a rua= address, then work towards reject.',
     };
   }
@@ -396,7 +396,7 @@ export function analyseDmarc(txtRecords) {
     detail:
       policy === 'reject'
         ? `Policy is p=reject${rua ? ' with reporting enabled' : ''}. Forged mail claiming to be from your domain is refused outright. This is the goal.${rua ? '' : ' Add a rua= address so you can still see who is trying.'}`
-        : `Policy is p=quarantine${rua ? ' with reporting enabled' : ''} — forged mail is sent to spam instead of the inbox, so your domain is protected. This is a legitimate, enforcing setup; once the reports are clean, p=reject is the recommended endpoint because it refuses forged mail outright.${rua ? '' : ' Add a rua= address so you can see who is trying.'}`,
+        : `Policy is p=quarantine${rua ? ' with reporting enabled' : ''}. Forged mail is sent to spam instead of the inbox, so your domain is protected. This is a legitimate, enforcing setup; once the reports are clean, p=reject is the recommended endpoint because it refuses forged mail outright.${rua ? '' : ' Add a rua= address so you can see who is trying.'}`,
   };
 }
 
@@ -419,7 +419,7 @@ export function analyseMtaSts(policyTxt, hasPolicyHost) {
       status: 'info',
       present: false,
       detail:
-        'No MTA-STS policy. Mail servers delivering to you will use TLS if offered, but will fall back to an unencrypted connection if someone strips it. MTA-STS closes that downgrade. Uncommon outside large organisations — worth having, not a fault.',
+        'No MTA-STS policy. Mail servers delivering to you will use TLS if offered, but will fall back to an unencrypted connection if someone strips it. MTA-STS closes that downgrade. Uncommon outside large organisations, worth having, not a fault.',
     };
   }
   const id = (rec.match(/\bid\s*=\s*([^;\s]+)/i) || [])[1] || null;
@@ -441,7 +441,7 @@ export function analyseTlsRpt(txt) {
       status: 'info',
       present: false,
       detail:
-        'No TLS reporting. You will not be told when another server fails to establish an encrypted connection to you. Pairs with MTA-STS — without it you are enforcing a policy you cannot see failing.',
+        'No TLS reporting. You will not be told when another server fails to establish an encrypted connection to you. Pairs with MTA-STS, without it you are enforcing a policy you cannot see failing.',
     };
   }
   return {
@@ -463,7 +463,7 @@ export function analyseDnssec(ad) {
         status: 'info',
         present: false,
         detail:
-          'DNSSEC is not enabled. Without it, a DNS answer for your domain can in principle be forged — including your MX records. Most Kenyan domains do not have it; enabling it at your registrar is usually a single switch.',
+          'DNSSEC is not enabled. Without it, a DNS answer for your domain can in principle be forged, including your MX records. Most Kenyan domains do not have it; enabling it at your registrar is usually a single switch.',
       };
 }
 
@@ -474,7 +474,7 @@ export function analyseBimi(txt) {
       status: 'info',
       present: false,
       detail:
-        'No BIMI record. BIMI shows your logo beside your messages in supporting inboxes, but only once DMARC is at quarantine or reject. It is a branding reward for finishing the authentication work — not a security control.',
+        'No BIMI record. BIMI shows your logo beside your messages in supporting inboxes, but only once DMARC is at quarantine or reject. It is a branding reward for finishing the authentication work, not a security control.',
     };
   }
   const hasLogo = /\bl\s*=\s*https:/i.test(rec);
@@ -549,7 +549,7 @@ export function buildFixes(checks) {
       priority: checks.spf.status === 'fail' ? 1 : 3,
       title: checks.spf.status === 'fail' ? 'Publish one valid SPF record' : 'Tighten your SPF record',
       detail:
-        'List every service that legitimately sends mail as you — your mailbox provider, invoicing tool, newsletter, website forms — in a single TXT record ending in "-all".',
+        'List every service that legitimately sends mail as you (your mailbox provider, invoicing tool, newsletter, website forms) in a single TXT record ending in "-all".',
     });
   }
   // Don't nag about DKIM we simply couldn't see on a domain that is already

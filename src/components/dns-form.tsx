@@ -186,7 +186,7 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
               <tr key={d.host}>
                 <td>{d.host}</td>
                 <td>{d.ttl}</td>
-                <td>{p.glue.filter((g) => g.name === d.host).map((g) => g.ip).join(", ") || "—"}</td>
+                <td>{p.glue.filter((g) => g.name === d.host).map((g) => g.ip).join(", ") || ", "}</td>
               </tr>
             ))}
           </tbody>
@@ -220,7 +220,7 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
           {detail.nsHosts.map((h) => (
             <tr key={h.host}>
               <td>{h.host}</td>
-              <td>{h.answering ? (h.ips.join(", ") || "—") : "not answering"}</td>
+              <td>{h.answering ? (h.ips.join(", ") || ", ") : "not answering"}</td>
               <td>{h.inRegistry === null ? "n/a" : h.inRegistry ? "yes" : "no"}</td>
             </tr>
           ))}
@@ -284,8 +284,8 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
             <tr key={m.host}>
               <td>{m.priority}</td>
               <td>{m.host}</td>
-              <td>{m.ips.join(", ") || "—"}</td>
-              <td>{m.ptr.map((p) => p.name ?? `${p.ip}: none`).join(", ") || "—"}</td>
+              <td>{m.ips.join(", ") || ", "}</td>
+              <td>{m.ptr.map((p) => p.name ?? `${p.ip}: none`).join(", ") || ", "}</td>
             </tr>
           ))}
         </tbody>
@@ -430,9 +430,9 @@ export function DnsForm() {
 
           <div className="note">
             Resolved over public DNS and RDAP, plus direct read-only questions to the parent zone
-            and your own nameservers (standard DNS queries — the same ones every resolver sends).
+            and your own nameservers (standard DNS queries. The same ones every resolver sends).
             DNSSEC is detected, not cryptographically validated; reverse DNS covers the first few
-            mail addresses only. A clean result means the public records are coherent — it does not
+            mail addresses only. A clean result means the public records are coherent. It does not
             prove the domain, the website or the business behind them are secure.
           </div>
         </div>

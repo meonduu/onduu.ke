@@ -30,7 +30,7 @@ export const articles: Article[] = [
   {
     "slug": "three-free-checks-for-your-domain",
     "title": "Three free checks for your domain. I pointed them at mine first.",
-    "lede": "Three free tools are now live on onduu.ke — an email spoofing check, a .ke domain search and a public readiness scan. The first domain I tested was my own, and it failed three of the checks.",
+    "lede": "Three free tools are now live on onduu.ke. An email spoofing check, a .ke domain search and a public readiness scan. The first domain I tested was my own, and it failed three of the checks.",
     "date": "2026-08-18",
     "dateLabel": "18 August 2026",
     "readTime": "3 min read",
@@ -42,14 +42,14 @@ export const articles: Article[] = [
       "Kenya"
     ],
     "category": "Domains & email",
-    "excerpt": "An email spoofing check, a .ke domain search and a public readiness scan — free, no sign-up. The first domain I tested was my own, and it failed three of the checks.",
+    "excerpt": "An email spoofing check, a .ke domain search and a public readiness scan, free, no sign-up. The first domain I tested was my own, and it failed three of the checks.",
     "body": [
       {
         "type": "p",
         "nodes": [
           {
             "t": "text",
-            "v": "The tools told me my domain had no HSTS, no automatic redirect to HTTPS, and — worse — "
+            "v": "The tools told me my domain had no HSTS, no automatic redirect to HTTPS, and, worse, "
           },
           {
             "t": "strong",
@@ -88,7 +88,7 @@ export const articles: Article[] = [
           },
           {
             "t": "text",
-            "v": " reads your published SPF, DKIM, DMARC and MX records and explains, in plain English, what they do — and what they do not prove. Over 100 parastatal chief executives "
+            "v": " reads your published SPF, DKIM, DMARC and MX records and explains, in plain English, what they do, and what they do not prove. Over 100 parastatal chief executives "
           },
           {
             "t": "a",
@@ -141,7 +141,7 @@ export const articles: Article[] = [
           },
           {
             "t": "text",
-            "v": " produces a Public Signal Score across six dimensions — control, trust, speed, conversion, resilience, agent readiness — with an honest Evidence Coverage figure showing how much of the picture is actually visible from outside. Anything that cannot be observed publicly is marked as such, and never counts for or against you."
+            "v": " produces a Public Signal Score across six dimensions (control, trust, speed, conversion, resilience, agent readiness) with an honest Evidence Coverage figure showing how much of the picture is actually visible from outside. Anything that cannot be observed publicly is marked as such, and never counts for or against you."
           }
         ]
       },
@@ -150,7 +150,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "None of these prove your business is secure. They show what is visible and what is missing, so you can decide what to fix first — and who should fix it. The limits of each tool are documented on the "
+            "v": "None of these prove your business is secure. They show what is visible and what is missing, so you can decide what to fix first, and who should fix it. The limits of each tool are documented on the "
           },
           {
             "t": "a",
@@ -344,7 +344,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "DNSSEC signs DNS answers so a resolver can verify nobody tampered with them. It depends on a small record at the registry — a DS record — matching the key published in the zone. Mine did not match. The key tag was right, the algorithm was right, the digest was wrong."
+            "v": "DNSSEC signs DNS answers so a resolver can verify nobody tampered with them. It depends on a small record at the registry, a DS record, matching the key published in the zone. Mine did not match. The key tag was right, the algorithm was right, the digest was wrong."
           }
         ]
       },
@@ -353,7 +353,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "The consequence of that mismatch is total. Every resolver that validates DNSSEC — Google’s, Cloudflare’s, Quad9, many ISPs — stops. Not “returns fewer records.” Refuses to answer at all. For every one of those users, my website was unreachable and mail to me was undeliverable. The error from Google’s resolver was blunt: "
+            "v": "The consequence of that mismatch is total. Every resolver that validates DNSSEC (Google’s, Cloudflare’s, Quad9, many ISPs) stops. Not “returns fewer records.” Refuses to answer at all. For every one of those users, my website was unreachable and mail to me was undeliverable. The error from Google’s resolver was blunt: "
           },
           {
             "t": "code",
@@ -467,7 +467,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "DMARC asks receiving servers to send you reports — daily files listing every IP address sending as your domain and whether it passed."
+            "v": "DMARC asks receiving servers to send you reports, daily files listing every IP address sending as your domain and whether it passed."
           }
         ]
       },
@@ -659,7 +659,7 @@ export const articles: Article[] = [
   {
     "slug": "ai-agent-in-your-inbox-obeys-whoever-emails-you",
     "title": "An AI agent in your inbox obeys whoever emails you",
-    "lede": "Connect an assistant to your email and every message becomes an instruction it might follow. Part of the defence is not in the AI — it is in your DNS.",
+    "lede": "Connect an assistant to your email and every message becomes an instruction it might follow. Part of the defence is not in the AI. It is in your DNS.",
     "date": "2026-08-12",
     "dateLabel": "12 August 2026",
     "readTime": "8 min read",
@@ -672,7 +672,7 @@ export const articles: Article[] = [
       "Kenya"
     ],
     "category": "AI agents",
-    "excerpt": "Connect an assistant to your email and every message becomes an instruction it might follow. Part of the defence is not in the AI — it is in your DNS.",
+    "excerpt": "Connect an assistant to your email and every message becomes an instruction it might follow. Part of the defence is not in the AI. It is in your DNS.",
     "body": [
       {
         "type": "p",
@@ -736,7 +736,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "The instinct is to fix this inside the AI — better prompts, stricter rules, tell it not to trust the email. That helps, and it is not enough, because you are asking a system that processes language to reliably classify some language as untrustworthy. That is the same problem, restated."
+            "v": "The instinct is to fix this inside the AI. Better prompts, stricter rules, tell it not to trust the email. That helps, and it is not enough, because you are asking a system that processes language to reliably classify some language as untrustworthy. That is the same problem, restated."
           }
         ]
       },
@@ -792,7 +792,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " tells receiving servers what to do when a message claiming to be from you fails those checks — and, crucially, sends you reports about it."
+              "v": " tells receiving servers what to do when a message claiming to be from you fails those checks, and, crucially, sends you reports about it."
             }
           ]
         ]
@@ -833,7 +833,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Someone forges that supplier’s address. Not a lookalike domain — the actual address, in the From field, which is trivial. The message contains an invoice with different bank details, and a line of text aimed at the assistant."
+            "v": "Someone forges that supplier’s address. Not a lookalike domain. The actual address, in the From field, which is trivial. The message contains an invoice with different bank details, and a line of text aimed at the assistant."
           }
         ]
       },
@@ -868,7 +868,7 @@ export const articles: Article[] = [
           },
           {
             "t": "text",
-            "v": " You control yours. Publishing DMARC on your domain protects the people who receive mail claiming to be from you — your clients, your suppliers, the bank. It does not, on its own, protect your inbox from a supplier who never bothered."
+            "v": " You control yours. Publishing DMARC on your domain protects the people who receive mail claiming to be from you, your clients, your suppliers, the bank. It does not, on its own, protect your inbox from a supplier who never bothered."
           }
         ]
       },
@@ -877,7 +877,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "What protects your inbox is enforcement on the receiving side: making sure your mail platform actually rejects or quarantines mail that fails authentication, rather than delivering it with a small warning nobody reads — and certainly rather than handing it to software that reads warnings as text."
+            "v": "What protects your inbox is enforcement on the receiving side: making sure your mail platform actually rejects or quarantines mail that fails authentication, rather than delivering it with a small warning nobody reads, and certainly rather than handing it to software that reads warnings as text."
           }
         ]
       },
@@ -899,7 +899,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "An assistant that sends email — replies, notifications, reports — is sending as your domain. If it goes out through a service you have not listed in SPF, those messages fail authentication. Best case they land in spam. Worst case somebody “fixes” it by loosening SPF until everything passes, which is the same as switching the lock off because you kept losing the key."
+            "v": "An assistant that sends email (replies, notifications, reports) is sending as your domain. If it goes out through a service you have not listed in SPF, those messages fail authentication. Best case they land in spam. Worst case somebody “fixes” it by loosening SPF until everything passes, which is the same as switching the lock off because you kept losing the key."
           }
         ]
       },
@@ -908,7 +908,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "There is a quieter version of this that catches good teams. SPF allows a maximum of ten DNS lookups when it is evaluated. Each service you add — your mail platform, your newsletter tool, your CRM, your invoicing system — usually costs one. Add an agent wired to a sending service and you might be the eleventh."
+            "v": "There is a quieter version of this that catches good teams. SPF allows a maximum of ten DNS lookups when it is evaluated. Each service you add (your mail platform, your newsletter tool, your CRM, your invoicing system) usually costs one. Add an agent wired to a sending service and you might be the eleventh."
           }
         ]
       },
@@ -917,7 +917,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Past ten, receivers stop evaluating. SPF fails. Not for the new tool — "
+            "v": "Past ten, receivers stop evaluating. SPF fails. Not for the new tool. "
           },
           {
             "t": "strong",
@@ -1006,7 +1006,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " with a reporting address, read the reports for a few weeks until every legitimate sender is accounted for, then move to quarantine and then reject. Going early blocks your own invoices — this is the step that takes weeks and cannot be skipped."
+              "v": " with a reporting address, read the reports for a few weeks until every legitimate sender is accounted for, then move to quarantine and then reject. Going early blocks your own invoices. This is the step that takes weeks and cannot be skipped."
             }
           ],
           [
@@ -1084,7 +1084,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Authentication stops somebody sending as a domain they do not control. It does not stop somebody registering a domain that looks like your supplier’s and sending from that — a lookalike is not a forgery, it is a different domain, correctly authenticated, owned by an attacker."
+            "v": "Authentication stops somebody sending as a domain they do not control. It does not stop somebody registering a domain that looks like your supplier’s and sending from that. A lookalike is not a forgery, it is a different domain, correctly authenticated, owned by an attacker."
           }
         ]
       },
@@ -1102,7 +1102,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "So this is not a solution. It removes one whole class of attack — the easy, free, no-skill-required class — and leaves the harder ones, which is what any honest security measure does. The alternative is leaving the easy class open too."
+            "v": "So this is not a solution. It removes one whole class of attack (the easy, free, no-skill-required class) and leaves the harder ones, which is what any honest security measure does. The alternative is leaving the easy class open too."
           }
         ]
       },
@@ -1129,7 +1129,7 @@ export const articles: Article[] = [
           },
           {
             "t": "text",
-            "v": " — it takes about ten seconds, and there is nothing to sign up for."
+            "v": ". It takes about ten seconds, and there is nothing to sign up for."
           }
         ]
       }
@@ -1838,7 +1838,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "This guide outlines how Kenyan freelancers can manage client domains ethically, legally, and professionally — while also protecting their own business interests."
+            "v": "This guide outlines how Kenyan freelancers can manage client domains ethically, legally, and professionally, while also protecting their own business interests."
           }
         ]
       },
@@ -1851,7 +1851,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Clients entrust you with their brand, their visibility, and sometimes even their livelihood. A domain name isn’t just a web address — it’s their digital identity. If a domain is registered incorrectly, it can lead to:"
+            "v": "Clients entrust you with their brand, their visibility, and sometimes even their livelihood. A domain name isn’t just a web address, it’s their digital identity. If a domain is registered incorrectly, it can lead to:"
           }
         ]
       },
@@ -1889,7 +1889,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Handling domain management ethically not only protects your clients — it builds trust and separates you from less responsible competitors."
+            "v": "Handling domain management ethically not only protects your clients, it builds trust and separates you from less responsible competitors."
           }
         ]
       },
@@ -1915,7 +1915,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Instead of consulting the client or using their details, he registered it under his own name for convenience. Months later, the domain was flagged as part of a fraud scheme. Because his name was on the registration, he became the point of contact — and the one held responsible. What seemed like a harmless shortcut turned into a serious legal and reputational mess."
+            "v": "Instead of consulting the client or using their details, he registered it under his own name for convenience. Months later, the domain was flagged as part of a fraud scheme. Because his name was on the registration, he became the point of contact, and the one held responsible. What seemed like a harmless shortcut turned into a serious legal and reputational mess."
           }
         ]
       },
@@ -1959,7 +1959,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "If a domain expires because you forgot to renew it, the client may lose their website and emails — sometimes permanently."
+            "v": "If a domain expires because you forgot to renew it, the client may lose their website and emails, sometimes permanently."
           }
         ]
       },
@@ -2066,7 +2066,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Use accredited registrars — "
+            "v": "Use accredited registrars: "
           },
           {
             "t": "a",
@@ -2348,7 +2348,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Agencies who treat domains as strategic assets — rather than temporary deliverables — stand out in a crowded market."
+            "v": "Agencies who treat domains as strategic assets, rather than temporary deliverables, stand out in a crowded market."
           }
         ]
       },
@@ -2378,7 +2378,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Even when domains are initially registered on behalf of the client, failure to transfer credentials can leave agencies in a legal grey area — and clients in digital limbo."
+            "v": "Even when domains are initially registered on behalf of the client, failure to transfer credentials can leave agencies in a legal grey area, and clients in digital limbo."
           }
         ]
       },
@@ -2417,7 +2417,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Agencies often fail to keep proper records — such as login credentials, registrar information, and transfer logs — leading to confusion and liability."
+            "v": "Agencies often fail to keep proper records (such as login credentials, registrar information, and transfer logs) leading to confusion and liability."
           }
         ]
       },
@@ -2590,7 +2590,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Your clients trust you with their digital identity. Don’t just build websites — build responsible infrastructure."
+            "v": "Your clients trust you with their digital identity. Don’t just build websites, build responsible infrastructure."
           }
         ]
       },
@@ -2648,7 +2648,7 @@ export const articles: Article[] = [
   },
   {
     "slug": "boss-encounters-episode-1-sir-i-want-to-speak-to-the-boss",
-    "title": "Boss Encounters: Episode 1 — “Sir, I Want to Speak to the Boss!”",
+    "title": "Boss Encounters: Episode 1, “Sir, I Want to Speak to the Boss!”",
     "lede": "A business owner storms in: three websites down, the IT guy vanished, and no document proving he owns the domains. A short story about what ownership means.",
     "date": "2025-05-14",
     "dateLabel": "14 May 2025",
@@ -2686,7 +2686,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "In walks a man — shirt untucked, eyes fierce. Let’s call him "
+            "v": "In walks a man: shirt untucked, eyes fierce. Let’s call him "
           },
           {
             "t": "em",
@@ -2748,7 +2748,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "They call me. I walk in. Mike sees me and suddenly, like magic — he calms down."
+            "v": "They call me. I walk in. Mike sees me and suddenly, like magic, he calms down."
           }
         ]
       },
@@ -2927,7 +2927,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "“Mike, without formal documentation or control over the domain records, we’ll have to maintain the current status — the sites remain suspended.”"
+            "v": "“Mike, without formal documentation or control over the domain records, we’ll have to maintain the current status. The sites remain suspended.”"
           }
         ]
       },
@@ -3356,7 +3356,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — if someone else owns a domain similar to yours, it can confuse customers."
+              "v": ". If someone else owns a domain similar to yours, it can confuse customers."
             }
           ],
           [
@@ -3366,7 +3366,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — losing access can mean your website and emails go offline."
+              "v": ". Losing access can mean your website and emails go offline."
             }
           ],
           [
@@ -3376,7 +3376,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — reclaiming a domain can be a lengthy and costly legal process."
+              "v": ". Reclaiming a domain can be a lengthy and costly legal process."
             }
           ]
         ]
@@ -3404,7 +3404,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — engaging freelancers or agencies to register domains without clear agreements can lead to ownership disputes."
+              "v": ". Engaging freelancers or agencies to register domains without clear agreements can lead to ownership disputes."
             }
           ],
           [
@@ -3414,7 +3414,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — failing to renew domains on time can result in loss of ownership."
+              "v": ". Failing to renew domains on time can result in loss of ownership."
             }
           ],
           [
@@ -3424,7 +3424,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — not trademarking your brand name can make it harder to reclaim a domain if disputes arise."
+              "v": ". Not trademarking your brand name can make it harder to reclaim a domain if disputes arise."
             }
           ]
         ]
@@ -3443,7 +3443,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — always ensure the domain is registered under your name or your company’s name."
+              "v": ". Always ensure the domain is registered under your name or your company’s name."
             }
           ],
           [
@@ -3453,7 +3453,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — choose reputable domain registrars recognized by the Kenya Network Information Centre (KeNIC)."
+              "v": ". Choose reputable domain registrars recognized by the Kenya Network Information Centre (KeNIC)."
             }
           ],
           [
@@ -3463,7 +3463,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — to avoid accidental expirations, enable auto-renewal features."
+              "v": ". To avoid accidental expirations, enable auto-renewal features."
             }
           ],
           [
@@ -3473,7 +3473,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — this provides legal backing in case of domain disputes."
+              "v": ". This provides legal backing in case of domain disputes."
             }
           ],
           [
@@ -3483,7 +3483,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — ensure your registrar has your current contact details to receive important notifications."
+              "v": ". Ensure your registrar has your current contact details to receive important notifications."
             }
           ]
         ]
@@ -3519,7 +3519,7 @@ export const articles: Article[] = [
           },
           {
             "t": "text",
-            "v": " — a community dedicated to educating and supporting Kenyan entrepreneurs in domain management and digital asset protection."
+            "v": ". A community dedicated to educating and supporting Kenyan entrepreneurs in domain management and digital asset protection."
           }
         ]
       },
@@ -3542,7 +3542,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — access to professionals well-versed in domain registration and dispute resolution."
+              "v": ". Access to professionals well-versed in domain registration and dispute resolution."
             }
           ],
           [
@@ -3552,7 +3552,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — workshops, webinars, and articles tailored to Kenyan SMEs."
+              "v": ". Workshops, webinars, and articles tailored to Kenyan SMEs."
             }
           ],
           [
@@ -3562,7 +3562,7 @@ export const articles: Article[] = [
             },
             {
               "t": "text",
-              "v": " — engage with fellow entrepreneurs, share experiences, and learn collectively."
+              "v": ". Engage with fellow entrepreneurs, share experiences, and learn collectively."
             }
           ]
         ]
@@ -3572,7 +3572,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "By taking proactive steps today, you can safeguard your digital future. Remember, in the digital realm, your domain is your identity — protect it diligently."
+            "v": "By taking proactive steps today, you can safeguard your digital future. Remember, in the digital realm, your domain is your identity, protect it diligently."
           }
         ]
       }
@@ -3600,7 +3600,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "Your domain is more than just a web address — it’s your digital identity."
+            "v": "Your domain is more than just a web address, it’s your digital identity."
           }
         ]
       },
@@ -3618,7 +3618,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "text",
-            "v": "I have been in hosting since 2005. Here are the critical steps every business must take to safeguard this digital identity — the domain name."
+            "v": "I have been in hosting since 2005. Here are the critical steps every business must take to safeguard this digital identity, the domain name."
           }
         ]
       },

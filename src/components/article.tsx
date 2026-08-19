@@ -160,7 +160,7 @@ export function InsightsIndex() {
             <p className="eyebrow">ONDUU / INSIGHTS</p>
             <h1>The layer your business runs on.</h1>
             <p className="lede">
-              Domains, DNS, business email — and the software that now acts through them.
+              Domains, DNS, business email, and the software that now acts through them.
               Written from running this layer in Kenya since 2005. No hype, no recycled
               trends.
             </p>

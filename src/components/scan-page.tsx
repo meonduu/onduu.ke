@@ -16,8 +16,8 @@ export function ScanPage({ children }: { children?: ReactNode }) {
             <p className="eyebrow">ONDUU / INSTANT PUBLIC SCAN</p>
             <h1>See what your domain shows the public.</h1>
             <p className="lede">
-              Enter your domain. Onduu reads the public records — registry, DNS, email and your
-              homepage — and reports what anyone on the internet can already observe, as a Public
+              Enter your domain. Onduu reads the public records. Registry, DNS, email and your
+              homepage, and reports what anyone on the internet can already observe, as a Public
               Signal Score with an honest coverage figure. It is a starting point, not a verdict.
             </p>
           </div>
@@ -33,13 +33,13 @@ export function ScanPage({ children }: { children?: ReactNode }) {
           <div className="section-body">
             <p>
               The scan looks only at information that is already public. It reports two numbers: a
-              Public Signal Score, from the signals it could observe, and Evidence Coverage — how
+              Public Signal Score, from the signals it could observe, and Evidence Coverage, how
               much of the full readiness picture those signals actually represent. A high score at
               low coverage means the visible parts look good, not that the business is ready.
             </p>
             <p>
-              Anything that cannot be seen from outside — your backups, your accounts, whether an
-              enquiry is answered — is marked as not publicly observable. It never counts for or
+              Anything that cannot be seen from outside (your backups, your accounts, whether an
+              enquiry is answered) is marked as not publicly observable. It never counts for or
               against the score.
             </p>
             <div className="note">

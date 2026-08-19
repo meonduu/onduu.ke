@@ -41,7 +41,7 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "ONDUU / CHOOSE A PATH",
     title: "Onduu explains the problem. The appropriate provider delivers the solution.",
     intro:
-      "Onduu helps you identify the weaknesses, understand the priority and choose the right delivery path. Implementation and infrastructure are supplied by the parties responsible for them — not by Onduu.",
+      "Onduu helps you identify the weaknesses, understand the priority and choose the right delivery path. Implementation and infrastructure are supplied by the parties responsible for them, not by Onduu.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
@@ -87,7 +87,7 @@ export const strategyPages: Record<string, PageContent> = {
           "Ujiajiri proposes one suitable provider from its private network and tells you who it is",
           "Nothing identifiable is shared with the provider until you give permission",
           "You may accept, decline or ask for another provider",
-          "The provider scopes, quotes, contracts, invoices, delivers and warrants its own work — you pay the provider directly",
+          "The provider scopes, quotes, contracts, invoices, delivers and warrants its own work. You pay the provider directly",
           "Ujiajiri and Onduu do not quote, collect project payments or guarantee the work",
         ],
       },
@@ -110,7 +110,7 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "PATHS / INFRASTRUCTURE",
     title: "HOSTAFRICA supplies the products. Onduu explains the decisions.",
     intro:
-      "Domains, hosting, business email and VPS products are provided, sold, billed, provisioned, renewed and supported by HOSTAFRICA through its official channels. Onduu helps you understand which product fits which workload — and what responsibility comes with it.",
+      "Domains, hosting, business email and VPS products are provided, sold, billed, provisioned, renewed and supported by HOSTAFRICA through its official channels. Onduu helps you understand which product fits which workload, and what responsibility comes with it.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
@@ -148,7 +148,7 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "ONDUU / GUIDES",
     title: "Understand the responsibility before adopting the technology.",
     intro:
-      "Practical, trigger-based guidance for the decisions behind a working digital operation — written to be useful before any money is spent, and honest about what each method can and cannot prove.",
+      "Practical, trigger-based guidance for the decisions behind a working digital operation. Written to be useful before any money is spent, and honest about what each method can and cannot prove.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
@@ -158,17 +158,17 @@ export const strategyPages: Record<string, PageContent> = {
         cards: [
           {
             title: "The Website Revenue System",
-            body: "Treat the website as a commercial system — the framework for aligning audience, offer, proof, journey, enquiry route and measurement.",
+            body: "Treat the website as a commercial system, the framework for aligning audience, offer, proof, journey, enquiry route and measurement.",
             meta: "/guides/website-revenue-system",
           },
           {
             title: "Domains and DNS",
-            body: "Who really controls your domain — registrant, registrar account, lock, expiry and nameservers — and how to check yours today.",
+            body: "Who really controls your domain: registrant, registrar account, lock, expiry and nameservers, and how to check yours today.",
             meta: "/guides/domains-and-dns",
           },
           {
             title: "Email and trust",
-            body: "What SPF, DKIM and DMARC actually decide, what a clean check proves — and what it deliberately cannot.",
+            body: "What SPF, DKIM and DMARC actually decide, what a clean check proves, and what it deliberately cannot.",
             meta: "/guides/email-and-trust",
           },
           {
@@ -187,7 +187,7 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "MORE",
         title: "The Insights archive carries the rest.",
         body: [
-          "Domain control, email trust, enquiry-path failures and ownership stories are covered in depth in Insights — including what SPF, DKIM and DMARC do and do not prove, and what to do when a developer disappears.",
+          "Domain control, email trust, enquiry-path failures and ownership stories are covered in depth in Insights, including what SPF, DKIM and DMARC do and do not prove, and what to do when a developer disappears.",
         ],
         note: "Each guide ends with one relevant next step, not a sales pitch. The honest limits of every free tool on this site are stated in one place: the tool limitations page under Legal.",
       },
@@ -216,7 +216,7 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "USING IT",
         title: "Define the work, then choose who delivers it.",
         body: [
-          "Work through the six workstreams to describe what your website should achieve and what is currently missing. Where implementation is needed, take the definition to an independent partner through the Ujiajiri path — the partner contracts with you directly.",
+          "Work through the six workstreams to describe what your website should achieve and what is currently missing. Where implementation is needed, take the definition to an independent partner through the Ujiajiri path. The partner contracts with you directly.",
           "Whoever does the work, the business should finish with control of its domain, website, analytics, content, records and documented dependencies, subject to third-party licensing and the signed agreement.",
         ],
         note: "Onduu does not implement the Website Revenue System as a service. The framework is published so the work can be specified honestly and delivered by whoever is accountable for it.",
@@ -228,7 +228,7 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "GUIDES / INFRASTRUCTURE",
     title: vpsSource?.title ?? "Choose where your core workload runs. Map where the rest of its data travels.",
     intro:
-      "A Kenyan VPS may suit workloads with particular location, control or performance objectives. The decision still depends on architecture, data flow, backup, support and cost — this guide is the set of questions that make it an evidence-based choice.",
+      "A Kenyan VPS may suit workloads with particular location, control or performance objectives. The decision still depends on architecture, data flow, backup, support and cost. This guide is the set of questions that make it an evidence-based choice.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
@@ -240,7 +240,7 @@ export const strategyPages: Record<string, PageContent> = {
           "It does not automatically create compliance",
           "A local server does not prove every dependency stays local",
           "Responsibility, access, recovery and total cost matter as much as location",
-          "The recommendation must follow the application and data map — not the other way round",
+          "The recommendation must follow the application and data map, not the other way round",
         ],
       },
       {
@@ -254,12 +254,12 @@ export const strategyPages: Record<string, PageContent> = {
         items: [
           "A workload and dependency map",
           "A data-journey diagram",
-          "A responsibility matrix — who patches, monitors, backs up, restores",
+          "A responsibility matrix: who patches, monitors, backs up, restores",
           "Stated performance and recovery objectives",
           "An operating-cost estimate",
           "A fit / pilot / alternative conclusion",
         ],
-        note: "Product supply, billing and support for VPS infrastructure sit with HOSTAFRICA through its official route — see the infrastructure path for the responsibility split and disclosure.",
+        note: "Product supply, billing and support for VPS infrastructure sit with HOSTAFRICA through its official route. See the infrastructure path for the responsibility split and disclosure.",
       },
     ],
   },
@@ -268,7 +268,7 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "GUIDES / SUPERVISED AGENTS",
     title: "What an always-on agent needs beyond a VPS.",
     intro:
-      "An AI agent that runs unattended is an operational commitment, not a feature flag. Before one touches real work, it needs boundaries, supervision, measurement and a way to stop it — this guide covers what that means in practice.",
+      "An AI agent that runs unattended is an operational commitment, not a feature flag. Before one touches real work, it needs boundaries, supervision, measurement and a way to stop it. This guide covers what that means in practice.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
@@ -287,13 +287,13 @@ export const strategyPages: Record<string, PageContent> = {
         title: "What the business should own first.",
         items: [
           "A map of the workflow the agent will touch, with its baseline effort",
-          "A permission and authority matrix — what it may read, recommend and do",
+          "A permission and authority matrix: what it may read, recommend and do",
           "A data and privacy map covering permitted and prohibited data",
           "An operating charter with human-approval points and prohibited actions",
           "Evaluation fixtures for quality, cost, latency and failure",
           "An incident and shutdown process that works without the agent's cooperation",
         ],
-        note: "An agent does not replace accountable people, and no agent's accuracy is guaranteed. Bounded, supervised and reversible is the standard — anything less is not ready for real work.",
+        note: "An agent does not replace accountable people, and no agent's accuracy is guaranteed. Bounded, supervised and reversible is the standard. Anything less is not ready for real work.",
       },
     ],
   },
@@ -302,7 +302,7 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "GUIDES / CONTROL",
     title: "Who really controls your domain and DNS?",
     intro:
-      "The domain is the one asset everything else hangs off — the website, the email, the brand. Yet in many Kenyan businesses nobody can answer who owns it, where it renews or who can move it. This guide is the set of checks that make the answer definite.",
+      "The domain is the one asset everything else hangs off, the website, the email, the brand. Yet in many Kenyan businesses nobody can answer who owns it, where it renews or who can move it. This guide is the set of checks that make the answer definite.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
@@ -310,11 +310,11 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "THE CONTROL QUESTIONS",
         title: "Five facts every business owner should be able to state.",
         items: [
-          "Who is the registrant — the business, or a developer, freelancer or agency?",
+          "Who is the registrant: the business, or a developer, freelancer or agency?",
           "Who holds the registrar account login, and does the business have its own access?",
           "Is the transfer lock on, so the domain cannot be moved without deliberate steps?",
           "When does it expire, who receives the renewal notices, and who pays?",
-          "Who can change the nameservers — because whoever controls DNS controls where the website and email actually go?",
+          "Who can change the nameservers, because whoever controls DNS controls where the website and email actually go?",
         ],
       },
       {
@@ -322,10 +322,10 @@ export const strategyPages: Record<string, PageContent> = {
         title: "Registered by someone else, renewed by nobody.",
         body: [
           "The recurring Kenyan pattern, covered at length in Insights: a domain registered in a helper's personal account, renewal notices going to an inbox nobody reads, and the business discovering the problem the day the website goes dark or the helper disappears. Recovering a lapsed or hostage domain is slow, sometimes expensive, and sometimes impossible.",
-          "The pair matters too: owning yourbusiness.co.ke without yourbusiness.ke (or the reverse) leaves the twin open for anyone — including someone who wants to send email that looks like yours.",
+          "The pair matters too: owning yourbusiness.co.ke without yourbusiness.ke (or the reverse) leaves the twin open for anyone, including someone who wants to send email that looks like yours.",
         ],
         links: [
-          { label: "Check a domain now — registrar, lock and expiry", href: "/kedomains" },
+          { label: "Check a domain now: registrar, lock and expiry", href: "/kedomains" },
         ],
       },
       {
@@ -335,9 +335,9 @@ export const strategyPages: Record<string, PageContent> = {
           { title: "Establish", body: "Look up the registrar, lock status and expiry for your domain and its .co.ke/.ke twin. Public records answer this in seconds." },
           { title: "Repatriate", body: "Get the registrar account (not just the domain) under a business-controlled login with a business-owned email address." },
           { title: "Lock and diarise", body: "Turn the transfer lock on and put the renewal date, with a 60-day buffer, where the business will actually see it." },
-          { title: "Document", body: "Record who controls DNS, what each record does, and what would need to change in a provider exit — before the exit happens." },
+          { title: "Document", body: "Record who controls DNS, what each record does, and what would need to change in a provider exit, before the exit happens." },
         ],
-        note: "This guide describes public checks and account hygiene. It is not legal advice on domain disputes, and no check here proves a domain cannot be lost — it reduces the ways it can be.",
+        note: "This guide describes public checks and account hygiene. It is not legal advice on domain disputes, and no check here proves a domain cannot be lost. It reduces the ways it can be.",
       },
     ],
   },
@@ -346,7 +346,7 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "GUIDES / TRUST",
     title: "What email-security checks can and cannot prove.",
     intro:
-      "SPF, DKIM and DMARC decide one narrow, important thing: whether a stranger can send email that claims to be from your domain — and whether the world's mail servers have been told to refuse it. This guide explains what each record does, and is honest about the limits.",
+      "SPF, DKIM and DMARC decide one narrow, important thing: whether a stranger can send email that claims to be from your domain, and whether the world's mail servers have been told to refuse it. This guide explains what each record does, and is honest about the limits.",
     cta: "Check Your Digital Readiness",
     ctaHref: "/readiness",
     sections: [
@@ -356,7 +356,7 @@ export const strategyPages: Record<string, PageContent> = {
         cards: [
           { title: "SPF", body: "Lists the servers allowed to send mail as your domain. Ending in -all tells receivers to distrust everything else." },
           { title: "DKIM", body: "Signs your outgoing mail so tampering and forgery are detectable by the receiver." },
-          { title: "DMARC", body: "Tells receiving servers what to do with mail that fails the checks — and p=reject is the setting that actually refuses forgeries." },
+          { title: "DMARC", body: "Tells receiving servers what to do with mail that fails the checks, and p=reject is the setting that actually refuses forgeries." },
           { title: "MX", body: "Says where your incoming mail is delivered, and reveals which provider runs it." },
         ],
       },
@@ -364,20 +364,20 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "WHY IT MATTERS HERE",
         title: "This is a live Kenyan problem, not a theoretical one.",
         body: [
-          "Over one hundred Kenyan parastatal chief executives were put on notice over exactly these records — the full story is in Insights. A domain without them can be impersonated to its own customers, suppliers and bank; most recipients will never spot the difference.",
+          "Over one hundred Kenyan parastatal chief executives were put on notice over exactly these records. The full story is in Insights. A domain without them can be impersonated to its own customers, suppliers and bank; most recipients will never spot the difference.",
         ],
-        links: [{ label: "Check your records now — free, in seconds", href: "/email-security" }],
+        links: [{ label: "Check your records now: free, in seconds", href: "/email-security" }],
       },
       {
         eyebrow: "THE HONEST LIMITS",
         title: "What a clean result does not prove.",
         items: [
-          "It does not prove your mailboxes are secure — passwords, sessions and staff phishing are untouched by these records",
+          "It does not prove your mailboxes are secure. Passwords, sessions and staff phishing are untouched by these records",
           "It does not prove mail is delivered, read or answered",
           "It does not prove the business is secure or compliant in any general sense",
           "It is not a penetration test, an audit or a certificate",
         ],
-        note: "Published DNS records are the defence the world can see. The rest — mailbox access, recovery, staff practice — is exactly what the human-reviewed readiness assessment examines.",
+        note: "Published DNS records are the defence the world can see. The rest (mailbox access, recovery, staff practice) is exactly what the human-reviewed readiness assessment examines.",
       },
     ],
   },
@@ -386,57 +386,57 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "ONDUU / LEGAL",
     title: "Tool limitations.",
     intro:
-      "What each of the four free tools on this site reads, what it stores, and — most importantly — what its results do and do not prove. If a statement here ever conflicts with a marketing sentence elsewhere, this page wins.",
+      "What each of the four free tools on this site reads, what it stores, and, most importantly, what its results do and do not prove. If a statement here ever conflicts with a marketing sentence elsewhere, this page wins.",
     gate: "Draft for professional review, maintained against the code that runs the tools.",
     sections: [
       {
         eyebrow: "01 / EMAIL SECURITY CHECK",
-        title: "/email-security — published DNS records only.",
+        title: "/email-security, published DNS records only.",
         body: [
           "Reads a domain's public SPF, DKIM (common selectors only), DMARC and MX records through Cloudflare's public DNS resolver, and explains them in plain language. The domain checked and the result are stored (since 18 August 2026) with no visitor identity attached.",
         ],
         items: [
-          "A clean result means the published records are correct — not that the domain, mailboxes or business are secure",
+          "A clean result means the published records are correct, not that the domain, mailboxes or business are secure",
           "DKIM selectors cannot be listed from outside: a key not found at common selectors is reported as not found, not as missing",
           "Not a penetration test, a deliverability guarantee or a compliance certificate",
         ],
       },
       {
         eyebrow: "02 / DOMAIN SEARCH",
-        title: "/kedomains — public availability signals, confirmed at checkout.",
+        title: "/kedomains, public availability signals, confirmed at checkout.",
         body: [
           "Checks the extension you enter alongside its .ke twin, using public DNS and registry (RDAP) records. Taken domains show their registrar, transfer-lock status and expiry where the registry publishes them; some registries publish little or nothing. The name searched and what was found are stored (since 18 August 2026) with no visitor identity attached.",
         ],
         items: [
-          "“Appears available” is an observation, not a reservation — availability and price are confirmed at the registrar's checkout",
+          "“Appears available” is an observation, not a reservation. Availability and price are confirmed at the registrar's checkout",
           "Registration, billing, renewal and support happen at HOSTAFRICA, not on this site; Onduu earns no commission and the outbound link carries attribution tags only",
           "Registry data can lag or be incomplete; the registry's own answer is authoritative",
         ],
       },
       {
         eyebrow: "03 / READINESS SCAN",
-        title: "/scan — a Public Signal Score, never a verdict.",
+        title: "/scan, a Public Signal Score, never a verdict.",
         body: [
           "Reads only public information about a domain: registry record, DNS, published email records, and the homepage, robots.txt and sitemap any visitor can request. Results are stored (domain, observations, score, reference) so repeat scans within 24 hours serve the cached result and any score can be reproduced; no visitor identity is attached.",
         ],
         items: [
           "The Public Signal Score covers only what is publicly observable; Evidence Coverage says how much that is",
-          "Anything not observable from outside is excluded from the score — it never counts as a pass or a failure",
+          "Anything not observable from outside is excluded from the score. It never counts as a pass or a failure",
           "It is not a Digital Readiness Score, a penetration test, a legal opinion or a compliance certificate",
-          "A domain owner who wants their domain left alone can email me@onduu.ke: every stored record of it is deleted — scan results and any stored email or domain lookups — the domain is blocked from future scans, and future lookups of it are not recorded",
+          "A domain owner who wants their domain left alone can email me@onduu.ke: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is blocked from future scans, and future lookups of it are not recorded",
         ],
       },
       {
         eyebrow: "04 / DNS HEALTH CHECK",
-        title: "/dns — coherence of the public records, not a verdict on them.",
+        title: "/dns, coherence of the public records, not a verdict on them.",
         body: [
           "Reads a domain's nameservers, delegation, zone record, addresses, mail routing and DNSSEC from public DNS and registry (RDAP) data, and compares them against each other. It also asks a parent-zone nameserver and each of the domain's own nameservers a standard read-only question directly, which is where the parent's glue records and each server's zone serial come from. The domain checked and a summary of the outcome are stored, with no visitor identity attached.",
         ],
         items: [
           "One vantage point at one moment: this is not a propagation checker, and it does not tell you what every network in the world currently sees",
-          "DNSSEC is detected, not cryptographically validated — the records are read, the chain is not verified",
+          "DNSSEC is detected, not cryptographically validated. The records are read, the chain is not verified",
           "Reverse DNS is checked for the first few mail-server addresses only, and IPv6 reverse zones are not probed",
-          "Some observations are limited by where the check runs from: nameservers hosted on Cloudflare cannot be questioned directly from this site's own infrastructure, and some registries' parent servers do not answer these questions. Where that happens the result says the item was not observed on that run — never that the domain failed",
+          "Some observations are limited by where the check runs from: nameservers hosted on Cloudflare cannot be questioned directly from this site's own infrastructure, and some registries' parent servers do not answer these questions. Where that happens the result says the item was not observed on that run, never that the domain failed",
           "Coherent records are not proof that the domain, the website or the business behind them is secure",
         ],
       },
@@ -445,10 +445,10 @@ export const strategyPages: Record<string, PageContent> = {
         title: "Shared boundaries.",
         items: [
           "No tool on this site promises guaranteed security, compliance, rankings, leads, revenue, uptime, recovery or agent accuracy",
-          "All tools are rate-limited and read public information only — no logins, no credentials, nothing private is touched",
+          "All tools are rate-limited and read public information only, no logins, no credentials, nothing private is touched",
           "Results describe a moment in time; records change, and a result is not monitoring",
           "What each tool stores is described in the privacy notice, which governs where this page is silent",
-          "Anything stored about a domain can be deleted on request — email me@onduu.ke",
+          "Anything stored about a domain can be deleted on request, email me@onduu.ke",
         ],
         links: [{ label: "Read the privacy notice", href: "/legal/privacy" }],
       },
@@ -474,7 +474,7 @@ export const strategyPages: Record<string, PageContent> = {
           },
           {
             title: "Prioritise",
-            body: "Select the three questions with the greatest business consequence — not the longest list of findings.",
+            body: "Select the three questions with the greatest business consequence, not the longest list of findings.",
           },
           {
             title: "Choose a path",
@@ -482,7 +482,7 @@ export const strategyPages: Record<string, PageContent> = {
           },
           {
             title: "Verify",
-            body: "You and the chosen provider agree how the result will be tested — in enquiries, performance, ownership or recovery — before the work begins.",
+            body: "You and the chosen provider agree how the result will be tested (in enquiries, performance, ownership or recovery) before the work begins.",
           },
         ],
       },
@@ -521,7 +521,7 @@ export const strategyPages: Record<string, PageContent> = {
         title: "What happens after the score?",
         body: [
           "Need implementation? Ask Ujiajiri for a private curated introduction: Ujiajiri proposes one suitable independent provider, asks your permission before sharing your information, and the provider contracts and delivers directly. HOSTAFRICA product enquiries continue through the approved official HOSTAFRICA route.",
-          "Onduu does not automatically transmit your assessment answers to either destination. Nothing you enter here is shared with Ujiajiri or anyone else — the routes are plain outbound links you follow yourself.",
+          "Onduu does not automatically transmit your assessment answers to either destination. Nothing you enter here is shared with Ujiajiri or anyone else. The routes are plain outbound links you follow yourself.",
         ],
         links: [
           { label: "Request an Implementation Introduction", href: "https://ujiajiri.ke/request-an-introduction/", external: true },
@@ -558,11 +558,11 @@ export const strategyPages: Record<string, PageContent> = {
           },
           {
             title: "Website or digital-marketing implementation",
-            body: "Ask Ujiajiri for a private curated introduction to a suitable independent provider — you approve before anything is shared, and the provider contracts with you directly. The form below can still point you at the next step if you are unsure.",
+            body: "Ask Ujiajiri for a private curated introduction to a suitable independent provider. You approve before anything is shared, and the provider contracts with you directly. The form below can still point you at the next step if you are unsure.",
           },
           {
             title: "HOSTAFRICA products or support",
-            body: "Product, billing and support enquiries belong with HOSTAFRICA's official route — Onduu cannot resolve them and does not pass your details along.",
+            body: "Product, billing and support enquiries belong with HOSTAFRICA's official route. Onduu cannot resolve them and does not pass your details along.",
           },
         ],
         note: "One enquiry is never silently sent to all three organisations. What you submit here goes to Onduu only.",

@@ -15,7 +15,7 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
             <p className="eyebrow">ONDUU / FREE TOOL</p>
             <h1>Is your business name protected in .ke too?</h1>
             <p className="lede">
-              Search a name in any Kenyan extension and this checks it together with its .ke twin —
+              Search a name in any Kenyan extension and this checks it together with its .ke twin. 
               because owning one without the other leaves the door open for someone else. Taken
               domains show their registrar, transfer lock and expiry from public records.
             </p>
@@ -32,13 +32,13 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
           <div className="section-body">
             <p>
               Kenyan businesses usually register one of the pair and forget the other. Anyone can
-              register the twin — for a competing business, a copycat, or worse, an email domain
+              register the twin, for a competing business, a copycat, or worse, an email domain
               that looks like yours to your own customers. Registering both is one of the cheapest
               pieces of brand protection available.
             </p>
             <ul>
-              <li>A taken domain shows its registrar — where the renewal relationship lives</li>
-              <li>Transfer lock off means the domain can be moved with less friction — worth fixing</li>
+              <li>A taken domain shows its registrar: where the renewal relationship lives</li>
+              <li>Transfer lock off means the domain can be moved with less friction, worth fixing</li>
               <li>An expiry date inside 60 days is a renewal risk worth acting on today</li>
             </ul>
             <div className="note">
@@ -57,13 +57,13 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
           <div className="section-body">
             <p>
               If a name is available, registration, billing, renewal and support happen at
-              HOSTAFRICA through its official panel — not on this site. Wycliffe, who operates
+              HOSTAFRICA through its official panel, not on this site. Wycliffe, who operates
               Onduu, is also Managing Director of HOSTAFRICA Kenya. Onduu receives no commission on
               registrations; the outbound link carries attribution tags so routed demand can be
               measured, and clicks are counted here in aggregate only.
             </p>
             <p>
-              Already own the domain? The next question is whether its records protect you —{" "}
+              Already own the domain? The next question is whether its records protect you. {" "}
               <Link href="/email-security">run the free email security check</Link>.
             </p>
           </div>

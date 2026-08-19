@@ -15,7 +15,7 @@ export function CheckPage({ children }: { children?: ReactNode }) {
             <h1>Can someone send email pretending to be you?</h1>
             <p className="lede">
               Enter your domain. This reads the public records that decide whether a stranger can
-              email your customers using your business name — and tells you, in plain English,
+              email your customers using your business name, and tells you, in plain English,
               what to fix.
             </p>
           </div>
@@ -38,10 +38,10 @@ export function CheckPage({ children }: { children?: ReactNode }) {
               are run and which failures are common; nothing about you is recorded with them.
             </p>
             <ul>
-              <li>SPF — which servers are allowed to send mail as your domain</li>
-              <li>DKIM — whether your mail is signed, so tampering is detectable</li>
-              <li>DMARC — what receiving servers should do with forged mail, and who gets reports</li>
-              <li>MX — where your mail is delivered, and which provider runs it</li>
+              <li>SPF: which servers are allowed to send mail as your domain</li>
+              <li>DKIM: whether your mail is signed, so tampering is detectable</li>
+              <li>DMARC: what receiving servers should do with forged mail, and who gets reports</li>
+              <li>MX: where your mail is delivered, and which provider runs it</li>
             </ul>
             <div className="note">
               A clean result means these four records are published correctly. It does not prove

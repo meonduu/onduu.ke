@@ -218,7 +218,7 @@ async function enquiries(db: D1Database): Promise<Response> {
   return page(
     "Enquiries",
     `<h1>Enquiries</h1>
-<p class="sub">Assessment and contact submissions. Personal data — do not export or forward.
+<p class="sub">Assessment and contact submissions. Personal data. Do not export or forward.
 Client-facing pages: ${publicLink("/readiness")} · ${publicLink("/contact")}</p>
 
 <h2>Which source produced enquiries</h2>
@@ -288,7 +288,7 @@ async function scans(db: D1Database): Promise<Response> {
   return page(
     "Readiness scans",
     `<h1>Readiness scans</h1>
-<p class="sub">Fresh runs only — a repeat scan inside 24 hours serves the cached result and writes no row.
+<p class="sub">Fresh runs only, a repeat scan inside 24 hours serves the cached result and writes no row.
 Client-facing page: ${publicLink("/scan")}</p>
 
 <div class="cards">
@@ -400,7 +400,7 @@ async function toolUsage(
   return page(
     opts.title,
     `<h1>${escape(opts.title)}</h1>
-<p class="sub">${escape(opts.blurb)} Stored rows carry the domain and the outcome only — never who ran the check.
+<p class="sub">${escape(opts.blurb)} Stored rows carry the domain and the outcome only, never who ran the check.
 Client-facing page: ${publicLink(opts.paths[0])}</p>
 
 <div class="cards">
@@ -482,7 +482,7 @@ async function analytics(db: D1Database): Promise<Response> {
   return page(
     "Analytics",
     `<h1>Analytics</h1>
-<p class="sub">First-party page views, recorded server-side. No address, no fingerprint, no identifier — two views cannot be linked to one person.</p>
+<p class="sub">First-party page views, recorded server-side. No address, no fingerprint, no identifier. Two views cannot be linked to one person.</p>
 
 <h2>Most read, last 30 days</h2>
 ${table(
@@ -559,7 +559,7 @@ ${table(
     String(r.n),
     String(r.n30),
   ]),
-  "No outbound clicks counted yet — they appear when someone follows a routed link.",
+  "No outbound clicks counted yet. They appear when someone follows a routed link.",
 )}
 
 <h2>Daily, last 30 days</h2>

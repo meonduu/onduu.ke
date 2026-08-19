@@ -1,6 +1,41 @@
 # Changelog
 
-CURRENT VERSION: v4.24.0 — 1213hrs:19th August2026
+CURRENT VERSION: v4.25.0 — 1229hrs:19th August2026
+
+## v4.25.0 — 1229hrs:19th August2026
+
+Em and en dashes removed from all visible copy, on the owner's
+instruction, completing the humanizer pass. 206 automated replacements
+plus nine hand-written fixes; zero dashes remain in any rendered page,
+verified across twelve page types and an article.
+
+Each dash resolved by what followed it rather than by a blanket
+substitution: a full stop where an independent clause followed, a comma
+for a trailing fragment, a colon for a term and its definition
+("Nameservers: how many answer"), parentheses for an aside that already
+contained commas, "to" for numeric ranges in the DNS advice strings, and
+a middot for the two decorative markers in the homepage method list. Code
+comments were left alone; they are not site copy.
+
+Getting there took two passes. The first was reverted, and the failures
+are worth recording because they are the traps in this kind of edit:
+
+- URLs contain "//", so the inline-comment detector skipped every line
+  holding a link, silently leaving those dashes in place.
+- Pairing logic matched an opening dash in one list item with the dash in
+  the *next* item, producing unbalanced parentheses across two `<li>`
+  elements ("Nameservers ( how many answer" / "Delegation ) registry
+  record").
+- Asides that wrap across source lines had only their closing dash
+  converted, orphaning the verb: "The causes. A stale delegation... Are
+  visible in public records."
+- A comma before an imperative link produced a splice ("delivery
+  partners, explore the Ujiajiri youth pathway").
+
+All four were found by reading the output rather than trusting the script,
+and every category of change was reviewed by hand afterwards. 170 tests
+pass; lint clean.
+
 
 ## v4.24.0 — 1213hrs:19th August2026
 

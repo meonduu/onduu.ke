@@ -29,10 +29,10 @@ type Result = {
 };
 
 const LABELS: Record<string, string> = {
-  spf: "SPF — who may send as you",
-  dkim: "DKIM — message signing",
-  dmarc: "DMARC — policy and reporting",
-  mx: "MX — mail delivery",
+  spf: "SPF: who may send as you",
+  dkim: "DKIM: message signing",
+  dmarc: "DMARC: policy and reporting",
+  mx: "MX: mail delivery",
 };
 
 const STATUS_WORD: Record<Status, string> = {
@@ -174,7 +174,7 @@ export function CheckForm() {
             This reads {result.selectorsProbed} common DKIM selectors and the public SPF, DMARC
             and MX records for {result.domain}. Selectors cannot be listed from DNS, only guessed,
             so a missing DKIM key here is not proof that signing is off. A passing result means
-            these records are published correctly — it does not prove the domain, the mailboxes or
+            these records are published correctly. It does not prove the domain, the mailboxes or
             the business behind them are secure.
           </div>
         </div>

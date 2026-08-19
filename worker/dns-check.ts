@@ -300,17 +300,17 @@ export async function runDnsCheck(
   if (soaDetail) {
     if (soaDetail.refresh < 1200 || soaDetail.refresh > 43200)
       soaAdvice.push(
-        `Refresh is ${soaDetail.refresh}s; 1200–43200 (20 minutes to 12 hours) is the usual range.`,
+        `Refresh is ${soaDetail.refresh}s; 1200 to 43200 (20 minutes to 12 hours) is the usual range.`,
       );
     if (soaDetail.retry < 120 || soaDetail.retry > 7200)
-      soaAdvice.push(`Retry is ${soaDetail.retry}s; 120–7200 is the usual range.`);
+      soaAdvice.push(`Retry is ${soaDetail.retry}s; 120 to 7200 is the usual range.`);
     if (soaDetail.expire < 604800 || soaDetail.expire > 2419200)
       soaAdvice.push(
-        `Expire is ${soaDetail.expire}s; two to four weeks (1209600–2419200) is the usual range.`,
+        `Expire is ${soaDetail.expire}s; two to four weeks (1209600 to 2419200) is the usual range.`,
       );
     if (soaDetail.minimum > 10800 || soaDetail.minimum < 300)
       soaAdvice.push(
-        `Negative-caching TTL is ${soaDetail.minimum}s; 300–10800 (5 minutes to 3 hours) is the usual range — it controls how long "this record does not exist" answers are remembered.`,
+        `Negative-caching TTL is ${soaDetail.minimum}s; 300 to 10800 (5 minutes to 3 hours) is the usual range. It controls how long "this record does not exist" answers are remembered.`,
       );
   }
 
@@ -364,7 +364,7 @@ export async function runDnsCheck(
       severity: "fail",
       title: "Nameservers",
       detail:
-        "Only one nameserver is published. If that single server has a bad day, the domain — website and email together — disappears with it. Two or more, on separate infrastructure, is the long-standing expectation.",
+        "Only one nameserver is published. If that single server has a bad day, the domain, website and email together, disappears with it. Two or more, on separate infrastructure, is the long-standing expectation.",
       evidence: liveNs,
     });
   } else {
@@ -393,7 +393,7 @@ export async function runDnsCheck(
         severity: "fail",
         title: "Delegation",
         detail:
-          "The registry has one set of nameservers on file, but a different set is answering. The domain can behave inconsistently — working for some visitors and failing for others — and changes made in one place quietly do not apply. Worth resolving with whoever manages the domain.",
+          "The registry has one set of nameservers on file, but a different set is answering. The domain can behave inconsistently, working for some visitors and failing for others, and changes made in one place quietly do not apply. Worth resolving with whoever manages the domain.",
         evidence: [`registry: ${registryNs.join(", ")}`, `answering: ${liveNs.join(", ")}`],
       });
     }
@@ -405,7 +405,7 @@ export async function runDnsCheck(
       detail: registryNs.length
         ? "The registry lists nameservers but none could be observed answering on this run."
         : "This domain's registry does not publish nameserver data over RDAP, so the registry side of delegation is not observable from here.",
-      limitation: "Not a pass or a failure — the registry-side record simply is not publicly readable for this domain.",
+      limitation: "Not a pass or a failure: the registry-side record simply is not publicly readable for this domain.",
     });
   }
 
@@ -419,7 +419,7 @@ export async function runDnsCheck(
       detail:
         providers.length > 1
           ? `Nameservers are spread across ${providers.length} providers.`
-          : `All nameservers are operated by one provider (${providers[0]}). That is common and often fine — it does mean that provider is a single point of dependency, which is worth knowing rather than a fault.`,
+          : `All nameservers are operated by one provider (${providers[0]}). That is common and often fine. It does mean that provider is a single point of dependency, which is worth knowing rather than a fault.`,
       evidence: providers,
     });
   }
@@ -496,7 +496,7 @@ export async function runDnsCheck(
       code: "WWW_NO_ADDRESS",
       severity: "warn",
       title: "www",
-      detail: `www.${domain} does not resolve. Plenty of people still type www — for them, the site is down.`,
+      detail: `www.${domain} does not resolve. Plenty of people still type www, for them, the site is down.`,
     });
   } else if (
     apexAddresses.length > 0 &&
@@ -507,7 +507,7 @@ export async function runDnsCheck(
       severity: "warn",
       title: "www",
       detail:
-        "www resolves, but to entirely different addresses than the bare domain. Sometimes deliberate — often a leftover pointing at an old server. Worth confirming both destinations are intended.",
+        "www resolves, but to entirely different addresses than the bare domain. Sometimes deliberate, often a leftover pointing at an old server. Worth confirming both destinations are intended.",
       evidence: [
         `${domain}: ${apexAddresses.slice(0, 3).join(", ")}`,
         `www.${domain}: ${wwwAddresses.slice(0, 3).join(", ")}`,
@@ -566,7 +566,7 @@ export async function runDnsCheck(
       severity: "fail",
       title: "DNSSEC",
       detail:
-        "The registry publishes a DNSSEC fingerprint (DS) for this domain, but the zone itself returned no signing keys. Validating resolvers can treat the whole domain as failed. This usually follows a nameserver move where DNSSEC was not carried over — worth fixing promptly.",
+        "The registry publishes a DNSSEC fingerprint (DS) for this domain, but the zone itself returned no signing keys. Validating resolvers can treat the whole domain as failed. This usually follows a nameserver move where DNSSEC was not carried over, worth fixing promptly.",
       limitation: "Detection only: this check does not cryptographically validate the chain.",
     });
   } else if (dsRecords.length > 0) {
@@ -583,7 +583,7 @@ export async function runDnsCheck(
       severity: "info",
       title: "DNSSEC",
       detail:
-        "DNSSEC is not enabled. Most domains in this market do not sign yet, so this is an observation, not a fault — signing prevents a class of quiet DNS-tampering attacks, and is worth raising with your DNS provider when convenient.",
+        "DNSSEC is not enabled. Most domains in this market do not sign yet, so this is an observation, not a fault. Signing prevents a class of quiet DNS-tampering attacks, and is worth raising with your DNS provider when convenient.",
     });
   }
 
@@ -610,7 +610,7 @@ export async function runDnsCheck(
             code: "MX_PTR_OK",
             severity: "pass",
             title: "Mail server reverse DNS",
-            detail: "The mail servers' addresses have matching reverse-DNS (PTR) records — a hygiene signal receiving servers check before trusting mail.",
+            detail: "The mail servers' addresses have matching reverse-DNS (PTR) records. A hygiene signal receiving servers check before trusting mail.",
             evidence: ptrChecked.map((p) => `${p.ip} → ${p.name}`),
           }
         : {
@@ -642,7 +642,7 @@ export async function runDnsCheck(
         severity: "fail",
         title: "Parent delegation",
         detail:
-          "The parent zone delegates this domain to a different set of nameservers than the ones answering. Resolvers that follow the parent's referral can land on servers with stale or missing data — the classic symptom is a site or mail that works for some networks and not others.",
+          "The parent zone delegates this domain to a different set of nameservers than the ones answering. Resolvers that follow the parent's referral can land on servers with stale or missing data. The classic symptom is a site or mail that works for some networks and not others.",
         evidence: [
           `parent (${parent.source}): ${parentSet.join(", ")}`,
           `answering: ${liveNs.join(", ")}`,
@@ -705,7 +705,7 @@ export async function runDnsCheck(
             code: "SOA_SYNC",
             severity: "pass",
             title: "Nameserver synchronisation",
-            detail: `All ${knownSerials.length} probed nameservers report the same zone serial — they are serving the same version of your DNS.`,
+            detail: `All ${knownSerials.length} probed nameservers report the same zone serial. They are serving the same version of your DNS.`,
             evidence: [`serial ${distinct[0]}`],
           }
         : {

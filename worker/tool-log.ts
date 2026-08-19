@@ -76,7 +76,7 @@ export function summariseEmailCheck(body: EmailCheckBody): ToolCheck | null {
     tool: "email-security",
     query: body.domain,
     domains: [body.domain],
-    summary: `${body.score ?? "-"}/100 ${body.grade ?? ""}`.trim() + (statuses ? ` — ${statuses}` : ""),
+    summary: `${body.score ?? "-"}/100 ${body.grade ?? ""}`.trim() + (statuses ? `, ${statuses}` : ""),
     detail: {
       score: body.score,
       grade: body.grade,
