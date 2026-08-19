@@ -140,7 +140,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
       <p className="check-note" role="status" aria-live="polite">
         {state === "loading"
           ? "Reading public records — registry, DNS, email and the homepage…"
-          : "Reads public information only. Nothing private is touched and no login is asked for."}
+          : "This reads public information only. It touches nothing private and never asks you to log in."}
       </p>
 
       {error && (

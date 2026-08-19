@@ -1,6 +1,44 @@
 # Changelog
 
-CURRENT VERSION: v4.23.1 — 1124hrs:19th August2026
+CURRENT VERSION: v4.23.2 — 1148hrs:19th August2026
+
+## v4.23.2 — 1148hrs:19th August2026
+
+Ran the humanizer pass (Wikipedia "Signs of AI writing") over the site
+copy. The page copy came back essentially clean: zero AI-vocabulary hits
+across `site-data.ts`, `pages-brief.ts`, `pages-strategy.ts` and the page
+components. Three real tells were found in tool microcopy and fixed.
+
+The three were subjectless tailing negations (pattern 9 and 13), which
+read as clipped ad copy rather than a sentence:
+
+- `/email-security`: "Reads published DNS only. No signup, no credentials,
+  nothing private." becomes "This reads published DNS records only. You
+  need no account, and it never asks for a password."
+- `/dns`: "No signup, nothing private." becomes "You need no account to
+  run it."
+- `/scan`: "Nothing private is touched and no login is asked for." was
+  also passive; it becomes "It touches nothing private and never asks you
+  to log in."
+
+Left alone deliberately: meta descriptions, where clipped fragments are
+idiomatic in search snippets; all copy taken verbatim from the approved
+strategy documents; and the legal drafts, where rewording changes meaning
+before professional review.
+
+Two findings for the owner rather than edits, recorded in ROADMAP Phase 5:
+every AI-vocabulary tell in the repo (crucial x5, leverage x3, "in today's
+digital age" x2) sits in the 12 published articles in `insights-data.ts`,
+which CLAUDE.md says must be regenerated rather than hand-edited; and the
+em dash question, below.
+
+**The em dash decision is the owner's.** The copy uses 156 of them, and
+the humanizer treats them as a hard tell to remove. Its own voice-matching
+rule says an author's sample overrides that, and here the sample is the
+approved strategy copy, which uses them deliberately. Stripping them would
+be a large diff against text the owner approved, so nothing was changed.
+170 tests pass; lint clean.
+
 
 ## v4.23.1 — 1124hrs:19th August2026
 

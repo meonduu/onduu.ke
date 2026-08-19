@@ -349,7 +349,7 @@ export function DnsForm() {
       <p className="check-note" role="status" aria-live="polite">
         {state === "loading"
           ? "Querying public DNS and the registry…"
-          : "Reads public DNS and registry records only. No signup, nothing private."}
+          : "This reads public DNS and registry records only. You need no account to run it."}
       </p>
 
       {error && (
