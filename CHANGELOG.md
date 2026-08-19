@@ -1,6 +1,17 @@
 # Changelog
 
-CURRENT VERSION: v4.23.0 — 1116hrs:19th August2026
+CURRENT VERSION: v4.23.1 — 1124hrs:19th August2026
+
+## v4.23.1 — 1124hrs:19th August2026
+
+Reserved-name copy tightened on the owner's instruction. The explanation
+is now simply **"Not registered"**, and the quoted registry note drops its
+heading and internal policy code — "Prohibited String - Domain Cannot Be
+Registered — This domain is not allowed under registry policy (2306)"
+becomes "This domain is not allowed under registry policy". Trimmed in the
+worker, so the stored value matches what is shown. The RESERVED badge, the
+absent register link and the limitation line are unchanged.
+
 
 ## v4.23.0 — 1116hrs:19th August2026
 

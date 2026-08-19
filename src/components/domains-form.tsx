@@ -193,8 +193,7 @@ export function DomainsForm() {
                 {r.status === "reserved" && (
                   <>
                     <p>
-                      Not registered — and not available either. The registry holds this name back
-                      under its own policy, so nobody can register it.
+                      <strong>Not registered</strong>
                     </p>
                     {r.reservedNote && <code>{r.reservedNote}</code>}
                     <p className="check-limitation">

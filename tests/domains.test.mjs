@@ -130,8 +130,8 @@ test("a reserved string is neither taken nor available", async () => {
   const fetcher = stubNet({ dns: {}, rdap: { "simba.ke": RESERVED } });
   const result = await checkDomain("simba.ke", makeBudget(5000, 10), fetcher);
   assert.equal(result.status, "reserved");
-  assert.match(result.reservedNote, /Cannot Be Registered/i);
-  assert.match(result.reservedNote, /registry policy/i);
+  // The visitor sees the registry's sentence, not its heading or code.
+  assert.equal(result.reservedNote, "This domain is not allowed under registry policy");
   // None of the registration fields may be invented for a name nobody owns.
   assert.equal(result.registrar, undefined);
   assert.equal(result.locked, undefined);

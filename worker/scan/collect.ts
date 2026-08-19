@@ -220,7 +220,12 @@ async function collectRdapFrom(
       ),
     );
     if (!hasRegistration && (restricted || notice)) {
-      const why = [notice?.title, ...(notice?.description ?? [])].filter(Boolean).join(" — ");
+      // The registry's own sentence, minus its heading and internal policy
+      // code — those are registry bookkeeping, not useful to a visitor.
+      const why = ((notice?.description ?? []).join(" ").trim() || notice?.title || "")
+        .replace(/[.\s]+$/, "")
+        .replace(/\s*\([^)]*\)$/, "")
+        .trim();
       return {
         fetched: true,
         registered: false,
