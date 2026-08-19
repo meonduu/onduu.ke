@@ -26,7 +26,7 @@ function expiryParts(
   if (days < 0) {
     return { label: "EXPIRED:", text: `${Math.abs(days)} DAYS AGO (${date}).`, good: false };
   }
-  return { label: "EXPIRES:", text: `${date} (${days} days).`, good: days >= 60 };
+  return { label: "EXPIRES in", text: `(${days} days): ${date}.`, good: days >= 60 };
 }
 
 /** Fire-and-forget outbound click count; never blocks the navigation. */
@@ -148,23 +148,6 @@ export function DomainsForm() {
                           r.registrar
                         )}
                         .
-                      </p>
-                    )}
-                    {r.locked === true && (
-                      <p>
-                        TRANSFER LOCK: <b className="value-good">ON.</b>
-                      </p>
-                    )}
-                    {r.locked === false && (
-                      <p>
-                        TRANSFER LOCK: <b className="value-bad">OFF.</b> Log into your registrar
-                        panel and lock it. It is the main defence against domain theft.
-                      </p>
-                    )}
-                    {r.locked === undefined && (
-                      <p className="check-limitation">
-                        Transfer lock: this registry publishes no status codes for the domain, so
-                        the lock cannot be observed either way.
                       </p>
                     )}
                     {expiryParts(r.expiryDate) && (

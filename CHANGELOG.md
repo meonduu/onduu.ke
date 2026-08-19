@@ -1,6 +1,30 @@
 # Changelog
 
-CURRENT VERSION: v4.36.3 — 1645hrs:19th August2026
+CURRENT VERSION: v4.37.0 — 1702hrs:19th August2026
+
+## v4.37.0 — 1702hrs:19th August2026
+
+Two changes on `/kedomains`, on the owner's instruction after seeing
+onduu.ke report its lock ON while onduu.co.ke, at the same registrar,
+reported OFF.
+
+**Transfer lock removed from the results.** The reading comes from RDAP
+status codes, and KeNIC's publication of them has proven inconsistent
+between domains, so the tool was stating as fact something the source
+does not reliably support. All three branches went: ON, OFF with its
+guidance, and the "not published" limitation. The page bullet, the page
+title and the meta description stop advertising the lock too. The
+`locked` field stays in the API and its worker tests remain, so the
+display can return if the registry data ever firms up.
+
+**Expiry reordered, days first:** "EXPIRES in (359 days): 14-08-2027."
+The instruction's ".:" read as a typo and the punctuation is normalised.
+The expired form ("EXPIRED: 78 DAYS AGO") already led with days and is
+unchanged.
+
+Verified against live lookups of onduu.ke and onduu.co.ke. 174 tests
+pass.
+
 
 ## v4.36.3 — 1645hrs:19th August2026
 

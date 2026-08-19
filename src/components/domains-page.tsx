@@ -37,7 +37,6 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
             </p>
             <ul>
               <li>A taken domain shows its registrar: where the renewal relationship lives</li>
-              <li>Transfer lock off means the domain can be moved with less friction, worth fixing</li>
               <li>An expiry date inside 60 days is a renewal risk worth acting on today</li>
             </ul>
             <div className="note">
