@@ -111,6 +111,20 @@ blocked probe degrades to "not probed this run" — never to a domain
 failure. **Still nothing else** — no AXFR attempts, no port scans, no
 UDP, no writes of any kind.
 
+Known vantage limits, verified from the production edge on 19 Aug 2026:
+(a) **Cloudflare-hosted nameservers cannot be TCP-probed** from the Worker
+(the platform does not open sockets back into Cloudflare's own network —
+the same family of restriction as the instant-scan's self-zone limit), so
+serial comparison degrades to "not probed" for Cloudflare-DNS zones;
+(b) **KeNIC's parent servers do not answer TCP/53 from the edge**, so
+parent/glue observation currently works for gTLD parents (verified:
+a.gtld-servers.net referrals with full glue) but degrades for `.ke`
+parents. Both degrade to observations, never failures. Per-server serial
+probes are verified working in production against non-Cloudflare
+nameservers (isaca.or.ke: four servers, serials agreeing — matching the
+LeafDNS reference report exactly). Revisit (b) if KeNIC enables TCP or a
+UDP-capable path becomes available.
+
 ## 4. Architecture
 
 Everything reuses what is live today. **Explicitly rejected from the

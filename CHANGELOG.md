@@ -1,7 +1,20 @@
 # Changelog
 
-CURRENT VERSION: v4.19.0 — 0716hrs:19th August2026
+CURRENT VERSION: v4.19.1 — 0718hrs:19th August2026
 (v4.17.0 is reserved by the unmerged branch `feat/introduction-routing`.)
+
+## v4.19.1 — 0718hrs:19th August2026
+
+Docs only: spec §3 records the Phase 2 vantage limits verified from the
+production edge. Cloudflare-hosted nameservers cannot be TCP-probed from
+a Worker (platform restriction — serials degrade to "not probed" for
+Cloudflare-DNS zones), and KeNIC's parent servers do not answer TCP/53
+from the edge (parent/glue works for gTLD parents, degrades for .ke).
+Production-verified working: gTLD parent referrals with full glue
+(hostafrica.com via a.gtld-servers.net) and per-server serial agreement
+on non-Cloudflare nameservers — isaca.or.ke's four servers report serial
+2026081815, exactly matching the LeafDNS reference report that motivated
+the feature. No site behaviour changed.
 
 ## v4.19.0 — 0716hrs:19th August2026
 
