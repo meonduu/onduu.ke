@@ -93,5 +93,5 @@ footer .wordmark .track{stroke:#28323C}footer .wordmark .arc{stroke:#CD7A50}foot
    global reset leaves them indistinguishable from body text, so the
    registrar link read as plain copy. Copper + underline, like article
    prose links. Excludes .button and .text-link, which style themselves. */
-.check-list a:not(.button):not(.text-link){color:var(--copper);text-decoration:underline;text-underline-offset:3px;font-weight:700}
-.check-list a:not(.button):not(.text-link):hover{color:var(--carbon)}
+.check-list a:not(.button):not(.text-link),.section-body a:not(.button):not(.text-link),.check-headline a:not(.button):not(.text-link){color:var(--copper);text-decoration:underline;text-underline-offset:3px;font-weight:700}
+.check-list a:not(.button):not(.text-link):hover,.section-body a:not(.button):not(.text-link):hover,.check-headline a:not(.button):not(.text-link):hover{color:var(--carbon)}

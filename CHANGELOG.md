@@ -1,6 +1,28 @@
 # Changelog
 
-CURRENT VERSION: v4.37.1 — 1709hrs:19th August2026
+CURRENT VERSION: v4.37.2 — 1717hrs:19th August2026
+
+## v4.37.2 — 1717hrs:19th August2026
+
+Invisible links fixed across the whole site, after the owner spotted a
+second one in /kedomains prose ("run the free email security check").
+
+The v4.37.1 rule only covered result cards; the same global reset was
+hiding links inside body prose too. The affordance rule now also covers
+`.section-body` (every content section on the tool pages, the legal pages
+and every StandardPage) and `.check-headline`. Audited the rendered
+output: all five inline prose links across the four tool pages now carry
+it — the email-check links on /kedomains, /dns and /scan, the scan link
+on /dns, and the article link on /email-security. Article prose already
+had its own green underline and keeps it; buttons and .text-links style
+themselves and are excluded.
+
+Also fixed in that sentence: the link text began lowercase after a full
+stop ("protect you. run the free…") — the sweep for that pattern could
+not see it because the lowercase word sat inside the JSX link element,
+split across lines. It reads "Run the free email security check." now.
+174 tests pass.
+
 
 ## v4.37.1 — 1709hrs:19th August2026
 
