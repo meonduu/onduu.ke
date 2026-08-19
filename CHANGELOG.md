@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v4.45.1 — 2113hrs:19th August2026
+CURRENT VERSION: v4.46.0 — 2127hrs:19th August2026
+
+## v4.46.0 — 2127hrs:19th August2026
+
+Analytics Phase 1 (spec: `docs/specs/analytics-dashboard.md`, owner
+decisions recorded 19 Aug 2026: D1 not Analytics Engine, no browser/OS
+dimension, new-vs-returning dropped, sessionStorage session id approved).
+
+- `migrations/0007_analytics_events.sql`: `events`, `event_throttle` and
+  `event_health` tables. No IP, no user-agent, no persistent identifier;
+  session ids are tab-scoped and cannot link visits.
+- `worker/events.ts`: allowlist validation, path/label/session
+  sanitisation, engaged-time clamping, sliding-window rate limit
+  (fail-open), batched recording, received/rejected counters. Rejected
+  payloads are counted, never stored.
+- `/api/event` (`src/pages/api/event.ts`): POST-only, same-origin,
+  JSON-only, 8KB cap, bot-filtered, GPC/DNT acknowledged and dropped;
+  recording via `waitUntil`, never blocking a response.
+- `src/components/analytics.ts` + a plain Layout script: page views,
+  engaged time (visibility-, focus- and idle-aware; heartbeats;
+  sendBeacon exit with keepalive fallback; bfcache-aware dedupe), clicks
+  only on elements carrying `data-analytics-event`. Never on `/go`;
+  silent under GPC/DNT.
+- Privacy notice bumped to draft 0.3: the cookies-and-analytics section
+  now describes the measurement script, its tab-scoped label and the
+  GPC/DNT behaviour. **Owner review of this copy is required before
+  merge** (REVIEW.md: notice must match running code).
+- `worker/pageviews.ts`: BOT, deviceFrom and referrerHost exported for
+  reuse; behaviour unchanged.
+- Tests: 19 new in `tests/events.test.mjs` (sanitisation, batch
+  validation, throttle window, engaged-time timer, endpoint behaviour
+  against the real worker). Full suite 198 + 19; build and lint clean.
+
+Verified in the built worker (wrangler dev + browser): page_view /
+page_exit with engaged time and a stable per-tab session id across
+pages, conversion click with label, rejected event counted in
+`event_health`, mobile device classification, no new console errors.
+Dashboard section, CTA wiring and GraphQL panels are Phases 2–4.
 
 ## v4.45.1 — 2113hrs:19th August2026
 
