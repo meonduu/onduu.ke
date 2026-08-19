@@ -171,6 +171,24 @@ export const articles: Article[] = [
             "v": "Disclosure: registration links in the domain search go to HOSTAFRICA, where I am Managing Director of the Kenyan business. Onduu earns no commission on them."
           }
         ]
+      },
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "em",
+            "v": "Postscript, 19 August 2026: a fourth free check has joined these three — the "
+          },
+          {
+            "t": "a",
+            "v": "DNS Checker at /dns",
+            "href": "/dns"
+          },
+          {
+            "t": "em",
+            "v": ", which reads a domain's public DNS and registry records and reports whether its nameservers, delegation, addresses, mail routing and DNSSEC agree with each other. Its limits are documented on the same tool limitations page."
+          }
+        ]
       }
     ]
   },

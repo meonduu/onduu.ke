@@ -1,6 +1,16 @@
 # Changelog
 
-CURRENT VERSION: v4.40.0 — 1917hrs:19th August2026
+CURRENT VERSION: v4.41.0 — 1920hrs:19th August2026
+
+## v4.41.0 — 1920hrs:19th August2026
+
+The "Three free checks" launch article gains an owner-approved dated
+postscript (the owner's decision on the outstanding Phase 4/5 content
+question): a final italic paragraph, dated 19 August 2026, noting that a
+fourth free check — the DNS Checker at /dns — has joined the three, with a
+one-line description matching the tool limitations page and a single /dns
+link. The historical prose above it is untouched. ROADMAP item and
+decisions-table row closed.
 
 ## v4.40.0 — 1917hrs:19th August2026
 
