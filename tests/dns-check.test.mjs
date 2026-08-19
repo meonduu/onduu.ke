@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { runDnsCheck, handleDnsCheck, providerOf, withinDnsCheckLimit } from "../worker/dns-check.ts";
+import { encodeQuery, parseMessage, QTYPE } from "../worker/dns-wire.ts";
 import { makeBudget } from "../worker/scan/net.ts";
 
 /* ── fixture fetcher ─────────────────────────────────────────────────── */
@@ -67,6 +68,36 @@ function healthyConfig() {
       ["ns2.host.co.ke A"]: { answers: [[T.A, "197.248.5.2"]] },
       ["mail.example.co.ke A"]: { answers: [[T.A, "197.248.9.9"]] },
       ["9.9.248.197.in-addr.arpa PTR"]: { answers: [[T.PTR, "mail.example.co.ke."]] },
+      // Phase 2: the parent zone's nameserver, resolvable to a public IP.
+      ["co.ke NS"]: { answers: [[T.NS, "kilifi.kenic.or.ke."]] },
+      ["kilifi.kenic.or.ke A"]: { answers: [[T.A, "197.248.2.2"]] },
+    },
+    // Phase 2 TCP probes, keyed "ip qname qtype".
+    tcp: {
+      [`197.248.2.2 ${DOMAIN} 2`]: {
+        rcode: 0,
+        answers: [],
+        authority: [
+          { name: DOMAIN, type: 2, ttl: 86400, data: "ns1.host.co.ke" },
+          { name: DOMAIN, type: 2, ttl: 86400, data: "ns2.host.co.ke" },
+        ],
+        additional: [
+          { name: "ns1.host.co.ke", type: 1, ttl: 86400, data: "197.248.5.1" },
+          { name: "ns2.host.co.ke", type: 1, ttl: 86400, data: "197.248.5.2" },
+        ],
+      },
+      [`197.248.5.1 ${DOMAIN} 6`]: {
+        rcode: 0,
+        answers: [{ name: DOMAIN, type: 6, ttl: 3600, data: "ns1.host.co.ke admin.host.co.ke 2024010101 7200 900 1209600 300" }],
+        authority: [],
+        additional: [],
+      },
+      [`197.248.5.2 ${DOMAIN} 6`]: {
+        rcode: 0,
+        answers: [{ name: DOMAIN, type: 6, ttl: 3600, data: "ns1.host.co.ke admin.host.co.ke 2024010101 7200 900 1209600 300" }],
+        authority: [],
+        additional: [],
+      },
     },
     rdap: {
       nameservers: [{ ldhName: "NS1.host.co.ke." }, { ldhName: "ns2.host.co.ke" }],
@@ -76,7 +107,13 @@ function healthyConfig() {
   };
 }
 
-const run = (config) => runDnsCheck(DOMAIN, makeBudget(10_000, 40), makeFetcher(config));
+// Phase 2 TCP probes are injected: entries keyed "ip qname qtype", values
+// shaped like parsed wire messages (id checking happens below this layer).
+const makeTcp = (config) => async (ip, qname, qtype) =>
+  config.tcp?.[`${ip} ${qname} ${qtype}`] ?? null;
+
+const run = (config) =>
+  runDnsCheck(DOMAIN, makeBudget(10_000, 80), makeFetcher(config), makeTcp(config));
 const findingBy = (report, code) => report.findings.find((f) => f.code === code);
 const severityOf = (report, code) => findingBy(report, code)?.severity;
 
@@ -99,7 +136,124 @@ test("a healthy domain reports coherent foundations", async () => {
   // Reverse DNS on the mail server passes; no dead nameserver names.
   assert.equal(severityOf(report, "MX_PTR_OK"), "pass");
   assert.equal(findingBy(report, "NS_HOST_UNRESOLVED"), undefined);
+  // Phase 2: parent delegation, glue and serial agreement all pass.
+  assert.equal(severityOf(report, "PARENT_DELEGATION_MATCH"), "pass");
+  assert.equal(severityOf(report, "GLUE_OK"), "pass");
+  assert.equal(severityOf(report, "SOA_SYNC"), "pass");
   assert.match(report.headline, /coherent/);
+});
+
+test("a parent delegating to different servers is an attention finding", async () => {
+  const config = healthyConfig();
+  config.tcp[`197.248.2.2 ${DOMAIN} 2`].authority = [
+    { name: DOMAIN, type: 2, ttl: 86400, data: "ns1.oldhost.com" },
+  ];
+  const report = await run(config);
+  const finding = findingBy(report, "PARENT_DELEGATION_MISMATCH");
+  assert.equal(finding.severity, "fail");
+  assert.ok(finding.evidence.some((e) => e.includes("oldhost.com")));
+});
+
+test("stale glue at the parent is an advisory naming both addresses", async () => {
+  const config = healthyConfig();
+  config.tcp[`197.248.2.2 ${DOMAIN} 2`].additional = [
+    { name: "ns1.host.co.ke", type: 1, ttl: 86400, data: "203.0.113.99" },
+  ];
+  const report = await run(config);
+  const finding = findingBy(report, "GLUE_STALE");
+  assert.equal(finding.severity, "warn");
+  assert.match(finding.evidence[0], /parent says 203\.0\.113\.99, server says 197\.248\.5\.1/);
+});
+
+test("disagreeing zone serials across nameservers is an advisory", async () => {
+  const config = healthyConfig();
+  config.tcp[`197.248.5.2 ${DOMAIN} 6`].answers = [
+    { name: DOMAIN, type: 6, ttl: 3600, data: "ns1.host.co.ke admin.host.co.ke 2023010101 7200 900 1209600 300" },
+  ];
+  const report = await run(config);
+  const finding = findingBy(report, "SOA_SYNC_MISMATCH");
+  assert.equal(finding.severity, "warn");
+  assert.equal(finding.evidence.length, 2);
+});
+
+test("an unreachable parent degrades to observed, never to a failure", async () => {
+  const config = healthyConfig();
+  config.tcp = {};
+  const report = await run(config);
+  assert.equal(severityOf(report, "PARENT_UNOBSERVABLE"), "info");
+  assert.equal(findingBy(report, "SOA_SYNC"), undefined);
+  assert.equal(report.summary.fail, 0, "lookup limitations are not domain failures");
+});
+
+/* ── the wire codec ──────────────────────────────────────────────────── */
+
+test("encodeQuery produces a well-formed non-recursive question", () => {
+  const q = encodeQuery(0x1234, "example.co.ke", QTYPE.NS);
+  const dv = new DataView(q.buffer);
+  assert.equal(dv.getUint16(0), 0x1234);
+  assert.equal(dv.getUint16(2), 0x0000, "RD must be 0 — we want the server's own view");
+  assert.equal(dv.getUint16(4), 1);
+  // 7"example"2"co"2"ke"0 then type NS class IN
+  assert.equal(q[12], 7);
+  assert.equal(String.fromCharCode(...q.subarray(13, 20)), "example");
+  assert.equal(dv.getUint16(q.length - 4), QTYPE.NS);
+  assert.equal(dv.getUint16(q.length - 2), 1);
+});
+
+test("parseMessage reads compressed names, glue and SOA fields", () => {
+  // Hand-built referral: question example.ke NS; authority NS via pointer
+  // to the question name; additional glue A for the nameserver.
+  const bytes = [];
+  const push16 = (v) => bytes.push(v >> 8, v & 0xff);
+  const push32 = (v) => bytes.push((v >>> 24) & 0xff, (v >>> 16) & 0xff, (v >>> 8) & 0xff, v & 0xff);
+  push16(0xabcd); push16(0x8000); // response, rcode 0
+  push16(1); push16(1); push16(1); push16(1); // qd an ns ar
+  const qnameOffset = bytes.length; // 12
+  bytes.push(7, ...[..."example"].map((c) => c.charCodeAt(0)));
+  bytes.push(2, ...[..."ke"].map((c) => c.charCodeAt(0)));
+  bytes.push(0);
+  push16(2); push16(1); // NS IN
+  // answer: NS record, name = pointer to qname, target ns1.<pointer>
+  push16(0xc000 | qnameOffset);
+  push16(2); push16(1); push32(3600);
+  push16(6); // rdlength: 3"ns1" + pointer(2)
+  bytes.push(3, ...[..."ns1"].map((c) => c.charCodeAt(0)));
+  push16(0xc000 | qnameOffset);
+  // authority: SOA for the zone
+  push16(0xc000 | qnameOffset);
+  push16(6); push16(1); push32(300);
+  const soaRdata = [];
+  const spush16 = (v) => soaRdata.push(v >> 8, v & 0xff);
+  const spush32 = (v) => soaRdata.push((v >>> 24) & 0xff, (v >>> 16) & 0xff, (v >>> 8) & 0xff, v & 0xff);
+  soaRdata.push(2, ..."ns".split("").map((c) => c.charCodeAt(0)), 0);
+  soaRdata.push(4, ..."root".split("").map((c) => c.charCodeAt(0)), 0);
+  spush32(2026081901); spush32(7200); spush32(900); spush32(1209600); spush32(300);
+  void spush16;
+  push16(soaRdata.length);
+  bytes.push(...soaRdata);
+  // additional: A glue for ns1.example.ke
+  bytes.push(3, ...[..."ns1"].map((c) => c.charCodeAt(0)));
+  push16(0xc000 | qnameOffset);
+  push16(1); push16(1); push32(3600); push16(4);
+  bytes.push(197, 248, 5, 1);
+
+  const msg = parseMessage(new Uint8Array(bytes));
+  assert.equal(msg.id, 0xabcd);
+  assert.equal(msg.rcode, 0);
+  assert.equal(msg.answers[0].data, "ns1.example.ke");
+  assert.equal(msg.authority[0].data.split(" ")[2], "2026081901");
+  assert.equal(msg.additional[0].name, "ns1.example.ke");
+  assert.equal(msg.additional[0].data, "197.248.5.1");
+});
+
+test("a pointer loop throws instead of hanging", () => {
+  const bytes = [];
+  const push16 = (v) => bytes.push(v >> 8, v & 0xff);
+  push16(1); push16(0x8000); push16(0); push16(1); push16(0); push16(0);
+  // answer whose name points at itself
+  const loopAt = bytes.length;
+  push16(0xc000 | loopAt);
+  assert.throws(() => parseMessage(new Uint8Array([...bytes, 0, 2, 0, 1, 0, 0, 0, 0, 0, 0])));
 });
 
 test("the detail payload carries the table and diagram data", async () => {
@@ -119,9 +273,16 @@ test("the detail payload carries the table and diagram data", async () => {
   assert.deepEqual(d.mx[0].ips, ["197.248.9.9"]);
   assert.equal(d.mx[0].ptr[0].name, "mail.example.co.ke");
   assert.deepEqual(d.apexAddresses, ["197.248.10.10"]);
+  // Phase 2 payload: the parent's own view and per-server serials.
+  assert.equal(d.parent.zone, "co.ke");
+  assert.equal(d.parent.source, "kilifi.kenic.or.ke");
+  assert.equal(d.parent.delegation.length, 2);
+  assert.equal(d.parent.glue.find((g) => g.name === "ns1.host.co.ke").ip, "197.248.5.1");
+  assert.deepEqual(d.serials.map((s) => s.serial), ["2024010101", "2024010101"]);
   // Every finding is filed under a presentation category.
   assert.ok(report.findings.every((f) => f.category), "all findings categorised");
   assert.equal(findingBy(report, "DELEGATION_MATCH").category, "registry");
+  assert.equal(findingBy(report, "PARENT_DELEGATION_MATCH").category, "registry");
   assert.equal(findingBy(report, "MX_PTR_OK").category, "mail");
 });
 
@@ -294,9 +455,12 @@ test("the handler normalises pasted URLs and returns a full report", async () =>
   const body = await response.json();
   assert.equal(body.ok, true);
   assert.equal(body.domain, DOMAIN);
-  // The eight rules plus the reverse-DNS finding on a mail-bearing domain.
-  assert.equal(body.findings.length, 9);
+  // Eight rules + reverse-DNS + parent-unobservable (the handler uses the
+  // real TCP layer, which cannot open sockets under plain Node — the check
+  // degrades to an observation exactly as it would on a blocked network).
+  assert.equal(body.findings.length, 10);
   assert.ok(body.detail, "the table/diagram payload is included");
+  assert.equal(body.detail.parent, null);
 });
 
 test("an unregistered domain returns 404 with a human explanation", async () => {

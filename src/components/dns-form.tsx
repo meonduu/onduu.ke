@@ -28,6 +28,13 @@ type Detail = {
   mx: MxInfo[];
   apexAddresses: string[];
   wwwAddresses: string[];
+  parent: {
+    zone: string;
+    source: string;
+    delegation: { host: string; ttl: number }[];
+    glue: { name: string; ip: string }[];
+  } | null;
+  serials: { server: string; serial: string | null }[];
 };
 
 type Result = {
@@ -49,7 +56,7 @@ const STATUS_WORD: Record<Severity, string> = {
 };
 
 const CATEGORIES: { key: Category; label: string }[] = [
-  { key: "registry", label: "Registry & delegation" },
+  { key: "registry", label: "Parent & registry" },
   { key: "nameservers", label: "Nameservers" },
   { key: "soa", label: "Zone record (SOA)" },
   { key: "web", label: "Web addresses" },
@@ -114,10 +121,14 @@ function Diagram({ result }: { result: Result }) {
         <g>
           <rect x={width / 2 - 110} y={8} width={220} height={40} fill="none" stroke={COLOR[registryStatus]} strokeWidth="2" strokeDasharray={detail.registryObservable ? undefined : "5 4"} />
           <text x={width / 2} y={25} textAnchor="middle" fontSize="11" fontFamily="Arial" fontWeight="bold" fill="#101820">
-            REGISTRY (RDAP)
+            {detail.parent ? `PARENT ZONE .${detail.parent.zone.toUpperCase()}` : "REGISTRY (RDAP)"}
           </text>
           <text x={width / 2} y={40} textAnchor="middle" fontSize="10" fontFamily="Arial" fill="#60707C">
-            {detail.registryObservable ? `${detail.registryNs.length} nameservers on file` : "not observable for this domain"}
+            {detail.parent
+              ? `delegates to ${detail.parent.delegation.length} nameservers`
+              : detail.registryObservable
+                ? `${detail.registryNs.length} nameservers on file`
+                : "not observable for this domain"}
           </text>
         </g>
 
@@ -161,6 +172,28 @@ function Diagram({ result }: { result: Result }) {
 /* ── category tables ─────────────────────────────────────────────────── */
 
 function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
+  if (cat === "registry" && detail.parent) {
+    const p = detail.parent;
+    return (
+      <>
+        <p className="dns-advice" style={{ borderLeftColor: "var(--green)" }}>
+          Asked {p.source} (a .{p.zone} parent server) directly, without caching.
+        </p>
+        <table className="dns-table">
+          <thead><tr><th>Delegated nameserver</th><th>TTL</th><th>Glue address at parent</th></tr></thead>
+          <tbody>
+            {p.delegation.map((d) => (
+              <tr key={d.host}>
+                <td>{d.host}</td>
+                <td>{d.ttl}</td>
+                <td>{p.glue.filter((g) => g.name === d.host).map((g) => g.ip).join(", ") || "—"}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </>
+    );
+  }
   if (cat === "registry" && detail.registryObservable) {
     return (
       <table className="dns-table">
@@ -215,6 +248,19 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
         {detail.soaAdvice.map((a) => (
           <p key={a} className="dns-advice">{a}</p>
         ))}
+        {detail.serials.length > 0 && (
+          <table className="dns-table">
+            <thead><tr><th>Authoritative server</th><th>Serial it reports</th></tr></thead>
+            <tbody>
+              {detail.serials.map((row) => (
+                <tr key={row.server}>
+                  <td>{row.server}</td>
+                  <td>{row.serial ?? "not probed this run"}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        )}
       </>
     );
   }
@@ -383,10 +429,11 @@ export function DnsForm() {
           })}
 
           <div className="note">
-            One vantage point, resolved recursively over public DNS, with registry data read over
-            RDAP. DNSSEC is detected, not cryptographically validated; reverse DNS is checked for
-            the first few mail addresses only. A clean result means the public records are coherent
-            — it does not prove the domain, the website or the business behind them are secure.
+            Resolved over public DNS and RDAP, plus direct read-only questions to the parent zone
+            and your own nameservers (standard DNS queries — the same ones every resolver sends).
+            DNSSEC is detected, not cryptographically validated; reverse DNS covers the first few
+            mail addresses only. A clean result means the public records are coherent — it does not
+            prove the domain, the website or the business behind them are secure.
           </div>
         </div>
       )}

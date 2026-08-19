@@ -83,11 +83,33 @@ table round — each answering nameserver's A/AAAA (≤6 hosts), the first
 DoH to the recursive resolver, GET only, ≤45 subrequests/15s budget.
 Two findings joined the rule set with the amendment: `NS_HOST_UNRESOLVED`
 (advisory) and `MX_PTR_OK`/`MX_PTR_MISSING` (reverse-DNS hygiene,
-advisory). **Still nothing else** — no AXFR attempts, no port scans, no
-queries to authoritative or parent servers directly. Parent-side glue and
-per-server consistency (LeafDNS parity) remain a **Phase 2 owner gate**:
-they require DNS-over-TCP via Workers `connect()` and their own spec
-amendment before any build.
+advisory).
+
+**Phase 2 — parent and per-server probes (owner-approved 19 Aug 2026,
+"approve phase 2"):** the check may now also send **standard, read-only
+DNS questions over TCP port 53** — the same queries every resolver on the
+internet sends — to two kinds of servers:
+
+1. **One parent-zone nameserver** (found via a recursive NS lookup of the
+   parent zone, e.g. `co.ke`), asked non-recursively for the domain's NS.
+   The referral's authority section is the parent-side delegation; the
+   additional section is the **glue**. Findings: parent-vs-answering
+   delegation match/mismatch (`PARENT_DELEGATION_*`), and stale-glue
+   detection (`GLUE_*` — parent-published addresses compared with each
+   nameserver's current addresses).
+2. **Each answering authoritative nameserver** (≤4), asked for the
+   domain's SOA, so zone serials can be compared across servers
+   (`SOA_SYNC` / `SOA_SYNC_MISMATCH`).
+
+Safety envelope: `worker/dns-wire.ts` (RFC 1035 codec, loop-guarded name
+decompression) and `worker/dns-tcp.ts` (Workers `cloudflare:sockets`
+`connect()`, RFC 7766 framing). TCP goes **only to IPs resolved via DoH
+and validated public by the net.ts SSRF rules, only to port 53**, one
+question per connection, 3.5s timeout, budget-counted (≤2 parent + ≤4
+serial probes per check; total budget 55 subrequests / 18s). A failed or
+blocked probe degrades to "not probed this run" — never to a domain
+failure. **Still nothing else** — no AXFR attempts, no port scans, no
+UDP, no writes of any kind.
 
 ## 4. Architecture
 

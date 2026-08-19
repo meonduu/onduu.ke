@@ -18,12 +18,16 @@
 import {
   type Budget,
   makeBudget,
+  budgetExhausted,
   normaliseHost,
   isScannableHost,
+  isForbiddenAddress,
   dohQuery,
   type DohResponse,
 } from "./scan/net.ts";
 import { collectRdap } from "./scan/collect.ts";
+import { QTYPE } from "./dns-wire.ts";
+import { tcpDnsQuery, type TcpDnsQuery } from "./dns-tcp.ts";
 
 export type Severity = "pass" | "warn" | "fail" | "info";
 
@@ -75,6 +79,15 @@ export interface DnsDetail {
   mx: MxInfo[];
   apexAddresses: string[];
   wwwAddresses: string[];
+  /** Phase 2: the parent zone's own view of the delegation, with glue. */
+  parent: {
+    zone: string;
+    source: string;
+    delegation: { host: string; ttl: number }[];
+    glue: { name: string; ip: string }[];
+  } | null;
+  /** Phase 2: SOA serial as reported by each authoritative server. */
+  serials: { server: string; serial: string | null }[];
 }
 
 export interface DnsReport {
@@ -120,12 +133,64 @@ const sameSet = (a: string[], b: string[]) => {
   return sa.size === sb.size && [...sa].every((x) => sb.has(x));
 };
 
+/* ── Phase 2 probes (spec §3, approved 19 Aug 2026) ──────────────────── */
+
+const spendTcp = (budget: Budget): boolean => {
+  if (budgetExhausted(budget)) return false;
+  budget.subrequests -= 1;
+  return true;
+};
+
+/**
+ * Ask a parent-zone nameserver, non-recursively, who it delegates the
+ * domain to. The authority section carries the parent-side NS set; the
+ * additional section carries the glue addresses.
+ */
+async function probeParent(
+  domain: string,
+  budget: Budget,
+  fetcher: typeof fetch,
+  tcp: TcpDnsQuery,
+): Promise<DnsDetail["parent"]> {
+  const labels = domain.split(".");
+  if (labels.length < 2) return null;
+  const zone = labels.slice(1).join(".");
+  const parentNs = await dohQuery(zone, "NS", budget, fetcher);
+  const parentHosts = (parentNs?.Answer || [])
+    .filter((r) => r.type === 2)
+    .map((r) => normaliseNsHost(r.data))
+    .slice(0, 3);
+
+  for (const host of parentHosts) {
+    const pa = await dohQuery(host, "A", budget, fetcher);
+    const ip = (pa?.Answer || [])
+      .filter((r) => r.type === 1)
+      .map((r) => r.data.trim())
+      .find((x) => !isForbiddenAddress(x));
+    if (!ip || !spendTcp(budget)) continue;
+    const msg = await tcp(ip, domain, QTYPE.NS);
+    if (!msg || msg.rcode !== 0) continue;
+    const delegation = [...msg.authority, ...msg.answers]
+      .filter((r) => r.type === QTYPE.NS && r.name === domain)
+      .map((r) => ({ host: normaliseNsHost(r.data), ttl: r.ttl }))
+      .slice(0, 13);
+    if (!delegation.length) continue;
+    const glue = [...msg.additional]
+      .filter((r) => r.type === QTYPE.A || r.type === QTYPE.AAAA)
+      .map((r) => ({ name: normaliseNsHost(r.name), ip: r.data }))
+      .slice(0, 13);
+    return { zone, source: host, delegation, glue };
+  }
+  return null;
+}
+
 /* ── the check ───────────────────────────────────────────────────────── */
 
 export async function runDnsCheck(
   domain: string,
   budget: Budget,
   fetcher: typeof fetch = fetch,
+  tcp: TcpDnsQuery = tcpDnsQuery,
 ): Promise<DnsReport | { ok: false; status: number; error: string }> {
   const [ns, soa, a, aaaa, mx, ds, dnskey, wwwA, rdap] = await Promise.all([
     dohQuery(domain, "NS", budget, fetcher),
@@ -249,6 +314,20 @@ export async function runDnsCheck(
       );
   }
 
+  /* ── Phase 2 round: parent delegation + per-server serials ─────────── */
+
+  const parent = await probeParent(domain, budget, fetcher, tcp);
+  const serialHosts = nsHosts.filter((h) => h.answering && h.ips.length > 0).slice(0, 4);
+  const serials: DnsDetail["serials"] = await Promise.all(
+    serialHosts.map(async (h) => {
+      const ip = h.ips.find((x) => !x.includes(":")) ?? h.ips[0];
+      if (isForbiddenAddress(ip) || !spendTcp(budget)) return { server: h.host, serial: null };
+      const msg = await tcp(ip, domain, QTYPE.SOA);
+      const record = msg?.rcode === 0 ? msg.answers.find((r) => r.type === QTYPE.SOA) : undefined;
+      return { server: h.host, serial: record ? (record.data.split(" ")[2] ?? null) : null };
+    }),
+  );
+
   const detail: DnsDetail = {
     registryNs,
     registryObservable: registryNs.length > 0,
@@ -258,6 +337,8 @@ export async function runDnsCheck(
     mx: mxDetail,
     apexAddresses,
     wwwAddresses,
+    parent,
+    serials,
   };
 
   /* 1 — nameservers exist, and more than one */
@@ -544,9 +625,103 @@ export async function runDnsCheck(
     );
   }
 
+  /* 11 — the parent zone's delegation vs the answering nameservers */
+  if (parent && liveNs.length > 0) {
+    const parentSet = parent.delegation.map((d) => d.host);
+    if (sameSet(parentSet, liveNs)) {
+      findings.push({
+        code: "PARENT_DELEGATION_MATCH",
+        severity: "pass",
+        title: "Parent delegation",
+        detail: `The ${parent.zone} zone's nameserver (${parent.source}) delegates this domain to exactly the servers that are answering.`,
+        evidence: parent.delegation.map((d) => `${d.host} (TTL ${d.ttl})`),
+      });
+    } else {
+      findings.push({
+        code: "PARENT_DELEGATION_MISMATCH",
+        severity: "fail",
+        title: "Parent delegation",
+        detail:
+          "The parent zone delegates this domain to a different set of nameservers than the ones answering. Resolvers that follow the parent's referral can land on servers with stale or missing data — the classic symptom is a site or mail that works for some networks and not others.",
+        evidence: [
+          `parent (${parent.source}): ${parentSet.join(", ")}`,
+          `answering: ${liveNs.join(", ")}`,
+        ],
+      });
+    }
+
+    // Glue vs the nameservers' current addresses. Anycast nameservers
+    // legitimately publish several addresses, so glue is only stale when a
+    // host's glue set and live set share NO address at all.
+    const glueByHost = new Map<string, string[]>();
+    for (const g of parent.glue) {
+      glueByHost.set(g.name, [...(glueByHost.get(g.name) ?? []), g.ip]);
+    }
+    const staleGlue = [...glueByHost.entries()]
+      .filter(([host, glueIps]) => {
+        const live = nsHosts.find((h) => h.host === host);
+        return live && live.ips.length > 0 && !glueIps.some((ip) => live.ips.includes(ip));
+      })
+      .map(([host, glueIps]) => ({ name: host, ip: glueIps.join("/") }));
+    if (staleGlue.length > 0) {
+      findings.push({
+        code: "GLUE_STALE",
+        severity: "warn",
+        title: "Glue records",
+        detail:
+          "The parent zone still hands out old addresses (glue) for one or more nameservers. Resolvers usually recover, but lookups are slower and a decommissioned old address would break them. Fixed by updating the nameserver's registered address at the registrar.",
+        evidence: staleGlue.map((g) => {
+          const live = nsHosts.find((h) => h.host === g.name);
+          return `${g.name}: parent says ${g.ip}, server says ${live?.ips.join("/")}`;
+        }),
+      });
+    } else if (parent.glue.length > 0) {
+      findings.push({
+        code: "GLUE_OK",
+        severity: "pass",
+        title: "Glue records",
+        detail: "The addresses the parent zone hands out for the nameservers match the addresses the nameservers actually use.",
+        evidence: parent.glue.map((g) => `${g.name} → ${g.ip}`),
+      });
+    }
+  } else {
+    findings.push({
+      code: "PARENT_UNOBSERVABLE",
+      severity: "info",
+      title: "Parent delegation",
+      detail:
+        "The parent zone's nameservers could not be probed on this run, so the parent-side view of the delegation (and its glue) is unverified this time.",
+      limitation: "A lookup limitation on this run, not a finding about the domain.",
+    });
+  }
+
+  /* 12 — SOA serial agreement across the authoritative servers */
+  const knownSerials = serials.filter((s) => s.serial !== null);
+  if (knownSerials.length >= 2) {
+    const distinct = [...new Set(knownSerials.map((s) => s.serial))];
+    findings.push(
+      distinct.length === 1
+        ? {
+            code: "SOA_SYNC",
+            severity: "pass",
+            title: "Nameserver synchronisation",
+            detail: `All ${knownSerials.length} probed nameservers report the same zone serial — they are serving the same version of your DNS.`,
+            evidence: [`serial ${distinct[0]}`],
+          }
+        : {
+            code: "SOA_SYNC_MISMATCH",
+            severity: "warn",
+            title: "Nameserver synchronisation",
+            detail:
+              "The nameservers report different zone serials, meaning at least one is serving an older copy of your DNS. Often transient after a change; if it persists, zone transfers between the servers are broken.",
+            evidence: knownSerials.map((s) => `${s.server}: ${s.serial}`),
+          },
+    );
+  }
+
   // Presentation category by finding code (spec §6 Phase 1).
   const categoryOf = (code: string): Category =>
-    code.startsWith("DELEGATION")
+    code.startsWith("DELEGATION") || code.startsWith("PARENT") || code.startsWith("GLUE")
       ? "registry"
       : code.startsWith("NS")
         ? "nameservers"
@@ -622,8 +797,9 @@ export async function handleDnsCheck(
   }
 
   // 8 rule queries + RDAP (≤3 guarded fetches with their own resolve
-  // lookups) + the table round: ≤6 NS hosts × 2, ≤3 MX hosts, ≤4 PTRs.
-  const budget = makeBudget(15_000, 45);
+  // lookups) + the table round (≤6 NS hosts × 2, ≤3 MX hosts, ≤4 PTRs)
+  // + Phase 2: ≤3 DoH for the parent + ≤2 parent TCP + ≤4 serial TCP.
+  const budget = makeBudget(18_000, 55);
   const result = await runDnsCheck(domain, budget, fetcher);
   if (!result.ok) return json({ ok: false, error: result.error }, result.status);
   return json(result);

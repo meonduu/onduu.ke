@@ -1,7 +1,46 @@
 # Changelog
 
-CURRENT VERSION: v4.18.0 — 0702hrs:19th August2026
+CURRENT VERSION: v4.19.0 — 0716hrs:19th August2026
 (v4.17.0 is reserved by the unmerged branch `feat/introduction-routing`.)
+
+## v4.19.0 — 0716hrs:19th August2026
+
+`/dns` Phase 2: true parent-side delegation, glue records and per-server
+consistency — the LeafDNS capabilities that recursive DNS cannot see.
+Owner-approved ("approve phase 2"); spec §3 amended with the design and
+safety envelope.
+
+- New `worker/dns-wire.ts`: a minimal RFC 1035 codec (non-recursive query
+  encoding; A/AAAA/NS/SOA parsing with loop-guarded name decompression).
+- New `worker/dns-tcp.ts`: one DNS question over TCP port 53 via Workers
+  `cloudflare:sockets` `connect()` with RFC 7766 framing — only to
+  DoH-resolved, SSRF-validated public IPs, only port 53, one question per
+  connection, 3.5s timeout, budget-counted.
+- Three new probe groups: a parent-zone nameserver asked non-recursively
+  for the delegation (authority = parent NS set, additional = glue);
+  glue compared against each nameserver's current addresses (stale only
+  when the sets share no address — anycast multi-IP sets are not false
+  positives); each answering nameserver (≤4) asked for SOA so zone
+  serials are compared (`SOA_SYNC`/`SOA_SYNC_MISMATCH`).
+- New findings: PARENT_DELEGATION_MATCH/MISMATCH, GLUE_OK/GLUE_STALE,
+  SOA_SYNC/_MISMATCH, PARENT_UNOBSERVABLE (a blocked probe degrades to an
+  observation, never a failure).
+- UI: the "Parent & registry" block leads with the parent's own referral
+  table (nameserver, TTL, glue address — the LeafDNS "Parent NS Tests"
+  view), the SOA block gains a serial-per-server table, and the diagram's
+  top node becomes the parent zone when observed.
+- Budget now 55 subrequests / 18s.
+
+Verified: 166 tests pass (12 new: wire codec round-trip with compression
+pointers and loop-guard, parent mismatch, stale vs anycast glue, serial
+disagreement, graceful degradation); live against real servers from the
+local build — hostafrica.com's `.com` referral from a.gtld-servers.net
+with full glue (PARENT_DELEGATION_MATCH, GLUE_OK, SOA_SYNC all pass;
+an anycast false-stale caught and fixed during verification), and real
+TCP SOA probes to Cloudflare nameservers agreeing on serials. Known
+limit: KeNIC's parent servers did not answer TCP from the local vantage
+(degrades to "not probed this run"); to re-verify from the production
+edge after deploy.
 
 ## v4.18.0 — 0702hrs:19th August2026
 
