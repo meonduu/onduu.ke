@@ -114,7 +114,7 @@ test("the legal routes in the footer exclude the gated managed-service terms", a
   assert.doesNotMatch(home, /href="\/legal\/managed-service-terms"/, "gated terms must not be linked");
 });
 
-test("tool limitations page states the honest limits of all three tools", async () => {
+test("tool limitations page states the honest limits of all four tools", async () => {
   const res = await fetchPath("/legal/tool-limitations");
   assert.equal(res.status, 200);
   const html = await res.text();
@@ -122,6 +122,30 @@ test("tool limitations page states the honest limits of all three tools", async 
   assert.match(html, /not a reservation/i, "domain availability framed honestly");
   assert.match(html, /never counts as a pass or a failure/i, "scan rule 2 stated");
   assert.match(html, /me@onduu\.ke/, "opt-out route published");
+  // Every live tool must appear here, or the page under-describes the site.
+  for (const tool of ["/email-security", "/kedomains", "/scan", "/dns"]) {
+    assert.ok(html.includes(tool), `tool limitations must cover ${tool}`);
+  }
+  assert.match(html, /not a propagation checker/i, "DNS check vantage limit stated");
+  assert.match(html, /detected, not cryptographically validated/i, "DNSSEC limit stated");
+});
+
+test("the legal pages describe behaviour that actually exists", async () => {
+  const privacy = await (await fetchPath("/legal/privacy")).text();
+  // The notice must cover every tool that stores something.
+  assert.match(privacy, /\/dns/, "privacy notice must cover the DNS check");
+  // It must not claim analytics products the site does not run: the CSP
+  // permits no third-party analytics script, so a claim would be false.
+  assert.doesNotMatch(privacy, /Cloudflare Web Analytics runs/, "no analytics product is in use");
+
+  const commercial = await (await fetchPath("/legal/commercial-relationships")).text();
+  // The referral fee must be disclosed, without an amount, and the shared
+  // ownership with Ujiajiri stated at the point it matters.
+  assert.match(commercial, /referral fee/i, "referral fee existence disclosed");
+  assert.match(commercial, /same company that operates Onduu/i, "shared entity stated");
+  assert.doesNotMatch(commercial, /referral fee[^.]*\d+\s*%|\d+\s*%[^.]*referral/i, "no fee amount");
+  // The retired public-directory model must not survive here.
+  assert.doesNotMatch(commercial, /Providers listed there/i, "directory language must be gone");
 });
 
 test("pages carry a hashed CSP header allowing only Turnstile and YouTube beyond self", async () => {

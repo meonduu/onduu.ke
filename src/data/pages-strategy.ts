@@ -386,7 +386,7 @@ export const strategyPages: Record<string, PageContent> = {
     eyebrow: "ONDUU / LEGAL",
     title: "Tool limitations.",
     intro:
-      "What each free tool on this site reads, what it stores, and — most importantly — what its results do and do not prove. If a statement here ever conflicts with a marketing sentence elsewhere, this page wins.",
+      "What each of the four free tools on this site reads, what it stores, and — most importantly — what its results do and do not prove. If a statement here ever conflicts with a marketing sentence elsewhere, this page wins.",
     gate: "Draft for professional review, maintained against the code that runs the tools.",
     sections: [
       {
@@ -427,7 +427,21 @@ export const strategyPages: Record<string, PageContent> = {
         ],
       },
       {
-        eyebrow: "04 / ALL TOOLS",
+        eyebrow: "04 / DNS HEALTH CHECK",
+        title: "/dns — coherence of the public records, not a verdict on them.",
+        body: [
+          "Reads a domain's nameservers, delegation, zone record, addresses, mail routing and DNSSEC from public DNS and registry (RDAP) data, and compares them against each other. It also asks a parent-zone nameserver and each of the domain's own nameservers a standard read-only question directly, which is where the parent's glue records and each server's zone serial come from. The domain checked and a summary of the outcome are stored, with no visitor identity attached.",
+        ],
+        items: [
+          "One vantage point at one moment: this is not a propagation checker, and it does not tell you what every network in the world currently sees",
+          "DNSSEC is detected, not cryptographically validated — the records are read, the chain is not verified",
+          "Reverse DNS is checked for the first few mail-server addresses only, and IPv6 reverse zones are not probed",
+          "Some observations are limited by where the check runs from: nameservers hosted on Cloudflare cannot be questioned directly from this site's own infrastructure, and some registries' parent servers do not answer these questions. Where that happens the result says the item was not observed on that run — never that the domain failed",
+          "Coherent records are not proof that the domain, the website or the business behind them is secure",
+        ],
+      },
+      {
+        eyebrow: "05 / ALL TOOLS",
         title: "Shared boundaries.",
         items: [
           "No tool on this site promises guaranteed security, compliance, rankings, leads, revenue, uptime, recovery or agent accuracy",

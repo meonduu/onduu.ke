@@ -26,12 +26,15 @@ test("no consent banner is served, since nothing requires consent", async () => 
   assert.doesNotMatch(html, /class="consent/, "consent markup still present");
 });
 
-test("the privacy notice matches: no banner, cookieless analytics, first-party attribution", async () => {
+test("the privacy notice matches: no banner, no browser analytics, first-party attribution", async () => {
   const html = await (await fetchPath("/legal/privacy")).text();
   assert.match(html, /no advertising tags, no third-party tracking scripts/);
   assert.match(html, /There is no cookie banner/);
-  assert.match(html, /Cloudflare Web Analytics runs on every visit/);
-  assert.match(html, /cookieless/i);
+  // Corrected 19 Aug 2026: the notice used to claim Cloudflare Web
+  // Analytics ran here. It does not — no beacon is served and the CSP
+  // would refuse one — so the notice now says page views are server-side.
+  assert.doesNotMatch(html, /Cloudflare Web Analytics runs/, "must not claim an analytics product");
+  assert.match(html, /Page views are counted on the server/);
   assert.match(html, /session storage/i, "must describe how attribution is held");
 
   // Stale claims from earlier releases must not come back.

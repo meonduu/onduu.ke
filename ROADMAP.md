@@ -169,8 +169,17 @@ Remaining:
 
 - [ ] Replace remaining identity/contact placeholders with owner-approved
   facts; remove draft markings only with owner sign-off.
-- [ ] Re-align Privacy, Commercial Relationships, Terms and tool-limitation
-  pages with actual behaviour **after** Phases 1–2 change that behaviour.
+- [x] Re-align Privacy, Commercial Relationships and tool-limitation pages
+  with actual behaviour (v4.21.0, 19 Aug 2026): `/dns` documented in both
+  the privacy notice and tool limitations; a false Cloudflare Web Analytics
+  claim removed (no beacon is served and the CSP would refuse one); the
+  Ujiajiri referral fee disclosed, with the shared-entity point stated and
+  no amount published; the retired provider-directory language replaced by
+  the introduction model; what Onduu contracts for corrected to match the
+  live positioning. Tests now pin all of it. **Still drafts** — the pages
+  remain marked for professional review and the TO CONFIRM items stand.
+- [ ] Assessment Terms: re-read against current behaviour (it predates the
+  scan, the DNS check and the introduction routing).
 - [ ] Define and document retention, deletion, consent, processors and
   transfer behaviour; enforce `retain_until`.
 - [ ] Accessibility pass over the important flows (keyboard, screen reader).

@@ -271,7 +271,7 @@ export const briefPages: Record<string, PageContent> = {
         "body": [
           "Onduu is the brand used for the website, conversion, measurement and digital-performance work offered to businesses in Kenya. The contracting legal entity is Ujiajiri Enterprises Limited.",
           "Any agreement, invoice or engagement is with Ujiajiri Enterprises Limited trading as Onduu.",
-          "Ujiajiri Enterprises Limited also operates ujiajiri.ke, a practical-skills and independent-provider platform relaunched on 18 August 2026. Providers listed there are independent businesses: clients contract and pay them directly, and neither Ujiajiri nor Onduu delivers, manages or guarantees their work. Links from this site to ujiajiri.ke are plain links — nothing you submit to Onduu is passed to Ujiajiri.",
+          "Ujiajiri Enterprises Limited also operates ujiajiri.ke, a practical-skills platform and a private introduction service for independent website and digital-marketing providers. There is no public provider directory: a business asks Ujiajiri for an introduction, Ujiajiri proposes one provider from its private network and names it, and nothing identifiable is sent to that provider until the business gives permission. The provider is an independent business that scopes, quotes, contracts, invoices and delivers directly, and neither Ujiajiri nor Onduu delivers, manages or guarantees its work. Links from this site to ujiajiri.ke are plain links — nothing you submit to Onduu is passed to Ujiajiri.",
           "TO CONFIRM: company registration number and registered address."
         ]
       },
@@ -291,24 +291,24 @@ export const briefPages: Record<string, PageContent> = {
         "cards": [
           {
             "title": "Contracted with Onduu",
-            "body": "Digital readiness assessments, the Digital Revenue and Risk Review, website work, measurement, and any managed or agent-pilot engagement that is separately agreed."
+            "body": "The human-reviewed Digital Readiness assessment, and the free tools on this site, which are offered as-is. Any deeper piece of work exists only if it has been separately scoped and agreed with you in writing; nothing on this website sells one."
           },
           {
             "title": "Not contracted with Onduu",
-            "body": "Hosting, virtual servers, domains and infrastructure support. Those are supplied under a separate agreement with the infrastructure provider, on their terms and their pricing."
+            "body": "Website and digital-marketing implementation, which independent providers contract and deliver directly following a Ujiajiri introduction. Hosting, virtual servers, domains and infrastructure support, which are supplied under a separate agreement with the infrastructure provider, on their terms and their pricing."
           }
         ],
-        "note": "TO CONFIRM: whether any Onduu service is excluded from this list under an employment or non-compete boundary."
+        "note": "Onduu does not act as prime contractor for implementation work, does not manage another provider's delivery and does not guarantee it. TO CONFIRM: whether any Onduu service is excluded from this list under an employment or non-compete boundary."
       },
       {
         "eyebrow": "04 / HOW REFERRALS WORK",
         "title": "Nothing is passed on automatically.",
         "body": [
-          "This website does not send your enquiry to any infrastructure supplier. There is no automatic routing, no lead-sharing integration and no mechanism on this site that forwards what you submit to a third party.",
-          "Onduu receives no commission, fee, revenue share or other benefit if you choose HOSTAFRICA or any other supplier. There is no financial incentive attached to a recommendation.",
-          "If an infrastructure conversation would genuinely help you, it will be raised with you first and you decide whether to have it."
+          "This website does not send your enquiry anywhere. There is no automatic routing, no lead-sharing integration and no mechanism on this site that forwards what you submit to an infrastructure supplier, an implementation provider or anyone else. Every route off this site is a plain link you choose to follow.",
+          "Infrastructure: Onduu receives no commission, fee or revenue share if you choose HOSTAFRICA or any other supplier. The outbound link carries attribution tags so routed demand can be counted, and nothing more. If an infrastructure conversation would genuinely help you, it will be raised with you first and you decide whether to have it.",
+          "Implementation: this is the one place money can flow back. If you ask Ujiajiri for an introduction and go on to contract and pay the provider it proposes, Ujiajiri may receive a referral fee from that provider under a separate agreement. Ujiajiri Enterprises Limited is the same company that operates Onduu, so treat the interest as Onduu's own. You are told the fee may exist before you approve an introduction, the provider must tell you whether the arrangement affects the price it quotes you, and you are free to decline the proposed provider or use someone else entirely."
         ],
-        "note": "If that ever changes, this page changes in the same release. A disclosure page that lags behind the arrangement it describes is worse than no page at all."
+        "note": "The fee's existence is disclosed; its amount is not published here, because it is set in the partner agreement rather than on this website — ask the provider what it means for your quote. If any of this changes, this page changes in the same release. A disclosure page that lags behind the arrangement it describes is worse than no page at all."
       },
       {
         "eyebrow": "05 / HOW CONFLICTS ARE HANDLED",
@@ -331,7 +331,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "07 / VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.1, prepared 16 August 2026. No effective date until reviewed and the TO CONFIRM items are answered."
+          "Draft version 0.2, prepared 16 August 2026 and re-checked against the live site on 19 August 2026. No effective date until reviewed and the TO CONFIRM items are answered.",
+          "What changed in 0.2: Ujiajiri is described as a private introduction service rather than a provider listing; the referral fee Ujiajiri may receive from an introduced provider is disclosed, including that Ujiajiri and Onduu are the same company; and the list of what Onduu contracts for was corrected to match what this site actually offers."
         ]
       }
     ]
@@ -407,6 +408,7 @@ export const briefPages: Record<string, PageContent> = {
           "The email security checker at /email-security sends the domain name to Cloudflare's public DNS resolver so its published SPF, DKIM, DMARC and MX records can be read. Those records are already public. Since 18 August 2026 the domain checked and the result are stored, so Onduu can see which checks are being run and which failures are common. No account or email address is required, and nothing about you is recorded with the result — a stored row says a domain was checked at a time, never who checked it.",
           "The Instant Public Readiness Scan at /scan reads more public information about a domain — its registry record, DNS, published email records, and the homepage, robots.txt and sitemap that any visitor can request — and returns a Public Signal Score. Unlike the checker, a scan result is stored: the domain scanned, the public observations behind each signal, the score and a reference number. This is what lets a repeat scan of the same domain return the recent result for a day rather than re-reading someone else's site, and it is what a score is recomputed from if a result is ever questioned.",
           "A scan result is about a domain, not about you. No name, email address or account is required or attached to it. The domain you enter need not be your own, because everything the scan reads is already public. To limit abuse, the scan uses the same one-way hashed connection address as the forms, held only for a short hourly counter and never stored with the result.",
+          "The DNS health check at /dns reads a domain's public DNS and registry records to report whether its nameservers, delegation, addresses, mail routing and DNSSEC are coherent. Alongside the resolver lookups it asks two kinds of server a standard question directly, over the ordinary DNS port: one nameserver of the parent zone (for the delegation and glue records the parent publishes) and each of the domain's own nameservers (for the zone serial each is serving). These are read-only questions — the same ones every resolver on the internet sends — and no part of them concerns you: the servers see a request from Onduu's infrastructure, never anything about the visitor who asked. The domain checked and a summary of the outcome are stored, with no visitor identity attached, on the same basis and with the same deletion route as the tools above.",
           "The domain search at /kedomains checks whether a name is registered across the Kenyan extensions using public DNS and registry records, and shows a taken domain's registrar, transfer lock and expiry. Since 18 August 2026 the name searched and what was found are stored, on the same basis and with the same limit as the checker above: no account, and no identifier that could connect a search to you. If an available name leads you to register it, that happens at HOSTAFRICA's own site — the outbound link carries attribution tags so Onduu can see, in aggregate, that traffic came from this tool, and Onduu counts the click as a number with no identity attached. Onduu receives no commission on registrations."
         ],
         "note": "The basis for storing tool results is a legitimate interest in operating the tools, caching results so they do not repeatedly fetch third-party sites, seeing which checks are run and which failures are common, and being able to reproduce a score. A Public Signal Score describes public observations at a moment in time; it is not a Digital Readiness Score, and not proof that a domain, a mailbox or a business is secure. Results are kept until deleted rather than on a fixed schedule. If you operate a domain and want it left alone, email me@onduu.ke: every stored record of it is deleted — scan results and any stored email or domain lookups — the domain is added to a do-not-scan list so it is not scanned again, and future lookups of it are not recorded. The lookups themselves keep working, because they read only the public records any WHOIS tool can read."
@@ -415,8 +417,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "05 / COOKIES AND ANALYTICS",
         "title": "No tracking cookies, and nothing to consent to.",
         "body": [
-          "This website runs no advertising tags, no third-party tracking scripts and no product that follows you between sites. There is no cookie banner because there is nothing here that needs one.",
-          "Cloudflare Web Analytics runs on every visit. It is cookieless: it stores nothing on your device, does not identify you and does not build a profile. It reports aggregate figures such as how many people viewed a page.",
+          "This website runs no advertising tags, no third-party tracking scripts and no product that follows you between sites. There is no cookie banner because there is nothing here that needs one. No analytics product of any kind runs in your browser — a content-security policy served with every page permits scripts only from this site itself, plus the Turnstile spam check on the forms and an embedded video player; anything else a browser was asked to load would be refused.",
           "Page views are counted on the server: which page was requested, which external site referred it, the country reported by the network, and whether the device is a phone, tablet or desktop. No address, no browser fingerprint and no identifier is stored, and two views cannot be linked to the same person. Nothing runs in your browser to do this and nothing is stored on your device.",
           "If you submit a form, the site that referred you and any campaign parameters from the link you followed are sent with it, so it is possible to tell which article or link produced an enquiry. Until you submit, those details sit in your browser's session storage — not a cookie — and they are cleared when you close the tab. They are never shared with a third party."
         ],
@@ -428,14 +429,14 @@ export const briefPages: Record<string, PageContent> = {
         "cards": [
           {
             "title": "Cloudflare",
-            "body": "Hosts this website, stores form submissions and stored scan results in its database service, provides the spam check, resolves the DNS lookups used by the domain tools, and provides the cookieless Web Analytics described above."
+            "body": "Hosts this website, stores form submissions and stored tool results in its database service, provides the spam check on the forms, and resolves the DNS lookups the domain tools rely on."
           },
           {
             "title": "ZeptoMail",
             "body": "Sends the notification that tells Onduu a request has arrived. That message contains only the reference number and which form was used — none of your answers, and not your name or email address."
           }
         ],
-        "note": "No artificial-intelligence or language-model provider receives your form submissions, and no analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier or any other third party without asking you first."
+        "note": "No artificial-intelligence or language-model provider receives your form submissions, and no analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
       },
       {
         "eyebrow": "07 / WHERE IT IS STORED",
@@ -500,7 +501,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "13 / VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.1, prepared 16 August 2026. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
+          "Draft version 0.2, prepared 16 August 2026 and re-checked against the running code on 19 August 2026. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
+          "What changed in 0.2: the DNS health check at /dns was added to the tools section, including the direct questions it asks parent and authoritative nameservers; an inaccurate claim that this site used a cookieless analytics product was removed, because it does not — no analytics script runs in the browser at all, and the content-security policy would refuse one; and the third parties section now names the registries and nameservers the tools contact.",
           "The consent wording shown on the forms is versioned separately, so a record exists of the exact text each person agreed to."
         ]
       }

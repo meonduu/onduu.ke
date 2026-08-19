@@ -1,6 +1,50 @@
 # Changelog
 
-CURRENT VERSION: v4.20.0 — 0742hrs:19th August2026
+CURRENT VERSION: v4.21.0 — 0757hrs:19th August2026
+
+## v4.21.0 — 0757hrs:19th August2026
+
+Legal pages re-aligned with what the site actually does (ROADMAP Phase 3).
+Behaviour descriptions only: **no draft marking was lifted and no TO
+CONFIRM item was answered** — those remain the owner's and a professional
+reviewer's to settle.
+
+**A real defect found and fixed.** The privacy notice claimed "Cloudflare
+Web Analytics runs on every visit". It does not: no beacon is served on
+any page, and the content-security policy (self + Turnstile + YouTube)
+would refuse one if it were. The notice now states plainly that no
+analytics script runs in the browser and that page views are counted
+server-side. A test had been pinning the false sentence in place; it now
+asserts the opposite.
+
+**Privacy notice → draft 0.2.** The DNS health check was missing entirely;
+§04 now describes what `/dns` reads, that it asks parent and authoritative
+nameservers standard read-only questions directly, that those servers see
+Onduu's infrastructure and nothing about the visitor, and that the domain
+and outcome are stored under the existing deletion route. The processors
+section drops the analytics line and names the registries and nameservers
+the tools contact.
+
+**Commercial relationships → draft 0.2.** The page said Onduu receives "no
+commission, fee, revenue share or other benefit" from any supplier. That
+is no longer true for implementation: Ujiajiri may receive a referral fee
+from an introduced provider, and Ujiajiri Enterprises Limited is the same
+company that operates Onduu — now stated in those terms, with the amount
+deliberately unpublished and the provider's duty to explain price impact
+named. The infrastructure no-commission statement stands, since it remains
+accurate. Provider-directory language replaced with the introduction
+model, and "what Onduu contracts for" corrected: the assessment and the
+free tools, not website delivery, managed operations or agent pilots.
+
+**Tool limitations.** A fourth section covers `/dns` — one vantage point,
+not a propagation checker, DNSSEC detected not validated, reverse DNS
+partial, and the honest note that Cloudflare-hosted nameservers and some
+parent servers cannot be questioned from this site's infrastructure, which
+reports as not-observed rather than as a failure.
+
+168 tests pass, including two new ones that pin every live tool's presence
+in tool limitations and hold the legal pages to observed behaviour. Lint
+clean; all three pages verified rendered on the production build.
 
 ## v4.20.0 — 0742hrs:19th August2026
 
