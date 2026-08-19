@@ -1,25 +1,28 @@
 # ROADMAP.md — onduu.ke priorities and delivery status
 
-**Last updated:** 18 August 2026
+**Last updated:** 19 August 2026
 
 Statuses: `not started` · `in progress` · `blocked` · `ready for review` · `done`.
 No deadlines are listed anywhere in this file because none have been agreed.
 
 ## Current website state
 
-- Live at https://onduu.ke on Cloudflare Worker `onduudotke` (v2.10.2), built
-  on vinext 1.0.0-beta.2. Deploys automatically from `main` via Workers
-  Builds; PRs get preview URLs.
-- Working today: all routes public; assessment and contact forms submit
-  end-to-end (server-side validation, Turnstile Siteverify, rate limiting,
-  D1 `onduu-leads`, email notification carrying reference only); `/check`
-  email security checker; `/go` private dashboard behind Cloudflare Access;
-  first-party page-view analytics; sitemap/RSS/robots; canonical URLs;
-  legal pages published as marked drafts; 7 test suites (46+ tests).
+- Live at https://onduu.ke on Cloudflare Worker `onduudotke` (v4.16.1),
+  built on Astro 5 + `@astrojs/cloudflare` since the Phase 0.5 migration
+  (v3.0.0). Deploys automatically from `main` via Workers Builds; PRs get
+  preview URLs.
+- Working today: the repositioned architecture (Readiness · How It Works ·
+  Paths · Guides · About); assessment and contact forms end-to-end
+  (validation, Turnstile, rate limiting, D1 `onduu-leads`); **four free
+  tools** — `/email-security`, `/kedomains`, `/scan` (secret-gated on
+  `SCAN_ENABLED`) and `/dns` (secret-gated on `DNS_CHECK_ENABLED`; spec
+  `docs/specs/dns-check.md`); `/go` dashboard behind Cloudflare Access with
+  per-tool usage sections; stored lookup results with the deletion route
+  and do-not-scan list; first-party page views and routed-click counting;
+  the Dial + Letterhead identity with adaptive favicon and OG cards;
+  legal pages published as marked drafts; 154 tests across the suites.
 - Google Analytics, Tag Manager and the consent banner were removed (v2.7.0);
   the previous site's analytics cookies are actively expired (v2.8.0).
-- Untracked work in progress: `worker/scan/` (instant-scan networking layer).
-  Not wired in, not deployed. Gated — see "Not now / gated".
 
 ## Current strategic decision
 
@@ -131,10 +134,14 @@ approval (the path page says so); Ujiajiri partner directory described as
 "being established" — no link to the current ujiajiri.ke clone; the youth
 section carries no external link for the same reason.
 
-## Phase 2 — Separate routes and responsibilities — `blocked`
+## Phase 2 — Separate routes and responsibilities — `in progress`
 
-Blocked on: the same strategy document, plus the approved HOSTAFRICA
-destination and wording.
+Former blockers resolved 18 August 2026: the strategy documents are filed
+under `docs/strategy/`, and the HOSTAFRICA destination is decided
+(panel.hostafrica.com, UTM attribution only — v4.1.0). Partially delivered
+already: `/paths/*` pages with disclosures (v4.0.0), the contact
+three-destination split (v4.0.0), and the domain search routing to the
+approved destination (v4.x). Remaining below.
 
 - Route website/digital-marketing implementation to Ujiajiri partners.
 - Route HOSTAFRICA products/support to the approved official destination.
@@ -169,8 +176,9 @@ labels on production claims without owner sign-off; passes `REVIEW.md`.
 ## Phase 4 — Digital Readiness product — `in progress` (gated)
 
 Done so far: human-reviewed assessment route live (readiness form → D1 →
-review); `/check` email security checker live; `worker/scan/` networking
-layer in progress (untracked).
+review); `/email-security` checker live (renamed from `/check`, v4.7.0);
+`/scan` instant readiness scan live; `/kedomains` domain search live;
+`/dns` DNS health check live.
 
 Remaining:
 
@@ -193,10 +201,19 @@ Remaining:
   Turnstile and real scans. Known limit: self-scanning onduu.ke from its
   own Worker under-observes (zone recursion protection) — third-party
   domains observe fully.
+- [x] **DNS Health Check shipped and launched 18 Aug 2026**: spec approved
+  with the owner setting the URL to `/dns` (v4.15.4), built reusing the
+  scan's networking layer with registry-vs-live delegation via RDAP
+  (v4.16.0), `DNS_CHECK_ENABLED` production secret set, verified live,
+  `/go/dns` dashboard section added (v4.16.1).
+- [ ] Decide whether the "Three free checks" launch article gets a
+  follow-up now that there are four tools (owner content decision).
+- [ ] Shareable DNS result IDs (spec `docs/specs/dns-check.md` §5) —
+  deferred to v2 behind an owner gate.
 
-**Acceptance:** scan reports only public observations; missing private
-evidence is never scored as pass or fail; threat-model tests pass; owner
-approves launch. Until then the scanner stays out of production.
+**Acceptance:** every tool reports only public observations; missing
+private evidence is never scored as pass or fail; threat-model tests pass;
+owner approves each launch (scan and DNS check: granted 18 Aug 2026).
 
 ## Phase 5 — Guides, tools and content system — `not started`
 
@@ -229,7 +246,6 @@ owner approves:
 - Public youth enrolment; HOSTAFRICA-branded training; certifications.
 - Unmanaged partner submissions; unapproved commissions; client matching.
 - Managed Website Operations and any direct agent services.
-- Production deployment of the instant scanner (Phase 4 gates).
 - HOSTAFRICA brand assets, programme claims, tracking routes and
   endorsements.
 
@@ -237,11 +253,14 @@ owner approves:
 
 | Decision | Needed for | Status |
 | --- | --- | --- |
-| Supply 16 Aug two-site strategy document | Phases 1–2 | outstanding |
-| Supply 15 Aug brief PDF (secondary source) | Phases 1–3 | outstanding |
-| Approve governance files (this commit) | everything | outstanding |
-| Approve Astro migration merge after preview | Phase 0.5 | outstanding |
+| Supply 16 Aug two-site strategy document | Phases 1–2 | **supplied 18 Aug 2026** — filed under `docs/strategy/` (with the 18 Aug Current Version consolidating it) |
+| Supply 15 Aug brief PDF (secondary source) | Phases 1–3 | **supplied 18 Aug 2026** — `docs/strategy/onduu-website-brief-2026-08-15.pdf` |
+| Approve governance files (this commit) | everything | outstanding (in daily use since 18 Aug, but no explicit sign-off recorded) |
+| Approve Astro migration merge after preview | Phase 0.5 | **approved and merged 18 Aug 2026** (PR #1, v3.0.0, live) |
 | Approved HOSTAFRICA destination + wording | Phase 2 | **decided 18 Aug 2026**: panel.hostafrica.com with UTM attribution only, no affiliate parameter, no commission (v4.1.0) |
 | Identity/contact facts; lift draft markings | Phase 3 | outstanding |
-| Instant-scan specification approval | Phase 4 | outstanding |
-| Scanner public launch approval | Phase 4 | outstanding |
+| Instant-scan specification approval | Phase 4 | **approved 18 Aug 2026** (spec + psr-v1 rubric) |
+| Scanner public launch approval | Phase 4 | **approved and launched 18 Aug 2026** (v4.2.0, `SCAN_ENABLED` set) |
+| DNS Health Check spec, URL and launch | Phase 4 | **decided 18 Aug 2026**: spec approved, owner set the URL to `/dns`, launched (v4.15.4–v4.16.1) |
+| "Three free checks" article: acknowledge the fourth tool | Phase 4/5 | outstanding |
+| Shareable DNS result IDs (dns-check spec §5) | Phase 4 | outstanding — deferred to v2 |

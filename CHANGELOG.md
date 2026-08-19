@@ -1,6 +1,21 @@
 # Changelog
 
-CURRENT VERSION: v4.16.1 — 2248hrs:18th August2026
+CURRENT VERSION: v4.16.2 — 0636hrs:19th August2026
+
+## v4.16.2 — 0636hrs:19th August2026
+
+Docs only: ROADMAP.md brought back in line with what actually shipped on
+18 August. The "Current website state" section now describes the Astro
+v4.16.x site with its four tools instead of the retired vinext v2.10.2
+build; Phase 2 moves from `blocked` to `in progress` (strategy documents
+filed, HOSTAFRICA destination decided, parts already delivered in v4.0.0);
+Phase 4 records the DNS Health Check as shipped and launched, and gains
+the two open items (fourth-tool article decision, shareable DNS result
+IDs); the stale "instant scanner stays out of production" wording and the
+gated-list entry are corrected to reflect the 18 Aug launches; the owner
+decisions table marks the strategy documents supplied, the Astro merge,
+scan spec/launch and DNS check as decided, and adds the two new
+outstanding rows. No site behaviour changed.
 
 ## v4.16.1 — 2248hrs:18th August2026
 
