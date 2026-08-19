@@ -7,10 +7,10 @@ No deadlines are listed anywhere in this file because none have been agreed.
 
 ## Current website state
 
-- Live at https://onduu.ke on Cloudflare Worker `onduudotke` (v4.16.1),
-  built on Astro 5 + `@astrojs/cloudflare` since the Phase 0.5 migration
-  (v3.0.0). Deploys automatically from `main` via Workers Builds; PRs get
-  preview URLs.
+- Live at https://onduu.ke on Cloudflare Worker `onduudotke` (v4.37.3 as of
+  19 August 2026 — see `CHANGELOG.md` for the current version), built on
+  Astro 5 + `@astrojs/cloudflare` since the Phase 0.5 migration (v3.0.0).
+  Deploys automatically from `main` via Workers Builds; PRs get preview URLs.
 - Working today: the repositioned architecture (Readiness · How It Works ·
   Paths · Guides · About); assessment and contact forms end-to-end
   (validation, Turnstile, rate limiting, D1 `onduu-leads`); **four free
@@ -20,7 +20,7 @@ No deadlines are listed anywhere in this file because none have been agreed.
   per-tool usage sections; stored lookup results with the deletion route
   and do-not-scan list; first-party page views and routed-click counting;
   the Dial + Letterhead identity with adaptive favicon and OG cards;
-  legal pages published as marked drafts; 154 tests across the suites.
+  legal pages published as marked drafts; 174 tests across the suites.
 - Google Analytics, Tag Manager and the consent banner were removed (v2.7.0);
   the previous site's analytics cookies are actively expired (v2.8.0).
 
@@ -45,7 +45,13 @@ framing, "Onduu finds and fixes" language, Infrastructure hub positioning,
 Results. These remain live until Phase 1 replaces them — do not extend or
 link to them in new work.
 
-## Phase 0 — Establish the baseline — `in progress`
+## Phase 0 — Establish the baseline — `done`
+
+Marked done 19 August 2026 with owner approval: every item complete and the
+acceptance criteria met (baseline snapshots in the repo, rollback documented,
+clean status). The two deferred findings below are tracked in their target
+phases: the homepage/`/check` canonical + Open Graph gaps and the 404 title
+were fixed in v3.0.1; `security.checkOrigin` hardening remains open.
 
 - [x] Audit repository, routes, deployment, forms, analytics (recorded in
   `CHANGELOG.md` v1.0.0–v2.10.2 and README).
@@ -64,10 +70,11 @@ link to them in new work.
 
 **Found during the baseline/migration, deferred to their phases:**
 
-- The homepage and `/check` ship **no canonical URL and no Open Graph tags**
-  (the standard pages have both). Preserved for parity; fix in Phase 1.
-- The 404 page serves the homepage title. Preserved for parity; fix in
-  Phase 1.
+- ~~The homepage and `/check` ship **no canonical URL and no Open Graph
+  tags** (the standard pages have both).~~ Preserved for parity through the
+  migration; fixed in v3.0.1.
+- ~~The 404 page serves the homepage title.~~ Preserved for parity; fixed in
+  v3.0.1 with its own title and description.
 - ~~The pinned wrangler CLI (4.92.0) cannot read local dev state written by
   the Astro adapter's newer workerd.~~ Upgraded to 4.123.0 (with
   workers-types 5.x) in v3.0.1; verified against the dev state and the full
