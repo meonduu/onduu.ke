@@ -278,7 +278,26 @@ caught the navigation defect below.
   guide plus the `/dns` tool), email trust (`/guides/email-and-trust`),
   websites (`/guides/website-revenue-system`), Kenyan infrastructure
   (`/guides/kenyan-vps`), supervised agents (`/guides/agents-on-vps`).
-  **Buzz has no guide** — the one item from the original list still unwritten.
+
+**Buzz — a conditional content area, not a missing guide.** The guide list
+above comes from the 15 August brief, which named Buzz alongside the
+others. Do not treat its absence as a gap to fill: the Current Version
+strategy permits Buzz only as a **content area "presented responsibly"**,
+and its "Buzz Fit Lab" belongs to the programmes that "should be
+educational methods, controlled demonstrations or approved labs — not
+unsupported service promises". Phase 1 deliberately retired the
+service-shaped treatment: `/infrastructure/buzz-agent-collaboration`
+("Assess a Buzz pilot", with a Fit / Pilot / Not yet verdict) was removed
+in v4.0.0 and 301s to `/guides/agents-on-vps`. `CLAUDE.md` also names Buzz
+among the things the site must not lead with, and the site's own "claims we
+will not make" includes "Every client needs Buzz or a new website".
+
+If Buzz content is ever wanted, it needs the owner's source material and
+must take the educational or approved-lab form the strategy describes — a
+pilot-assessment offer must not be rebuilt without separate approval. This
+wording replaces a v4.44.0 note that called Buzz "the one item from the
+original list still unwritten", which read as a to-do and invited exactly
+that rebuild.
 - [x] One relevant next path per article — every guide carries the standard
   closing CTA through `StandardPage`.
 - [x] Guides reachable by clicking (v4.44.0, 19 Aug 2026): the index printed
@@ -313,6 +332,9 @@ owner approves:
 - Managed Website Operations and any direct agent services.
 - HOSTAFRICA brand assets, programme claims, tracking routes and
   endorsements.
+- Buzz pilot-assessment offers ("Assess a Buzz pilot" and the Fit / Pilot /
+  Not yet verdict retired in v4.0.0). Buzz as an educational or
+  approved-lab content area is permitted — see Phase 5.
 
 ## Owner decisions and external approvals needed
 
