@@ -532,6 +532,7 @@ export const strategyPages: Record<string, PageContent> = {
         body: [
           "Need implementation? Ask Ujiajiri for a private curated introduction: Ujiajiri proposes one suitable independent provider, asks your permission before sharing your information, and the provider contracts and delivers directly. HOSTAFRICA product enquiries continue through the approved official HOSTAFRICA route.",
           "Onduu does not automatically transmit your assessment answers to either destination. Nothing you enter here is shared with Ujiajiri or anyone else. The routes are plain outbound links you follow yourself.",
+          "Ujiajiri may receive a referral fee from the proposed provider; its existence is disclosed before you approve an introduction.",
         ],
         links: [
           { label: "Request an Implementation Introduction", href: "https://ujiajiri.ke/request-an-introduction/", external: true },
@@ -557,6 +558,10 @@ export const strategyPages: Record<string, PageContent> = {
 
   "contact": {
     ...prototypePages["contact"],
+    // Overrides the prototype intro, whose "system, programme, pilot" echoed
+    // the superseded direct-delivery offers (owner sign-off, 19 Aug 2026).
+    intro:
+      "Share the result the website or workflow should produce and the weakness you suspect. Onduu will review the request and recommend the readiness assessment, a guide, an independent partner route, the official infrastructure route or “not yet”.",
     sections: [
       {
         eyebrow: "THREE DESTINATIONS",

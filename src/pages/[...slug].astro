@@ -69,7 +69,7 @@ if (!head) return Astro.rewrite("/404");
   {view === "article" && article && <ArticlePage article={article} />}
   {
     view === "page" && page && (
-      <StandardPage page={page}>
+      <StandardPage page={page} route={key}>
         {page.form && (
           <SubmissionForm client:load kind={page.form} siteKey={TURNSTILE_SITE_KEY} />
         )}
