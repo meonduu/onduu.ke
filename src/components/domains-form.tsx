@@ -4,7 +4,8 @@ import { useState } from "react";
 
 interface DomainResult {
   domain: string;
-  status: "registered" | "maybe-available" | "unknown";
+  status: "registered" | "maybe-available" | "reserved" | "unknown";
+  reservedNote?: string | null;
   registrar?: string | null;
   registrarUrl?: string | null;
   locked?: boolean;
@@ -39,6 +40,20 @@ function countClick() {
     /* counting is best-effort */
   }
 }
+
+const TONE = {
+  "maybe-available": "pass",
+  registered: "info",
+  reserved: "warn",
+  unknown: "warn",
+} as const;
+
+const BADGE = {
+  "maybe-available": "APPEARS AVAILABLE",
+  registered: "TAKEN",
+  reserved: "RESERVED",
+  unknown: "UNKNOWN",
+} as const;
 
 export function DomainsForm() {
   const [query, setQuery] = useState("");
@@ -111,19 +126,11 @@ export function DomainsForm() {
             {results.map((r) => (
               <li
                 key={r.domain}
-                className={`check-${r.status === "maybe-available" ? "pass" : r.status === "registered" ? "info" : "warn"}`}
+                className={`check-${TONE[r.status]}`}
               >
                 <div className="check-row-head">
                   <h3>{r.domain}</h3>
-                  <span
-                    className={`check-badge check-${r.status === "maybe-available" ? "pass" : r.status === "registered" ? "info" : "warn"}`}
-                  >
-                    {r.status === "maybe-available"
-                      ? "APPEARS AVAILABLE"
-                      : r.status === "registered"
-                        ? "TAKEN"
-                        : "UNKNOWN"}
-                  </span>
+                  <span className={`check-badge check-${TONE[r.status]}`}>{BADGE[r.status]}</span>
                 </div>
                 {r.status === "registered" && (
                   <>
@@ -153,6 +160,12 @@ export function DomainsForm() {
                         TRANSFER LOCK: <b className="value-bad">OFF.</b>
                       </p>
                     )}
+                    {r.locked === undefined && (
+                      <p className="check-limitation">
+                        Transfer lock: this registry publishes no status codes for the domain, so
+                        the lock cannot be observed either way.
+                      </p>
+                    )}
                     {expiryParts(r.expiryDate) && (
                       <p>
                         {expiryParts(r.expiryDate)!.label}{" "}
@@ -175,6 +188,19 @@ export function DomainsForm() {
                     >
                       Register it at HOSTAFRICA <span aria-hidden="true">↗</span>
                     </a>
+                  </>
+                )}
+                {r.status === "reserved" && (
+                  <>
+                    <p>
+                      Not registered — and not available either. The registry holds this name back
+                      under its own policy, so nobody can register it.
+                    </p>
+                    {r.reservedNote && <code>{r.reservedNote}</code>}
+                    <p className="check-limitation">
+                      Reported by the registry itself. Whether a name can be released is the
+                      registry&rsquo;s decision, not a registrar&rsquo;s.
+                    </p>
                   </>
                 )}
                 {r.status === "unknown" && (

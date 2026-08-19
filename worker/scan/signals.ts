@@ -60,7 +60,9 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   }
 
-  if (!obs.rdap.fetched || !obs.rdap.eppStatuses) {
+  // .length matters: an empty array is truthy, so "no codes published"
+  // used to fall through and score a FAIL on missing evidence.
+  if (!obs.rdap.fetched || !obs.rdap.eppStatuses?.length) {
     out.push(unobservable("transfer-lock", "control", "Transfer lock", "RDAP status codes were not available."));
   } else {
     // RDAP publishes spec-normalised, space-separated statuses ("client
@@ -75,7 +77,7 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
         "control",
         "Transfer lock",
         locked ? "pass" : "fail",
-        `Registry status: ${obs.rdap.eppStatuses.join(", ") || "none published"}.`,
+        `Registry status: ${obs.rdap.eppStatuses.join(", ")}.`,
         "Shows the registry flag only, not who can change it.",
       ),
     );

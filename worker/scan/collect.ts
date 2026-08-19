@@ -47,10 +47,21 @@ export interface RdapFacts {
   fetched: boolean;
   error?: string;
   expiryDate?: string | null;
+  /** Only set when the registry actually published status codes. An empty
+   * array would read as "no lock"; absent means "not observable". */
   eppStatuses?: string[];
   registrar?: string | null;
   /** Registry-side delegation (ldhName of each nameserver object). */
   nameservers?: string[];
+  /**
+   * False when the registry answered with an RDAP object that is NOT a
+   * registration — KeNIC returns 200 with a notice for reserved and
+   * prohibited strings (e.g. simba.ke, "not allowed under registry policy").
+   * Such a name is neither taken nor available.
+   */
+  registered?: boolean;
+  /** The registry's own words for why it cannot be registered. */
+  reservedNote?: string | null;
 }
 
 export interface DnsFacts {
@@ -184,11 +195,38 @@ async function collectRdapFrom(
   if (res.status !== 200) return { fetched: false, error: `rdap-status-${res.status}` };
   try {
     const data = JSON.parse(res.body) as {
+      handle?: string;
       status?: string[];
       events?: { eventAction?: string; eventDate?: string }[];
       entities?: { roles?: string[]; vcardArray?: unknown }[];
       nameservers?: { ldhName?: string }[];
+      notices?: { title?: string; description?: string[] }[];
+      variants?: { relations?: string[] }[];
     };
+
+    // A registration leaves traces: a handle, dated events, a registrar.
+    // Reserved and prohibited strings have none of those — the registry
+    // answers 200 with a notice instead. Treating that as "registered"
+    // reported reserved names as taken (fixed 19 Aug 2026).
+    const hasRegistration = Boolean(
+      data.handle || (data.events || []).length || (data.entities || []).length,
+    );
+    const restricted = (data.variants || []).some((v) =>
+      (v.relations || []).some((r) => /restricted|prohibited|reserved/i.test(String(r))),
+    );
+    const notice = (data.notices || []).find((n) =>
+      /prohibit|reserv|restrict|cannot be registered|not allowed/i.test(
+        `${n.title ?? ""} ${(n.description || []).join(" ")}`,
+      ),
+    );
+    if (!hasRegistration && (restricted || notice)) {
+      const why = [notice?.title, ...(notice?.description ?? [])].filter(Boolean).join(" — ");
+      return {
+        fetched: true,
+        registered: false,
+        reservedNote: why.slice(0, 300) || null,
+      };
+    }
     const expiry =
       (data.events || []).find((e) => e.eventAction === "expiration")?.eventDate ?? null;
     // The registrar's display name. gTLD servers put an fn vcard on the
@@ -210,8 +248,9 @@ async function collectRdapFrom(
       null;
     return {
       fetched: true,
+      registered: hasRegistration,
       expiryDate: expiry,
-      eppStatuses: (data.status || []).map(String).slice(0, 20),
+      eppStatuses: (data.status || []).length ? data.status!.map(String).slice(0, 20) : undefined,
       registrar,
       nameservers: (data.nameservers || [])
         .map((n) => String(n.ldhName || "").trim().toLowerCase().replace(/\.$/, ""))

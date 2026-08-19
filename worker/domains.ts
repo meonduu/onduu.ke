@@ -17,11 +17,13 @@ import { collectRdap, type RdapFacts } from "./scan/collect.ts";
 export const REGISTER_URL =
   "https://panel.hostafrica.com/?utm_source=onduu&utm_medium=referral&utm_campaign=domain-search";
 
-export type Availability = "registered" | "maybe-available" | "unknown";
+export type Availability = "registered" | "maybe-available" | "reserved" | "unknown";
 
 export interface DomainResult {
   domain: string;
   status: Availability;
+  /** Reserved names only: the registry's stated reason, quoted. */
+  reservedNote?: string | null;
   registrar?: string | null;
   registrarUrl?: string | null;
   locked?: boolean;
@@ -148,15 +150,25 @@ export async function checkDomain(
   const hasDns = Boolean(ns && ns.Status === 0 && (ns.Answer?.length ?? 0) > 0);
   const nxdomain = ns?.Status === 3;
 
+  // Reserved or prohibited strings: the registry answers with an RDAP
+  // object but no registration. Neither taken nor available — a third
+  // state, or the tool claims a name is owned when nobody owns it.
+  if (rdap.fetched && rdap.registered === false) {
+    return { domain, status: "reserved", reservedNote: rdap.reservedNote ?? null };
+  }
   if (rdap.fetched) {
     return {
       domain,
       status: "registered",
       registrar: rdap.registrar ?? null,
       registrarUrl: registrarWebsite(rdap.registrar),
-      locked: (rdap.eppStatuses ?? []).some((s) =>
-        /transferprohibited/.test(s.toLowerCase().replace(/[^a-z]/g, "")),
-      ),
+      // Undefined when the registry published no status codes at all:
+      // "not observable" must never render as a confident "lock is OFF".
+      locked: rdap.eppStatuses
+        ? rdap.eppStatuses.some((s) =>
+            /transferprohibited/.test(s.toLowerCase().replace(/[^a-z]/g, "")),
+          )
+        : undefined,
       expiryDate: rdap.expiryDate ?? null,
     };
   }

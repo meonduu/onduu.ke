@@ -112,6 +112,47 @@ test("a domain with an RDAP record reports registrar, lock and expiry", async ()
   assert.equal(result.expiryDate, "2027-03-01T00:00:00Z");
 });
 
+test("a reserved string is neither taken nor available", async () => {
+  // KeNIC answers 200 with a notice — no handle, no events, no entities —
+  // for names its policy holds back (observed on simba.ke, 19 Aug 2026).
+  // Treating that as a registration told visitors the name was owned.
+  const RESERVED = {
+    objectClassName: "domain",
+    ldhName: "simba.ke",
+    notices: [
+      {
+        title: "Prohibited String - Domain Cannot Be Registered",
+        description: ["This domain is not allowed under registry policy (2306)."],
+      },
+    ],
+    variants: [{ variantNames: [{ ldhName: "simba.ke" }], relations: ["RESTRICTED_REGISTRATION"] }],
+  };
+  const fetcher = stubNet({ dns: {}, rdap: { "simba.ke": RESERVED } });
+  const result = await checkDomain("simba.ke", makeBudget(5000, 10), fetcher);
+  assert.equal(result.status, "reserved");
+  assert.match(result.reservedNote, /Cannot Be Registered/i);
+  assert.match(result.reservedNote, /registry policy/i);
+  // None of the registration fields may be invented for a name nobody owns.
+  assert.equal(result.registrar, undefined);
+  assert.equal(result.locked, undefined);
+  assert.equal(result.expiryDate, undefined);
+  assert.equal(result.registerUrl, undefined, "a reserved name must not offer a register link");
+});
+
+test("a registry that publishes no status codes leaves the lock unobserved", async () => {
+  // An empty status array used to render as a confident "TRANSFER LOCK: OFF".
+  const NO_STATUS = {
+    handle: "D-123",
+    events: [{ eventAction: "expiration", eventDate: "2027-03-01T00:00:00Z" }],
+    entities: [{ roles: ["registrar"], vcardArray: ["vcard", [["fn", {}, "text", "HOSTAFRICA"]]] }],
+  };
+  const fetcher = stubNet({ dns: { "quietlock.co.ke": ["ns1.host.africa"] }, rdap: { "quietlock.co.ke": NO_STATUS } });
+  const result = await checkDomain("quietlock.co.ke", makeBudget(5000, 10), fetcher);
+  assert.equal(result.status, "registered");
+  assert.equal(result.locked, undefined, "absence of status codes is not proof the lock is off");
+  assert.equal(result.expiryDate, "2027-03-01T00:00:00Z");
+});
+
 test("registrar names match their websites across published variants", () => {
   assert.equal(registrarWebsite("HostAfrica Kenya Ltd"), "https://www.hostafrica.com");
   assert.equal(registrarWebsite("Truehost Cloud Limited"), "https://truehost.co.ke");

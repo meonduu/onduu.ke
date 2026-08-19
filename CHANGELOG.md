@@ -1,6 +1,44 @@
 # Changelog
 
-CURRENT VERSION: v4.22.0 — 0943hrs:19th August2026
+CURRENT VERSION: v4.23.0 — 1116hrs:19th August2026
+
+## v4.23.0 — 1116hrs:19th August2026
+
+Two accuracy bugs found from a live report: `/kedomains` said **simba.ke
+was REGISTERED and TAKEN**. It is neither — KeNIC holds it back as a
+reserved string.
+
+**Reserved names were read as registrations.** KeNIC answers RDAP with
+HTTP 200 and a real object for prohibited strings, but that object carries
+no handle, no events and no entities — only a notice ("Prohibited String -
+Domain Cannot Be Registered… not allowed under registry policy (2306)")
+and a RESTRICTED_REGISTRATION relation. `checkDomain` treated any parseable
+200 as proof of registration, so the tool claimed the name was owned while
+DNS was returning NXDOMAIN. There is now a third state: **reserved** —
+not registered, not available, with the registry's own words quoted and no
+"register it" link offered for a name nobody can register.
+
+**"TRANSFER LOCK: OFF" was being fabricated.** `locked` was computed as
+`eppStatuses.some(...)`, so a registry publishing no status codes produced
+`false`, and the page stated in red that the lock was off. Absence of
+evidence rendered as a definite negative — the exact thing the tool
+limitations page promises these tools do not do. `eppStatuses` is now
+`undefined` rather than `[]` when nothing was published, `locked` is
+tri-state, and the UI says the lock cannot be observed either way.
+
+**The same flaw was scoring a FAIL inside `/scan`.** Its transfer-lock
+guard read `!obs.rdap.eppStatuses`, and an empty array is truthy — so a
+domain whose registry publishes no status codes fell through and was
+scored `fail` on Control with "none published". That breaks instant-scan
+rule 2 (missing evidence is never a pass or a failure); it is now
+`unobservable`, as the spec always required.
+
+170 tests pass, including fixtures for a reserved string and for a
+registration with no published status codes. Verified against live KeNIC
+RDAP: simba.ke reports reserved with the policy note; simba.co.ke and
+safaricom.co.ke still report registered, and their locks are real
+observations because those records do publish status codes.
+
 
 ## v4.22.0 — 0943hrs:19th August2026
 
