@@ -56,9 +56,11 @@ checked as written, that is itself a finding.
 
 6. **Secrets inventory.** Dashboard → onduudotke → Settings → Variables.
    Good: exactly the secrets the code references — `TURNSTILE_SECRET`,
-   `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL`, `SLACK_WEBHOOK_URL` (second
-   notification channel, wired v4.52.0), `SCAN_ENABLED`,
-   `DNS_CHECK_ENABLED` — and nothing unexplained. `VBOUT_API_KEY` is
+   `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL` (the **verified ZeptoMail sender** —
+   pointing it at an unverified domain fails every send with 401 TM_4001),
+   `NOTIFY_TO` (optional destination; defaults to the sender),
+   `SLACK_WEBHOOK_URL` (second notification channel, wired v4.52.0),
+   `SCAN_ENABLED`, `DNS_CHECK_ENABLED` — and nothing unexplained. `VBOUT_API_KEY` is
    **parked, not orphaned** (owner, 20 Aug 2026): it is for a future email
    marketing consent integration. Nothing may wire it in without a
    deliberate change that also updates the privacy notice — marketing is a
