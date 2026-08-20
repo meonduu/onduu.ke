@@ -36,13 +36,19 @@ fit, and that it is always shown with its Evidence Coverage because a
 score drawn from a thin slice of evidence says less than the same number
 drawn from a full one.
 
+The 18 August tools article was regenerated rather than word-patched. Its
+prose now says "a public fitness scan" and "agent fitness", the link to
+`/scan` reads "fitness scan", and a dated postscript records the rename —
+matching the convention the article already used when the DNS checker
+joined on 19 August. A published, dated article that quietly rewrites its
+own history is worse than one that says what changed, so the retired term
+survives in that postscript by intent; the terminology guard excludes the
+file for that reason, and its comment now says so.
+
 **Deliberately not renamed**, because these are records rather than copy:
 this changelog, `docs/strategy/` (dated source documents the source-of-truth
-order depends on), `docs/specs/parity-baseline.json` (a dated snapshot read
-by nothing), and `src/data/insights-data.ts` (published article prose —
-CLAUDE.md says regenerate, never hand-edit). The last is the one live
-surface still carrying the old word, in one article dated 19 August; it
-needs the owner's call on regeneration.
+order depends on) and `docs/specs/parity-baseline.json` (a dated snapshot
+read by nothing).
 
 Two things found in local review and fixed before shipping: `/scan` still
 said a high score at low coverage does not mean "the business is ready",

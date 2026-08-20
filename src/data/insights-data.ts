@@ -30,7 +30,7 @@ export const articles: Article[] = [
   {
     "slug": "three-free-checks-for-your-domain",
     "title": "Three free checks for your domain. I pointed them at mine first.",
-    "lede": "Three free tools are now live on onduu.ke. An email spoofing check, a .ke domain search and a public readiness scan. The first domain I tested was my own, and it failed three of the checks.",
+    "lede": "Three free tools are now live on onduu.ke. An email spoofing check, a .ke domain search and a public fitness scan. The first domain I tested was my own, and it failed three of the checks.",
     "date": "2026-08-18",
     "dateLabel": "18 August 2026",
     "readTime": "3 min read",
@@ -42,7 +42,7 @@ export const articles: Article[] = [
       "Kenya"
     ],
     "category": "Domains & email",
-    "excerpt": "An email spoofing check, a .ke domain search and a public readiness scan, free, no sign-up. The first domain I tested was my own, and it failed three of the checks.",
+    "excerpt": "An email spoofing check, a .ke domain search and a public fitness scan, free, no sign-up. The first domain I tested was my own, and it failed three of the checks.",
     "body": [
       {
         "type": "p",
@@ -136,12 +136,12 @@ export const articles: Article[] = [
           },
           {
             "t": "a",
-            "v": "readiness scan",
+            "v": "fitness scan",
             "href": "/scan"
           },
           {
             "t": "text",
-            "v": " produces a Public Signal Score across six dimensions (control, trust, speed, conversion, resilience, agent readiness) with an honest Evidence Coverage figure showing how much of the picture is actually visible from outside. Anything that cannot be observed publicly is marked as such, and never counts for or against you."
+            "v": " produces a Public Signal Score across six dimensions (control, trust, speed, conversion, resilience, agent fitness) with an honest Evidence Coverage figure showing how much of the picture is actually visible from outside. Anything that cannot be observed publicly is marked as such, and never counts for or against you."
           }
         ]
       },
@@ -187,6 +187,15 @@ export const articles: Article[] = [
           {
             "t": "em",
             "v": ", which reads a domain's public DNS and registry records and reports whether its nameservers, delegation, addresses, mail routing and DNSSEC agree with each other. Its limits are documented on the same tool limitations page."
+          }
+        ]
+      },
+      {
+        "type": "p",
+        "nodes": [
+          {
+            "t": "em",
+            "v": "Postscript, 20 August 2026: what this site called Digital Readiness is now Digital Fitness \u2014 the same six dimensions and the same scoring, under a name that says more plainly what it measures. The sixth dimension, agent readiness, is now agent fitness. The wording above has been updated so the links still lead where they say they do. Nothing about the tools themselves has changed."
           }
         ]
       }

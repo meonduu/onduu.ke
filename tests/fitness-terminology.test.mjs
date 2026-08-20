@@ -27,8 +27,12 @@ import { fetchPath } from "./helpers/server.mjs";
 
 const SOURCE_DIRS = ["src", "worker", "scripts"];
 const SOURCE_EXTS = [".ts", ".tsx", ".astro", ".mjs"];
-// Published article prose. CLAUDE.md: regenerate, never hand-edit — so the
-// rename deliberately did not touch it, and this guard must not demand it.
+// Published article prose. The 18 August tools article was regenerated for
+// the rename (v4.64.0) rather than word-patched, and it deliberately keeps
+// the retired term in a dated postscript explaining the change — a
+// published article that quietly rewrites its own history is worse than
+// one that says what changed. So this file is excluded by intent, not by
+// oversight.
 const EXCLUDED_FILES = new Set(["src/data/insights-data.ts"]);
 
 function sourceFiles(dir, acc = []) {
