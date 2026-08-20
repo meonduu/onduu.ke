@@ -28,13 +28,13 @@ export type PageContent={eyebrow?:string;title:string;intro:string;cta?:string;c
 // The submission form hydrates as an Astro island, so it is passed in as
 // children from the .astro page rather than imported here; everything in this
 // file renders to static HTML with no client JavaScript.
-export function StandardPage({page,route,children}:{page:PageContent;route?:string;children?:ReactNode}){return <><Header/><main id="main"><section className="page-hero"><div><p className="eyebrow">{page.eyebrow||"ONDUU / DIGITAL READINESS"}</p><h1>{page.title}</h1><p className="lede">{page.intro}</p>{page.cta&&<Button href={page.ctaHref||"/contact"}>{page.cta}</Button>}</div><aside className="hero-index"><span>Assess.</span><span>Prioritise.</span><span>Choose a path.</span><span>Verify.</span></aside></section>{page.gate&&<div className="gate"><b>PREVIEW / APPROVAL GATE</b><span>{page.gate}</span></div>}{page.sections.map((s,i)=><section className="content-section" key={s.title}><div><p className="section-number">{String(i+1).padStart(2,"0")} / {s.eyebrow||"DETAIL"}</p><h2>{s.title}</h2></div><div className="section-body">{s.body?.map(p=><p key={p}>{p}</p>)}{s.items&&<ul>{s.items.map(x=><li key={x}>{x}</li>)}</ul>}{s.cards&&<div className="content-cards">{s.cards.map(c=>
+export function StandardPage({page,children}:{page:PageContent;children?:ReactNode}){return <><Header/><main id="main"><section className="page-hero"><div><p className="eyebrow">{page.eyebrow||"ONDUU / DIGITAL READINESS"}</p><h1>{page.title}</h1><p className="lede">{page.intro}</p>{page.cta&&<Button href={page.ctaHref||"/contact"}>{page.cta}</Button>}</div><aside className="hero-index"><span>Assess.</span><span>Prioritise.</span><span>Choose a path.</span><span>Verify.</span></aside></section>{page.gate&&<div className="gate"><b>PREVIEW / APPROVAL GATE</b><span>{page.gate}</span></div>}{page.sections.map((s,i)=><section className="content-section" key={s.title}><div><p className="section-number">{String(i+1).padStart(2,"0")} / {s.eyebrow||"DETAIL"}</p><h2>{s.title}</h2></div><div className="section-body">{s.body?.map(p=><p key={p}>{p}</p>)}{s.items&&<ul>{s.items.map(x=><li key={x}>{x}</li>)}</ul>}{s.cards&&<div className="content-cards">{s.cards.map(c=>
   // A card with href links from its heading; CSS stretches that link over the
   // whole card, so the card is clickable while the accessible name stays the
   // guide title rather than the whole card's text.
   <article className={c.href?"card-linked":undefined} key={c.title}>{c.meta&&<small>{c.meta}</small>}<h3>{c.href?<Link href={c.href}>{c.title}</Link>:c.title}</h3><p>{c.body}</p></article>)}</div>}{s.steps&&<div className="steps">{s.steps.map((x,n)=><article key={x.title}><b>{String(n+1).padStart(2,"0")}</b><div><h3>{x.title}</h3><p>{x.body}</p></div></article>)}</div>}{s.links&&<div className="actions">{s.links.map(l=>l.external
   ?<a key={l.href} className="button" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}<span aria-hidden="true">↗</span></a>
-  :<Link key={l.href} className="button" href={l.href}>{l.label}<span aria-hidden="true">↗</span></Link>)}</div>}{s.note&&<div className="note">{s.note}</div>}</div></section>)}{page.form&&<FormSection type={page.form}>{children}</FormSection>}<FinalCta href={page.form==="readiness"?"#request":"/readiness"} route={route}/></main><Footer/></>}
+  :<Link key={l.href} className="button" href={l.href}>{l.label}<span aria-hidden="true">↗</span></Link>)}</div>}{s.note&&<div className="note">{s.note}</div>}</div></section>)}{page.form&&<FormSection type={page.form}>{children}</FormSection>}</main><Footer/></>}
 
 function FormSection({type,children}:{type:"readiness"|"contact";children?:ReactNode}){
   // Field lists, copy and microcopy come from the definitive brief, sections
@@ -49,12 +49,4 @@ function FormSection({type,children}:{type:"readiness"|"contact";children?:React
     </div>
     {children}
   </section>;
-}
-
-function FinalCta({href="/readiness",route}:{href?:string;route?:string}){
-  // The implementation-path page must not point its next step at itself.
-  const onImplementationPath=route==="paths/website-and-digital-marketing";
-  return <section className="final-cta"><p className="section-number">YOUR NEXT STEP</p><h2>Start with the problem - not the supplier.</h2><p>Identify the priorities, understand the responsibility and then continue through the route that fits the work.</p><div className="actions"><Button href={href}>Check Your Digital Readiness</Button>{onImplementationPath
-    ?<Link className="text-link" href="/paths/hostafrica-infrastructure">See the infrastructure path ↗</Link>
-    :<Link className="text-link" href="/paths/website-and-digital-marketing">See the implementation path ↗</Link>}</div></section>;
 }

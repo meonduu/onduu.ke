@@ -1,5 +1,5 @@
 import { Link } from "./nav-link";
-import { Header, Footer, Button } from "./components";
+import { Header, Footer } from "./components";
 import type { Article, Block, Inline } from "../data/insights-data";
 import { articles } from "../data/insights-data";
 
@@ -135,12 +135,6 @@ export function ArticlePage({ article }: { article: Article }) {
             </div>
           </section>
         )}
-        <section className="final-cta">
-          <p className="section-number">YOUR NEXT STEP</p>
-          <h2>Start with the problem - not the supplier.</h2>
-          <p>Identify the priorities, understand the responsibility and continue through the right route.</p>
-          <Button href="/readiness">Check Your Digital Readiness</Button>
-        </section>
       </main>
       <Footer />
     </>
@@ -199,12 +193,6 @@ export function InsightsIndex() {
               ))}
             </ul>
           </div>
-        </section>
-        <section className="final-cta">
-          <p className="section-number">YOUR NEXT STEP</p>
-          <h2>Start with the problem - not the supplier.</h2>
-          <p>Identify the priorities, understand the responsibility and continue through the right route.</p>
-          <Button href="/readiness">Check Your Digital Readiness</Button>
         </section>
       </main>
       <Footer />
