@@ -88,7 +88,9 @@ alone. If it stays red afterwards, the ZeptoMail Mail Agent's permitted
 From address is the thing to check. Verify by submitting one test enquiry
 and watching the light; delete the row afterwards.
 
-Test rows awaiting deletion: `ON-260820-7NJ6`, `ON-260820-KQ14`.
+The two test rows from that day (`ON-260820-7NJ6`, `ON-260820-KQ14`) were
+deleted from production on 20 August 2026; `submissions` is empty, as it was
+before testing began.
 
 ## Lessons register
 

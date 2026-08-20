@@ -1,6 +1,14 @@
 # Changelog
 
-CURRENT VERSION: v4.63.0 — 2112hrs:20th August2026
+CURRENT VERSION: v4.63.1 — 2118hrs:20th August2026
+
+## v4.63.1 — 2118hrs:20th August2026
+
+Test rows `ON-260820-7NJ6` and `ON-260820-KQ14` deleted from production
+D1 at the owner's instruction; both were notification-routing tests
+submitted from `me@onduu.ke` and labelled TEST. `submissions` is empty
+again. `OPERATIONS.md` no longer lists them as pending — the open
+incident above them still stands.
 
 ## v4.63.0 — 2112hrs:20th August2026
 
