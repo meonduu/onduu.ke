@@ -280,6 +280,14 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
+        "eyebrow": "INTRODUCTIONS",
+        "title": "Introductions to independent providers.",
+        "body": [
+          "If you ask for implementation support, Ujiajiri may propose a suitable independent provider. We will identify the provider and ask for your permission before sharing your name, contact details or project information. If you agree, Ujiajiri will introduce you by email and copy the provider. You may decline an introduction without affecting your Onduu.ke assessment or advice. The provider will then scope, quote, contract, invoice and deliver directly under its own terms and privacy notice."
+        ],
+        "note": "A provider is copied only after you have approved that specific introduction. Asking Onduu a question, or submitting a form on this site, never puts a provider on the message."
+      },
+      {
         "eyebrow": "INFORMATION AND CHOICE",
         "title": "Nothing moves without your permission.",
         "body": [
@@ -292,7 +300,7 @@ export const briefPages: Record<string, PageContent> = {
         "body": [
           "Questions about an Ujiajiri introduction, provider conduct or these commercial relationships may be sent to info@ujiajiri.ke."
         ],
-        "note": "Questions about your own information held by Onduu — access, correction, deletion or a complaint — go through the contact form on this site instead, which reaches Onduu only."
+        "note": "Questions about your own information held by Onduu — access, correction, deletion or a complaint — go through the contact form on this site instead, which reaches Ujiajiri Enterprises Limited only."
       }
     ]
   },
@@ -316,7 +324,7 @@ export const briefPages: Record<string, PageContent> = {
         "body": [
           "The data controller is Ujiajiri Enterprises Limited, a limited liability company registered in Kenya, which trades as Onduu and operates this website. Onduu is the brand and is not itself a registered company; Ujiajiri Enterprises Limited is the accountable entity."
         ],
-        "note": "Questions about your information can be sent through the contact form; it reaches Onduu and nobody else."
+        "note": "Questions about your information can be sent through the contact form. Enquiries are received and answered by Ujiajiri Enterprises Limited, and inside that company are seen only by the people who need them."
       },
       {
         "eyebrow": "02 / WHAT IS COLLECTED",
@@ -404,7 +412,7 @@ export const briefPages: Record<string, PageContent> = {
             "body": "Receives the same one-line notification as the email, for the same reason: the reference number and which form was used, nothing you wrote and nothing that identifies you. Added 20 August 2026."
           }
         ],
-        "note": "No artificial-intelligence or language-model provider receives your form submissions, and no analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
+        "note": "An independent provider is a different case: nothing reaches one because you used this site. If you ask for implementation support, Ujiajiri names the provider it proposes and tells you exactly what would be shared \u2014 your name, contact details and a project summary \u2014 and sends it only after you say yes to that specific introduction. You may decline without it affecting your assessment or advice. No artificial-intelligence or language-model provider receives your form submissions, and no analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
       },
       {
         "eyebrow": "07 / WHERE IT IS STORED",
@@ -568,7 +576,7 @@ export const briefPages: Record<string, PageContent> = {
         "title": "Who sees it.",
         "body": [
           "A report prepared for you is delivered to you privately and is not published. Onduu will not name you, quote you or publish any result about your business without your written consent.",
-          "The report is emailed to you by Wycliffe, who is the only person who reads it. Onduu is one person, so there is no wider internal access to arrange or restrict."
+          "The report is sent to you by email from Ujiajiri Enterprises Limited, which operates Onduu. Inside that company it is seen only by the people who need it to prepare or discuss your assessment. It is not circulated further, and it is never sent to an independent provider, to HOSTAFRICA or to anyone else without asking you first."
         ],
         "note": "Written consent means consent given against the exact words proposed, shown to you before anything appears. Silence is not consent, and agreeing to one piece of writing does not extend to another."
       },
