@@ -1,6 +1,44 @@
 # Changelog
 
-CURRENT VERSION: v4.64.2 — 2258hrs:20th August2026
+CURRENT VERSION: v4.64.3 — 2334hrs:20th August2026
+
+## v4.64.3 — 2334hrs:20th August2026
+
+**Incident: the assessment form returned 500 in production for about forty
+minutes, and it was my regression.**
+
+v4.64.0 changed the stored form kind from `readiness` to `fitness`. The
+`submissions` table has carried `CHECK (kind IN ('readiness','contact'))`
+since migration 0001, and the rename never widened it. Every assessment
+insert therefore violated the constraint, the handler's only 500 path,
+from the v4.64.0 deploy until now.
+
+What was and was not lost: nothing. The table was empty, and the failure
+was **visible** — the visitor saw "your information has not been submitted
+successfully", not a silent success. Slack and email were never reached,
+because the insert precedes them. The `/go` light stayed on the earlier
+`401 TM_4001` throughout, which is exactly why a light showing the last
+outcome is not the same as a light showing current health.
+
+**The fix**: `storageKind()` writes the old vocabulary to D1 while every
+visitor-facing surface keeps saying Fitness. The database's `kind` is
+internal — no page, email or report shows it — so the stored word is not
+worth rebuilding a live production table over. `migrations/0009` widens
+the constraint properly and is committed but **not applied**; applying it
+needs the owner, and once applied `storageKind()` becomes the identity
+function and both it and this note can go.
+
+**Why no test caught it**: `tests/submissions.test.mjs` calls `validate()`
+directly, and nothing in the suite has ever exercised the insert. The
+application accepted a value its own database forbade and the two halves
+were never compared. `tests/kind-schema.test.mjs` now compares them — it
+parses the CHECK out of every migration and asserts that everything the
+form accepts is storable under **all** of them, not merely the newest,
+because a migration applied locally is not necessarily applied to
+production. Verified by reintroducing the exact v4.64.0 bug and watching
+it fail.
+
+225 tests pass.
 
 ## v4.64.2 — 2258hrs:20th August2026
 

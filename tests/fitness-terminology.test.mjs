@@ -60,9 +60,13 @@ test("the old vocabulary does not return to live code", () => {
         .split("\n")
         .forEach((line, i) => {
           if (!/readiness/i.test(line) || COMMENT_LINE.test(line)) return;
-          // The three deliberate shims: the legacy form kind, the 301, and
-          // the pre-rename dimension label kept for stored psr-v1 rows.
+          // The deliberate shims: the legacy form kind, the 301, the
+          // pre-rename dimension label kept for stored psr-v1 rows, and the
+          // storage vocabulary — `submissions` still carries migration
+          // 0001's CHECK, so the value written to D1 stays the old word
+          // until migrations/0009 is applied. See storageKind().
           if (/kind === "readiness" \? "fitness"/.test(line)) return;
+          if (/kind === "fitness" \? "readiness"/.test(line)) return;
           if (/"\/readiness":\s*"\/digital-fitness"/.test(line)) return;
           if (/"agent-readiness":\s*"Agent fitness"/.test(line)) return;
           offenders.push(`${file}:${i + 1}  ${line.trim().slice(0, 90)}`);
