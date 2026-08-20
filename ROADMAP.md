@@ -1,16 +1,17 @@
 # ROADMAP.md — onduu.ke priorities and delivery status
 
-**Last updated:** 19 August 2026
+**Last updated:** 20 August 2026
 
 Statuses: `not started` · `in progress` · `blocked` · `ready for review` · `done`.
 No deadlines are listed anywhere in this file because none have been agreed.
 
 ## Current website state
 
-- Live at https://onduu.ke on Cloudflare Worker `onduudotke` (v4.37.3 as of
-  19 August 2026 — see `CHANGELOG.md` for the current version), built on
+- Live at https://onduu.ke on Cloudflare Worker `onduudotke`, built on
   Astro 5 + `@astrojs/cloudflare` since the Phase 0.5 migration (v3.0.0).
-  Deploys automatically from `main` via Workers Builds; PRs get preview URLs.
+  **`CHANGELOG.md` is the only record of the current version — do not pin one
+  here**; this line has gone stale twice already. Deploys automatically from
+  `main` via Workers Builds; PRs get preview URLs.
 - Working today: the repositioned architecture (Readiness · How It Works ·
   Paths · Guides · About); assessment and contact forms end-to-end
   (validation, Turnstile, rate limiting, D1 `onduu-leads`); **four free
@@ -20,7 +21,10 @@ No deadlines are listed anywhere in this file because none have been agreed.
   per-tool usage sections; stored lookup results with the deletion route
   and do-not-scan list; first-party page views and routed-click counting;
   the Dial + Letterhead identity with adaptive favicon and OG cards;
-  legal pages published as marked drafts; 174 tests across the suites.
+  legal pages published as marked drafts; a first-party engagement tracker
+  (v4.46.0, storing nothing until migration 0007 is applied) and the
+  `/go/analytics` section built on it; the test count lives in `CHANGELOG.md`
+  rather than here, for the same reason as the version.
 - Google Analytics, Tag Manager and the consent banner were removed (v2.7.0);
   the previous site's analytics cookies are actively expired (v2.8.0).
 
@@ -318,12 +322,30 @@ want it gated instead.
 **Acceptance:** each guide has an approved source, one CTA, and passes
 `REVIEW.md`; repurposing workflow documented and running.
 
-## Phase 6 — Evidence and optimisation — `not started`
+## Phase 6 — Evidence and optimisation — `in progress`
 
-- Publish only approved case evidence with transparent methods.
-- Measure: readiness starts, qualified partner clicks, approved
+Status corrected 20 August 2026: this said `not started` while the
+measurement half was substantially built. Recording it accurately matters —
+an understated roadmap is how five guides sat unclickable for weeks.
+
+- [ ] Publish only approved case evidence with transparent methods. **Not
+  started, and blocked on the owner**: no customer has consented to a
+  published result, and nothing may be published without that.
+- [~] Measure: readiness starts, qualified partner clicks, approved
   HOSTAFRICA-path clicks, guide engagement, completed enquiries.
-- Improve from evidence; do not add offers to fill navigation.
+  - Server-side page views, referrers, countries and devices: recording
+    since v2.x, unblockable, exact.
+  - Routed-click counting to the HOSTAFRICA and Ujiajiri destinations:
+    live, visible at `/go/routing`.
+  - First-party engagement tracker (`/api/event`): shipped v4.46.0.
+    **Storing nothing in production until migration 0007 is applied.**
+  - `/go/analytics`: date ranges, previous-period comparison, coverage
+    panel, CSV export and a stated basis on every metric (v4.48.0).
+  - Still to build: clicks by page and element, engagement per page, entry
+    and estimated exit pages, conversions — specified as the second slice
+    of analytics Phase 2, and best built once there is data to build
+    against.
+- [ ] Improve from evidence; do not add offers to fill navigation.
 
 **Acceptance:** every published number traces to first-party data; metrics
 reviewed against the routing goals; passes `REVIEW.md`.

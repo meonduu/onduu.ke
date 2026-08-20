@@ -177,15 +177,18 @@ const rowsOf = <T>(r: { results?: unknown[] }) => (r.results ?? []) as T[];
 
 async function overview(db: D1Database, identity: string): Promise<Response> {
   const [counts, scanCounts, outbound] = await Promise.all([
-    db
-      .prepare(
-        `SELECT
+    safe(
+      db
+        .prepare(
+          `SELECT
            (SELECT COUNT(*) FROM submissions) AS enquiries,
            (SELECT COUNT(*) FROM submissions WHERE created_at >= datetime('now','-30 days')) AS enquiries30,
            (SELECT COUNT(*) FROM page_views) AS views,
            (SELECT COUNT(*) FROM page_views WHERE viewed_at >= datetime('now','-30 days')) AS views30`,
-      )
-      .first<{ enquiries: number; enquiries30: number; views: number; views30: number }>(),
+        )
+        .first<{ enquiries: number; enquiries30: number; views: number; views30: number }>(),
+      null,
+    ),
     safe(
       db
         .prepare(
@@ -193,7 +196,7 @@ async function overview(db: D1Database, identity: string): Promise<Response> {
                   (SELECT COUNT(*) FROM scans WHERE created_at >= datetime('now','-30 days')) AS scans30`,
         )
         .first<{ scansAll: number; scans30: number }>(),
-      { scansAll: 0, scans30: 0 },
+      null,
     ),
     safe(
       db
@@ -202,12 +205,18 @@ async function overview(db: D1Database, identity: string): Promise<Response> {
              AND viewed_at >= datetime('now','-30 days')`,
         )
         .first<{ n: number }>(),
-      { n: 0 },
+      null,
     ),
   ]);
 
-  const c = counts!;
-  const s = scanCounts ?? { scansAll: 0, scans30: 0 };
+  // A missing table must not become a confident zero: an empty dashboard and
+  // a broken query look identical to a reader, so say which this is.
+  const c = counts;
+  const s = scanCounts;
+  // One rule for all four cards: an unavailable source shows a dash, never a
+  // zero. Two cards saying "0" beside two saying "—" for the same reason
+  // would be worse than either.
+  const num = (available: boolean, v: number | undefined) => (available ? String(v ?? 0) : "—");
 
   return page(
     "Dashboard",
@@ -215,10 +224,10 @@ async function overview(db: D1Database, identity: string): Promise<Response> {
 <p class="sub">Signed in via Cloudflare Access as ${escape(identity)}. Nothing here is shared with a third party.</p>
 
 <div class="cards">
-  <div class="card"><b>${c.enquiries30}</b><span>Enquiries, 30 days</span><a href="/go/enquiries">All ${c.enquiries} →</a></div>
-  <div class="card"><b>${s.scans30}</b><span>Readiness scans, 30 days</span><a href="/go/scans">All ${s.scansAll} →</a></div>
-  <div class="card"><b>${c.views30}</b><span>Page views, 30 days</span><a href="/go/analytics">All ${c.views} →</a></div>
-  <div class="card"><b>${outbound?.n ?? 0}</b><span>Routed clicks, 30 days</span><a href="/go/routing">Detail →</a></div>
+  <div class="card"><b>${num(c !== null, c?.enquiries30)}</b><span>Enquiries, 30 days</span><a href="/go/enquiries">All ${num(c !== null, c?.enquiries)} →</a></div>
+  <div class="card"><b>${num(s !== null, s?.scans30)}</b><span>Readiness scans, 30 days</span><a href="/go/scans">All ${num(s !== null, s?.scansAll)} →</a></div>
+  <div class="card"><b>${num(c !== null, c?.views30)}</b><span>Page views, 30 days</span><a href="/go/analytics">All ${num(c !== null, c?.views)} →</a></div>
+  <div class="card"><b>${num(outbound !== null, outbound?.n)}</b><span>Routed clicks, 30 days</span><a href="/go/routing">Detail →</a></div>
 </div>
 
 <h2>Sections</h2>
@@ -242,20 +251,26 @@ ${table(
 
 async function enquiries(db: D1Database): Promise<Response> {
   const [list, sources] = await Promise.all([
-    db
-      .prepare(
-        `SELECT reference, created_at, full_name, business_email, company, primary_concern,
+    safe(
+      db
+        .prepare(
+          `SELECT reference, created_at, full_name, business_email, company, primary_concern,
                 COALESCE(utm_source, referrer, 'direct') AS source
          FROM submissions ORDER BY created_at DESC LIMIT 200`,
-      )
-      .all(),
-    db
-      .prepare(
-        `SELECT COALESCE(utm_source, referrer, 'direct') AS source,
+        )
+        .all(),
+      EMPTY,
+    ),
+    safe(
+      db
+        .prepare(
+          `SELECT COALESCE(utm_source, referrer, 'direct') AS source,
                 COALESCE(landing_path, '-') AS landing, COUNT(*) AS n
          FROM submissions GROUP BY source, landing ORDER BY n DESC LIMIT 25`,
-      )
-      .all(),
+        )
+        .all(),
+      EMPTY,
+    ),
   ]);
 
   return page(

@@ -1,6 +1,39 @@
 # Changelog
 
-CURRENT VERSION: v4.48.0 — 0906hrs:20th August2026
+CURRENT VERSION: v4.48.1 — 0949hrs:20th August2026
+
+## v4.48.1 — 0949hrs:20th August2026
+
+The rest of the dashboard gets the resilience `/go/analytics` got in
+v4.48.0, and two roadmap sections stop understating what exists.
+
+**Every section now survives a database missing its tables.** The overview
+and enquiries both threw on an unwrapped query and fell through to the
+site's 404 page — the same failure fixed for analytics. The overview also
+asserted its count query non-null (`counts!`), so a null result would have
+thrown even with the query wrapped. A test now walks all nine sections and
+fails if any renders the site 404.
+
+**One rule for the overview cards: an unavailable source shows a dash,
+never a zero.** Scans and routed clicks previously fell back to `0`, which
+reads as "nothing happened" rather than "the table is missing" — and two
+cards showing "0" beside two showing "—" for the identical condition would
+have been worse than either alone.
+
+**`ROADMAP.md` Phase 6 corrected** from `not started` to `in progress`. Its
+measurement half is substantially built — page views, routed clicks, the
+engagement tracker and the analytics section — while the case-evidence half
+is untouched and blocked on customer consent. Each part is now listed with
+its real state, including what is still to build.
+
+**The current-state block no longer pins a version or a test count.** It
+had gone stale twice in two days (v4.16.1 → corrected → v4.37.3 → stale
+again at v4.48.0). `CHANGELOG.md` is now named as the only record, with a
+note saying why.
+
+205 tests, lint clean. Verified against a database with no application
+tables: all nine sections render, and the overview reports "—" rather than
+inventing zeros.
 
 ## v4.48.0 — 0906hrs:20th August2026
 
