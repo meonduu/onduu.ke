@@ -59,7 +59,7 @@ const CONTACT_FIELDS: FieldDef[] = [
     name: "primary_concern",
     label: "Which issue is most urgent?",
     type: "select",
-    options: [...CONCERNS.slice(0, 7), "data location", "agents"],
+    options: [...CONCERNS.slice(0, 7), "data location", "agents", "complaint"],
     full: true,
   },
   { name: "trigger_now", label: "What triggered the need now?", type: "textarea", full: true },

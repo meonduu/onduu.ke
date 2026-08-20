@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v4.54.0 — 1706hrs:20th August2026
+CURRENT VERSION: v4.55.0 — 1748hrs:20th August2026
+
+## v4.55.0 — 1748hrs:20th August2026
+
+Six of the nine outstanding legal facts answered by the owner and written
+into the pages. Privacy notice to draft 0.5, assessment terms to 0.3;
+draft markings stay until the professional review.
+
+- **Controller identity.** Onduu is a brand, not a registered company;
+  the accountable entity is **Ujiajiri Enterprises Limited**, a limited
+  liability company registered in Kenya. Stated on both the privacy
+  notice and the commercial-relationships page.
+- **Statutory directorship.** Wycliffe is a statutory director of
+  HOSTAFRICA Kenya, not only MD by title. The page said "no claim either
+  way is made here until that is settled"; it now states the stronger
+  relationship and why it matters — formal duties, not a job title.
+- **Employment boundary.** Nothing Onduu offers is excluded; operating
+  Onduu is permitted under his arrangement rather than tolerated. The
+  site states the permission, not the commercial terms behind it.
+- **Conflicts policy.** None exists as a separate document. The page now
+  says so, rather than implying a policy withheld from the reader.
+- **Complaints.** Handled by Ujiajiri Enterprises Limited through the
+  contact form, which gains a **"complaint"** option in both the client
+  and server allowlists so complaints arrive tagged. The independent
+  right to complain to the ODPC is retained: a regulator route cannot run
+  through the controller's own form, and omitting it would understate a
+  statutory right. ODPC contact details remain outstanding.
+- **Assessment reports.** Emailed by Wycliffe, who is the only reader
+  because Onduu is one person — so the "who inside Onduu can access them"
+  question has a simpler answer than the question assumed. The report is
+  the client's to act on and to share with whoever helps them act on it.
+
+Still outstanding: registration number and address, ODPC details, report
+retention, anonymised findings as examples, and whether the scoring method
+and blank templates remain Onduu's separately from the report. The
+register at `docs/specs/processors-and-transfers.md` records all of it.
+
+210 tests, lint clean.
 
 ## v4.54.0 — 1706hrs:20th August2026
 

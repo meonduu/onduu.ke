@@ -34,6 +34,9 @@ const CONCERNS = [
   "measurement",
   "data location",
   "agents",
+  // A complaint route the privacy notice can point at: complaints arrive
+  // tagged rather than buried in free text (owner, 20 Aug 2026).
+  "complaint",
 ];
 const ENQUIRY_TYPES = ["website", "infrastructure", "agent workflow", "combination"];
 
