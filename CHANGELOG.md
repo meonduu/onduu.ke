@@ -1,6 +1,22 @@
 # Changelog
 
-CURRENT VERSION: v4.50.0 — 1327hrs:20th August2026
+CURRENT VERSION: v4.50.1 — 1437hrs:20th August2026
+
+## v4.50.1 — 1437hrs:20th August2026
+
+The four tool pages' closing sections are removed too, completing the
+owner's v4.50.0 instruction: /email-security, /dns, /kedomains and /scan
+no longer carry their "YOUR NEXT STEP" band; each ends at its result and
+the footer. The now-orphaned `.final-cta` styles are gone from the sheet.
+
+One self-inflicted break, caught by the build: the CSS cleanup regex
+matched `.final-cta` mid-selector inside the SHARED dark-ground tint rule
+(v4.42.0's accessibility fix) and severed it, which would have cost the
+scorecard and stakes labels their WCAG tint. The build failed loudly,
+the rule was restored without the final-cta selector, and the built
+stylesheet was verified to carry it.
+
+208 tests, lint clean; all four pages verified against the fresh build.
 
 ## v4.50.0 — 1327hrs:20th August2026
 

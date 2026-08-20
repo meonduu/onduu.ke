@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "./nav-link";
-import { Header, Footer, Button } from "./components";
+import { Header, Footer } from "./components";
 
 // Title and description live in src/pages/dns.astro. children is the
 // hydrated DnsForm island.
@@ -73,12 +73,6 @@ export function DnsPage({ children }: { children?: ReactNode }) {
           </div>
         </section>
 
-        <section className="final-cta">
-          <p className="section-number">YOUR NEXT STEP</p>
-          <h2>DNS is one layer. Readiness covers the rest.</h2>
-          <p>Identify the priorities, understand the responsibility and continue through the right route.</p>
-          <Button href="/readiness">Check Your Digital Readiness</Button>
-        </section>
       </main>
       <Footer />
     </>
