@@ -1,6 +1,21 @@
 # Changelog
 
-CURRENT VERSION: v4.49.0 — 1216hrs:20th August2026
+CURRENT VERSION: v4.49.1 — 1302hrs:20th August2026
+
+## v4.49.1 — 1302hrs:20th August2026
+
+The Buzz guide is removed on the owner's instruction, a day after it was
+published (v4.45.0). `/guides/buzz-workspaces` 301s to
+`/guides/agents-on-vps` — the same successor as the Phase 1 removal of the
+old Buzz pilot page — and leaves the guides index, the sitemap and the
+tests. The guide's protocol section carried general Nostr statements that
+had not been verified against the deployed Buzz build; the full text
+remains in git history at v4.45.0 if ever wanted again. Buzz stays a
+conditional content area under the strategy's rules; the pilot-assessment
+gate in the "Not now / gated" list is unchanged.
+
+Five guides remain. 208 tests (the guide's pins removed with it),
+lint clean.
 
 ## v4.49.0 — 1216hrs:20th August2026
 
