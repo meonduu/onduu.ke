@@ -2,7 +2,9 @@
 
 Permanent rules for working in this repository. Temporary work belongs in
 `ROADMAP.md` or a spec under `docs/specs/`. Every change ships only after
-passing `REVIEW.md`.
+passing `REVIEW.md`. Recurring verification and the lessons register live
+in `OPERATIONS.md` — read its register before starting work, and add an
+entry whenever a defect happens twice.
 
 ## Purpose
 
@@ -112,7 +114,8 @@ Working discipline:
 
 ## Required work loop
 
-1. Read `CLAUDE.md`, `ROADMAP.md`, `REVIEW.md` and the relevant spec.
+1. Read `CLAUDE.md`, `ROADMAP.md`, `REVIEW.md`, the lessons register in
+   `OPERATIONS.md`, and the relevant spec.
 2. Inspect current code and live behaviour.
 3. State the smallest implementation plan: files, risks, verification.
 4. Implement one focused change.
