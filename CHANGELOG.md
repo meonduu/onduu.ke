@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.65.2 — 0025hrs:21st August2026
+CURRENT VERSION: v4.65.3 — 0034hrs:21st August2026
+
+## v4.65.3 — 0034hrs:21st August2026
+
+**Capture what ZeptoMail actually says.** With the pairing proven correct
+— the light read `401 TM_4001 ujiajiri→ujiajiri.ke`, matching token and
+sender — the sender explanation was disproven too, and the sub_code that
+would settle it was not being captured.
+
+TM_4001 carries four sub_codes meaning four unrelated things: sender
+domain unverified (SM_111), invalid `from` value (SM_113), account not yet
+approved (SM_128), or an invalid Sendmail token (SERR_157). Guessing
+between them is what cost the evening.
+
+The identifier is now matched wherever it appears in the body, falling
+back to ZeptoMail's own message with any address redacted — the body can
+echo `from` and `to`.
+
+225 tests pass.
 
 ## v4.65.2 — 0025hrs:21st August2026
 
