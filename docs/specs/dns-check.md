@@ -17,7 +17,7 @@ report on whether the domain's **DNS foundations** are set up coherently:
 delegation, nameservers, apex and `www` resolution, mail routing presence,
 and DNSSEC adoption. It is the fourth free check in the tool family
 (`/email-security`, `/kedomains`, `/scan`) and, like them, exists to
-educate and route toward the Digital Readiness assessment.
+educate and route toward the Digital Fitness assessment.
 
 It is **not** a propagation checker (one vantage point, not many), not a
 DNSSEC validator (detection only in v1), not a security audit, and not a
@@ -160,7 +160,7 @@ powering the dashboard aggregates like the other tools.
 - Astro page `/dns` in the sibling tools' pattern: 540px input bar
   (the v4.15.x standard), Georgia display copy, findings as labelled cards
   with evidence and limitation lines.
-- One primary CTA: the readiness assessment. Secondary cross-links:
+- One primary CTA: the fitness assessment. Secondary cross-links:
   `/email-security` (from the MX finding) and `/scan`.
 - Plain-language findings first, technical evidence expandable — the
   audience is a business decision-maker, not a DNS engineer.
@@ -189,7 +189,7 @@ powering the dashboard aggregates like the other tools.
 ## 8. Relationship to `/scan`
 
 `/scan` keeps its coarse DNS signals (NS diversity, DNSSEC presence) as
-readiness inputs. `/dns` is the deep, single-topic view. The scan's
+fitness inputs. `/dns` is the deep, single-topic view. The scan's
 DNS findings may link to `/dns` ("inspect this in detail"), never
 the reverse duplication. If both ever disagree, that is a bug in one of
 them, not a judgement call.

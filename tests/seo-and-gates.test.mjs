@@ -24,7 +24,7 @@ const REDIRECTED = {
   "/domains": "/kedomains",
   "/email-security/glossary": "/email-security",
   "/solutions": "/paths",
-  "/solutions/digital-revenue-risk-review": "/readiness",
+  "/solutions/digital-revenue-risk-review": "/digital-fitness",
   "/solutions/website-revenue-system": "/guides/website-revenue-system",
   "/solutions/agent-workflow-pilot": "/guides/agents-on-vps",
   "/infrastructure": "/paths/hostafrica-infrastructure",
@@ -74,7 +74,7 @@ test("published routes appear in the sitemap and are linked from the homepage", 
   for (const route of PUBLISHED_ROUTES) {
     assert.ok(xml.includes(`${SITE_URL}/${route}`), `sitemap missing ${route}`);
   }
-  for (const route of ["readiness", "paths/website-and-digital-marketing", "paths/hostafrica-infrastructure", "guides/website-revenue-system", "guides"]) {
+  for (const route of ["digital-fitness", "paths/website-and-digital-marketing", "paths/hostafrica-infrastructure", "guides/website-revenue-system", "guides"]) {
     assert.match(home, new RegExp(`href="/${route}"`), `nothing links to ${route}`);
   }
 });
@@ -94,7 +94,7 @@ test("the retired Labs route leaves nothing behind", async () => {
   const xml = await (await fetchPath("/sitemap.xml")).text();
   assert.ok(!xml.includes(`${SITE_URL}/labs`), "labs must not be in the sitemap");
 
-  for (const path of ["/", "/guides", "/readiness"]) {
+  for (const path of ["/", "/guides", "/digital-fitness"]) {
     const html = await (await fetchPath(path)).text();
     assert.doesNotMatch(html, /href="\/labs"/, `${path} still links the retired Labs route`);
     assert.doesNotMatch(html, /Guides and Labs/, `${path} still advertises Labs`);
@@ -296,13 +296,13 @@ test("Ujiajiri cross-links are present, plain, and honestly worded", async () =>
   assert.doesNotMatch(paths, /ujiajiri\.ke\/partners/, "public directory link must be gone");
   assert.doesNotMatch(paths, /directory is being established/i, "stale status must be gone");
 
-  const readiness = await (await fetchPath("/readiness")).text();
-  assert.ok(readiness.includes(introUrl), "readiness page must offer the introduction route");
-  assert.match(readiness, /does not automatically transmit/i, "no-auto-transfer promise stays");
+  const fitness = await (await fetchPath("/digital-fitness")).text();
+  assert.ok(fitness.includes(introUrl), "fitness page must offer the introduction route");
+  assert.match(fitness, /does not automatically transmit/i, "no-auto-transfer promise stays");
   // Phase 2 sign-off (19 Aug 2026): the fee's existence is disclosed at this
   // decision point too, not only on the implementation path page.
-  assert.match(readiness, /referral fee/i, "fee existence disclosed beside the readiness CTA");
-  assert.doesNotMatch(readiness, /referral fee[^.]*\d+\s*%|\d+\s*%[^.]*referral/i, "no fee amount published");
+  assert.match(fitness, /referral fee/i, "fee existence disclosed beside the fitness CTA");
+  assert.doesNotMatch(fitness, /referral fee[^.]*\d+\s*%|\d+\s*%[^.]*referral/i, "no fee amount published");
 
   const home = await (await fetchPath("/")).text();
   assert.ok(home.includes(youthUrl), "homepage skills section must link the youth pathway");
@@ -310,7 +310,7 @@ test("Ujiajiri cross-links are present, plain, and honestly worded", async () =>
   assert.doesNotMatch(home, /ujiajiri\.ke\/partners/, "homepage must not link the retired directory");
 
   // Plain links only: no query strings, no parameters, targets keep the slash.
-  for (const html of [paths, readiness, home]) {
+  for (const html of [paths, fitness, home]) {
     assert.doesNotMatch(html, /ujiajiri\.ke[^"]*\?/, "no query strings on Ujiajiri links");
   }
   // The youth programme is under development: no promises of training outcomes.
@@ -364,7 +364,7 @@ test("the owner's personal email appears on no public page", async () => {
   // replaced by the contact form. Deletion requests, complaints, consent
   // withdrawal and the domain opt-out all route through /contact now.
   for (const path of [
-    "/", "/contact", "/readiness", "/scan", "/kedomains", "/dns",
+    "/", "/contact", "/digital-fitness", "/scan", "/kedomains", "/dns",
     "/email-security", "/legal/privacy", "/legal/tool-limitations",
     "/legal/commercial-relationships", "/legal/assessment-terms", "/about",
   ]) {
@@ -494,7 +494,7 @@ test("our own pages load no third-party script beyond Turnstile", async () => {
   // into production — `npm run check:live` is what does that, and it is why
   // that script exists. See scripts/check-live.mjs.
   const allowed = new Set(["challenges.cloudflare.com"]);
-  for (const path of ["/", "/about", "/readiness", "/dns"]) {
+  for (const path of ["/", "/about", "/digital-fitness", "/dns"]) {
     const html = await (await fetchPath(path)).text();
     for (const [, src] of html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)) {
       if (src.startsWith("/")) continue;
@@ -536,7 +536,7 @@ test("no editorial provenance leaks into published copy", async () => {
   // comments — never in what a visitor reads.
   for (const path of [
     "/legal/assessment-terms", "/legal/privacy", "/legal/commercial-relationships",
-    "/legal/tool-limitations", "/about", "/readiness", "/contact",
+    "/legal/tool-limitations", "/about", "/digital-fitness", "/contact",
   ]) {
     const html = await (await fetchPath(path)).text();
     assert.doesNotMatch(html, /\(owner[,)]/i, `${path} leaks an internal provenance note`);

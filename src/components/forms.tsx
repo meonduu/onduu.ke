@@ -26,7 +26,7 @@ const CONCERNS = [
   "agents",
 ];
 
-const READINESS_FIELDS: FieldDef[] = [
+const FITNESS_FIELDS: FieldDef[] = [
   { name: "full_name", label: "Full name", required: true },
   { name: "business_email", label: "Business email", type: "email", required: true },
   { name: "company", label: "Company", required: true },
@@ -97,10 +97,10 @@ export function SubmissionForm({
   kind,
   siteKey,
 }: {
-  kind: "readiness" | "contact";
+  kind: "fitness" | "contact";
   siteKey?: string;
 }) {
-  const fields = kind === "readiness" ? READINESS_FIELDS : CONTACT_FIELDS;
+  const fields = kind === "fitness" ? FITNESS_FIELDS : CONTACT_FIELDS;
   const [state, setState] = useState<"idle" | "loading" | "done">("idle");
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [formError, setFormError] = useState<string | null>(null);
@@ -295,7 +295,7 @@ export function SubmissionForm({
       <button className="button full" type="submit" disabled={state === "loading" || !siteKey}>
         {state === "loading"
           ? "Sending…"
-          : kind === "readiness"
+          : kind === "fitness"
             ? "Submit my assessment request"
             : "Submit my request"}
         <span aria-hidden="true">↗</span>

@@ -1,5 +1,5 @@
 /**
- * Orchestrator for the Instant Public Readiness Scan: validate the target,
+ * Orchestrator for the Instant Public Fitness Scan: validate the target,
  * apply the do-not-scan list, collect observations within one shared
  * budget, evaluate signals, score, store, and shape the visitor-facing
  * result. Launch remains gated (spec §7) — this module has no route of its
@@ -30,7 +30,7 @@ export interface ScanResponseBody {
   scannedAt: string;
   cached: boolean;
   rubricVersion: string;
-  /** Public Signal Score — explicitly not a Digital Readiness Score. */
+  /** Public Signal Score — explicitly not a Digital Fitness Score. */
   publicSignalScore: number;
   evidenceCoverage: number;
   signals: SignalResult[];
@@ -44,8 +44,8 @@ export type ScanOutcome =
 
 const STATEMENT =
   "Public observations only, made at the time shown. This is a Public Signal Score, not a " +
-  "Digital Readiness Score: items marked as not publicly observable neither helped nor hurt " +
-  "the score. A Verified Digital Readiness Score requires customer evidence, human review " +
+  "Digital Fitness Score: items marked as not publicly observable neither helped nor hurt " +
+  "the score. A Verified Digital Fitness Score requires customer evidence, human review " +
   "and separately authorised tests.";
 
 function shape(stored: StoredScan, cached: boolean): ScanResponseBody {

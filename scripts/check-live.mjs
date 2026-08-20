@@ -22,7 +22,7 @@ const UA =
 const HEADERS = { "User-Agent": UA, Accept: "text/html,application/xhtml+xml" };
 
 const PAGES = [
-  "/", "/about", "/guides", "/readiness", "/contact",
+  "/", "/about", "/guides", "/digital-fitness", "/contact",
   "/legal/privacy", "/dns", "/email-security", "/kedomains", "/scan",
 ];
 

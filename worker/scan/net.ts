@@ -1,5 +1,5 @@
 /**
- * Network safety layer for the Instant Public Readiness Scan.
+ * Network safety layer for the Instant Public Fitness Scan.
  *
  * The scanner fetches URLs derived from a visitor-supplied domain, which is
  * the classic SSRF shape. Everything here exists to make that safe:
@@ -392,7 +392,7 @@ export async function safeFetch(
         headers: {
           Accept: accept,
           "Accept-Language": "en",
-          "User-Agent": "OnduuReadinessScan/1.0 (+https://onduu.ke/readiness)",
+          "User-Agent": "OnduuFitnessScan/1.0 (+https://onduu.ke/digital-fitness)",
         },
         signal: AbortSignal.timeout(
           Math.max(1, Math.min(timeoutMs, budget.deadline - Date.now())),

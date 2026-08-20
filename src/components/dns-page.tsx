@@ -68,7 +68,7 @@ export function DnsPage({ children }: { children?: ReactNode }) {
             <p>
               Related checks:{" "}
               <Link href="/email-security">can a stranger send email as your business?</Link> and{" "}
-              <Link href="/scan">the instant readiness scan</Link> for the wider picture.
+              <Link href="/scan">the instant fitness scan</Link> for the wider picture.
             </p>
           </div>
         </section>

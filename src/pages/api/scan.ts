@@ -1,5 +1,5 @@
 /**
- * POST /api/scan — the Instant Public Readiness Scan endpoint.
+ * POST /api/scan — the Instant Public Fitness Scan endpoint.
  *
  * LAUNCH-GATED (docs/specs/instant-scan.md §7): unless the SCAN_ENABLED
  * Worker var is exactly "true", every request gets the same 404 as any

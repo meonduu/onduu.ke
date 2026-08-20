@@ -3,7 +3,7 @@ import { Link } from "./nav-link";
 import { Header, Footer } from "./components";
 
 // Copy reviewed against CLAUDE.md claims rules: no "secure", "compliant" or
-// "guaranteed"; the Public Signal Score is never called a Digital Readiness
+// "guaranteed"; the Public Signal Score is never called a Digital Fitness
 // Score; the Verified route and the human review are stated at every turn.
 // children is the hydrated ScanForm island.
 export function ScanPage({ children }: { children?: ReactNode }) {
@@ -34,8 +34,9 @@ export function ScanPage({ children }: { children?: ReactNode }) {
             <p>
               The scan looks only at information that is already public. It reports two numbers: a
               Public Signal Score, from the signals it could observe, and Evidence Coverage, how
-              much of the full readiness picture those signals actually represent. A high score at
-              low coverage means the visible parts look good, not that the business is ready.
+              much of the full fitness picture those signals actually represent. A high score at
+              low coverage means the visible parts look good, not that the business is digitally
+              fit.
             </p>
             <p>
               Anything that cannot be seen from outside (your backups, your accounts, whether an
@@ -43,7 +44,7 @@ export function ScanPage({ children }: { children?: ReactNode }) {
               against the score.
             </p>
             <div className="note">
-              A Public Signal Score is not a Digital Readiness Score, and this is not a security
+              A Public Signal Score is not a Digital Fitness Score, and this is not a security
               test, a compliance check or a penetration test. It cannot tell you that a domain, a
               mailbox or a business is secure or compliant. If you operate a domain and do not want
               it scanned, ask via the <a href="/contact">contact form</a> and it will be removed and blocked from future scans.
@@ -58,7 +59,7 @@ export function ScanPage({ children }: { children?: ReactNode }) {
           </div>
           <div className="section-body">
             <p>
-              A Verified Digital Readiness Score requires evidence you provide, a human review and
+              A Verified Digital Fitness Score requires evidence you provide, a human review and
               tests that are separately agreed with you. That is where the &quot;not publicly
               observable&quot; items are examined properly.
             </p>

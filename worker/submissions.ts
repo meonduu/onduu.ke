@@ -108,11 +108,24 @@ function isSafeUrl(value: string) {
   }
 }
 
+/**
+ * The assessment form's kind was "readiness" until the Digital Fitness
+ * rename (20 Aug 2026). A visitor holding the page from before the deploy
+ * — an open tab, a bfcache restore, a stale edge copy — still posts the old
+ * value, and rejecting that would lose a real enquiry for a reason the
+ * visitor could neither see nor fix. The legacy value is accepted and
+ * stored as the new one, so the database holds a single vocabulary.
+ */
+export function normaliseKind(kind: string) {
+  return kind === "readiness" ? "fitness" : kind;
+}
+
 export function validate(kind: string, body: Record<string, unknown>) {
   const errors: Record<string, string> = {};
   const value = (field: Field) => str(body[field]).slice(0, LIMITS[field] + 1);
 
-  if (kind !== "readiness" && kind !== "contact") {
+  kind = normaliseKind(kind);
+  if (kind !== "fitness" && kind !== "contact") {
     return { ok: false as const, errors: { form: "Unknown form." } };
   }
 
@@ -323,7 +336,7 @@ export async function handleSubmit(request: Request, env: SubmissionEnv): Promis
     return json(GENERIC_ERROR, 400);
   }
 
-  const kind = str(body.kind);
+  const kind = normaliseKind(str(body.kind));
   const result = validate(kind, body);
   if (!result.ok) return json({ ...GENERIC_ERROR, fields: result.errors }, 422);
 

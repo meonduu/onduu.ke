@@ -1,5 +1,5 @@
 /**
- * Scoring rubrics for the Instant Public Readiness Scan.
+ * Scoring rubrics for the Instant Public Fitness Scan.
  *
  * The rubric is versioned by design (docs/specs/instant-scan.md §3): every
  * stored result names the rubric it was scored under, and recomputing a score
@@ -15,7 +15,7 @@ export type Dimension =
   | "speed"
   | "conversion"
   | "resilience"
-  | "agent-readiness";
+  | "agent-fitness";
 
 export interface SignalResult {
   id: string;
@@ -56,9 +56,9 @@ const PSR_V1_WEIGHTS: Record<string, { dimension: Dimension; weight: number }> =
   mx: { dimension: "resilience", weight: 4 },
   "dns-diversity": { dimension: "resilience", weight: 3 },
 
-  robots: { dimension: "agent-readiness", weight: 4 },
-  sitemap: { dimension: "agent-readiness", weight: 4 },
-  "structured-data": { dimension: "agent-readiness", weight: 2 },
+  robots: { dimension: "agent-fitness", weight: 4 },
+  sitemap: { dimension: "agent-fitness", weight: 4 },
+  "structured-data": { dimension: "agent-fitness", weight: 2 },
 };
 
 export interface Rubric {
@@ -68,9 +68,18 @@ export interface Rubric {
 
 export const RUBRICS: Record<string, Rubric> = {
   "psr-v1": { version: "psr-v1", weights: PSR_V1_WEIGHTS },
+  "psr-v2": { version: "psr-v2", weights: PSR_V1_WEIGHTS },
 };
 
-export const CURRENT_RUBRIC = "psr-v1";
+// psr-v2 is psr-v1 with one dimension renamed: agent-readiness became
+// agent-fitness in the 20 August 2026 terminology change. No weight and no
+// signal changed, so a v1 and a v2 scan of the same domain score
+// identically — but the dimension keys differ, so a stored v1 result cannot
+// be replayed through v2 labelling without printing a raw id to a visitor.
+// The version is therefore bumped and the cache lookup pinned to it below,
+// which retires v1 rows within the normal cache window instead of
+// rewriting stored history.
+export const CURRENT_RUBRIC = "psr-v2";
 
 const POINTS: Record<Exclude<SignalStatus, "unobservable">, number> = {
   pass: 1,

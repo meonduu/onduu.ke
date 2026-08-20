@@ -1,6 +1,68 @@
 # Changelog
 
-CURRENT VERSION: v4.63.1 — 2118hrs:20th August2026
+CURRENT VERSION: v4.64.0 — 2152hrs:20th August2026
+
+## v4.64.0 — 2152hrs:20th August2026
+
+**Digital Readiness becomes Digital Fitness.** Owner instruction,
+20 August 2026. The vocabulary is now: the **Digital Fitness Assessment**
+is the product, the **Digital Fitness Score** is the result, **Evidence
+Coverage** remains the supporting measure, **Check Your Digital Fitness**
+is the single primary CTA, and **How digitally fit is your business?** is
+the central customer question — now the homepage H1 and the assessment
+page title. The sixth dimension is **Agent Fitness**; the other five and
+all scoring logic are untouched.
+
+Structural, beyond the wording:
+
+- **`/digital-fitness` is the route**, with `/readiness` 301ing to it.
+  That redirect is load-bearing: `/readiness` carried the primary CTA from
+  launch, so every header, hero and footer link ever published points at
+  it, as do the sitemap entries search engines already hold.
+- **The form kind is `fitness`**, and `readiness` is still accepted and
+  stored as `fitness`. A visitor whose tab predates the deploy would
+  otherwise have a valid enquiry rejected for a reason they could neither
+  see nor fix.
+- **Rubric bumped psr-v1 → psr-v2** and the scan cache pinned to the
+  current rubric. Renaming a dimension id changes the scoring vocabulary;
+  without the pin, a cached v1 result would render `agent-readiness` raw
+  on a visitor's results page. Weights and signals are identical, so the
+  same domain scores the same under both.
+
+Claims, per the instruction that no result be presented as a certification
+or an absolute verdict: the assessment page now states plainly that the
+score is not a certification and does not declare a business digitally
+fit, and that it is always shown with its Evidence Coverage because a
+score drawn from a thin slice of evidence says less than the same number
+drawn from a full one.
+
+The 18 August tools article was regenerated rather than word-patched. Its
+prose now says "a public fitness scan" and "agent fitness", the link to
+`/scan` reads "fitness scan", and a dated postscript records the rename —
+matching the convention the article already used when the DNS checker
+joined on 19 August. A published, dated article that quietly rewrites its
+own history is worse than one that says what changed, so the retired term
+survives in that postscript by intent; the terminology guard excludes the
+file for that reason, and its comment now says so.
+
+**Deliberately not renamed**, because these are records rather than copy:
+this changelog, `docs/strategy/` (dated source documents the source-of-truth
+order depends on) and `docs/specs/parity-baseline.json` (a dated snapshot
+read by nothing).
+
+Two things found in local review and fixed before shipping: `/scan` still
+said a high score at low coverage does not mean "the business is ready",
+which was the retired framing; and the claims guard was passing for the
+wrong reason — it leaned on trailing punctuation rather than recognising a
+denial, so "no score certifies that a business is digitally fit" passed by
+accident. It now finds every claim and requires a negation in the eighty
+characters before it, and was confirmed to fail on an injected violation
+before being trusted.
+
+New guard `tests/fitness-terminology.test.mjs`: the old vocabulary cannot
+return to live code, no visitor-facing page may render it, the 301 must
+hold, and no page may claim a certification or an absolute fitness verdict.
+221 tests pass.
 
 ## v4.63.1 — 2118hrs:20th August2026
 
