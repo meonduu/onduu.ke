@@ -102,24 +102,32 @@ test("the assessment page carries the new vocabulary", async () => {
 test("no page claims a certification or declares a business digitally fit", async () => {
   const paths = ["/", "/digital-fitness", "/scan", "/how-it-works", "/legal/assessment-terms"];
   for (const path of paths) {
-    const html = await (await fetchPath(path)).text();
-    // "not a compliance certificate" and "no score certifies" are denials,
-    // so match the claim shape rather than the word.
-    assert.doesNotMatch(
-      html,
-      /(?:is|are)\s+(?:now\s+)?(?:certified|digitally fit\b)(?!\s*[?.]?\s*<)/i,
-      `${path} states an absolute fitness verdict`,
-    );
-    assert.doesNotMatch(
-      html,
-      /Digital Fitness (?:Score|Assessment|Certification)[^.<]{0,40}\bcertif(?:ies|ication|icate)\b(?![^.<]*\bnot\b)/i,
-      `${path} presents the assessment as a certification`,
-    );
-    assert.doesNotMatch(
-      html,
-      /guarantee[sd]?\s+(?:your|the)\s+(?:business|website|domain)\s+is\s+fit/i,
-      `${path} guarantees fitness`,
-    );
+    const text = (await (await fetchPath(path)).text())
+      .replace(/<[^>]+>/g, " ")
+      .replace(/\s+/g, " ");
+
+    // The site says these things in order to deny them — "no score
+    // certifies that a business is digitally fit" must pass while "your
+    // business is digitally fit" must fail. So find every claim, then
+    // require a negation in the run-up to it. Checking the preceding words
+    // is the whole test; an earlier version leaned on trailing punctuation
+    // and passed for a reason that had nothing to do with the denial.
+    const DENIAL = /\b(?:not|never|no|nor|cannot|does not|is not|doesn't)\b/i;
+    const claims = [
+      [/\b(?:is|are)\s+(?:now\s+)?digitally fit\b/gi, "states an absolute fitness verdict"],
+      [/\b(?:is|are)\s+(?:now\s+)?certified\b/gi, "claims a certification"],
+      [/\bcertif(?:ies|ication|icate)\b/gi, "presents the assessment as a certification"],
+      [/\bguarantee[sd]?\b[^.]{0,40}\bfit\b/gi, "guarantees fitness"],
+    ];
+    for (const [pattern, complaint] of claims) {
+      for (const match of text.matchAll(pattern)) {
+        const runUp = text.slice(Math.max(0, match.index - 80), match.index);
+        assert.ok(
+          DENIAL.test(runUp),
+          `${path} ${complaint}: ...${runUp.slice(-60)}[${match[0]}]`,
+        );
+      }
+    }
   }
 });
 

@@ -35,7 +35,8 @@ export function ScanPage({ children }: { children?: ReactNode }) {
               The scan looks only at information that is already public. It reports two numbers: a
               Public Signal Score, from the signals it could observe, and Evidence Coverage, how
               much of the full fitness picture those signals actually represent. A high score at
-              low coverage means the visible parts look good, not that the business is ready.
+              low coverage means the visible parts look good, not that the business is digitally
+              fit.
             </p>
             <p>
               Anything that cannot be seen from outside (your backups, your accounts, whether an

@@ -44,6 +44,15 @@ CLAUDE.md says regenerate, never hand-edit). The last is the one live
 surface still carrying the old word, in one article dated 19 August; it
 needs the owner's call on regeneration.
 
+Two things found in local review and fixed before shipping: `/scan` still
+said a high score at low coverage does not mean "the business is ready",
+which was the retired framing; and the claims guard was passing for the
+wrong reason — it leaned on trailing punctuation rather than recognising a
+denial, so "no score certifies that a business is digitally fit" passed by
+accident. It now finds every claim and requires a negation in the eighty
+characters before it, and was confirmed to fail on an injected violation
+before being trusted.
+
 New guard `tests/fitness-terminology.test.mjs`: the old vocabulary cannot
 return to live code, no visitor-facing page may render it, the 301 must
 hold, and no page may claim a certification or an absolute fitness verdict.
