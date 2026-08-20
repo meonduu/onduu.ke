@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v4.46.0 — 2127hrs:19th August2026
+CURRENT VERSION: v4.47.0 — 0752hrs:20th August2026
+
+## v4.47.0 — 0752hrs:20th August2026
+
+The private dashboard gets a content-security policy, and a production check
+now catches the class of problem that hid this one.
+
+**`/go` had no CSP at all.** Public pages get theirs from Astro; the
+dashboard is an endpoint that builds its own HTML, and
+`worker/security-headers.ts` deliberately ships none. Cloudflare Web
+Analytics' auto-injected beacon therefore ran on the dashboard while being
+refused on every public page, and reported which dashboard pages were
+opened — visible in the owner's Web Analytics as 13 page views, all on
+`/go/*`. Corrected here: this page renders no JavaScript at all, so
+`script-src` is `'none'` rather than an allow-list, with
+`default-src 'none'`, `style-src 'unsafe-inline'` for the one static style
+block, and `frame-ancestors 'none'`. Sent as a header, so frame-ancestors
+applies, and attached to all three dashboard responses including the
+fail-closed 403.
+
+**`npm run check:live`** (`scripts/check-live.mjs`) checks what Cloudflare
+actually serves: ten public pages plus `/go`, fetched with a browser
+user-agent because Cloudflare only injects for browser-like requests — which
+is why plain curl showed nothing while real visitors got the beacon. It
+fails on any injected script (Web Analytics, Rocket Loader, Email
+Obfuscation, Speed Brain speculation rules, Zaraz), any third-party script
+host beyond Turnstile, a missing or weakened CSP, and any unauthenticated
+request to `/go` that is not turned away.
+
+No unit test could have caught the original problem: the suite runs against
+a locally built Worker where Cloudflare's edge never runs. A local guard was
+added too, but only to hold the code path — the comment says so explicitly,
+so nobody mistakes it for production coverage.
+
+Verified against production: 10 pages plus `/go` clean. Writing the checker
+also corrected a wrong assumption of mine — `/go` returns 302 to the
+Cloudflare Access login, not the Worker's 403, because Access intercepts
+before the Worker runs. 200 tests, lint clean.
 
 ## v4.46.0 — 2127hrs:19th August2026
 

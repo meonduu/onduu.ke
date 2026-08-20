@@ -473,3 +473,21 @@ test("gated routes are absent from the header and footer", async () => {
     );
   }
 });
+
+test("our own pages load no third-party script beyond Turnstile", async () => {
+  // Guards the code path only. Cloudflare's edge does not run against the
+  // local build, so this cannot catch a dashboard toggle injecting a beacon
+  // into production — `npm run check:live` is what does that, and it is why
+  // that script exists. See scripts/check-live.mjs.
+  const allowed = new Set(["challenges.cloudflare.com"]);
+  for (const path of ["/", "/about", "/readiness", "/dns"]) {
+    const html = await (await fetchPath(path)).text();
+    for (const [, src] of html.matchAll(/<script[^>]+src=["']([^"']+)["']/gi)) {
+      if (src.startsWith("/")) continue;
+      const host = new URL(src, "https://onduu.ke").host;
+      assert.ok(allowed.has(host), `${path} loads an unexpected script host: ${host}`);
+    }
+    assert.doesNotMatch(html, /cloudflareinsights|rocket-loader|email-decode/i,
+      `${path} carries a Cloudflare-injected script`);
+  }
+});
