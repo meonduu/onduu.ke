@@ -216,7 +216,41 @@ are received by Ujiajiri Enterprises Limited and seen inside it only by
 those who need them. The earlier statement that Wycliffe was the only
 reader was removed when this policy made it inaccurate.
 
-## 8. What this register does not do
+## 8. What Ujiajiri Enterprises Limited must do
+
+onduu.ke now publishes commitments that only Ujiajiri can honour. Checked
+against ujiajiri.ke on 20 August 2026; its partners page already describes
+the private curated network, and its introduction page already promises to
+name the provider and seek permission, so the two sites broadly agree.
+These are the gaps:
+
+- **ujiajiri.ke has no privacy notice** — `/privacy` and `/privacy-policy`
+  both 404, while it collects introduction-request data through its own
+  form. Onduu names Ujiajiri as controller; Ujiajiri publishes nothing.
+  The largest gap, and one for the same legal review.
+- **State exactly what would be shared.** Ujiajiri's page says "your
+  information"; Onduu's says name, contact details and project summary.
+  Naming the fields is what the ODPC consent guidance expects.
+- **"Decline without affecting your assessment or advice"** is published on
+  onduu.ke and appears nowhere on ujiajiri.ke. Whoever handles
+  introductions must honour it.
+- **Written partner agreements** must actually exist: onduu.ke states the
+  referral fee sits under one, and that the provider must disclose whether
+  it affects the quoted price.
+- **Written data-sharing terms per regular provider** — purpose,
+  confidentiality, security, retention and deletion, client rights. None
+  recorded as existing.
+- **Internal access** to enquiries and reports must be limited to those who
+  need them, as both sites' copy now implies.
+- **`info@ujiajiri.ke`** is published on onduu.ke for introduction and
+  provider questions, and receives enquiry notifications (reference and
+  form type only — details live in D1 and at `/go/enquiries`, which is
+  behind Cloudflare Access). Whoever monitors it needs to know both.
+- **Sending mail from ujiajiri.ke** requires verifying that domain in
+  ZeptoMail and updating its DNS; its SPF currently authorises Google and
+  SparkPost with no Zoho sender.
+
+## 9. What this register does not do
 
 It states no legal conclusion. It records what the software does, where
 the data sits and which decisions are outstanding, so that the

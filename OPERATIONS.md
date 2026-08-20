@@ -72,6 +72,24 @@ checked as written, that is itself a finding.
 7. **Access still guards /go.** Open https://onduu.ke/go in a private
    browser window. Good: the Cloudflare Access login, never the dashboard.
 
+## Open incident
+
+**Enquiry notification email failing, since 20 August 2026 ~17:30 UTC.**
+The `/go` light reads `failed · 401 TM_4001`. Cause: `NOTIFY_EMAIL` is the
+ZeptoMail **sender** and currently holds an address on a domain ZeptoMail
+has not verified. It was green at 10:44 and 11:51 the same day sending from
+onduu.ke, and the only change since was that value — so the token and code
+are not implicated. Slack notifications are unaffected and have delivered
+throughout, so no enquiry has been missed.
+
+Fix (owner): set `NOTIFY_EMAIL` back to the verified onduu.ke sender.
+`NOTIFY_TO` already routes delivery to info@ujiajiri.ke and should be left
+alone. If it stays red afterwards, the ZeptoMail Mail Agent's permitted
+From address is the thing to check. Verify by submitting one test enquiry
+and watching the light; delete the row afterwards.
+
+Test rows awaiting deletion: `ON-260820-7NJ6`, `ON-260820-KQ14`.
+
 ## Lessons register
 
 Newest first. Format: what happened → root cause → the guard now standing.
