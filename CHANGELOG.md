@@ -1,6 +1,32 @@
 # Changelog
 
-CURRENT VERSION: v4.61.0 — 2138hrs:20th August2026
+CURRENT VERSION: v4.62.0 — 2044hrs:20th August2026
+
+## v4.62.0 — 2044hrs:20th August2026
+
+Notification sender and recipient are separated, after pointing the single
+address at an unverified domain took the email channel down in production.
+
+`notify()` used `NOTIFY_EMAIL` as both the ZeptoMail sender and the
+destination, so changing where notifications go also changed who they are
+sent as. Setting it to an address on ujiajiri.ke — a domain ZeptoMail has
+not verified, and whose DNS authorises Google and SparkPost but no Zoho
+sender — made every send fail **401 TM_4001**. The dashboard light went
+red within seconds with that exact code, which is what the v4.48.2/v4.49.0
+work was for; Slack, being a separate channel, kept working throughout.
+
+Now: `NOTIFY_EMAIL` is the **verified sender** and must stay on a domain
+ZeptoMail accepts. The new optional `NOTIFY_TO` is the **destination**,
+defaulting to the sender when unset, so notifications can be routed
+anywhere without touching DNS, domain verification or a second ZeptoMail
+token. The comments on both say so, and `OPERATIONS.md`’s secret
+inventory records the distinction and the failure it prevents.
+
+**Owner action, in this order**: set `NOTIFY_EMAIL` back to the verified
+onduu.ke address (this restores email notifications immediately), then add
+`NOTIFY_TO` = the ujiajiri address.
+
+214 tests, lint clean.
 
 ## v4.61.0 — 2138hrs:20th August2026
 

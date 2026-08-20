@@ -12,7 +12,14 @@ export interface SubmissionEnv {
   onduu_leads?: D1Database;
   TURNSTILE_SECRET?: string;
   ZEPTOMAIL_TOKEN?: string;
+  /** The verified ZeptoMail sender. Must be a domain ZeptoMail accepts, or
+   *  every send fails 401 TM_4001 (seen live on 20 Aug 2026 when this was
+   *  pointed at an unverified domain). */
   NOTIFY_EMAIL?: string;
+  /** Where notifications are delivered. Defaults to NOTIFY_EMAIL. Split from
+   *  the sender so the destination can change without touching DNS or mail
+   *  verification. */
+  NOTIFY_TO?: string;
   /** Optional second channel: an incoming-webhook URL. The owner set this
    *  secret for exactly this purpose before any code used it (wired in
    *  v4.52.0). Email remains the primary, promised channel. */
@@ -282,7 +289,7 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
       },
       body: JSON.stringify({
         from: { address: env.NOTIFY_EMAIL },
-        to: [{ email_address: { address: env.NOTIFY_EMAIL } }],
+        to: [{ email_address: { address: env.NOTIFY_TO || env.NOTIFY_EMAIL } }],
         subject: `New ${kind} request. ${ref}`,
         textbody: `A new ${kind} request was received.\n\nReference: ${ref}\n\nThe submitted details are stored in the onduu-leads database. This message intentionally contains no personal data.`,
       }),
