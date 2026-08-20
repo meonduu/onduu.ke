@@ -64,6 +64,32 @@ const SECTIONS: [slug: string, label: string][] = [
   ["blocklist", "Do-not-scan"],
 ];
 
+/**
+ * Content-Security-Policy for the dashboard.
+ *
+ * The public pages get their CSP from Astro (astro.config.mjs), but /go is an
+ * endpoint that builds its own HTML, and worker/security-headers.ts
+ * deliberately ships no CSP — so until 20 Aug 2026 the dashboard had none at
+ * all. Cloudflare Web Analytics' auto-injected beacon consequently ran here
+ * while being refused on every public page, and reported which dashboard
+ * pages were opened.
+ *
+ * This page renders no JavaScript whatsoever, so script-src can be 'none' —
+ * an injected script is refused outright rather than allow-listed. The only
+ * inline asset is the static <style> block below; styles carry no script
+ * capability on a page where scripts cannot run. Sent as a header rather than
+ * a meta tag so frame-ancestors applies (a meta CSP cannot carry it).
+ */
+const DASHBOARD_CSP = [
+  "default-src 'none'",
+  "script-src 'none'",
+  "style-src 'unsafe-inline'",
+  "img-src 'self'",
+  "base-uri 'none'",
+  "form-action 'none'",
+  "frame-ancestors 'none'",
+].join("; ");
+
 function page(title: string, body: string, current: string): Response {
   const nav = SECTIONS.map(
     ([slug, label]) =>
@@ -100,7 +126,13 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 .note ol{margin:10px 0 0;padding-left:20px}
 a{color:var(--green)}
 </style></head><body><main><nav>${nav}</nav>${body}</main></body></html>`,
-    { headers: { "Content-Type": "text/html; charset=utf-8", "Cache-Control": "no-store" } },
+    {
+      headers: {
+        "Content-Type": "text/html; charset=utf-8",
+        "Cache-Control": "no-store",
+        "Content-Security-Policy": DASHBOARD_CSP,
+      },
+    },
   );
 }
 
@@ -615,14 +647,18 @@ export async function handleDashboard(
   if (!identity) {
     return new Response("Not available.", {
       status: 403,
-      headers: { "Cache-Control": "no-store", "X-Robots-Tag": "noindex" },
+      headers: {
+        "Cache-Control": "no-store",
+        "X-Robots-Tag": "noindex",
+        "Content-Security-Policy": DASHBOARD_CSP,
+      },
     });
   }
 
   if (!env.onduu_leads) {
     return new Response("Dashboard is not configured.", {
       status: 503,
-      headers: { "Cache-Control": "no-store" },
+      headers: { "Cache-Control": "no-store", "Content-Security-Policy": DASHBOARD_CSP },
     });
   }
 

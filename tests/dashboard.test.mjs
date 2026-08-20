@@ -88,3 +88,22 @@ test("page views record real HTML pages only", () => {
   );
   assert.equal(shouldRecord(new Request("https://onduu.ke/", { method: "POST" }), html), false);
 });
+
+test("the dashboard carries its own CSP, and it forbids script entirely", async () => {
+  // /go builds its own HTML and gets no CSP from Astro, so until 20 Aug 2026
+  // it shipped none — which is why Cloudflare's auto-injected beacon ran here
+  // while being refused on every public page. The dashboard renders no
+  // JavaScript, so script-src stays 'none': adding a script to /go must be a
+  // deliberate act that also weakens this policy, not an accident.
+  const res = await fetchPath("/go");
+  const csp = res.headers.get("content-security-policy") ?? "";
+  assert.match(csp, /default-src 'none'/, "dashboard must default to denying everything");
+  assert.match(csp, /script-src 'none'/, "the dashboard must run no script at all");
+  assert.match(csp, /frame-ancestors 'none'/, "sent as a header so frame-ancestors applies");
+  assert.doesNotMatch(csp, /script-src[^;]*unsafe-inline/, "never allow inline script here");
+  assert.doesNotMatch(
+    csp,
+    /cloudflareinsights|static\.cloudflare/,
+    "no third-party beacon may be allow-listed on the private dashboard",
+  );
+});
