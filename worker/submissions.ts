@@ -318,7 +318,14 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
   // The ujiajiri agent's token wins when set, because NOTIFY_EMAIL now
   // sends as ujiajiri.ke. Falling back keeps the onduu.ke path working if
   // the sender is ever moved back.
-  const zeptoToken = env.ZEPTOMAIL_UJIAJIRI_TOKEN || env.ZEPTOMAIL_TOKEN;
+  //
+  // .trim() is not cosmetic. A token pasted into the dashboard with a
+  // trailing newline or space produces a malformed Authorization header
+  // and an indistinguishable 401 TM_4001 — the same error as a wrong
+  // token and as a token/sender mismatch. Three causes, one symptom, so
+  // the cheap one is eliminated in code rather than by eye.
+  const tokenSource = env.ZEPTOMAIL_UJIAJIRI_TOKEN ? "ujiajiri" : "onduu";
+  const zeptoToken = (env.ZEPTOMAIL_UJIAJIRI_TOKEN || env.ZEPTOMAIL_TOKEN || "").trim();
   if (!zeptoToken || !env.NOTIFY_EMAIL) {
     console.error(JSON.stringify({ event: "notify_skipped", reason: "secrets_missing", ref }));
     await recordNotifyOutcome(env, "skipped", "secrets_missing");
@@ -348,8 +355,22 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
       // identifies the cause without exposing the address or token.
       const detail = (await res.text().catch(() => "")).slice(0, 200);
       const code = detail.match(/"code"\s*:\s*"([A-Z0-9_]+)"/)?.[1] ?? "unknown";
-      console.error(JSON.stringify({ event: "notify_failed", status: res.status, code, ref }));
-      await recordNotifyOutcome(env, "failed", `${res.status} ${code}`);
+      // Which binding supplied the token, and how long it was — never the
+      // token itself. On 20 Aug 2026 it was impossible to tell from the
+      // outside whether a new binding was even being read; a name and a
+      // length answer that without exposing anything.
+      console.error(
+        JSON.stringify({
+          event: "notify_failed",
+          status: res.status,
+          code,
+          tokenSource,
+          tokenLength: zeptoToken.length,
+          hasPrefix: zeptoToken.startsWith("Zoho-enczapikey"),
+          ref,
+        }),
+      );
+      await recordNotifyOutcome(env, "failed", `${res.status} ${code} (${tokenSource})`);
       return;
     }
     await recordNotifyOutcome(env, "sent", null);

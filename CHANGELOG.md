@@ -1,6 +1,28 @@
 # Changelog
 
-CURRENT VERSION: v4.65.0 — 2359hrs:20th August2026
+CURRENT VERSION: v4.65.1 — 0012hrs:21st August2026
+
+## v4.65.1 — 0012hrs:21st August2026
+
+**Make the notification failure say which token it used.**
+
+With the ujiajiri token in place as an encrypted secret and the sender on
+the matching domain, the send still returned `401 TM_4001` — and ZeptoMail's
+own agent view still showed 6 sent, unchanged, so the request never
+authenticated. From outside there was no way to tell whether the new
+binding was being read at all.
+
+- The token is now `.trim()`ed. A value pasted with a trailing newline or
+  space makes a malformed Authorization header and the very same
+  `401 TM_4001` — a third cause behind one symptom, so the cheapest one is
+  eliminated in code rather than by eye.
+- The failure log now carries `tokenSource` (which binding supplied it),
+  `tokenLength`, and whether the `Zoho-enczapikey` prefix is present —
+  **never the token**. The health row records the source too, so `/go`
+  shows `failed 401 TM_4001 (ujiajiri)` rather than leaving the question
+  open.
+
+225 tests pass.
 
 ## v4.65.0 — 2359hrs:20th August2026
 
