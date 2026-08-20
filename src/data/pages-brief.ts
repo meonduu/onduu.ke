@@ -440,6 +440,10 @@ export const briefPages: Record<string, PageContent> = {
           {
             "title": "ZeptoMail",
             "body": "Sends the notification that tells Onduu a request has arrived. That message contains only the reference number and which form was used, none of your answers, and not your name or email address."
+          },
+          {
+            "title": "Slack",
+            "body": "Receives the same one-line notification as the email, for the same reason: the reference number and which form was used, nothing you wrote and nothing that identifies you. Added 20 August 2026."
           }
         ],
         "note": "No artificial-intelligence or language-model provider receives your form submissions, and no analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
@@ -448,10 +452,11 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "07 / WHERE IT IS STORED",
         "title": "Where the information sits, and where it travels.",
         "body": [
-          "Submissions are stored in Cloudflare's database service and are served from Cloudflare's network, which operates data centres in many countries. Information may therefore be stored or processed outside Kenya.",
-          "Onduu does not claim that this website keeps all data inside Kenya, because that would not be true of a service delivered on a global network."
+          "Submissions are stored in Cloudflare's database service and are served from Cloudflare's network, which operates data centres in many countries. Information is therefore stored and processed outside Kenya.",
+          "Specifically: the database runs in Cloudflare's Eastern Europe region, as a single copy with no replicas elsewhere. The website itself is served from whichever Cloudflare location is nearest the visitor, which is how a global network works.",
+          "Onduu does not claim that this website keeps all data inside Kenya, because that would not be true."
         ],
-        "note": "TO CONFIRM: whether the storage region should be pinned, and the safeguards to be recorded for transfers outside Kenya."
+        "note": "TO CONFIRM: whether to pin storage to a chosen region, and which transfer safeguard to record under the Data Protection Act. The processing register behind this section is at docs/specs/processors-and-transfers.md in the site's repository."
       },
       {
         "eyebrow": "08 / HOW LONG IT IS KEPT",
@@ -508,7 +513,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "13 / VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.3, prepared 19 August 2026 and checked against the running code the same day. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
+          "Draft version 0.4, prepared 20 August 2026 and checked against the running code and the live database the same day. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
+          "What changed in 0.4: Slack was added to the list of parties that receive a notification, correcting an omission made when that channel was wired up earlier the same day; and where the information is stored is now stated exactly (Cloudflare's Eastern Europe region, single copy, no replicas) rather than as \u0022many countries\u0022. A processing register recording every processor, what each receives and the decisions still outstanding is published in the site's repository.",
           "What changed in 0.3: the cookies and analytics section now describes the first-party measurement script this site runs in the browser — which pages were opened, roughly how long each was on screen, and clicks on explicitly marked elements, with a tab-scoped label in session storage and nothing that can recognise a returning visitor — and records that the script honours the Global Privacy Control and Do Not Track signals. Three further sections were corrected to match it: what is collected no longer claims nothing is gathered as you browse, why-and-on-what-basis states the legitimate interest relied on for the measurement, and how-long-it-is-kept covers the counted views and events rather than form submissions alone.",
           "What changed in 0.2: the DNS health check at /dns was added to the tools section, including the direct questions it asks parent and authoritative nameservers; an inaccurate claim that this site used a cookieless analytics product was removed, because it does not, no analytics script runs in the browser at all, and the content-security policy would refuse one; and the third parties section now names the registries and nameservers the tools contact.",
           "The consent wording shown on the forms is versioned separately, so a record exists of the exact text each person agreed to."

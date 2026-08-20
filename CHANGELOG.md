@@ -1,6 +1,33 @@
 # Changelog
 
-CURRENT VERSION: v4.53.0 — 1618hrs:20th August2026
+CURRENT VERSION: v4.54.0 — 1706hrs:20th August2026
+
+## v4.54.0 — 1706hrs:20th August2026
+
+The processors and transfers register is written, closing the second of
+Phase 3's two open items. `docs/specs/processors-and-transfers.md` records
+what is processed, by whom, where it sits, on what basis, for how long,
+and which decisions remain — each tagged OWNER or LAWYER. It was written
+by reading the running code and querying production, and every claim names
+the command or file that proves it, so the professional review can be an
+assessment rather than an investigation.
+
+Two corrections fell out of writing it:
+
+- **Slack was missing from the privacy notice.** v4.52.0 wired it as a
+  second notification channel three hours earlier and did not update the
+  notice, which named two processors while the code used three.
+  REVIEW.md already required them to match; nothing enforced it. Now the
+  notice names Slack, a test pins every processor against the notice, and
+  the omission is recorded as lesson L8.
+- **Where the data sits is now exact.** The notice said "many countries";
+  `wrangler d1 info` shows the database runs in Cloudflare's **EEUR**
+  region as a single copy with read replication disabled. The notice
+  states that, and the open question narrows to the owner's decision
+  (pin a region or not) and the lawyer's (which transfer safeguard to
+  record).
+
+Privacy notice at draft 0.4. 210 tests, lint clean.
 
 ## v4.53.0 — 1618hrs:20th August2026
 
