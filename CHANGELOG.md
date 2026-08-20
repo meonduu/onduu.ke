@@ -1,6 +1,31 @@
 # Changelog
 
-CURRENT VERSION: v4.58.0 — 1947hrs:20th August2026
+CURRENT VERSION: v4.59.0 — 2013hrs:20th August2026
+
+## v4.59.0 — 2013hrs:20th August2026
+
+Internal bookkeeping removed from copy visitors read, at the owner's
+request after reading the live page.
+
+The assessment terms ended a paragraph with "(owner, 20 August 2026)" — an
+editorial note that belonged in the changelog, not in a client's terms.
+Removing it turned up more of the same class: both legal gate banners
+announced "Owner-approved copy" and "Owner-confirmed", and the status and
+version sections spoke of what "the owner" had decided. A visitor does not
+know who the owner is and does not need to; what they need is whether a
+lawyer has checked the page. All of it now says that plainly instead.
+
+This was the second occurrence — v4.28.1 removed a similar note from the
+HOSTAFRICA disclosure — so it is recorded as lesson **L9** with an
+executable guard: a test sweeps the public legal and form pages for
+provenance markers and owner-vocabulary, and fails the suite if either
+returns. It caught the gate banners within a minute of being written,
+which is how the wider problem was found at all.
+
+Code comments and the processors register keep their dated attributions,
+which is where that information belongs.
+
+213 tests, lint clean.
 
 ## v4.58.0 — 1947hrs:20th August2026
 

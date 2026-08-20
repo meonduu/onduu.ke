@@ -86,6 +86,16 @@ code against the notice (`tests/seo-and-gates.test.mjs`), and the register
 at `docs/specs/processors-and-transfers.md` lists what each one receives,
 so the next addition has an obvious place to be recorded (v4.54.0).
 
+**L9 — 20 Aug 2026 · Editorial bookkeeping leaking into published copy.**
+"(owner, 20 August 2026)" reached the live assessment terms, and two gate
+banners spoke of "owner-approved" and "owner-confirmed" copy — internal
+vocabulary a visitor cannot interpret. v4.28.1 had already removed one
+such note from the HOSTAFRICA disclosure, so this was the second
+occurrence. Guard: a test sweeps the public legal and form pages for
+provenance markers and owner-vocabulary (v4.59.0). Dated decisions belong
+in `CHANGELOG.md`, this register and code comments — never in what a
+visitor reads.
+
 **L7 — 20 Aug 2026 · One assertion from one data point.** The Cloudflare
 beacon was declared gone after checking a single page; five pages said
 otherwise. Earlier, Web Analytics was declared "collecting nothing" while
