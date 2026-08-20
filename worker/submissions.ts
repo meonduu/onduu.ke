@@ -361,7 +361,19 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
       // not verified in the agent the token belongs to. Capture it, and the
       // sender's domain, so the mismatch is legible instead of inferred.
       // The domain only: never the address.
-      const subCode = detail.match(/"sub_code"\s*:\s*"([A-Za-z0-9_]+)"/)?.[1] ?? "";
+      // TM_4001 has four sub_codes meaning four unrelated things: sender
+      // domain unverified (SM_111), bad `from` value (SM_113), account not
+      // approved (SM_128), or an invalid token (SERR_157). Guessing between
+      // them cost most of 20 Aug. The sub_code is not always where the last
+      // regex looked, so match the identifier wherever it appears, and keep
+      // ZeptoMail's own message as the fallback — with any address redacted,
+      // since the body can echo the `from` and `to` fields.
+      const subCode =
+        detail.match(/\b(SM_\d+|SERR_\d+)\b/)?.[1] ??
+        detail
+          .replace(/[\w.+-]+@[\w.-]+/g, "[address]")
+          .replace(/\s+/g, " ")
+          .slice(0, 90);
       const senderDomain = env.NOTIFY_EMAIL.split("@")[1] ?? "none";
       // Which binding supplied the token, and how long it was — never the
       // token itself. On 20 Aug 2026 it was impossible to tell from the
