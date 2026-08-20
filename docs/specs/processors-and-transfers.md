@@ -118,8 +118,12 @@ Confirmed by Wycliffe and reflected in the pages:
   registered in Kenya. Onduu is a brand, not a registered company.
   Registration number and registered address still outstanding.
 - **HOSTAFRICA**: he is a **statutory director** of the Kenyan company, not
-  only MD by title — a stronger relationship, now stated plainly rather
-  than hedged.
+  only MD by title. Published as such in v4.55.0, then **removed by the
+  owner's own page copy in v4.56.0**, which says "Managing Director"; the
+  owner confirmed that choice deliberately on 20 August 2026. The fact is
+  kept here for the reviewer, who should know the relationship is a
+  directorship with formal duties even though the site states the title
+  only.
 - **Employment boundary**: nothing Onduu offers is excluded; operating
   Onduu is permitted under his arrangement with HOSTAFRICA rather than
   merely tolerated. (The commercial background sits with the owner; the
