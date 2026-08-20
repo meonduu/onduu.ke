@@ -272,7 +272,7 @@ export const briefPages: Record<string, PageContent> = {
           "Onduu is the brand used for the website, conversion, measurement and digital-performance work offered to businesses in Kenya. The contracting legal entity is Ujiajiri Enterprises Limited.",
           "Any agreement, invoice or engagement is with Ujiajiri Enterprises Limited trading as Onduu.",
           "Ujiajiri Enterprises Limited also operates ujiajiri.ke, a practical-skills platform and a private introduction service for independent website and digital-marketing providers. There is no public provider directory: a business asks Ujiajiri for an introduction, Ujiajiri proposes one provider from its private network and names it, and nothing identifiable is sent to that provider until the business gives permission. The provider is an independent business that scopes, quotes, contracts, invoices and delivers directly, and neither Ujiajiri nor Onduu delivers, manages or guarantees its work. Links from this site to ujiajiri.ke are plain links. Nothing you submit to Onduu is passed to Ujiajiri.",
-          "TO CONFIRM: company registration number and registered address."
+          "Onduu is a brand, not a registered company. The accountable entity is Ujiajiri Enterprises Limited, a limited liability company registered in Kenya. TO CONFIRM: its registration number and registered address."
         ]
       },
       {
@@ -283,7 +283,7 @@ export const briefPages: Record<string, PageContent> = {
           "Infrastructure products referenced on this website are supplied and supported by HOSTAFRICA, not by Onduu.",
           "This is disclosed because a client considering both website work and infrastructure should know that the same person has a position on both sides, and can then weigh the advice accordingly."
         ],
-        "note": "TO CONFIRM: whether Wycliffe is a statutory director of the Kenyan company, which carries duties beyond the job title. No claim either way is made here until that is settled."
+        "note": "Confirmed by the owner on 20 August 2026: Wycliffe is a statutory director of the Kenyan company, not only its Managing Director by title. A statutory director owes formal duties to that company, which is a stronger relationship than an employment title alone and is stated here for that reason."
       },
       {
         "eyebrow": "03 / WHAT ONDUU CONTRACTS FOR",
@@ -298,7 +298,7 @@ export const briefPages: Record<string, PageContent> = {
             "body": "Website and digital-marketing implementation, which independent providers contract and deliver directly following a Ujiajiri introduction. Hosting, virtual servers, domains and infrastructure support, which are supplied under a separate agreement with the infrastructure provider, on their terms and their pricing."
           }
         ],
-        "note": "Onduu does not act as prime contractor for implementation work, does not manage another provider's delivery and does not guarantee it. TO CONFIRM: whether any Onduu service is excluded from this list under an employment or non-compete boundary."
+        "note": "Onduu does not act as prime contractor for implementation work, does not manage another provider's delivery and does not guarantee it. Confirmed by the owner on 20 August 2026: nothing Onduu offers is excluded by his employment arrangement, and running Onduu is permitted under it rather than tolerated alongside it."
       },
       {
         "eyebrow": "04 / HOW REFERRALS WORK",
@@ -318,7 +318,7 @@ export const briefPages: Record<string, PageContent> = {
           "Where a recommendation touches infrastructure, the relationship above is restated at that point, not buried here",
           "You are free to take any recommendation to a different supplier, and doing so does not affect the rest of the work"
         ],
-        "note": "TO CONFIRM: whether an internal conflicts policy exists that should be summarised or linked here."
+        "note": "There is no separate internal conflicts policy to link to: the principles above, and the disclosure in section 02, are the whole of it. If that changes, it will be published here rather than kept internally."
       },
       {
         "eyebrow": "06 / QUESTIONS",
@@ -331,7 +331,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "07 / VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.2, prepared 16 August 2026 and re-checked against the live site on 19 August 2026. No effective date until reviewed and the TO CONFIRM items are answered.",
+          "Draft version 0.3, prepared 16 August 2026, re-checked against the live site on 19 August 2026, and updated with the owner\u0027s answers on 20 August 2026. No effective date until reviewed and the remaining TO CONFIRM items are answered.",
+          "What changed in 0.3: how reports are delivered and who reads them is now stated (emailed by Wycliffe; Onduu is one person, so there is no wider access), and the report is confirmed as the client\u0027s to act on and to share with whoever helps them act on it. What remains open is narrower: how long a sent report is retained, whether anonymised findings may be used as examples, and whether the scoring method and blank templates stay Onduu\u0027s.",
           "What changed in 0.2: Ujiajiri is described as a private introduction service rather than a provider listing; the referral fee Ujiajiri may receive from an introduced provider is disclosed, including that Ujiajiri and Onduu are the same company; and the list of what Onduu contracts for was corrected to match what this site actually offers."
         ]
       }
@@ -355,8 +356,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "01 / WHO IS RESPONSIBLE",
         "title": "Who controls this information.",
         "body": [
-          "The data controller is Ujiajiri Enterprises Limited, which trades as Onduu and operates this website. Onduu is the brand; Ujiajiri Enterprises Limited is the contracting entity.",
-          "TO CONFIRM: company registration number and registered postal address, so the entity can be identified and checked."
+          "The data controller is Ujiajiri Enterprises Limited, a limited liability company registered in Kenya, which trades as Onduu and operates this website. Onduu is the brand and is not itself a registered company; Ujiajiri Enterprises Limited is the accountable entity.",
+          "TO CONFIRM: the company's registration number and registered postal address, so the entity can be identified and checked."
         ],
         "note": "Questions about your information can be sent through the contact form; it reaches Onduu and nobody else."
       },
@@ -504,8 +505,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "12 / COMPLAINTS",
         "title": "If you are not satisfied.",
         "body": [
-          "Raise it directly first, through the contact form, and it will be looked at properly.",
-          "You also have the right to complain to the Office of the Data Protection Commissioner in Kenya. Doing so does not require you to contact Onduu first."
+          "Raise it directly first, through the contact form, choosing \u0022complaint\u0022 as the issue so it arrives marked as one. Complaints are handled by Ujiajiri Enterprises Limited, the company accountable for this site, and will be looked at properly.",
+          "You also have the right to complain to the Office of the Data Protection Commissioner in Kenya. That right is independent: it does not require you to contact Onduu first, and using the contact form does not replace it."
         ],
         "note": "TO CONFIRM: the ODPC contact details and complaint route to publish here."
       },
@@ -513,7 +514,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "13 / VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.4, prepared 20 August 2026 and checked against the running code and the live database the same day. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
+          "Draft version 0.5, prepared 20 August 2026 with facts confirmed by the owner the same day. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
+          "What changed in 0.5: the owner confirmed that Onduu itself is not a registered company and that Ujiajiri Enterprises Limited, a limited liability company registered in Kenya, is the accountable entity; the complaints section names that company and points at the contact form\u0027s new \u0022complaint\u0022 option, while keeping the independent right to complain to the Data Protection Commissioner. The registration number and registered address remain outstanding.",
           "What changed in 0.4: Slack was added to the list of parties that receive a notification, correcting an omission made when that channel was wired up earlier the same day; and where the information is stored is now stated exactly (Cloudflare's Eastern Europe region, single copy, no replicas) rather than as \u0022many countries\u0022. A processing register recording every processor, what each receives and the decisions still outstanding is published in the site's repository.",
           "What changed in 0.3: the cookies and analytics section now describes the first-party measurement script this site runs in the browser — which pages were opened, roughly how long each was on screen, and clicks on explicitly marked elements, with a tab-scoped label in session storage and nothing that can recognise a returning visitor — and records that the script honours the Global Privacy Control and Do Not Track signals. Three further sections were corrected to match it: what is collected no longer claims nothing is gathered as you browse, why-and-on-what-basis states the legitimate interest relied on for the measurement, and how-long-it-is-kept covers the counted views and events rather than form submissions alone.",
           "What changed in 0.2: the DNS health check at /dns was added to the tools section, including the direct questions it asks parent and authoritative nameservers; an inaccurate claim that this site used a cookieless analytics product was removed, because it does not, no analytics script runs in the browser at all, and the content-security policy would refuse one; and the third parties section now names the registries and nameservers the tools contact.",
@@ -610,7 +612,7 @@ export const briefPages: Record<string, PageContent> = {
         "body": [
           "A report prepared for you is delivered to you privately and is not published. Onduu will not name you, quote you or publish any result about your business without your written consent."
         ],
-        "note": "TO CONFIRM: how reports are delivered and stored, who inside Onduu can access them, and whether an anonymised finding may ever be used as an example."
+        "note": "Confirmed by the owner on 20 August 2026: the report is sent by email from Wycliffe directly, and he is the only person who reads it \u2014 Onduu is one person, so there is no wider internal access. TO CONFIRM: how long the sent report is retained, and whether an anonymised finding may ever be used as an example."
       },
       {
         "eyebrow": "08 / RETENTION AND CORRECTIONS",
@@ -624,7 +626,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "09 / INTELLECTUAL PROPERTY",
         "title": "Who owns what.",
         "body": [
-          "TO CONFIRM: whether the report, the scoring method and any template supplied remain Onduu's intellectual property, what licence the client receives to use the report internally, and what the client owns outright."
+          "The report is yours to act on. It is written as a guide, and you may share it with anyone you choose to help you act on it \u2014 your own team, a developer, or an independent provider you engage. Nothing in it is confidential to Onduu in a way that would stop you fixing what it identifies (owner, 20 August 2026).",
+          "TO CONFIRM: whether the scoring method and any blank template supplied remain Onduu\u0027s intellectual property, separately from the report itself, which is yours."
         ]
       },
       {

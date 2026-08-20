@@ -188,8 +188,15 @@ plus `retain_until` column, canonical/sitemap/robots live, GA removed.
 
 Remaining:
 
-- [ ] Replace remaining identity/contact placeholders with owner-approved
-  facts; remove draft markings only with owner sign-off.
+- [~] Replace remaining identity/contact placeholders with owner-approved
+  facts; remove draft markings only with owner sign-off. **Six of nine
+  answered 20 Aug 2026** (v4.55.0): controller identity, statutory
+  directorship, employment boundary, conflicts policy, complaints handling
+  and report delivery/ownership. Outstanding: registration number and
+  registered address, ODPC contact details, report retention period,
+  whether anonymised findings may be examples, and whether the scoring
+  method and templates stay Onduu's. Draft markings stay until the
+  professional review.
 - [x] Re-align Privacy, Commercial Relationships and tool-limitation pages
   with actual behaviour (v4.21.0, 19 Aug 2026): `/dns` documented in both
   the privacy notice and tool limitations; a false Cloudflare Web Analytics

@@ -110,7 +110,38 @@ Submissions from that form reach Onduu only.
 - **OWNER**: how assessment reports are delivered, stored and accessed,
   and whether anonymised findings may ever be used as examples.
 
-## 6. What this register does not do
+## 6. Owner answers, 20 August 2026
+
+Confirmed by Wycliffe and reflected in the pages:
+
+- **Controller**: Ujiajiri Enterprises Limited, a limited liability company
+  registered in Kenya. Onduu is a brand, not a registered company.
+  Registration number and registered address still outstanding.
+- **HOSTAFRICA**: he is a **statutory director** of the Kenyan company, not
+  only MD by title — a stronger relationship, now stated plainly rather
+  than hedged.
+- **Employment boundary**: nothing Onduu offers is excluded; operating
+  Onduu is permitted under his arrangement with HOSTAFRICA rather than
+  merely tolerated. (The commercial background sits with the owner; the
+  site states the permission, not the terms.)
+- **Conflicts policy**: none exists as a separate document. The published
+  principles are the whole of it, and the pages now say so instead of
+  implying a withheld policy.
+- **Complaints**: handled by Ujiajiri Enterprises Limited through the
+  contact form, which gained a "complaint" option. The independent right
+  to complain to the ODPC is retained in the notice — a regulator route
+  cannot run through the controller's own form. ODPC contact details still
+  outstanding.
+- **Assessment reports**: emailed by Wycliffe; he is the only reader,
+  because Onduu is one person. The report is the client's to act on and to
+  share with whoever helps them act on it.
+
+Still outstanding after these answers: the registration number and address,
+ODPC contact details, how long a sent report is retained, whether
+anonymised findings may be used as examples, and whether the scoring method
+and blank templates remain Onduu's separately from the report.
+
+## 7. What this register does not do
 
 It states no legal conclusion. It records what the software does, where
 the data sits and which decisions are outstanding, so that the
