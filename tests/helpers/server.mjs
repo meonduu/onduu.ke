@@ -123,8 +123,38 @@ async function spawnWorker(extraArgs) {
   throw lastError;
 }
 
+let lastExtraArgs = [];
+let restarting = null;
+
+/** The wrangler child can die mid-run (seen 20 Aug 2026: every request to
+ *  /api/scan failing at the TCP level after a first drop). A dead server
+ *  cannot be retried against — respawn it once, shared across concurrent
+ *  callers, with the same configuration it was started with. */
+export async function restartWorker() {
+  if (!restarting) {
+    console.error("[test-harness] worker unreachable — respawning");
+    restarting = (async () => {
+      try {
+        proc?.kill("SIGTERM");
+      } catch {
+        /* already gone */
+      }
+      baseUrl = null;
+      starting = null;
+      const url = await startWorker(lastExtraArgs);
+      restarting = null;
+      return url;
+    })().catch((err) => {
+      restarting = null;
+      throw err;
+    });
+  }
+  return restarting;
+}
+
 export async function startWorker(extraArgs = []) {
   if (baseUrl) return baseUrl;
+  if (extraArgs.length) lastExtraArgs = extraArgs;
   // Concurrent callers in one process must share a single spawn, or a
   // fetchPath() racing a startWorker([...]) can start a second, differently
   // configured worker and overwrite baseUrl with it.
@@ -140,8 +170,42 @@ export async function startWorker(extraArgs = []) {
   return starting;
 }
 
+// Miniflare's proxy occasionally drops an established connection under
+// parallel test load, surfacing either as a rejected fetch (ECONNRESET) or
+// as a 500 whose body is "Network connection lost" from its entry worker
+// (seen three times on 20 Aug 2026, each passing on re-run). That is
+// transport noise, not a test outcome — so it is retried, LOUDLY, a bounded
+// number of times. A real response, any status, is never retried: an
+// assertion failure must stay a failure.
+const TRANSPORT_NOISE = /Network connection lost|entry\.worker\.js/;
+
 export async function fetchPath(path, accept = "text/html", init = {}) {
-  const base = await startWorker();
   const headers = { accept, ...(init.headers ?? {}) };
-  return fetch(`${base}${path}`, { redirect: "manual", ...init, headers });
+  let lastErr = null;
+  for (let attempt = 1; attempt <= 3; attempt++) {
+    const base = await startWorker();
+    let res;
+    try {
+      res = await fetch(`${base}${path}`, { redirect: "manual", ...init, headers });
+    } catch (err) {
+      lastErr = err;
+      console.error(`[test-harness] fetch ${path} dropped (attempt ${attempt}/3): ${err.message}`);
+      if (attempt >= 2) {
+        await restartWorker();
+      } else {
+        await new Promise((r) => setTimeout(r, 300 * attempt));
+      }
+      continue;
+    }
+    if (res.status >= 500) {
+      const body = await res.clone().text().catch(() => "");
+      if (TRANSPORT_NOISE.test(body)) {
+        console.error(`[test-harness] miniflare dropped ${path} (attempt ${attempt}/3)`);
+        await new Promise((r) => setTimeout(r, 300 * attempt));
+        continue;
+      }
+    }
+    return res;
+  }
+  throw lastErr ?? new Error(`fetchPath(${path}): transport failed on all attempts`);
 }
