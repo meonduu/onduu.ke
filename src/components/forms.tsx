@@ -288,8 +288,7 @@ export function SubmissionForm({
         <div className="full turnstile-slot" ref={widgetRef} />
       ) : (
         <p className="note full">
-          Spam protection is not yet configured, so this form cannot accept submissions. Please
-          email me@onduu.ke in the meantime.
+          Spam protection is not yet configured, so this form cannot accept submissions.
         </p>
       )}
 

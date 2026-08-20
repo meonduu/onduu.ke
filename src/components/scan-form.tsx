@@ -142,8 +142,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
           <div className="turnstile-slot" ref={widgetRef} />
         ) : (
           <p className="note">
-            Spam protection is not configured, so the scan cannot run here. Please email
-            me@onduu.ke.
+            Spam protection is not configured, so the scan cannot run here.
           </p>
         )}
         <button className="button" type="submit" disabled={state === "loading" || !siteKey}>

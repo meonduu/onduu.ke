@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.50.1 — 1437hrs:20th August2026
+CURRENT VERSION: v4.51.0 — 1502hrs:20th August2026
+
+## v4.51.0 — 1502hrs:20th August2026
+
+The owner's personal email address leaves every public page, replaced by
+the contact form, on the owner's instruction after reading the privacy
+notice. Twelve occurrences across nine files: the privacy notice's
+deletion-request steps, consent-withdrawal route and questions note; the
+complaints route; the commercial-relationships "ask and it will be put in
+writing" line; the domain-owner opt-out on /scan, /kedomains and the tool
+limitations page (now a real link to /contact on the scan page); and a
+code comment in the do-not-scan module. The two dev-only "spam protection
+not configured" fallbacks simply drop the email — in that state no form
+works, so pointing at a form would be circular, and the state never
+occurs in production.
+
+The rights channels survive the change: deletion, consent withdrawal,
+complaints and the domain opt-out all route through /contact, which
+reaches Onduu only. A new test pins both properties — the email appears
+on no public page, and the privacy notice still states a working channel.
+
+Also checked at the owner's request: whether the notice over-describes
+what is collected. It does not. The four tools genuinely store no
+personal data and the notice says so; the two forms collect name,
+business email, company and free-text answers into D1 with a consent
+record — real personal data under the DPA, so the notice's sections
+remain load-bearing. Zero real enquiries are stored today, but the
+notice describes the mechanism, which is live.
+
+209 tests, lint clean.
 
 ## v4.50.1 — 1437hrs:20th August2026
 

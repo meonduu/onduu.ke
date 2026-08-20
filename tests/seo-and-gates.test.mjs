@@ -141,7 +141,7 @@ test("tool limitations page states the honest limits of all four tools", async (
   assert.match(html, /not a penetration test/i);
   assert.match(html, /not a reservation/i, "domain availability framed honestly");
   assert.match(html, /never counts as a pass or a failure/i, "scan rule 2 stated");
-  assert.match(html, /me@onduu\.ke/, "opt-out route published");
+  assert.match(html, /contact form/i, "opt-out route published (via the contact form)");
   // Every live tool must appear here, or the page under-describes the site.
   for (const tool of ["/email-security", "/kedomains", "/scan", "/dns"]) {
     assert.ok(html.includes(tool), `tool limitations must cover ${tool}`);
@@ -339,6 +339,23 @@ test("every guide is reachable by clicking from the guides index", async () => {
   }
   // The bare URL must not be printed as a label any more.
   assert.doesNotMatch(guides, /<small>\/guides\//, "guide URLs must not render as plain text");
+});
+
+test("the owner's personal email appears on no public page", async () => {
+  // Owner instruction, 20 Aug 2026: every public mention of me@onduu.ke is
+  // replaced by the contact form. Deletion requests, complaints, consent
+  // withdrawal and the domain opt-out all route through /contact now.
+  for (const path of [
+    "/", "/contact", "/readiness", "/scan", "/kedomains", "/dns",
+    "/email-security", "/legal/privacy", "/legal/tool-limitations",
+    "/legal/commercial-relationships", "/legal/assessment-terms", "/about",
+  ]) {
+    const html = await (await fetchPath(path)).text();
+    assert.doesNotMatch(html, /me@onduu\.ke/, `${path} exposes the personal email`);
+  }
+  // The rights channel must still exist: the privacy notice points at the form.
+  const privacy = await (await fetchPath("/legal/privacy")).text();
+  assert.match(privacy, /through the contact form/i, "rights requests need a stated channel");
 });
 
 test("the header carries the no-JS mobile disclosure menu", async () => {

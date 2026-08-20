@@ -433,7 +433,7 @@ export const strategyPages: Record<string, PageContent> = {
           "The Public Signal Score covers only what is publicly observable; Evidence Coverage says how much that is",
           "Anything not observable from outside is excluded from the score. It never counts as a pass or a failure",
           "It is not a Digital Readiness Score, a penetration test, a legal opinion or a compliance certificate",
-          "A domain owner who wants their domain left alone can email me@onduu.ke: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is blocked from future scans, and future lookups of it are not recorded",
+          "A domain owner who wants their domain left alone can ask through the contact form: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is blocked from future scans, and future lookups of it are not recorded",
         ],
       },
       {
@@ -458,7 +458,7 @@ export const strategyPages: Record<string, PageContent> = {
           "All tools are rate-limited and read public information only, no logins, no credentials, nothing private is touched",
           "Results describe a moment in time; records change, and a result is not monitoring",
           "What each tool stores is described in the privacy notice, which governs where this page is silent",
-          "Anything stored about a domain can be deleted on request, email me@onduu.ke",
+          "Anything stored about a domain is deleted on request through the contact form",
         ],
         links: [{ label: "Read the privacy notice", href: "/legal/privacy" }],
       },

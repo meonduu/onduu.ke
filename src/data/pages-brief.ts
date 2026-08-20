@@ -324,7 +324,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "06 / QUESTIONS",
         "title": "Ask directly.",
         "body": [
-          "If anything about these relationships is unclear, or you want it stated in writing before engaging, email me@onduu.ke and ask."
+          "If anything about these relationships is unclear, or you want it stated in writing before engaging, ask through the contact form and the answer will be put in writing."
         ]
       },
       {
@@ -358,7 +358,7 @@ export const briefPages: Record<string, PageContent> = {
           "The data controller is Ujiajiri Enterprises Limited, which trades as Onduu and operates this website. Onduu is the brand; Ujiajiri Enterprises Limited is the contracting entity.",
           "TO CONFIRM: company registration number and registered postal address, so the entity can be identified and checked."
         ],
-        "note": "Questions about your information can be sent to me@onduu.ke."
+        "note": "Questions about your information can be sent through the contact form; it reaches Onduu and nobody else."
       },
       {
         "eyebrow": "02 / WHAT IS COLLECTED",
@@ -416,7 +416,7 @@ export const briefPages: Record<string, PageContent> = {
           "The DNS health check at /dns reads a domain's public DNS and registry records to report whether its nameservers, delegation, addresses, mail routing and DNSSEC are coherent. Alongside the resolver lookups it asks two kinds of server a standard question directly, over the ordinary DNS port: one nameserver of the parent zone (for the delegation and glue records the parent publishes) and each of the domain's own nameservers (for the zone serial each is serving). These are read-only questions, the same ones every resolver on the internet sends, and no part of them concerns you: the servers see a request from Onduu's infrastructure, never anything about the visitor who asked. The domain checked and a summary of the outcome are stored, with no visitor identity attached, on the same basis and with the same deletion route as the tools above.",
           "The domain search at /kedomains checks whether a name is registered across the Kenyan extensions using public DNS and registry records, and shows a taken domain's registrar, transfer lock and expiry. Since 18 August 2026 the name searched and what was found are stored, on the same basis and with the same limit as the checker above: no account, and no identifier that could connect a search to you. If an available name leads you to register it, that happens at HOSTAFRICA's own site. The outbound link carries attribution tags so Onduu can see, in aggregate, that traffic came from this tool, and Onduu counts the click as a number with no identity attached. Onduu receives no commission on registrations."
         ],
-        "note": "The basis for storing tool results is a legitimate interest in operating the tools, caching results so they do not repeatedly fetch third-party sites, seeing which checks are run and which failures are common, and being able to reproduce a score. A Public Signal Score describes public observations at a moment in time; it is not a Digital Readiness Score, and not proof that a domain, a mailbox or a business is secure. Results are kept until deleted rather than on a fixed schedule. If you operate a domain and want it left alone, email me@onduu.ke: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is added to a do-not-scan list so it is not scanned again, and future lookups of it are not recorded. The lookups themselves keep working, because they read only the public records any WHOIS tool can read."
+        "note": "The basis for storing tool results is a legitimate interest in operating the tools, caching results so they do not repeatedly fetch third-party sites, seeing which checks are run and which failures are common, and being able to reproduce a score. A Public Signal Score describes public observations at a moment in time; it is not a Digital Readiness Score, and not proof that a domain, a mailbox or a business is secure. Results are kept until deleted rather than on a fixed schedule. If you operate a domain and want it left alone, ask through the contact form: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is added to a do-not-scan list so it is not scanned again, and future lookups of it are not recorded. The lookups themselves keep working, because they read only the public records any WHOIS tool can read."
       },
       {
         "eyebrow": "05 / COOKIES AND ANALYTICS",
@@ -482,7 +482,7 @@ export const briefPages: Record<string, PageContent> = {
           "Under the Kenyan Data Protection Act 2019 you may ask to see the information held about you, to have it corrected, to have it deleted, to object to how it is used, and to receive a copy of it."
         ],
         "items": [
-          "Email me@onduu.ke with what you would like done",
+          "Send what you would like done through the contact form",
           "Include the reference number from your confirmation if you have it, as that makes the record easy to find",
           "You will not be asked for a password or any account credential in order to make a request"
         ],
@@ -492,14 +492,14 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "11 / WITHDRAWING CONSENT",
         "title": "You can change your mind.",
         "body": [
-          "Where information is processed because you consented, you can withdraw that consent at any time by emailing me@onduu.ke. Withdrawing it does not undo anything already done on the basis of your earlier consent, and it does not affect the separate record kept to show what you agreed to."
+          "Where information is processed because you consented, you can withdraw that consent at any time through the contact form. Withdrawing it does not undo anything already done on the basis of your earlier consent, and it does not affect the separate record kept to show what you agreed to."
         ]
       },
       {
         "eyebrow": "12 / COMPLAINTS",
         "title": "If you are not satisfied.",
         "body": [
-          "Raise it directly first, at me@onduu.ke, and it will be looked at properly.",
+          "Raise it directly first, through the contact form, and it will be looked at properly.",
           "You also have the right to complain to the Office of the Data Protection Commissioner in Kenya. Doing so does not require you to contact Onduu first."
         ],
         "note": "TO CONFIRM: the ODPC contact details and complaint route to publish here."
