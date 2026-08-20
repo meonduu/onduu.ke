@@ -528,3 +528,22 @@ test("the assessment terms state what may be published without asking", async ()
   // Anything narrower than an aggregate needs consent against exact wording.
   assert.match(terms, /exactly what would be said/i, "consent must be against specific wording");
 });
+
+test("no editorial provenance leaks into published copy", async () => {
+  // v4.28.1 removed an internal note from the HOSTAFRICA disclosure; the same
+  // thing reached the assessment terms in v4.55.0 as "(owner, 20 August
+  // 2026)". Dated decisions belong in CHANGELOG.md, the register and code
+  // comments — never in what a visitor reads.
+  for (const path of [
+    "/legal/assessment-terms", "/legal/privacy", "/legal/commercial-relationships",
+    "/legal/tool-limitations", "/about", "/readiness", "/contact",
+  ]) {
+    const html = await (await fetchPath(path)).text();
+    assert.doesNotMatch(html, /\(owner[,)]/i, `${path} leaks an internal provenance note`);
+    assert.doesNotMatch(
+      html,
+      /owner-approved|owner-confirmed|owner's instruction|owner's input|owner's decision/i,
+      `${path} leaks editorial bookkeeping`,
+    );
+  }
+});
