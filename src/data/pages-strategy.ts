@@ -564,6 +564,15 @@ export const strategyPages: Record<string, PageContent> = {
       "Share the result the website or workflow should produce and the weakness you suspect. Onduu will review the request and recommend the readiness assessment, a guide, an independent partner route, the official infrastructure route or “not yet”.",
     sections: [
       {
+        eyebrow: "WHO RECEIVES IT",
+        title: "Who receives your enquiry.",
+        body: [
+          "Onduu.ke is operated by Ujiajiri Enterprises Limited. Enquiries submitted through this site are received and responded to by Ujiajiri, using the contact address shown on the commercial relationships page.",
+          "Nobody outside that company sees your enquiry because you sent it. If you later ask for implementation support, Ujiajiri may propose a suitable independent provider \u2014 and will name that provider and tell you exactly what would be shared before anything is sent. You may decline an introduction without it affecting your assessment or the advice you receive.",
+        ],
+        note: "An independent provider is copied into an email only after you have approved that specific introduction. Submitting a form here never does it by itself.",
+      },
+      {
         eyebrow: "THREE DESTINATIONS",
         title: "Send the enquiry to the party responsible for it.",
         cards: [

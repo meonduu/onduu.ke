@@ -550,3 +550,22 @@ test("no editorial provenance leaks into published copy", async () => {
     );
   }
 });
+
+test("no page implies a provider is copied without permission", async () => {
+  // Owner policy, 20 Aug 2026: submitting a form never discloses anything to
+  // an independent provider. The naming-and-permission step and the freedom
+  // to decline are the two promises that make that real, so both are pinned.
+  const commercial = await (await fetchPath("/legal/commercial-relationships")).text();
+  assert.match(commercial, /identify the provider and ask for your permission/i,
+    "the provider must be named before anything is shared");
+  assert.match(commercial, /decline an introduction without affecting/i,
+    "declining must be stated as free of consequence");
+
+  const contact = await (await fetchPath("/contact")).text();
+  assert.match(contact, /received and responded to by Ujiajiri/i, "who receives an enquiry must be stated");
+  assert.match(contact, /approved that specific introduction/i, "no automatic copying");
+
+  // And the notice must not still claim a single reader, which the policy ended.
+  const terms = await (await fetchPath("/legal/assessment-terms")).text();
+  assert.doesNotMatch(terms, /only person who reads it/i, "the sole-reader claim is no longer true");
+});

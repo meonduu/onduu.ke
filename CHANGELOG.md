@@ -1,6 +1,51 @@
 # Changelog
 
-CURRENT VERSION: v4.60.0 — 2049hrs:20th August2026
+CURRENT VERSION: v4.61.0 — 2138hrs:20th August2026
+
+## v4.61.0 — 2138hrs:20th August2026
+
+The owner's enquiry and introduction policy is implemented, and it
+required correcting a claim made earlier the same day.
+
+**The claim.** The assessment terms said the report was "emailed to you by
+Wycliffe, who is the only person who reads it. Onduu is one person, so
+there is no wider internal access." The policy establishes that Ujiajiri
+Enterprises Limited receives and answers enquiries and that others there
+may see them, which makes the sole-reader sentence false. It now says the
+report comes from Ujiajiri Enterprises Limited and is seen inside that
+company only by the people who need it — and never goes to a provider,
+HOSTAFRICA or anyone else without asking first.
+
+**What the pages now say.** `/contact` gains "Who receives your enquiry":
+enquiries are received and answered by Ujiajiri, nobody outside sees one
+because it was sent, and an introduction names the provider and states
+exactly what would be shared beforehand. The commercial-relationships page
+gains the introductions policy in the owner's own words, including the
+sentence that matters most commercially — **you may decline an
+introduction without affecting your assessment or advice** — and both
+pages state that a provider is copied only after that specific
+introduction is approved. The privacy notice carries the same rule where
+it lists third parties.
+
+**What stayed internal.** The step-by-step procedure, the permission
+wording naming provider, data and purpose, the record-keeping rule and
+the requirement for written data-sharing terms with each regular provider
+are recorded in `docs/specs/processors-and-transfers.md`, with the ODPC
+consent guidance and the Data Protection Act cited. A template consent
+sentence on a public page would be noise to a visitor and evidence to a
+reviewer, so it lives where reviewers look.
+
+**Caught before shipping**: the attempt to make `info@ujiajiri.ke` and the
+contact-form reference clickable inserted raw HTML into strings that React
+escapes — it would have printed the markup on the page. Reverted to plain
+text; making them genuinely clickable needs a small inline-link renderer,
+which is a separate change.
+
+**Owner action**: `npx wrangler secret put NOTIFY_EMAIL` with the Ujiajiri
+address, so notifications reach where the policy says enquiries are
+received. ZeptoMail must accept that domain as a verified sender.
+
+214 tests, lint clean.
 
 ## v4.60.0 — 2049hrs:20th August2026
 

@@ -169,7 +169,54 @@ questions that are decisions rather than facts: whether to pin the storage
 region and which transfer safeguard to record, and whether to adopt a fixed
 retention period. Both are noted for the professional review.
 
-## 7. What this register does not do
+## 7. Introductions to independent providers — operating procedure
+
+Owner policy, 20 August 2026. The website states the client-facing half;
+this is the procedure and the evidence a reviewer would ask for.
+
+**The boundary**: a partner is never copied into a first response merely
+because someone submitted a form on onduu.ke. Submitting a form does not
+disclose anything to anyone outside Ujiajiri Enterprises Limited.
+
+**The sequence**:
+
+1. Ujiajiri receives the enquiry and responds.
+2. If the client asks for implementation help, Ujiajiri selects a proposed
+   independent provider.
+3. Ujiajiri tells the client who that provider is and exactly what
+   information would be shared.
+4. The client gives affirmative permission.
+5. Ujiajiri sends the introduction email, copying the client and the named
+   provider.
+
+**Permission wording** to use at step 4, naming the recipient, the data and
+the purpose:
+
+> I agree that Ujiajiri may share my name, email address, telephone number
+> and the project summary shown above with [Provider legal name] for the
+> purpose of responding to this introduction.
+
+**Records**: keep the permission, and share only what the provider needs.
+
+**OWNER**: each regular provider relationship needs written data-sharing
+terms covering purpose, confidentiality, security, retention and deletion,
+and client rights. None are recorded as existing yet.
+
+**Basis**: this follows the ODPC's consent guidance, which expects the
+recipient and the purpose to be identified, and the Act's transparency,
+purpose-limitation and minimisation principles.
+
+- ODPC guidance note on consent (September 2025):
+  https://www.odpc.go.ke/wp-content/uploads/2025/09/Guidance-note-on-Consent.pdf
+- Data Protection Act 2019:
+  https://new.kenyalaw.org/akn/ke/act/2019/24/eng%402019-11-15
+
+**Who reads an enquiry** (revised 20 August 2026): enquiries and reports
+are received by Ujiajiri Enterprises Limited and seen inside it only by
+those who need them. The earlier statement that Wycliffe was the only
+reader was removed when this policy made it inaccurate.
+
+## 8. What this register does not do
 
 It states no legal conclusion. It records what the software does, where
 the data sits and which decisions are outstanding, so that the
