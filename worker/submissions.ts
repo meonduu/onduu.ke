@@ -222,7 +222,12 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
     const res = await fetch("https://api.zeptomail.com/v1.1/email", {
       method: "POST",
       headers: {
-        Authorization: env.ZEPTOMAIL_TOKEN,
+        // ZeptoMail authenticates with `Zoho-enczapikey <key>`, prefix and
+        // all. A bare key stored in the secret produces exactly the silent
+        // 401 TM_4001 found on 20 Aug 2026 — so accept either form.
+        Authorization: env.ZEPTOMAIL_TOKEN.startsWith("Zoho-enczapikey")
+          ? env.ZEPTOMAIL_TOKEN
+          : `Zoho-enczapikey ${env.ZEPTOMAIL_TOKEN}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

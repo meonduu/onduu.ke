@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.48.2 — 1013hrs:20th August2026
+CURRENT VERSION: v4.48.3 — 1023hrs:20th August2026
+
+## v4.48.3 — 1023hrs:20th August2026
+
+The enquiry notification failure has a root cause: **ZeptoMail rejects the
+API token — HTTP 401, code TM_4001** — caught by the v4.48.2 logging on
+the second end-to-end test (ON-260820-2RL4) within the hour of shipping
+it. Every notification since launch has died at this line; enquiries were
+stored and no one was told.
+
+ZeptoMail authenticates with `Zoho-enczapikey <key>`, prefix included, and
+the code sent the secret exactly as stored — so a bare key produces
+exactly this 401. The Authorization header now accepts either form,
+prepending the prefix when the stored secret lacks it. The owner is
+re-setting `ZEPTOMAIL_TOKEN` with the full value from ZeptoMail in
+parallel, in case the token is also stale; a third end-to-end test
+follows the deploy.
+
+205 tests, lint clean.
 
 ## v4.48.2 — 1013hrs:20th August2026
 
