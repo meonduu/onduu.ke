@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v4.55.0 — 1748hrs:20th August2026
+CURRENT VERSION: v4.56.0 — 1823hrs:20th August2026
+
+## v4.56.0 — 1823hrs:20th August2026
+
+The Commercial Relationships page is replaced with the owner's own copy,
+supplied 20 August 2026, and the footer takes his short version. The page
+is now organised as Onduu and Ujiajiri · HOSTAFRICA · Information and
+choice · Questions, and is clearer than what it replaces on several
+points: the introduction sequence (propose, identify, then share only
+with permission), that the referral fee sits under a **written partner
+agreement**, that an introduced provider is **not** thereby a HOSTAFRICA
+employee, agent or partner, and that nobody must buy HOSTAFRICA products
+to use Onduu.
+
+The footer now also names the HOSTAFRICA relationship, which previously
+appeared only on the pages — a disclosure improvement on every page of
+the site.
+
+Three deliberate changes from the copy it replaces, flagged to the owner
+rather than reconciled silently:
+
+- The **statutory directorship** confirmed hours earlier (v4.55.0) is not
+  in this copy, which says "Managing Director". The stronger disclosure
+  is therefore no longer published.
+- The **shared-ownership point now sits at the top of the section** rather
+  than beside the fee sentence, where v4.21.0 had deliberately placed it
+  so a reader meets both facts together. Both facts remain in the same
+  section; the test was updated to pin the substance rather than the old
+  wording.
+- The **company registration TO CONFIRM and the "no separate conflicts
+  policy" statement** are not carried over.
+
+New on the page: `info@ujiajiri.ke` for questions about introductions and
+provider conduct — a role address, not a personal one. A note distinguishes
+it from data requests about your own information, which still go through
+the contact form so they reach Onduu only.
+
+210 tests, lint clean.
 
 ## v4.55.0 — 1748hrs:20th August2026
 

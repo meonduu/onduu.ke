@@ -182,7 +182,11 @@ test("the legal pages describe behaviour that actually exists", async () => {
   // The referral fee must be disclosed, without an amount, and the shared
   // ownership with Ujiajiri stated at the point it matters.
   assert.match(commercial, /referral fee/i, "referral fee existence disclosed");
-  assert.match(commercial, /same company that operates Onduu/i, "shared entity stated");
+  // Owner copy (v4.56.0) states the shared ownership at the top of the same
+  // section as the fee rather than in the fee sentence itself. The substance
+  // pinned here is that both facts appear: who operates Onduu, and that a fee
+  // may be received — a reader must be able to connect them.
+  assert.match(commercial, /operated by Ujiajiri Enterprises Limited/i, "shared entity stated");
   assert.doesNotMatch(commercial, /referral fee[^.]*\d+\s*%|\d+\s*%[^.]*referral/i, "no fee amount");
   // The retired public-directory model must not survive here.
   assert.doesNotMatch(commercial, /Providers listed there/i, "directory language must be gone");

@@ -255,86 +255,44 @@ export const briefPages: Record<string, PageContent> = {
   "legal/commercial-relationships": {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Commercial relationships.",
-    "intro": "Who Onduu is, what it contracts for independently, which relationships could create a conflict, and how referrals are handled.",
-    "gate": "Draft for professional review. The employment and supplier boundaries below require the owner's written confirmation before publication.",
+    "intro": "Onduu, Ujiajiri and HOSTAFRICA have distinct roles. This page explains who is responsible for advice, introductions, products, contracts, payments and customer information.",
+    "gate": "Owner-approved copy, 20 August 2026. Not yet reviewed by a legal professional.",
     "sections": [
       {
-        "eyebrow": "STATUS",
-        "title": "This is a draft.",
+        "eyebrow": "ONDUU AND UJIAJIRI",
+        "title": "Who advises, who introduces, who delivers.",
         "body": [
-          "This page describes intent and current practice. It has not been reviewed by a legal professional, and items marked TO CONFIRM need the owner's input before anything here can be relied on."
+          "Onduu is a Digital Readiness and educational platform operated by Ujiajiri Enterprises Limited. Onduu helps businesses understand weaknesses affecting their websites and digital operations, review available evidence and identify the actions worth addressing first.",
+          "When a business needs independent website or digital-marketing implementation, it may separately ask Ujiajiri for an introduction. Ujiajiri uses a private, curated provider network; it does not publish an open directory.",
+          "Ujiajiri will propose a suitable independent provider and identify that provider before sharing the customer's information. The customer may accept, decline or request another provider. Identifiable information is shared only after the customer gives permission.",
+          "The selected provider scopes, quotes, contracts, invoices, delivers, supports and warrants its own work. The customer pays the provider directly. Neither Onduu nor Ujiajiri guarantees provider availability, suitability, price, delivery or results.",
+          "Ujiajiri may receive a referral fee from the selected provider after qualifying client payment under a written partner agreement. The existence of that arrangement will be disclosed before the customer approves the introduction. The provider remains responsible for explaining whether the arrangement affects its quoted price."
         ]
       },
       {
-        "eyebrow": "01 / WHO ONDUU IS",
-        "title": "The entity behind the brand.",
+        "eyebrow": "HOSTAFRICA",
+        "title": "Relationship with HOSTAFRICA.",
         "body": [
-          "Onduu is the brand used for the website, conversion, measurement and digital-performance work offered to businesses in Kenya. The contracting legal entity is Ujiajiri Enterprises Limited.",
-          "Any agreement, invoice or engagement is with Ujiajiri Enterprises Limited trading as Onduu.",
-          "Ujiajiri Enterprises Limited also operates ujiajiri.ke, a practical-skills platform and a private introduction service for independent website and digital-marketing providers. There is no public provider directory: a business asks Ujiajiri for an introduction, Ujiajiri proposes one provider from its private network and names it, and nothing identifiable is sent to that provider until the business gives permission. The provider is an independent business that scopes, quotes, contracts, invoices and delivers directly, and neither Ujiajiri nor Onduu delivers, manages or guarantees its work. Links from this site to ujiajiri.ke are plain links. Nothing you submit to Onduu is passed to Ujiajiri.",
-          "Onduu is a brand, not a registered company. The accountable entity is Ujiajiri Enterprises Limited, a limited liability company registered in Kenya. TO CONFIRM: its registration number and registered address."
+          "Wycliffe is the Managing Director of HOSTAFRICA Kenya. HOSTAFRICA is the provider, seller, biller, provisioner, renewer and supporter of any HOSTAFRICA domains, hosting, email, VPS or other infrastructure products referenced on this website.",
+          "Onduu may explain infrastructure use cases and direct an interested visitor to an approved official HOSTAFRICA route. Onduu and Ujiajiri do not themselves supply or support HOSTAFRICA products and must not be understood as substitutes for HOSTAFRICA's contracts, terms, billing or support.",
+          "An Ujiajiri introduction is separate from a HOSTAFRICA product route. An independent provider introduced by Ujiajiri is not thereby a HOSTAFRICA employee, agent or approved partner. Customers are not required to purchase HOSTAFRICA products merely because they use Onduu or request an Ujiajiri introduction.",
+          "Any commission, referral benefit, sponsorship, free product or other material commercial relationship connected to a recommendation or link will be disclosed at the relevant decision point."
         ]
       },
       {
-        "eyebrow": "02 / THE RELATIONSHIP TO DISCLOSE",
-        "title": "The relationship a client should know about.",
+        "eyebrow": "INFORMATION AND CHOICE",
+        "title": "Nothing moves without your permission.",
         "body": [
-          "Wycliffe Onduu is Managing Director for Kenya at HOSTAFRICA, a hosting and infrastructure provider. HOSTAFRICA acquired EACdirectory.co.ke, the .ke domain registrar he founded and ran from 2005, in 2022.",
-          "Infrastructure products referenced on this website are supplied and supported by HOSTAFRICA, not by Onduu.",
-          "This is disclosed because a client considering both website work and infrastructure should know that the same person has a position on both sides, and can then weigh the advice accordingly."
-        ],
-        "note": "Confirmed by the owner on 20 August 2026: Wycliffe is a statutory director of the Kenyan company, not only its Managing Director by title. A statutory director owes formal duties to that company, which is a stronger relationship than an employment title alone and is stated here for that reason."
+          "Onduu assessment answers and contact details are not automatically sent to Ujiajiri, an independent provider or HOSTAFRICA. Any transfer requires a clear notice and the customer's appropriate permission. Following an external link means the destination organisation's own terms and privacy notice will apply."
+        ]
       },
       {
-        "eyebrow": "03 / WHAT ONDUU CONTRACTS FOR",
-        "title": "What is bought from Onduu, and what is not.",
-        "cards": [
-          {
-            "title": "Contracted with Onduu",
-            "body": "The human-reviewed Digital Readiness assessment, and the free tools on this site, which are offered as-is. Any deeper piece of work exists only if it has been separately scoped and agreed with you in writing; nothing on this website sells one."
-          },
-          {
-            "title": "Not contracted with Onduu",
-            "body": "Website and digital-marketing implementation, which independent providers contract and deliver directly following a Ujiajiri introduction. Hosting, virtual servers, domains and infrastructure support, which are supplied under a separate agreement with the infrastructure provider, on their terms and their pricing."
-          }
-        ],
-        "note": "Onduu does not act as prime contractor for implementation work, does not manage another provider's delivery and does not guarantee it. Confirmed by the owner on 20 August 2026: nothing Onduu offers is excluded by his employment arrangement, and running Onduu is permitted under it rather than tolerated alongside it."
-      },
-      {
-        "eyebrow": "04 / HOW REFERRALS WORK",
-        "title": "Nothing is passed on automatically.",
-        "body": [
-          "This website does not send your enquiry anywhere. There is no automatic routing, no lead-sharing integration and no mechanism on this site that forwards what you submit to an infrastructure supplier, an implementation provider or anyone else. Every route off this site is a plain link you choose to follow.",
-          "Infrastructure: Onduu receives no commission, fee or revenue share if you choose HOSTAFRICA or any other supplier. The outbound link carries attribution tags so routed demand can be counted, and nothing more. If an infrastructure conversation would genuinely help you, it will be raised with you first and you decide whether to have it.",
-          "Implementation: this is the one place money can flow back. If you ask Ujiajiri for an introduction and go on to contract and pay the provider it proposes, Ujiajiri may receive a referral fee from that provider under a separate agreement. Ujiajiri Enterprises Limited is the same company that operates Onduu, so treat the interest as Onduu's own. You are told the fee may exist before you approve an introduction, the provider must tell you whether the arrangement affects the price it quotes you, and you are free to decline the proposed provider or use someone else entirely."
-        ],
-        "note": "The fee's existence is disclosed; its amount is not published here, because it is set in the partner agreement rather than on this website. Ask the provider what it means for your quote. If any of this changes, this page changes in the same release. A disclosure page that lags behind the arrangement it describes is worse than no page at all."
-      },
-      {
-        "eyebrow": "05 / HOW CONFLICTS ARE HANDLED",
-        "title": "The working rule.",
-        "items": [
-          "A recommendation should be traceable to evidence about your business, not to who supplies the product",
-          "Where a recommendation touches infrastructure, the relationship above is restated at that point, not buried here",
-          "You are free to take any recommendation to a different supplier, and doing so does not affect the rest of the work"
-        ],
-        "note": "There is no separate internal conflicts policy to link to: the principles above, and the disclosure in section 02, are the whole of it. If that changes, it will be published here rather than kept internally."
-      },
-      {
-        "eyebrow": "06 / QUESTIONS",
+        "eyebrow": "QUESTIONS",
         "title": "Ask directly.",
         "body": [
-          "If anything about these relationships is unclear, or you want it stated in writing before engaging, ask through the contact form and the answer will be put in writing."
-        ]
-      },
-      {
-        "eyebrow": "07 / VERSION",
-        "title": "Version and effective date.",
-        "body": [
-          "Draft version 0.3, prepared 16 August 2026, re-checked against the live site on 19 August 2026, and updated with the owner\u0027s answers on 20 August 2026. No effective date until reviewed and the remaining TO CONFIRM items are answered.",
-          "What changed in 0.3: how reports are delivered and who reads them is now stated (emailed by Wycliffe; Onduu is one person, so there is no wider access), and the report is confirmed as the client\u0027s to act on and to share with whoever helps them act on it. What remains open is narrower: how long a sent report is retained, whether anonymised findings may be used as examples, and whether the scoring method and blank templates stay Onduu\u0027s.",
-          "What changed in 0.2: Ujiajiri is described as a private introduction service rather than a provider listing; the referral fee Ujiajiri may receive from an introduced provider is disclosed, including that Ujiajiri and Onduu are the same company; and the list of what Onduu contracts for was corrected to match what this site actually offers."
-        ]
+          "Questions about an Ujiajiri introduction, provider conduct or these commercial relationships may be sent to info@ujiajiri.ke."
+        ],
+        "note": "Questions about your own information held by Onduu — access, correction, deletion or a complaint — go through the contact form on this site instead, which reaches Onduu only."
       }
     ]
   },
