@@ -300,13 +300,13 @@ export const briefPages: Record<string, PageContent> = {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Privacy notice.",
     "intro": "What Onduu collects when you use this website, why it is collected, who else can see it, how long it is kept and what you can ask for.",
-    "gate": "Draft for professional review. Items marked TO CONFIRM need Wycliffe's input before this can be relied on.",
+    "gate": "Draft for professional review. Two points below are still being decided, and no lawyer has checked this page yet.",
     "sections": [
       {
         "eyebrow": "STATUS",
         "title": "This is a draft.",
         "body": [
-          "This notice describes what the website actually does today, checked against the code that runs it. It has not yet been reviewed by a legal professional, and the entries marked TO CONFIRM are facts only the owner can supply.",
+          "This notice describes what the website actually does today, checked against the code that runs it. It has not yet been reviewed by a legal professional, and two points marked \u0022still to decide\u0022 are choices that have not been made yet.",
           "Until that review is complete, treat this as a good-faith description rather than a final legal notice."
         ]
       },
@@ -414,7 +414,7 @@ export const briefPages: Record<string, PageContent> = {
           "Specifically: the database runs in Cloudflare's Eastern Europe region, as a single copy with no replicas elsewhere. The website itself is served from whichever Cloudflare location is nearest the visitor, which is how a global network works.",
           "Onduu does not claim that this website keeps all data inside Kenya, because that would not be true."
         ],
-        "note": "TO CONFIRM: whether to pin storage to a chosen region, and which transfer safeguard to record under the Data Protection Act. The processing register behind this section is at docs/specs/processors-and-transfers.md in the site's repository."
+        "note": "Still to decide: whether to pin storage to a chosen region, and which transfer safeguard to record under the Data Protection Act. The processing register behind this section is at docs/specs/processors-and-transfers.md in the site's repository."
       },
       {
         "eyebrow": "08 / HOW LONG IT IS KEPT",
@@ -424,7 +424,7 @@ export const briefPages: Record<string, PageContent> = {
           "The same applies to the counted page views and the engagement measurement: nothing prunes them on a timer, and they are removed by hand. They hold no name, address or identifier, so there is nothing in them to trace back to a person, but they do accumulate with every visit rather than only when somebody writes in.",
           "You can ask at any time for information about you to be deleted, and it will be. That is the practical control available to you, and it is honoured on request rather than on a timer."
         ],
-        "note": "TO CONFIRM: whether a retention limit should be introduced later. Holding personal data indefinitely is a weaker position under the Data Protection Act than deleting it on a defined schedule."
+        "note": "Still to decide: whether a retention limit should be introduced later. Holding personal data indefinitely is a weaker position under the Data Protection Act than deleting it on a defined schedule."
       },
       {
         "eyebrow": "09 / SECURITY",
@@ -471,7 +471,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "13 / VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.5, prepared 20 August 2026 with facts confirmed by the owner the same day. It has no effective date until it has been reviewed and the TO CONFIRM items have been answered.",
+          "Draft version 0.5, prepared 20 August 2026 with facts confirmed by the owner the same day. It has no effective date until a legal professional has reviewed it and the two open points are decided.",
           "What changed in 0.5: the owner confirmed that Onduu itself is not a registered company and that Ujiajiri Enterprises Limited, a limited liability company registered in Kenya, is the accountable entity; the complaints section names that company and points at the contact form\u0027s new \u0022complaint\u0022 option, while keeping the independent right to complain to the Data Protection Commissioner. The registration number and registered address remain outstanding.",
           "What changed in 0.4: Slack was added to the list of parties that receive a notification, correcting an omission made when that channel was wired up earlier the same day; and where the information is stored is now stated exactly (Cloudflare's Eastern Europe region, single copy, no replicas) rather than as \u0022many countries\u0022. A processing register recording every processor, what each receives and the decisions still outstanding is published in the site's repository.",
           "What changed in 0.3: the cookies and analytics section now describes the first-party measurement script this site runs in the browser — which pages were opened, roughly how long each was on screen, and clicks on explicitly marked elements, with a tab-scoped label in session storage and nothing that can recognise a returning visitor — and records that the script honours the Global Privacy Control and Do Not Track signals. Three further sections were corrected to match it: what is collected no longer claims nothing is gathered as you browse, why-and-on-what-basis states the legitimate interest relied on for the measurement, and how-long-it-is-kept covers the counted views and events rather than form submissions alone.",

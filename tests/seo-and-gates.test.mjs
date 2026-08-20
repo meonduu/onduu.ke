@@ -542,7 +542,10 @@ test("no editorial provenance leaks into published copy", async () => {
     assert.doesNotMatch(html, /\(owner[,)]/i, `${path} leaks an internal provenance note`);
     assert.doesNotMatch(
       html,
-      /owner-approved|owner-confirmed|owner's instruction|owner's input|owner's decision/i,
+      // Widened after the first version missed "Wycliffe's input" and "facts
+      // only the owner can supply" on the privacy notice — the guard gave
+      // false confidence until the page was read by eye.
+      /owner-approved|owner-confirmed|owner's (instruction|input|decision)|only the owner can|Wycliffe's input|TO CONFIRM/i,
       `${path} leaks editorial bookkeeping`,
     );
   }

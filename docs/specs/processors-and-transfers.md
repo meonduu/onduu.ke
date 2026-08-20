@@ -5,6 +5,9 @@ reading the running code and querying production, not from memory. Every
 factual claim below is checkable by the command or file named beside it.
 Items marked **OWNER** need a decision only Wycliffe can make; items marked
 **LAWYER** need the professional review that `ROADMAP.md` Phase 3 awaits.
+The public pages no longer use the phrase "TO CONFIRM" — visitor-facing
+copy says "still to decide" instead (v4.60.0). This register keeps the
+internal vocabulary, which is what it is for.
 
 This is the internal register behind the public privacy notice
 (`/legal/privacy`, sections 06 and 07). The notice is written for
