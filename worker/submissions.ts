@@ -120,6 +120,25 @@ export function normaliseKind(kind: string) {
   return kind === "readiness" ? "fitness" : kind;
 }
 
+/**
+ * What actually goes into D1, which is not the same thing.
+ *
+ * `submissions` still carries `CHECK (kind IN ('readiness','contact'))`
+ * from migration 0001. The rename changed the wire value to "fitness"
+ * without widening that constraint, so every assessment insert failed and
+ * returned 500 — the conversion path was down for about forty minutes on
+ * 20 August 2026 before this was caught.
+ *
+ * The database vocabulary is internal: no visitor, page, email or report
+ * ever sees it. So the storage value stays the old one rather than the
+ * production table being rebuilt under a live site. `migrations/0009`
+ * widens the constraint; once it is applied this becomes the identity
+ * function and both it and the migration's compatibility entry go away.
+ */
+export function storageKind(kind: string) {
+  return kind === "fitness" ? "readiness" : kind;
+}
+
 export function validate(kind: string, body: Record<string, unknown>) {
   const errors: Record<string, string> = {};
   const value = (field: Field) => str(body[field]).slice(0, LIMITS[field] + 1);
@@ -380,7 +399,7 @@ export async function handleSubmit(request: Request, env: SubmissionEnv): Promis
       )
       .bind(
         ref,
-        kind,
+        storageKind(kind),
         d.full_name,
         d.business_email,
         d.company,
