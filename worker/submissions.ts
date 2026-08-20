@@ -206,6 +206,24 @@ export async function clientKeyOf(request: Request) {
   return [...new Uint8Array(digest)].slice(0, 8).map((b) => b.toString(16).padStart(2, "0")).join("");
 }
 
+async function recordNotifyOutcome(env: SubmissionEnv, outcome: string, code: string | null) {
+  // The /go overview reads this single row as a status light (lesson L6:
+  // a log line is invisible; a light is not). Best-effort by design.
+  try {
+    await env.onduu_leads
+      ?.prepare(
+        `INSERT INTO notify_health (id, last_outcome, last_code, changed_at)
+         VALUES (1, ?, ?, datetime('now'))
+         ON CONFLICT(id) DO UPDATE SET last_outcome = excluded.last_outcome,
+           last_code = excluded.last_code, changed_at = excluded.changed_at`,
+      )
+      .bind(outcome, code)
+      .run();
+  } catch {
+    // Before migration 0008 the table does not exist; the overview says so.
+  }
+}
+
 async function notify(env: SubmissionEnv, kind: string, ref: string) {
   // The notification deliberately carries no submitted content — only the
   // reference and form type. Details are read from D1 by an authorised person.
@@ -216,6 +234,7 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
   // (status and ZeptoMail's error code only; no address, no personal data).
   if (!env.ZEPTOMAIL_TOKEN || !env.NOTIFY_EMAIL) {
     console.error(JSON.stringify({ event: "notify_skipped", reason: "secrets_missing", ref }));
+    await recordNotifyOutcome(env, "skipped", "secrets_missing");
     return;
   }
   try {
@@ -243,11 +262,14 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
       const detail = (await res.text().catch(() => "")).slice(0, 200);
       const code = detail.match(/"code"\s*:\s*"([A-Z0-9_]+)"/)?.[1] ?? "unknown";
       console.error(JSON.stringify({ event: "notify_failed", status: res.status, code, ref }));
+      await recordNotifyOutcome(env, "failed", `${res.status} ${code}`);
+      return;
     }
+    await recordNotifyOutcome(env, "sent", null);
   } catch (err) {
-    console.error(
-      JSON.stringify({ event: "notify_failed", status: 0, code: (err as Error).name ?? "fetch_error", ref }),
-    );
+    const name = (err as Error).name ?? "fetch_error";
+    console.error(JSON.stringify({ event: "notify_failed", status: 0, code: name, ref }));
+    await recordNotifyOutcome(env, "failed", name);
   }
 }
 

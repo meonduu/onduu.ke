@@ -187,3 +187,16 @@ test("the overview reports a missing source rather than a confident zero", async
   // With no submissions table, "0 enquiries" would read as "nobody wrote in".
   assert.match(html, /—/, "counts from an unavailable table must not render as 0");
 });
+
+test("the overview shows a notification status light in every database state", async () => {
+  // Lesson L6: the notification path failed silently from launch to
+  // 20 Aug 2026. The overview must always say something about it — green,
+  // red, "never attempted", or "migration 0008 not applied" — and the
+  // harness database has no tables, so this exercises the last of those.
+  const html = await (await asOwner("/go")).text();
+  assert.match(
+    html,
+    /Notifications delivering|Enquiry notifications|No enquiry notification has been attempted|migration 0008 is not applied/,
+    "the overview must always state the notification path's condition",
+  );
+});

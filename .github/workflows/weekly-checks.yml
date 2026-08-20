@@ -1,0 +1,32 @@
+# The system tells on itself (OPERATIONS.md): these checks otherwise run
+# only when someone is actively working, so a quiet fortnight would hide a
+# revoked token, an edge-injected script or a broken build until the next
+# session — the Cloudflare beacon sat unnoticed for days for exactly this
+# reason. A failed run makes GitHub email the owner with zero dependence on
+# the site's own email path, which is one of the things being checked.
+name: weekly-checks
+
+on:
+  schedule:
+    # Mondays 04:00 UTC (07:00 Nairobi)
+    - cron: "0 4 * * 1"
+  workflow_dispatch: {}
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run lint
+      # npm test builds first, then boots the built Worker in local workerd —
+      # no Cloudflare credentials involved.
+      - run: npm test
+      # And the one no local test can do: what does Cloudflare actually
+      # serve to a browser right now?
+      - run: npm run check:live

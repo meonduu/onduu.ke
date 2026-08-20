@@ -22,6 +22,12 @@ or email/DNS provider change. Total time: about ten minutes. Every item
 says how to check and what "good" looks like — if an item cannot be
 checked as written, that is itself a finding.
 
+0. **Glance at the lights.** The /go overview shows the notification
+   path's state (green: delivering; red: failing, with the provider code).
+   GitHub Actions runs lint, the full suite and `check:live` every Monday
+   (`.github/workflows/weekly-checks.yml`) and emails the owner on failure
+   — if Monday's run is red, that email IS this checklist calling.
+
 1. **Enquiry path, end to end, in production.** Submit a clearly-marked
    test enquiry on https://onduu.ke/readiness ("TEST — please ignore" in
    name and company). Good: confirmation with a reference on screen, the
@@ -77,7 +83,10 @@ prefix required) inside a `catch {}` that reported nothing. Guard:
 `notify()` logs every non-2xx with status and provider code (v4.48.2); the
 header accepts both token forms (v4.48.3); REVIEW.md forbids silent
 failure on business-critical paths; checklist item 1 re-proves the path
-monthly.
+monthly; and since v4.49.0 every attempt records its outcome to
+`notify_health` (migration 0008), which the /go overview renders as a
+status light — the failure mode is now a red light on the owner's own
+dashboard, not a log line nobody reads.
 
 **L5 — 20 Aug 2026 · "Fixed" flaky test returned.** The miniflare fixture
 flaked three times in one day despite the v4.29.2 fix — that fix cured the
