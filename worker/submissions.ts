@@ -209,9 +209,17 @@ export async function clientKeyOf(request: Request) {
 async function notify(env: SubmissionEnv, kind: string, ref: string) {
   // The notification deliberately carries no submitted content — only the
   // reference and form type. Details are read from D1 by an authorised person.
-  if (!env.ZEPTOMAIL_TOKEN || !env.NOTIFY_EMAIL) return;
+  //
+  // Failures must never fail the submission, but they must be VISIBLE: this
+  // path was silently broken until 20 Aug 2026 — enquiries landed in D1 and
+  // no one was told. Every outcome short of a 2xx now logs a structured line
+  // (status and ZeptoMail's error code only; no address, no personal data).
+  if (!env.ZEPTOMAIL_TOKEN || !env.NOTIFY_EMAIL) {
+    console.error(JSON.stringify({ event: "notify_skipped", reason: "secrets_missing", ref }));
+    return;
+  }
   try {
-    await fetch("https://api.zeptomail.com/v1.1/email", {
+    const res = await fetch("https://api.zeptomail.com/v1.1/email", {
       method: "POST",
       headers: {
         Authorization: env.ZEPTOMAIL_TOKEN,
@@ -224,8 +232,17 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
         textbody: `A new ${kind} request was received.\n\nReference: ${ref}\n\nThe submitted details are stored in the onduu-leads database. This message intentionally contains no personal data.`,
       }),
     });
-  } catch {
-    // Notification failure must never fail the submission.
+    if (!res.ok) {
+      // ZeptoMail's error body carries a machine code (e.g. TM_3601) that
+      // identifies the cause without exposing the address or token.
+      const detail = (await res.text().catch(() => "")).slice(0, 200);
+      const code = detail.match(/"code"\s*:\s*"([A-Z0-9_]+)"/)?.[1] ?? "unknown";
+      console.error(JSON.stringify({ event: "notify_failed", status: res.status, code, ref }));
+    }
+  } catch (err) {
+    console.error(
+      JSON.stringify({ event: "notify_failed", status: 0, code: (err as Error).name ?? "fetch_error", ref }),
+    );
   }
 }
 

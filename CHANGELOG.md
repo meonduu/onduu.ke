@@ -1,6 +1,31 @@
 # Changelog
 
-CURRENT VERSION: v4.48.1 — 0949hrs:20th August2026
+CURRENT VERSION: v4.48.2 — 1013hrs:20th August2026
+
+## v4.48.2 — 1013hrs:20th August2026
+
+Notification failures become visible. Found by the first end-to-end test
+of the production enquiry path (reference ON-260820-L9YL, submitted with
+the owner's approval): the enquiry passed real Turnstile and landed in D1,
+and **no notification email arrived**. `notify()` never checked ZeptoMail's
+response — fetch does not throw on a 4xx — and swallowed every exception,
+so the sending leg could be dead indefinitely with no symptom. Both
+secrets exist on the Worker, so the send is being attempted and rejected,
+or delivered to an address nobody checks; the logs will now say which.
+
+Every outcome short of a 2xx now logs a structured line: missing secrets
+log `notify_skipped`; a non-2xx logs `notify_failed` with the HTTP status
+and ZeptoMail's machine error code (e.g. TM_3601); a thrown fetch logs the
+error name. No address, token or personal data is logged, per the repo's
+no-PII logging rule. Submissions remain unaffected by any failure.
+
+Also noted for the record: the Worker carries `SLACK_WEBHOOK_URL` and
+`VBOUT_API_KEY` secrets that nothing in the current codebase references —
+previous-site leftovers, parked for cleanup. And the flaky dashboard test
+fixture (miniflare "Network connection lost", fixed once in v4.29.2) has
+now flaked three times today; it deserves a revisit.
+
+205 tests, lint clean.
 
 ## v4.48.1 — 0949hrs:20th August2026
 
