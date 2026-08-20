@@ -1,6 +1,37 @@
 # Changelog
 
-CURRENT VERSION: v4.64.3 — 2334hrs:20th August2026
+CURRENT VERSION: v4.65.0 — 2359hrs:20th August2026
+
+## v4.65.0 — 2359hrs:20th August2026
+
+**The enquiry notification path, diagnosed properly at last.**
+
+ZeptoMail authenticates **per Mail Agent**, and each agent may send only
+from the domain associated with it. This account has `Onduu_ke` (onduu.ke)
+and `ujiajiriKE` (ujiajiri.ke). The token and `NOTIFY_EMAIL` must therefore
+be chosen together — a token from one agent with a sender from the other
+fails, whichever way round.
+
+That is why the day's diagnosis kept missing: **an unusable token and a
+mismatched sender return the identical `401 TM_4001`**. Testing two
+different verified senders against the same token — both failing the same
+way — is what finally separated them, because a sender problem would have
+succeeded for one of the two.
+
+- `notify()` now prefers `ZEPTOMAIL_UJIAJIRI_TOKEN`, falling back to
+  `ZEPTOMAIL_TOKEN`, so moving the sender back to onduu.ke later needs no
+  code change. Without this the new binding would have been ignored
+  entirely: the Worker read only the old name.
+- `OPERATIONS.md` item 6 gains an audit rule learned the hard way: check
+  the binding **type**, not only the names. The token first arrived as a
+  plain-text Variable — stored unencrypted and readable by anyone with
+  dashboard access — and `wrangler secret list` does not show plain-text
+  vars at all, so it cannot audit this on its own. Now corrected to an
+  encrypted Secret, with no plain-text copy left behind.
+- `CLAUDE.md` secrets list updated, including `NOTIFY_TO`, which it had
+  never named.
+
+225 tests pass.
 
 ## v4.64.3 — 2334hrs:20th August2026
 
