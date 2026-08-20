@@ -9,10 +9,11 @@ decisions recorded 19 August 2026:
   remains the documented escape hatch if event volume ever justifies it.
 - **No browser/OS dimension is stored.** The user-agent continues to be
   read and discarded, as `worker/pageviews.ts` already does.
-- The owner will **enable Cloudflare Web Analytics** for onduu.ke. The
-  Core Web Vitals / RUM panels stay dormant and clearly labelled
-  "not configured" until the beacon is live and an analytics-read API
-  token exists as a Worker secret.
+- ~~The owner will **enable Cloudflare Web Analytics** for onduu.ke.~~
+  **Reversed 20 August 2026: Web Analytics is disabled.** The beacon was
+  refused by the CSP on every public page and ran only on the then-unprotected
+  `/go`. The Core Web Vitals / RUM panels are dropped with Phase 4, not
+  deferred.
 
 Origin: an external "Cloudflare analytics dashboard" prompt, refined
 against this repo on 19 August 2026. The original assumed a greenfield
@@ -186,9 +187,18 @@ as `tests/dashboard.test.mjs` does today).
    data) + coverage panel + CSV + definitions panel.
 3. Conversions wiring (CTA attributes on approved CTAs, downloads,
    outbound) + entry/exit estimates.
-4. GraphQL RUM/CWV panels — only after the owner confirms Web Analytics
+4. ~~GraphQL RUM/CWV panels — only after the owner confirms Web Analytics
    is enabled and has added the API token secret; add the beacon snippet
-   to `src/layouts/Layout.astro` in this phase.
+   to `src/layouts/Layout.astro` in this phase.~~ **Dropped 20 August 2026.**
+   The owner turned Cloudflare Web Analytics off rather than on. Its
+   auto-injected beacon was refused by the content-security policy on every
+   public page — so it measured nothing there while logging a console error
+   on every visit — and ran only on `/go`, which had no policy at the time
+   (fixed in v4.47.0). With first-party measurement in place there is no
+   reason to reintroduce a third-party beacon, a CSP exception for it, or an
+   API token to read it back. Do not rebuild this phase without a fresh
+   owner decision; Core Web Vitals, if ever wanted, should be measured from
+   the site's own tracker.
 
 Each phase is a separate reviewed change with its own CHANGELOG entry,
 REVIEW.md self-check, and desktop + mobile verification of the real
@@ -197,7 +207,12 @@ dashboard.
 
 ### Owner actions (outside the repo)
 
-Enable Web Analytics for onduu.ke · create a least-privilege
+Apply the D1 migration to production · approve each phase before it
+deploys.
+
+~~Enable Web Analytics for onduu.ke · create a least-privilege
 analytics-read API token · add `CLOUDFLARE_API_TOKEN` (and account/zone
-IDs if not already bound) as Worker secrets · apply the D1 migration to
-production · approve each phase before it deploys.
+IDs if not already bound) as Worker secrets~~ — all three dropped 20 August
+2026 with Phase 4; Web Analytics is deliberately off and no Cloudflare API
+token is needed. Verify with `npm run check:live`, which fails if any
+Cloudflare-injected script reappears on the live site.

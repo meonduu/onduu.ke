@@ -1,6 +1,31 @@
 # Changelog
 
-CURRENT VERSION: v4.47.0 — 0752hrs:20th August2026
+CURRENT VERSION: v4.47.1 — 0824hrs:20th August2026
+
+## v4.47.1 — 0824hrs:20th August2026
+
+The analytics spec catches up with the owner's decision to switch
+Cloudflare Web Analytics **off** rather than on, documentation only.
+
+The spec still told a future session to enable Web Analytics, create a
+least-privilege analytics-read API token, add `CLOUDFLARE_API_TOKEN` as a
+Worker secret, and build GraphQL RUM/Core Web Vitals panels on top of the
+beacon. All of that is now wrong, and left as written it would have led
+someone to reintroduce exactly what was removed.
+
+- **Phase 4 dropped**, with the reason recorded: the auto-injected beacon
+  was refused by the content-security policy on every public page — so it
+  measured nothing while logging a console error on every visit — and ran
+  only on `/go`, which had no policy of its own until v4.47.0. Core Web
+  Vitals, if ever wanted, should come from the site's own tracker.
+- **Owner actions** reduced to two: apply the D1 migration, and approve
+  each phase before it deploys. The three Cloudflare-side actions are
+  struck through rather than deleted, so the decision stays legible.
+- The status block at the top of the spec, which recorded "the owner will
+  enable Cloudflare Web Analytics", now records the reversal.
+
+`npm run check:live` (v4.47.0) is named in the spec as the way to verify no
+Cloudflare-injected script returns.
 
 ## v4.47.0 — 0752hrs:20th August2026
 
