@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.48.6 — 1136hrs:20th August2026
+CURRENT VERSION: v4.48.7 — 1158hrs:20th August2026
+
+## v4.48.7 — 1158hrs:20th August2026
+
+The living documents are made consistent with each other and with the
+site, and lesson L4 finally gets an executable guard. Owner-requested
+("see that all the .md files communicate with each other"). Docs and
+tests only; no site change.
+
+Found by auditing every .md in the repo, judged by file class — the
+changelog, specs and strategy papers are historical records and correctly
+keep the paths of their moment; the living documents may not:
+
+- **README.md described the pre-Phase-1 site**: Solutions/Managed
+  Operations/Agent Pilot/Labs/Results as included routes, `/check` and
+  `check.astro` (renamed 18 Aug), 11 articles (there are 12), three
+  secrets (there are five), two islands (there are five), the scanner as
+  "WIP" (live since 18 Aug), no tools, no analytics, no OPERATIONS.md.
+  Rewritten to current reality, with `check:live` in the release checks.
+- **CLAUDE.md** carried two dead vinext-era paths (insights-data,
+  route-policy under the old app directory) and an incomplete secrets
+  list. Fixed; the secrets line now points at OPERATIONS.md item 6 as the
+  standing inventory.
+- **REVIEW.md** now points at the OPERATIONS.md checklist from its
+  operations section; **OPERATIONS.md** names CLAUDE.md and uses the full
+  `scripts/check-live.mjs` path. All four governance files now reference
+  each other, pinned by a test.
+
+The guard: `tests/docs-consistency.test.mjs` fails the suite when a living
+document names a file that does not exist, describes a retired route, or
+drops a governance cross-reference. Its first two catches were its own
+author's edits — the changelog wording and the L4 entry both tripped it
+before shipping. 208 tests, lint clean.
 
 ## v4.48.6 — 1136hrs:20th August2026
 
