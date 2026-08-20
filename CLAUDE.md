@@ -94,10 +94,11 @@ Hard-won operational rules — keep these:
   URLs.
 - Turnstile: real site key is registered for onduu.ke only; dev uses
   Cloudflare's published test keys (`src/data/route-policy.ts` + `.dev.vars`,
-  gitignored). Secrets (`TURNSTILE_SECRET`, `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL`,
+  gitignored). Secrets (`TURNSTILE_SECRET`, `ZEPTOMAIL_TOKEN`,
+  `ZEPTOMAIL_UJIAJIRI_TOKEN`, `NOTIFY_EMAIL`, `NOTIFY_TO`,
   `SLACK_WEBHOOK_URL`, `SCAN_ENABLED`, `DNS_CHECK_ENABLED`) live only as
-  Worker bindings —
-  never in the repo. `OPERATIONS.md` item 6 is the standing inventory.
+  Worker bindings — never in the repo, and as encrypted Secrets rather than
+  plain-text Variables. `OPERATIONS.md` item 6 is the standing inventory.
 - Stale build caches produce silently wrong builds. For release checks, build
   clean.
 

@@ -11,10 +11,23 @@
 export interface SubmissionEnv {
   onduu_leads?: D1Database;
   TURNSTILE_SECRET?: string;
+  /** Send Mail Token for the Onduu_ke Mail Agent (sends as onduu.ke). */
   ZEPTOMAIL_TOKEN?: string;
-  /** The verified ZeptoMail sender. Must be a domain ZeptoMail accepts, or
-   *  every send fails 401 TM_4001 (seen live on 20 Aug 2026 when this was
-   *  pointed at an unverified domain). */
+  /** Send Mail Token for the ujiajiriKE Mail Agent (sends as ujiajiri.ke).
+   *  Preferred when present. */
+  ZEPTOMAIL_UJIAJIRI_TOKEN?: string;
+  /** The ZeptoMail sender.
+   *
+   *  ZeptoMail authenticates **per Mail Agent**, and each agent may send
+   *  only from the domain associated with it: Onduu_ke owns onduu.ke,
+   *  ujiajiriKE owns ujiajiri.ke. The token and this address must therefore
+   *  be chosen together — a token from one agent with a sender from the
+   *  other fails, whichever way round.
+   *
+   *  Both failure modes return the same `401 TM_4001`, which is what made
+   *  20 Aug 2026 slow to diagnose: an unusable token and a mismatched
+   *  sender are indistinguishable from the error alone. Changing one and
+   *  re-testing is the only way to tell them apart. */
   NOTIFY_EMAIL?: string;
   /** Where notifications are delivered. Defaults to NOTIFY_EMAIL. Split from
    *  the sender so the destination can change without touching DNS or mail
@@ -302,7 +315,11 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
   // path was silently broken until 20 Aug 2026 — enquiries landed in D1 and
   // no one was told. Every outcome short of a 2xx now logs a structured line
   // (status and ZeptoMail's error code only; no address, no personal data).
-  if (!env.ZEPTOMAIL_TOKEN || !env.NOTIFY_EMAIL) {
+  // The ujiajiri agent's token wins when set, because NOTIFY_EMAIL now
+  // sends as ujiajiri.ke. Falling back keeps the onduu.ke path working if
+  // the sender is ever moved back.
+  const zeptoToken = env.ZEPTOMAIL_UJIAJIRI_TOKEN || env.ZEPTOMAIL_TOKEN;
+  if (!zeptoToken || !env.NOTIFY_EMAIL) {
     console.error(JSON.stringify({ event: "notify_skipped", reason: "secrets_missing", ref }));
     await recordNotifyOutcome(env, "skipped", "secrets_missing");
     return;
@@ -314,9 +331,9 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
         // ZeptoMail authenticates with `Zoho-enczapikey <key>`, prefix and
         // all. A bare key stored in the secret produces exactly the silent
         // 401 TM_4001 found on 20 Aug 2026 — so accept either form.
-        Authorization: env.ZEPTOMAIL_TOKEN.startsWith("Zoho-enczapikey")
-          ? env.ZEPTOMAIL_TOKEN
-          : `Zoho-enczapikey ${env.ZEPTOMAIL_TOKEN}`,
+        Authorization: zeptoToken.startsWith("Zoho-enczapikey")
+          ? zeptoToken
+          : `Zoho-enczapikey ${zeptoToken}`,
         "Content-Type": "application/json",
       },
       body: JSON.stringify({

@@ -55,10 +55,19 @@ checked as written, that is itself a finding.
    four, and the Turnstile on /scan solving without a visible challenge.
 
 6. **Secrets inventory.** Dashboard → onduudotke → Settings → Variables.
+   Check the **type** column, not only the names: a token added as a
+   plain-text Variable rather than an encrypted Secret is stored unencrypted
+   and readable by anyone with dashboard access. `ZEPTOMAIL_UJIAJIRI_TOKEN`
+   arrived that way on 20 Aug 2026. `wrangler secret list` does not show
+   plain-text vars at all, so it cannot be used to audit this on its own.
    Good: exactly the secrets the code references — `TURNSTILE_SECRET`,
-   `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL` (the **verified ZeptoMail sender** —
-   pointing it at an unverified domain fails every send with 401 TM_4001),
-   `NOTIFY_TO` (optional destination; defaults to the sender),
+   `ZEPTOMAIL_TOKEN` (Onduu_ke agent, sends as onduu.ke),
+   `ZEPTOMAIL_UJIAJIRI_TOKEN` (ujiajiriKE agent, sends as ujiajiri.ke —
+   preferred by the code when present), `NOTIFY_EMAIL` (the ZeptoMail
+   sender, which **must belong to the same agent as the token in use**:
+   ZeptoMail authenticates per Mail Agent and each may send only from its
+   own associated domain), `NOTIFY_TO` (optional destination; defaults to
+   the sender),
    `SLACK_WEBHOOK_URL` (second notification channel, wired v4.52.0),
    `SCAN_ENABLED`, `DNS_CHECK_ENABLED` — and nothing unexplained. `VBOUT_API_KEY` is
    **parked, not orphaned** (owner, 20 Aug 2026): it is for a future email
