@@ -1,6 +1,34 @@
 # Changelog
 
-CURRENT VERSION: v4.64.1 — 2238hrs:20th August2026
+CURRENT VERSION: v4.64.2 — 2258hrs:20th August2026
+
+## v4.64.2 — 2258hrs:20th August2026
+
+**Three mobile fixes found by checking the live site at 375px.** All three
+predate the rename; none was introduced by it.
+
+- **The primary CTA rendered at 8px.** `@media(max-width:620px)` shrank
+  `.button-small` to fit the old, longer label, leaving the site's single
+  most important control as the smallest text on the page — 68px wide,
+  wrapped over four lines. It is now 10px at `.03em` tracking, two lines,
+  115×49, which also clears the 44px tap minimum. The wordmark gives up
+  the width (24px → 18px below 620px) rather than the CTA.
+- **The consent checkbox was 18px.** Now 22px. Worth stating plainly: the
+  first report of this called it an accessibility defect, and that was
+  wrong. The `<label>` wraps the input, so the tap target was always the
+  full 323×63 row — tapping the sentence toggles the box. The 18px square
+  was cosmetic, and the fix is cosmetic.
+- **The privacy-notice link was 86×16.** That one was a real target-size
+  failure: WCAG 2.5.8 asks for 24px minimum and 16px does not reach it, on
+  a legal link inside the conversion path. Now 90×37, using negative
+  margin to absorb the added padding so the sentence keeps its rhythm.
+
+Verified at 375px on the live site before the change and on the dev server
+after; the 620–1000px and desktop breakpoints are untouched (11px, `.08em`,
+24px wordmark, one line). No horizontal overflow at any width. The mobile
+menu was already correct — 44px summary, 47px rows — and is unchanged.
+
+222 tests pass.
 
 ## v4.64.1 — 2238hrs:20th August2026
 
