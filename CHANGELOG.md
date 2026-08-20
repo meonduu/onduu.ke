@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v4.48.3 — 1023hrs:20th August2026
+CURRENT VERSION: v4.48.4 — 1107hrs:20th August2026
+
+## v4.48.4 — 1107hrs:20th August2026
+
+The flaky test fixture gets a real fix — test harness only, no site
+change. The dashboard fixture had flaked three times on 20 August alone
+(miniflare "Network connection lost", one test failing and passing on
+re-run), despite the v4.29.2 startup-race fixes. A flaky suite trains its
+readers to re-run on red, which is how a real failure eventually gets
+dismissed.
+
+Instrumenting the harness showed two distinct failure classes, needing two
+layers:
+
+- **A dropped request**: miniflare's proxy occasionally severs one
+  established connection, surfacing as a rejected fetch or a 500 whose
+  body says "Network connection lost". `fetchPath` now retries these a
+  bounded number of times, logging each retry to stderr so flakes stay
+  visible instead of hidden. A real response — any status — is never
+  retried; an assertion failure stays a failure.
+- **A dead child**: the retry's first outing showed attempts 2 and 3
+  failing at the TCP level — the wrangler child itself had died mid-run,
+  which no retry can fix. On persistent transport failure the harness now
+  respawns the worker once, with the same configuration it was started
+  with, shared across concurrent callers.
+
+Four consecutive full-suite runs pass with no retries engaged. 205 tests,
+lint clean.
+
+Also recorded: the production enquiry path was verified end-to-end for the
+first time today — three live test submissions (ON-260820-L9YL, -2RL4,
+-36O8), root cause 401 TM_4001 fixed in v4.48.3, notification email
+confirmed received by the owner. The full-site sweep the owner
+commissioned came back clean: 36 routes, 42 links, all metadata and
+banned-phrase checks passing, all four tools verified live.
 
 ## v4.48.3 — 1023hrs:20th August2026
 
