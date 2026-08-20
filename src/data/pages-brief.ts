@@ -314,8 +314,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "01 / WHO IS RESPONSIBLE",
         "title": "Who controls this information.",
         "body": [
-          "The data controller is Ujiajiri Enterprises Limited, a limited liability company registered in Kenya, which trades as Onduu and operates this website. Onduu is the brand and is not itself a registered company; Ujiajiri Enterprises Limited is the accountable entity.",
-          "TO CONFIRM: the company's registration number and registered postal address, so the entity can be identified and checked."
+          "The data controller is Ujiajiri Enterprises Limited, a limited liability company registered in Kenya, which trades as Onduu and operates this website. Onduu is the brand and is not itself a registered company; Ujiajiri Enterprises Limited is the accountable entity."
         ],
         "note": "Questions about your information can be sent through the contact form; it reaches Onduu and nobody else."
       },
@@ -466,7 +465,7 @@ export const briefPages: Record<string, PageContent> = {
           "Raise it directly first, through the contact form, choosing \u0022complaint\u0022 as the issue so it arrives marked as one. Complaints are handled by Ujiajiri Enterprises Limited, the company accountable for this site, and will be looked at properly.",
           "You also have the right to complain to the Office of the Data Protection Commissioner in Kenya. That right is independent: it does not require you to contact Onduu first, and using the contact form does not replace it."
         ],
-        "note": "TO CONFIRM: the ODPC contact details and complaint route to publish here."
+        "note": "The Office of the Data Protection Commissioner publishes its own complaint route; this notice does not reproduce contact details that could go out of date."
       },
       {
         "eyebrow": "13 / VERSION",
@@ -568,12 +567,22 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "07 / YOUR REPORT",
         "title": "Who sees it.",
         "body": [
-          "A report prepared for you is delivered to you privately and is not published. Onduu will not name you, quote you or publish any result about your business without your written consent."
+          "A report prepared for you is delivered to you privately and is not published. Onduu will not name you, quote you or publish any result about your business without your written consent.",
+          "The report is emailed to you by Wycliffe, who is the only person who reads it. Onduu is one person, so there is no wider internal access to arrange or restrict."
         ],
-        "note": "Confirmed by the owner on 20 August 2026: the report is sent by email from Wycliffe directly, and he is the only person who reads it \u2014 Onduu is one person, so there is no wider internal access. TO CONFIRM: how long the sent report is retained, and whether an anonymised finding may ever be used as an example."
+        "note": "Written consent means consent given against the exact words proposed, shown to you before anything appears. Silence is not consent, and agreeing to one piece of writing does not extend to another."
       },
       {
-        "eyebrow": "08 / RETENTION AND CORRECTIONS",
+        "eyebrow": "08 / WHAT MAY BE PUBLISHED WITHOUT ASKING",
+        "title": "Patterns across many assessments. Never your assessment.",
+        "body": [
+          "Onduu may publish what it learns across assessments as a pattern: how many of the businesses assessed had no enforcing email policy, how often an enquiry path failed silently, which weaknesses recur. Figures of that kind describe the group, not any business in it, and they are how the guidance on this site stays grounded in what is actually found rather than in opinion.",
+          "Two rules keep that safe. A published figure covers at least ten assessments, and no subdivision of it is reported for fewer than five, so no single business can be picked out of a small number. And identifying detail is left out even when the number is large: no combination of sector, town and size, no exact score, no date, no distinctive technical fingerprint."
+        ],
+        "note": "Anything narrower than that \u2014 your findings, your score, your story, however carefully the name is removed \u2014 is published only if you agree in writing, having seen exactly what would be said. In a market this size an \u0022anonymous\u0022 example is often recognisable to anyone who knows the sector, so the standard here is your permission rather than Onduu\u0027s judgement about whether you could be identified."
+      },
+      {
+        "eyebrow": "09 / RETENTION AND CORRECTIONS",
         "title": "How long it is kept, and fixing what is wrong.",
         "body": [
           "Information submitted through the request forms is kept until it is deleted; there is currently no automatic deletion schedule, as the privacy notice describes. You can ask at any time for it to be deleted, and it will be.",
@@ -581,7 +590,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "09 / INTELLECTUAL PROPERTY",
+        "eyebrow": "10 / INTELLECTUAL PROPERTY",
         "title": "Who owns what.",
         "body": [
           "The report is yours to act on. It is written as a guide, and you may share it with anyone you choose to help you act on it \u2014 your own team, a developer, or an independent provider you engage. Nothing in it is confidential to Onduu in a way that would stop you fixing what it identifies (owner, 20 August 2026).",
@@ -589,10 +598,11 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "10 / VERSION",
+        "eyebrow": "11 / VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.2, prepared 16 August 2026 and re-checked against the live site on 19 August 2026. No effective date until reviewed and the TO CONFIRM items are answered.",
+          "Draft version 0.4, prepared 16 August 2026 and updated on 20 August 2026 with the owner\u0027s answers and publication policy. No effective date until reviewed and the remaining TO CONFIRM item is answered.",
+          "What changed in 0.4: a new section states exactly what Onduu may publish without asking \u2014 patterns across at least ten assessments, no subdivision below five, identifying detail left out regardless \u2014 and confirms that anything narrower needs written consent against the exact wording proposed. Report delivery and sole readership moved into the body. (Version 0.3 was prepared on 20 August but its note was written to the wrong page and lost when that page was replaced; this is the corrected record.)",
           "What changed in 0.2: a retention claim was corrected — draft 0.1 stated a fixed two-year retention period and cited the privacy notice, which actually states there is no automatic deletion schedule; the terms now match the notice and the running code. The scope was narrowed to the human-reviewed assessment and separately agreed work, with the four free tools pointed at the tool limitations page that already governs them. The DKIM wording now matches the code (common selectors)."
         ]
       }

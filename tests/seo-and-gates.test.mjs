@@ -505,3 +505,15 @@ test("our own pages load no third-party script beyond Turnstile", async () => {
       `${path} carries a Cloudflare-injected script`);
   }
 });
+
+test("the assessment terms state what may be published without asking", async () => {
+  // Owner decision, 20 Aug 2026: aggregate-only publication. The thresholds
+  // are the whole protection — a figure covering too few assessments can
+  // single out one client in a small market — so they are pinned here.
+  const terms = await (await fetchPath("/legal/assessment-terms")).text();
+  assert.match(terms, /at least ten assessments/i, "the aggregate floor must be stated");
+  assert.match(terms, /fewer than five/i, "the subgroup floor must be stated");
+  assert.match(terms, /without your written consent/i, "the no-naming promise must stay");
+  // Anything narrower than an aggregate needs consent against exact wording.
+  assert.match(terms, /exactly what would be said/i, "consent must be against specific wording");
+});

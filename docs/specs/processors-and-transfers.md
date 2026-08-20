@@ -140,10 +140,23 @@ Confirmed by Wycliffe and reflected in the pages:
   because Onduu is one person. The report is the client's to act on and to
   share with whoever helps them act on it.
 
+- **Publication of findings** (20 Aug 2026): aggregate-only without
+  consent — a published figure covers at least ten assessments, no
+  subdivision below five, identifying detail omitted regardless. Anything
+  narrower needs written consent against the exact wording proposed. The
+  reasoning: in a market this size an "anonymous" example is often
+  recognisable, so re-identification risk is treated as the default rather
+  than the exception, and consent is the control rather than Onduu's own
+  judgement of identifiability.
+- **Removed from the public pages at the owner's instruction**
+  (20 Aug 2026): the company registration number and registered address,
+  the ODPC's contact details, and any stated retention period for a sent
+  report. The controller remains named and contactable; the independent
+  right to complain to the regulator remains stated.
+
 Still outstanding after these answers: the registration number and address,
-ODPC contact details, how long a sent report is retained, whether
-anonymised findings may be used as examples, and whether the scoring method
-and blank templates remain Onduu's separately from the report.
+whether the scoring method and blank templates remain Onduu's separately
+from the report, which is the client's.
 
 ## 7. What this register does not do
 
