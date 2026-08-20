@@ -23,6 +23,9 @@ const REDIRECTS: Record<string, string> = {
   "/infrastructure": "/paths/hostafrica-infrastructure",
   "/infrastructure/kenyan-vps-data-location": "/guides/kenyan-vps",
   "/infrastructure/buzz-agent-collaboration": "/guides/agents-on-vps",
+  // The Buzz guide (v4.45.0) was removed on the owner's instruction,
+  // 20 August 2026; supervised agents is the nearest surviving ground.
+  "/guides/buzz-workspaces": "/guides/agents-on-vps",
   // Labs removed 19 Aug 2026 (owner): its ground is covered by the guides
   // and the free tools, so inbound links land on the guides index.
   "/labs": "/guides",

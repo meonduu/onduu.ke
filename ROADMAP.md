@@ -283,10 +283,14 @@ caught the navigation defect below.
   websites (`/guides/website-revenue-system`), Kenyan infrastructure
   (`/guides/kenyan-vps`), supervised agents (`/guides/agents-on-vps`).
 
-**Buzz — a conditional content area.** An educational guide now exists at
-`/guides/buzz-workspaces` (v4.45.0, 19 Aug 2026), written on the owner's
-instruction from the brief's approved wording, with the service framing
-removed. The conditions below still govern anything further. The Current
+**Buzz — a conditional content area, currently with no page.** An
+educational guide was published at `/guides/buzz-workspaces` (v4.45.0,
+19 Aug 2026, from the brief's approved wording with the service framing
+removed) and **removed on the owner's instruction the next day**
+(v4.49.1, 20 Aug 2026; the route 301s to `/guides/agents-on-vps`). Its
+protocol claims had not been verified against the deployed Buzz build.
+The full text survives in git history (v4.45.0) if it is ever wanted
+again. The conditions below still govern anything further. The Current
 Version
 strategy permits Buzz only as a **content area "presented responsibly"**,
 and its "Buzz Fit Lab" belongs to the programmes that "should be
