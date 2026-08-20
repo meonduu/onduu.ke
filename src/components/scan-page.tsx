@@ -1,6 +1,6 @@
 import type { ReactNode } from "react";
 import { Link } from "./nav-link";
-import { Header, Footer, Button } from "./components";
+import { Header, Footer } from "./components";
 
 // Copy reviewed against CLAUDE.md claims rules: no "secure", "compliant" or
 // "guaranteed"; the Public Signal Score is never called a Digital Readiness
@@ -69,15 +69,6 @@ export function ScanPage({ children }: { children?: ReactNode }) {
           </div>
         </section>
 
-        <section className="final-cta">
-          <p className="section-number">YOUR NEXT STEP</p>
-          <h2>Turn public signals into a plan you can act on.</h2>
-          <p>
-            The scan shows what is visible. The readiness assessment shows what to fix first, with
-            evidence and a human review.
-          </p>
-          <Button href="/readiness">Check Your Digital Readiness</Button>
-        </section>
       </main>
       <Footer />
     </>
