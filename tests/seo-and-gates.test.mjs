@@ -341,6 +341,20 @@ test("every guide is reachable by clicking from the guides index", async () => {
   assert.doesNotMatch(guides, /<small>\/guides\//, "guide URLs must not render as plain text");
 });
 
+test("the privacy notice names every processor the code actually uses", async () => {
+  // Lesson L8: v4.52.0 wired Slack as a notification processor and did not
+  // update the notice. A processor the code contacts but the notice omits is
+  // a false privacy statement, so the two are pinned together here.
+  const privacy = await (await fetchPath("/legal/privacy")).text();
+  for (const processor of ["Cloudflare", "ZeptoMail", "Slack"]) {
+    assert.match(privacy, new RegExp(processor), `the notice omits a processor: ${processor}`);
+  }
+  // Where the data sits is stated, not hand-waved.
+  assert.match(privacy, /Eastern Europe/i, "the storage region must be stated");
+  // And the register behind it is named for the reviewer.
+  assert.match(privacy, /processors-and-transfers/, "the notice should point at the register");
+});
+
 test("the owner's personal email appears on no public page", async () => {
   // Owner instruction, 20 Aug 2026: every public mention of me@onduu.ke is
   // replaced by the contact form. Deletion requests, complaints, consent

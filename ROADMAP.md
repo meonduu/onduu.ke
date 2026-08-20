@@ -214,8 +214,15 @@ Remaining:
   kept so a fixed-period policy could be adopted later; it must not be
   described as a promise anywhere, and adopting it for real means changing
   both legal pages and building enforcement together.
-- [ ] Document processors and transfer behaviour beyond what the privacy
-  notice already covers, if the professional review asks for it.
+- [x] Document processors and transfer behaviour (v4.54.0, 20 Aug 2026):
+  `docs/specs/processors-and-transfers.md` records every processor, what
+  each receives, where data actually sits (Cloudflare EEUR, single copy,
+  no replicas — verified with `wrangler d1 info`), retention, rights
+  channels, and each outstanding decision tagged OWNER or LAWYER. Written
+  from the running code and the live database so the professional review
+  is an assessment, not an investigation. Two corrections fell out of it:
+  Slack was missing from the notice's processor list, and the storage
+  location was vague where it can now be exact.
 - [x] Accessibility pass over the important flows (v4.42.0, 19 Aug 2026):
   tool results now take focus and are announced on all four tools; copper
   text and buttons meet WCAG AA contrast (`--copper` darkened, with a light

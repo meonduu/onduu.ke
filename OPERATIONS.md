@@ -76,6 +76,16 @@ Newest first. Format: what happened → root cause → the guard now standing.
 Add an entry whenever a defect recurs or a check above fails; an entry may
 be closed only by pointing at its guard.
 
+**L8 — 20 Aug 2026 · A processor added without telling the notice.** The
+Slack notification channel (v4.52.0) added a company that receives data
+about enquiries, and the privacy notice was not updated in the same
+change — for three hours the notice named two processors while the code
+used three. REVIEW.md already required processors to match the notice;
+nothing enforced it. Guard: a test now pins every processor named in the
+code against the notice (`tests/seo-and-gates.test.mjs`), and the register
+at `docs/specs/processors-and-transfers.md` lists what each one receives,
+so the next addition has an obvious place to be recorded (v4.54.0).
+
 **L7 — 20 Aug 2026 · One assertion from one data point.** The Cloudflare
 beacon was declared gone after checking a single page; five pages said
 otherwise. Earlier, Web Analytics was declared "collecting nothing" while
