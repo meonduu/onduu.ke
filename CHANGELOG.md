@@ -1,6 +1,16 @@
 # Changelog
 
-CURRENT VERSION: v4.52.0 — 1519hrs:20th August2026
+CURRENT VERSION: v4.52.1 — 1547hrs:20th August2026
+
+## v4.52.1 — 1547hrs:20th August2026
+
+Bookkeeping, docs only. The Slack notification channel is confirmed
+working by the owner (test ON-260820-0T37 arrived in Slack; row deleted;
+zero test rows remain). `VBOUT_API_KEY`, the last unexplained Worker
+secret, is recorded in `OPERATIONS.md` as **parked by the owner** for a
+future email-marketing-consent integration — with the standing warning
+that wiring it in requires a privacy-notice change, because marketing is
+a separate consent basis from the enquiry forms.
 
 ## v4.52.0 — 1519hrs:20th August2026
 

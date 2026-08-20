@@ -58,8 +58,13 @@ checked as written, that is itself a finding.
    Good: exactly the secrets the code references — `TURNSTILE_SECRET`,
    `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL`, `SLACK_WEBHOOK_URL` (second
    notification channel, wired v4.52.0), `SCAN_ENABLED`,
-   `DNS_CHECK_ENABLED` — and nothing unexplained. `VBOUT_API_KEY` is a
-   known orphan awaiting the owner's pruning. Unknown names are either
+   `DNS_CHECK_ENABLED` — and nothing unexplained. `VBOUT_API_KEY` is
+   **parked, not orphaned** (owner, 20 Aug 2026): it is for a future email
+   marketing consent integration. Nothing may wire it in without a
+   deliberate change that also updates the privacy notice — marketing is a
+   separate consent basis from the enquiry forms, and the notice currently
+   (and truthfully) promises that no marketing use is made of anything
+   collected. Unknown names are either
    dead weight or a sign someone else has been here.
 
 7. **Access still guards /go.** Open https://onduu.ke/go in a private
