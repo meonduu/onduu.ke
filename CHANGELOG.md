@@ -1,6 +1,27 @@
 # Changelog
 
-CURRENT VERSION: v4.62.0 — 2044hrs:20th August2026
+CURRENT VERSION: v4.63.0 — 2112hrs:20th August2026
+
+## v4.63.0 — 2112hrs:20th August2026
+
+**Handoff notes written down instead of held in a session.**
+
+Two things that existed only in conversation now live in the repo, so the
+next session reads them from the files it already opens rather than being
+told.
+
+- `OPERATIONS.md` gains an **Open incident** section above the lessons
+  register: the enquiry notification email failing `401 TM_4001` since
+  ~17:30 UTC, why `NOTIFY_EMAIL` is the cause, why the token and code are
+  not, that Slack has delivered throughout so nothing was missed, and the
+  two test rows awaiting deletion.
+- `docs/specs/processors-and-transfers.md` gains section 8, **What Ujiajiri
+  Enterprises Limited must do** — the eight items onduu.ke now publishes
+  that only Ujiajiri can honour, checked against the live ujiajiri.ke.
+  Chief among them: onduu.ke names Ujiajiri as data controller while
+  ujiajiri.ke publishes no privacy notice at all.
+
+No behaviour changes. 214 tests pass.
 
 ## v4.62.0 — 2044hrs:20th August2026
 
