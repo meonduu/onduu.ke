@@ -506,6 +506,17 @@ test("our own pages load no third-party script beyond Turnstile", async () => {
   }
 });
 
+test("the assessment terms settle who owns the report and the method", async () => {
+  // Owner decision, 20 Aug 2026: the findings are the client's, the machinery
+  // is Onduu's. Both halves must be stated — one without the other is the
+  // ambiguity this replaced.
+  const terms = await (await fetchPath("/legal/assessment-terms")).text();
+  assert.match(terms, /report is yours to act on/i, "the client's ownership of the report");
+  assert.match(terms, /remain Onduu\u0027s intellectual property|remain Onduu&#x27;s intellectual property|remain Onduu's intellectual property/i,
+    "Onduu's ownership of the method");
+  assert.doesNotMatch(terms, /TO CONFIRM/, "no owner questions may remain on this page");
+});
+
 test("the assessment terms state what may be published without asking", async () => {
   // Owner decision, 20 Aug 2026: aggregate-only publication. The thresholds
   // are the whole protection — a figure covering too few assessments can

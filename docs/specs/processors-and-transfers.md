@@ -154,9 +154,17 @@ Confirmed by Wycliffe and reflected in the pages:
   report. The controller remains named and contactable; the independent
   right to complain to the regulator remains stated.
 
+- **Intellectual property** (20 Aug 2026): the report and its findings are
+  the client's, to act on and to share with anyone helping them act on it.
+  The scoring method, the six dimensions, the evidence labels and any blank
+  template remain Onduu's — usable by the client for their own business,
+  not to be repackaged, resold or built into a competing assessment.
+
 Still outstanding after these answers: the registration number and address,
-whether the scoring method and blank templates remain Onduu's separately
-from the report, which is the client's.
+nothing on the assessment terms. The privacy notice keeps two open
+questions that are decisions rather than facts: whether to pin the storage
+region and which transfer safeguard to record, and whether to adopt a fixed
+retention period. Both are noted for the professional review.
 
 ## 7. What this register does not do
 

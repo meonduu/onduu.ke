@@ -1,6 +1,37 @@
 # Changelog
 
-CURRENT VERSION: v4.57.0 — 1911hrs:20th August2026
+CURRENT VERSION: v4.58.0 — 1947hrs:20th August2026
+
+## v4.58.0 — 1947hrs:20th August2026
+
+Ownership settled, and the assessment terms carry no owner questions at
+all for the first time since they were written.
+
+**Intellectual property**: the report and its findings are the client's,
+to act on and to share with anyone helping them act on it. The scoring
+method, the six dimensions, the evidence labels and any blank template
+remain Onduu's — usable by the client for their own business, but not to
+be repackaged, resold or built into a competing assessment. The page puts
+it in one line: the findings about your business are yours, the machinery
+that produced them is Onduu's.
+
+**The page's own framing was corrected to match.** Its gate and status
+section still said items marked TO CONFIRM needed the owner's input, when
+none remained; both now say what is true — owner-confirmed, awaiting a
+legal professional. A test pins the ownership split and fails if any owner
+question reappears on the page.
+
+Two small self-corrections while finishing: literal asterisks left in text
+that renders as plain prose, and a sentence announcing "No TO CONFIRM
+items remain" which was both internal jargon on a visitor-facing page and
+the only thing tripping the new test. Reworded rather than worked around.
+
+`ROADMAP.md` Phase 3's identity item is closed. What remains between these
+pages and being final is the professional review, plus two decisions the
+privacy notice keeps deliberately: whether to pin the storage region, and
+whether to adopt a fixed retention period.
+
+212 tests, lint clean.
 
 ## v4.57.0 — 1911hrs:20th August2026
 
