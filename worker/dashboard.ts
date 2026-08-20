@@ -681,6 +681,65 @@ async function analytics(db: D1Database, url: URL): Promise<Response> {
     safe(db.prepare(`SELECT MAX(received_at) AS t FROM events`).all(), EMPTY),
   ]);
 
+  // Event-derived panels (slice 2). Each is wrapped: before migration 0007,
+  // or on a database without the table, they render an honest empty state
+  // rather than taking the page down.
+  const ev = (sql: string, ...binds: string[]) =>
+    safe(db.prepare(sql).bind(...binds).all(), EMPTY);
+
+  const [clicksByLabel, clicksByPath, engagementByPath, entryPages, exitPages] = await Promise.all([
+    ev(
+      `SELECT COALESCE(label,'(unlabelled)') AS k, COUNT(*) AS n FROM events
+       WHERE received_at >= ? AND received_at < ?
+         AND event_name IN ('click','conversion','download','outbound_link')
+       GROUP BY k ORDER BY n DESC LIMIT 25`,
+      from,
+      to,
+    ),
+    ev(
+      `SELECT path AS k, COUNT(*) AS n FROM events
+       WHERE received_at >= ? AND received_at < ?
+         AND event_name IN ('click','conversion','download','outbound_link')
+       GROUP BY k ORDER BY n DESC LIMIT 25`,
+      from,
+      to,
+    ),
+    // Engaged time is summed from engagement heartbeats and the exit event;
+    // views here are the tracker's own page_view count, so the average is
+    // consistent within the client data rather than mixing sources.
+    ev(
+      `SELECT path AS k,
+              SUM(engaged_ms) AS ms,
+              SUM(CASE WHEN event_name = 'page_view' THEN 1 ELSE 0 END) AS views
+       FROM events WHERE received_at >= ? AND received_at < ?
+       GROUP BY k HAVING ms > 0 ORDER BY ms DESC LIMIT 25`,
+      from,
+      to,
+    ),
+    // Entry and exit are per-session firsts and lasts: a session is one tab
+    // in one sitting, so these are estimates, not journeys across visits.
+    ev(
+      `SELECT path AS k, COUNT(*) AS n FROM (
+         SELECT session_id, path, MIN(received_at) AS t FROM events
+         WHERE received_at >= ? AND received_at < ? AND event_name = 'page_view'
+           AND session_id IS NOT NULL
+         GROUP BY session_id
+       ) GROUP BY k ORDER BY n DESC LIMIT 15`,
+      from,
+      to,
+    ),
+    ev(
+      `SELECT path AS k, COUNT(*) AS n FROM (
+         SELECT session_id, path, MAX(received_at) AS t FROM events
+         WHERE received_at >= ? AND received_at < ? AND event_name IN ('page_view','page_exit')
+           AND session_id IS NOT NULL
+         GROUP BY session_id
+       ) GROUP BY k ORDER BY n DESC LIMIT 15`,
+      from,
+      to,
+    ),
+  ]);
+
   const n = (rows: D1Result<Record<string, unknown>>, key = "n") =>
     Number((rowsOf<Record<string, number>>(rows)[0]?.[key] as number) ?? 0);
 
@@ -717,6 +776,26 @@ async function analytics(db: D1Database, url: URL): Promise<Response> {
       rows: rowsOf<{ k: string; n: number }>(devices).map((x) => [x.k, String(x.n)]),
     },
     daily: { header: "day,views", rows: dailyRows.map((x) => [x.day, String(x.n)]) },
+    clicks: {
+      header: "element,clicks",
+      rows: rowsOf<{ k: string; n: number }>(clicksByLabel).map((x) => [x.k, String(x.n)]),
+    },
+    engagement: {
+      header: "path,engaged_minutes,views",
+      rows: rowsOf<{ k: string; ms: number; views: number }>(engagementByPath).map((x) => [
+        x.k,
+        String(Math.round(x.ms / 60000)),
+        String(x.views),
+      ]),
+    },
+    entry: {
+      header: "entry_path,sessions",
+      rows: rowsOf<{ k: string; n: number }>(entryPages).map((x) => [x.k, String(x.n)]),
+    },
+    exit: {
+      header: "exit_path,sessions",
+      rows: rowsOf<{ k: string; n: number }>(exitPages).map((x) => [x.k, String(x.n)]),
+    },
   };
   if (csv && CSV_SETS[csv]) {
     const set = CSV_SETS[csv];
@@ -793,6 +872,37 @@ ${keyed(countries, "Country", "No page views in this range.")}
 <h2>Devices <span class="basis">exact</span></h2>
 ${keyed(devices, "Device", "No page views in this range.")}
 <p class="sub"><a href="${q("&csv=devices")}">Download CSV</a></p>
+
+<h2>Conversion and clicks <span class="basis">undercount</span></h2>
+${
+  rowsOf<Record<string, unknown>>(clicksByLabel).length
+    ? `${keyed(clicksByLabel, "Element", "No tagged clicks in this range.")}
+${keyed(clicksByPath, "Clicked from", "No tagged clicks in this range.")}
+<p class="sub"><a href="${q("&csv=clicks")}">Download CSV</a></p>`
+    : `<div class="empty">No tagged clicks recorded in this range. Only elements carrying <code>data-analytics-event</code> are counted — the readiness CTAs in the header, the heroes and the homepage were tagged on 20 August 2026, so this fills from that date forward. Outbound clicks to HOSTAFRICA and Ujiajiri are counted separately and server-side: see <a href="/go/routing">Routed clicks</a>.</div>`
+}
+
+<h2>Engagement by page <span class="basis">estimated</span></h2>
+${table(
+  ["Path", "Time on screen", "Avg per view"],
+  rowsOf<{ k: string; ms: number; views: number }>(engagementByPath).map((r) => [
+    publicLink(r.k, r.k),
+    `${Math.round(r.ms / 60000)} min`,
+    r.views ? `${Math.round(r.ms / r.views / 1000)}s` : "—",
+  ]),
+  "No engagement recorded in this range.",
+)}
+<p class="sub"><a href="${q("&csv=engagement")}">Download CSV</a></p>
+<div class="note">Time on screen counts only while the tab is visible and the visitor is active; idle time is excluded. It is an estimate from the browser, so anything that blocks scripts is missing from it. "Avg per view" divides by the tracker's own page views, not the server-side count, so the two sides of the ratio come from the same source.</div>
+
+<h2>Entry pages <span class="basis">estimated</span></h2>
+${keyed(entryPages, "First page of a session", "No sessions recorded in this range.")}
+<p class="sub"><a href="${q("&csv=entry")}">Download CSV</a></p>
+
+<h2>Exit pages <span class="basis">estimated</span></h2>
+${keyed(exitPages, "Last page of a session", "No sessions recorded in this range.")}
+<p class="sub"><a href="${q("&csv=exit")}">Download CSV</a></p>
+<div class="note">A session is one tab in one sitting — it cannot follow a person across visits or devices. Entry and exit are the first and last page seen within that tab, so a visitor who returns tomorrow appears as a new session with a new entry page.</div>
 
 <h2>Coverage</h2>
 ${

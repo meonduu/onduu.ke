@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v4.52.1 — 1547hrs:20th August2026
+CURRENT VERSION: v4.53.0 — 1618hrs:20th August2026
+
+## v4.53.0 — 1618hrs:20th August2026
+
+Analytics Phase 2, second slice — and the thing it needed first.
+
+**Nothing on the site was tagged.** The tracker fires only on elements
+carrying `data-analytics-event`, and no element had one: three weeks of
+data held `engagement`, `page_view` and `page_exit` and nothing else.
+Building click and conversion panels first would have decorated a
+switched-off feature, so the CTAs are tagged in the same change:
+`Button` gains optional `event`/`label` props, and the three readiness
+CTAs are marked — header (`readiness-cta-header`), standard-page hero
+(`readiness-cta-hero`) and homepage (`readiness-cta-home`). Nothing else
+is tagged; the tracker still counts only what is explicitly marked.
+Outbound clicks to HOSTAFRICA and Ujiajiri are deliberately NOT
+duplicated here — they are already counted server-side at `/go/routing`.
+
+**Four new panels** on `/go/analytics`, each range-aware, CSV-exportable
+and labelled with its basis:
+
+- **Conversion and clicks** — by element and by originating page. Its
+  empty state explains that only tagged elements count, names the
+  tagging date so a thin history is not mistaken for low interest, and
+  points at Routed clicks for outbound.
+- **Engagement by page** — total time on screen and average per view,
+  dividing by the tracker's own page views so both sides of the ratio
+  come from one source rather than mixing client and server counts.
+- **Entry and exit pages** — per-session first and last page, with the
+  standing note that a session is one tab in one sitting and cannot
+  follow anyone across visits or devices.
+
+Every query is wrapped, so a database without the events table renders
+the honest empty state rather than failing. 209 tests, lint clean;
+panels and tagging verified against the built Worker.
 
 ## v4.52.1 — 1547hrs:20th August2026
 
