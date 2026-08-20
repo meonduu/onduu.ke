@@ -1,5 +1,5 @@
 /**
- * Observation collectors for the Instant Public Readiness Scan.
+ * Observation collectors for the Instant Public Fitness Scan.
  *
  * The fetch surface is fixed by the spec (docs/specs/instant-scan.md §2):
  * RDAP, DNS over HTTPS, the homepage over https, the http redirect

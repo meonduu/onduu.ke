@@ -11,10 +11,10 @@ import type { PageContent } from "../components/components";
 // invented.
 
 export const briefPages: Record<string, PageContent> = {
-  "readiness": {
-    "eyebrow": "THE ONDUU DIGITAL READINESS SCORE",
-    "title": "See what your website is costing, risking or leaving unproven.",
-    "intro": "The Digital Readiness Score is a human-reviewed business diagnostic. It combines what your team declares, what can be safely observed from the public internet and what Onduu manually verifies. You receive six dimension scores, evidence labels, limitations and the three actions worth addressing first.",
+  "digital-fitness": {
+    "eyebrow": "THE ONDUU DIGITAL FITNESS ASSESSMENT",
+    "title": "How digitally fit is your business?",
+    "intro": "The Digital Fitness Assessment is a human-reviewed business diagnostic. It combines what your team declares, what can be safely observed from the public internet and what Onduu manually verifies. You receive a Digital Fitness Score with its Evidence Coverage, six dimension scores, evidence labels, limitations and the three actions worth addressing first.",
     "cta": "Start my assessment",
     "ctaHref": "#request",
     "sections": [
@@ -92,18 +92,19 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "LIMITATIONS",
         "title": "What this assessment is not.",
         "body": [
-          "The Digital Readiness Score is not a penetration test, vulnerability assessment, legal opinion, compliance certificate, email-delivery guarantee or proof that backups restore. Public observations are limited to what is safely visible. Deeper tests require separate written permission and an agreed scope."
+          "The Digital Fitness Score is not a penetration test, vulnerability assessment, legal opinion, compliance certificate, email-delivery guarantee or proof that backups restore. Public observations are limited to what is safely visible. Deeper tests require separate written permission and an agreed scope.",
+          "It is also not a certification, and it does not declare a business digitally fit. A score is a measurement of the evidence available at the time, which is why it is always shown with its Evidence Coverage: where coverage is low, the score describes a small part of the picture and should be read that way."
         ]
       }
     ],
-    "form": "readiness"
+    "form": "fitness"
   },
   "how-it-works": {
     "eyebrow": "ONDUU / HOW IT WORKS",
     "title": "From hidden weakness to measured improvement.",
     "intro": "Onduu begins with the business consequence, not a predetermined website package. We establish what is weak or unproven, fix the priority, assign ownership and measure what changes.",
-    "cta": "Get your digital readiness score",
-    "ctaHref": "/readiness",
+    "cta": "Get your Digital Fitness Score",
+    "ctaHref": "/digital-fitness",
     "sections": [
       {
         "eyebrow": "THE STAGES",
@@ -111,7 +112,7 @@ export const briefPages: Record<string, PageContent> = {
         "steps": [
           {
             "title": "Score",
-            "body": "Establish a baseline across Control, Trust, Speed, Conversion, Resilience and Agent Readiness. Separate customer declarations, public observations and tested evidence."
+            "body": "Establish a baseline across Control, Trust, Speed, Conversion, Resilience and Agent Fitness. Separate customer declarations, public observations and tested evidence."
           },
           {
             "title": "Review",
@@ -174,7 +175,7 @@ export const briefPages: Record<string, PageContent> = {
     "title": "Fix the right problem - not simply the visible one.",
     "intro": "A redesign will not solve unclear ownership. More traffic will not solve a broken form. A new agent will not solve an undocumented process. Start with the weakness and choose the response that fits.",
     "cta": "Start with my score",
-    "ctaHref": "/readiness",
+    "ctaHref": "/digital-fitness",
     "sections": [
       {
         "eyebrow": "THE RESPONSES",
@@ -197,7 +198,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "DECISION GUIDE",
         "title": "Where to start.",
         "items": [
-          "You do not know what is wrong: start with the Digital Readiness Score.",
+          "You do not know what is wrong: start with the Digital Fitness Score.",
           "Leadership needs evidence and a plan: choose the Digital Revenue and Risk Review.",
           "The offer, journey and platform need material work: choose the Website Revenue System."
         ]
@@ -207,7 +208,7 @@ export const briefPages: Record<string, PageContent> = {
   "solutions/digital-revenue-risk-review": {
     "eyebrow": "PAID DIAGNOSIS FOR DECISION-MAKERS",
     "title": "Know what to fix, who should own it and what happens if you do nothing.",
-    "intro": "The Digital Revenue and Risk Review goes beyond the entry score. It examines the commercial journey, asset ownership, measurement, DNS and email foundations, resilience, brand consistency and readiness for controlled automation.",
+    "intro": "The Digital Revenue and Risk Review goes beyond the entry score. It examines the commercial journey, asset ownership, measurement, DNS and email foundations, resilience, brand consistency and fitness for controlled automation.",
     "cta": "Discuss the review",
     "ctaHref": "/contact",
     "sections": [
@@ -262,7 +263,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "ONDUU AND UJIAJIRI",
         "title": "Who advises, who introduces, who delivers.",
         "body": [
-          "Onduu is a Digital Readiness and educational platform operated by Ujiajiri Enterprises Limited. Onduu helps businesses understand weaknesses affecting their websites and digital operations, review available evidence and identify the actions worth addressing first.",
+          "Onduu is a Digital Fitness and educational platform operated by Ujiajiri Enterprises Limited. Onduu helps businesses understand weaknesses affecting their websites and digital operations, review available evidence and identify the actions worth addressing first.",
           "When a business needs independent website or digital-marketing implementation, it may separately ask Ujiajiri for an introduction. Ujiajiri uses a private, curated provider network; it does not publish an open directory.",
           "Ujiajiri will propose a suitable independent provider and identify that provider before sharing the customer's information. The customer may accept, decline or request another provider. Identifiable information is shared only after the customer gives permission.",
           "The selected provider scopes, quotes, contracts, invoices, delivers, supports and warrants its own work. The customer pays the provider directly. Neither Onduu nor Ujiajiri guarantees provider availability, suitability, price, delivery or results.",
@@ -330,7 +331,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "02 / WHAT IS COLLECTED",
         "title": "What you type, and how the pages are used.",
         "body": [
-          "The Digital Readiness Score request and the contact form collect the fields you complete. Those fields are listed below.",
+          "The Digital Fitness Assessment request and the contact form collect the fields you complete. Those fields are listed below.",
           "Separately, how the pages themselves are used is measured: which page was opened, roughly how long it was on screen, and clicks on the few elements this site marks for counting. That measurement holds no name, address or identifier, and cannot recognise you on a later visit. Section 05 describes exactly how it works and how to switch it off."
         ],
         "items": [
@@ -377,12 +378,12 @@ export const briefPages: Record<string, PageContent> = {
         "title": "What the domain tools read, and what they keep.",
         "body": [
           "The email security checker at /email-security sends the domain name to Cloudflare's public DNS resolver so its published SPF, DKIM, DMARC and MX records can be read. Those records are already public. Since 18 August 2026 the domain checked and the result are stored, so Onduu can see which checks are being run and which failures are common. No account or email address is required, and nothing about you is recorded with the result. A stored row says a domain was checked at a time, never who checked it.",
-          "The Instant Public Readiness Scan at /scan reads more public information about a domain (its registry record, DNS, published email records, and the homepage, robots.txt and sitemap that any visitor can request) and returns a Public Signal Score. Unlike the checker, a scan result is stored: the domain scanned, the public observations behind each signal, the score and a reference number. This is what lets a repeat scan of the same domain return the recent result for a day rather than re-reading someone else's site, and it is what a score is recomputed from if a result is ever questioned.",
+          "The Instant Public Fitness Scan at /scan reads more public information about a domain (its registry record, DNS, published email records, and the homepage, robots.txt and sitemap that any visitor can request) and returns a Public Signal Score. Unlike the checker, a scan result is stored: the domain scanned, the public observations behind each signal, the score and a reference number. This is what lets a repeat scan of the same domain return the recent result for a day rather than re-reading someone else's site, and it is what a score is recomputed from if a result is ever questioned.",
           "A scan result is about a domain, not about you. No name, email address or account is required or attached to it. The domain you enter need not be your own, because everything the scan reads is already public. To limit abuse, the scan uses the same one-way hashed connection address as the forms, held only for a short hourly counter and never stored with the result.",
           "The DNS health check at /dns reads a domain's public DNS and registry records to report whether its nameservers, delegation, addresses, mail routing and DNSSEC are coherent. Alongside the resolver lookups it asks two kinds of server a standard question directly, over the ordinary DNS port: one nameserver of the parent zone (for the delegation and glue records the parent publishes) and each of the domain's own nameservers (for the zone serial each is serving). These are read-only questions, the same ones every resolver on the internet sends, and no part of them concerns you: the servers see a request from Onduu's infrastructure, never anything about the visitor who asked. The domain checked and a summary of the outcome are stored, with no visitor identity attached, on the same basis and with the same deletion route as the tools above.",
           "The domain search at /kedomains checks whether a name is registered across the Kenyan extensions using public DNS and registry records, and shows a taken domain's registrar, transfer lock and expiry. Since 18 August 2026 the name searched and what was found are stored, on the same basis and with the same limit as the checker above: no account, and no identifier that could connect a search to you. If an available name leads you to register it, that happens at HOSTAFRICA's own site. The outbound link carries attribution tags so Onduu can see, in aggregate, that traffic came from this tool, and Onduu counts the click as a number with no identity attached. Onduu receives no commission on registrations."
         ],
-        "note": "The basis for storing tool results is a legitimate interest in operating the tools, caching results so they do not repeatedly fetch third-party sites, seeing which checks are run and which failures are common, and being able to reproduce a score. A Public Signal Score describes public observations at a moment in time; it is not a Digital Readiness Score, and not proof that a domain, a mailbox or a business is secure. Results are kept until deleted rather than on a fixed schedule. If you operate a domain and want it left alone, ask through the contact form: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is added to a do-not-scan list so it is not scanned again, and future lookups of it are not recorded. The lookups themselves keep working, because they read only the public records any WHOIS tool can read."
+        "note": "The basis for storing tool results is a legitimate interest in operating the tools, caching results so they do not repeatedly fetch third-party sites, seeing which checks are run and which failures are common, and being able to reproduce a score. A Public Signal Score describes public observations at a moment in time; it is not a Digital Fitness Score, and not proof that a domain, a mailbox or a business is secure. Results are kept until deleted rather than on a fixed schedule. If you operate a domain and want it left alone, ask through the contact form: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is added to a do-not-scan list so it is not scanned again, and future lookups of it are not recorded. The lookups themselves keep working, because they read only the public records any WHOIS tool can read."
       },
       {
         "eyebrow": "05 / COOKIES AND ANALYTICS",
@@ -492,7 +493,7 @@ export const briefPages: Record<string, PageContent> = {
   "legal/assessment-terms": {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Assessment terms.",
-    "intro": "The terms that apply when you request a human-reviewed Digital Readiness assessment, or when a deeper piece of work is separately scoped and agreed in writing. The free tools on this site are covered by the tool limitations page.",
+    "intro": "The terms that apply when you request a human-reviewed Digital Fitness Assessment, or when a deeper piece of work is separately scoped and agreed in writing. The free tools on this site are covered by the tool limitations page.",
     "gate": "Draft for professional review. Everything on this page is settled and current; what it has not had is a lawyer's check.",
     "sections": [
       {

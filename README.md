@@ -2,7 +2,7 @@
 
 The Onduu website: an Astro 5 application (React islands for the forms and
 tools) deployed to Cloudflare Workers. Positioning follows the 18 August
-2026 strategy (education, Digital Readiness and demand-routing — see
+2026 strategy (education, Digital Fitness and demand-routing — see
 `docs/strategy/`). Repository governance lives in `CLAUDE.md` (permanent
 rules), `ROADMAP.md` (state), `REVIEW.md` (the shipping standard) and
 `OPERATIONS.md` (recurring checks and the lessons register) — read those
@@ -10,14 +10,14 @@ first.
 
 ## What is included
 
-- The repositioned architecture: home, `/readiness` (the assessment,
+- The repositioned architecture: home, `/digital-fitness` (the assessment,
   primary CTA everywhere), `/how-it-works`, `/paths/*` (Ujiajiri
   introductions; HOSTAFRICA infrastructure, each with its disclosure),
   `/guides/*` (six guides), `/about`, `/contact`, Insights, and the legal
   pages (published as marked drafts pending professional review).
 - **Four free tools**: `/email-security` (SPF/DKIM/DMARC/MX), `/dns`
   (delegation and DNS health), `/kedomains` (Kenyan domain search),
-  `/scan` (Instant Public Readiness Scan; Public Signal Score only, never
+  `/scan` (Instant Public Fitness Scan; Public Signal Score only, never
   a verdict). The scan and DNS check are gated on the `SCAN_ENABLED` and
   `DNS_CHECK_ENABLED` Worker secrets.
 - The 12 Insights articles, rendered from a typed block model

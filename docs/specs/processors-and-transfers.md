@@ -19,7 +19,7 @@ notice is the promise, this is the evidence.
 
 | Data | Where it comes from | Where it is stored | Personal? |
 | --- | --- | --- | --- |
-| Enquiry submissions: name, business email, company, role, website, free-text answers | The two forms (`/readiness`, `/contact`) | D1 `submissions` | **Yes** |
+| Enquiry submissions: name, business email, company, role, website, free-text answers | The two forms (`/digital-fitness`, `/contact`) | D1 `submissions` | **Yes** |
 | Consent record: text, version, timestamp, `retain_until` | Same submission | D1 `submissions` | Yes (attached to the above) |
 | Attribution: referrer, landing path, campaign parameters | Session storage, sent with the submission | D1 `submissions` | Yes (attached) |
 | Page views: path, referrer host, country, device class | Server-side, every HTML response | D1 `page_views` | No identifier stored |

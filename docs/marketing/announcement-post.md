@@ -43,7 +43,7 @@ unlocked.
 
 **3. What does your domain show the public?**
 A Public Signal Score across six dimensions — control, trust, speed,
-conversion, resilience, agent readiness — with an honest Evidence Coverage
+conversion, resilience, agent fitness — with an honest Evidence Coverage
 figure showing how much of the picture is actually visible from outside.
 Anything that cannot be observed publicly is marked as such, and never
 counts for or against you.

@@ -1,6 +1,53 @@
 # Changelog
 
-CURRENT VERSION: v4.63.1 — 2118hrs:20th August2026
+CURRENT VERSION: v4.64.0 — 2152hrs:20th August2026
+
+## v4.64.0 — 2152hrs:20th August2026
+
+**Digital Readiness becomes Digital Fitness.** Owner instruction,
+20 August 2026. The vocabulary is now: the **Digital Fitness Assessment**
+is the product, the **Digital Fitness Score** is the result, **Evidence
+Coverage** remains the supporting measure, **Check Your Digital Fitness**
+is the single primary CTA, and **How digitally fit is your business?** is
+the central customer question — now the homepage H1 and the assessment
+page title. The sixth dimension is **Agent Fitness**; the other five and
+all scoring logic are untouched.
+
+Structural, beyond the wording:
+
+- **`/digital-fitness` is the route**, with `/readiness` 301ing to it.
+  That redirect is load-bearing: `/readiness` carried the primary CTA from
+  launch, so every header, hero and footer link ever published points at
+  it, as do the sitemap entries search engines already hold.
+- **The form kind is `fitness`**, and `readiness` is still accepted and
+  stored as `fitness`. A visitor whose tab predates the deploy would
+  otherwise have a valid enquiry rejected for a reason they could neither
+  see nor fix.
+- **Rubric bumped psr-v1 → psr-v2** and the scan cache pinned to the
+  current rubric. Renaming a dimension id changes the scoring vocabulary;
+  without the pin, a cached v1 result would render `agent-readiness` raw
+  on a visitor's results page. Weights and signals are identical, so the
+  same domain scores the same under both.
+
+Claims, per the instruction that no result be presented as a certification
+or an absolute verdict: the assessment page now states plainly that the
+score is not a certification and does not declare a business digitally
+fit, and that it is always shown with its Evidence Coverage because a
+score drawn from a thin slice of evidence says less than the same number
+drawn from a full one.
+
+**Deliberately not renamed**, because these are records rather than copy:
+this changelog, `docs/strategy/` (dated source documents the source-of-truth
+order depends on), `docs/specs/parity-baseline.json` (a dated snapshot read
+by nothing), and `src/data/insights-data.ts` (published article prose —
+CLAUDE.md says regenerate, never hand-edit). The last is the one live
+surface still carrying the old word, in one article dated 19 August; it
+needs the owner's call on regeneration.
+
+New guard `tests/fitness-terminology.test.mjs`: the old vocabulary cannot
+return to live code, no visitor-facing page may render it, the 301 must
+hold, and no page may claim a certification or an absolute fitness verdict.
+221 tests pass.
 
 ## v4.63.1 — 2118hrs:20th August2026
 

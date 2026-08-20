@@ -9,7 +9,7 @@ import test from "node:test";
 import { fetchPath } from "./helpers/server.mjs";
 
 test("no third-party tracker is served on any page", async () => {
-  for (const path of ["/", "/insights", "/contact", "/readiness", "/legal/privacy"]) {
+  for (const path of ["/", "/insights", "/contact", "/digital-fitness", "/legal/privacy"]) {
     const html = await (await fetchPath(path)).text();
     assert.doesNotMatch(html, /googletagmanager\.com/, `${path} loads Tag Manager`);
     assert.doesNotMatch(html, /google-analytics\.com/, `${path} loads Google Analytics`);
@@ -43,7 +43,7 @@ test("the privacy notice matches: no banner, no browser analytics, first-party a
 });
 
 test("form consent is untouched — it is data-processing consent, not cookies", async () => {
-  const html = await (await fetchPath("/readiness")).text();
+  const html = await (await fetchPath("/digital-fitness")).text();
   assert.match(html, /id="consent"/, "the form consent checkbox must remain");
   assert.match(html, /privacy notice/i);
 });

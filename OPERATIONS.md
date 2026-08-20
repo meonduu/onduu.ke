@@ -29,7 +29,7 @@ checked as written, that is itself a finding.
    — if Monday's run is red, that email IS this checklist calling.
 
 1. **Enquiry path, end to end, in production.** Submit a clearly-marked
-   test enquiry on https://onduu.ke/readiness ("TEST — please ignore" in
+   test enquiry on https://onduu.ke/digital-fitness ("TEST — please ignore" in
    name and company). Good: confirmation with a reference on screen, the
    notification email in the NOTIFY_EMAIL inbox within minutes, the row
    visible at /go/enquiries. Then delete the row:

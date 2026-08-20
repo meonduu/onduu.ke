@@ -12,7 +12,7 @@ No deadlines are listed anywhere in this file because none have been agreed.
   **`CHANGELOG.md` is the only record of the current version — do not pin one
   here**; this line has gone stale twice already. Deploys automatically from
   `main` via Workers Builds; PRs get preview URLs.
-- Working today: the repositioned architecture (Readiness · How It Works ·
+- Working today: the repositioned architecture (Fitness · How It Works ·
   Paths · Guides · About); assessment and contact forms end-to-end
   (validation, Turnstile, rate limiting, D1 `onduu-leads`); **four free
   tools** — `/email-security`, `/kedomains`, `/scan` (secret-gated on
@@ -33,7 +33,7 @@ No deadlines are listed anywhere in this file because none have been agreed.
 Two decisions, made by the owner on 18 August 2026:
 
 1. **Reposition Onduu** per the 16 August 2026 two-site strategy: Onduu is
-   education, Digital Readiness and demand-routing; implementation goes to
+   education, Digital Fitness and demand-routing; implementation goes to
    independent Ujiajiri partners; infrastructure goes to the approved
    HOSTAFRICA route. Direct-delivery promises currently on the live site are
    superseded and must be replaced.
@@ -127,15 +127,15 @@ Shipped in v4.0.0 (18 Aug 2026) once the strategy documents were located and
 filed under `docs/strategy/`. Applied per the Current Version strategy:
 
 - Homepage rewritten with the approved copy; "Onduu finds and fixes" gone;
-  primary CTA everywhere is **Check Your Digital Readiness**.
-- New architecture: nav Readiness · How It Works · Paths · Guides · About;
+  primary CTA everywhere is **Check Your Digital Fitness**.
+- New architecture: nav Fitness · How It Works · Paths · Guides · About;
   `/paths/*` (Ujiajiri partners, HOSTAFRICA infrastructure with disclosure);
   `/guides/*` (Website Revenue System demoted to a framework guide, Kenyan
   VPS, Agents on a VPS).
 - `/solutions/*` and `/infrastructure/*` removed with 301s; Managed Website
   Operations, Results and the managed-service terms regated (noindex).
 - `/how-it-works` reframed to Assess → Prioritise → Choose a path → Verify;
-  `/readiness` gained the result-routing consent block; `/about` the
+  `/digital-fitness` gained the result-routing consent block; `/about` the
   relationship paragraph; `/contact` the three-destination split; footer
   carries the responsibility disclosure.
 - Tests updated to pin the new architecture, redirects, gates, disclosure
@@ -152,10 +152,10 @@ Closed 19 August 2026: the owner reviewed every decision point's destination,
 disclosure and consent wording (captured verbatim from the live site in the
 Phase 2 sign-off review) and approved all six — the Ujiajiri introduction
 path, the HOSTAFRICA path page, the domain-search routing, the contact
-three-destination split, the readiness after-score block and the sitewide
+three-destination split, the fitness after-score block and the sitewide
 footer disclosure — with two owner-approved fixes applied in v4.38.0: the
 contact hero drops the superseded "system, programme, pilot" echo, and the
-readiness introduction CTA gains the one-sentence referral-fee disclosure.
+fitness introduction CTA gains the one-sentence referral-fee disclosure.
 
 Former blockers resolved 18 August 2026: the strategy documents are filed
 under `docs/strategy/`, and the HOSTAFRICA destination is decided
@@ -248,20 +248,20 @@ Remaining:
 **Acceptance:** every legal statement matches observed behaviour; no draft
 labels on production claims without owner sign-off; passes `REVIEW.md`.
 
-## Phase 4 — Digital Readiness product — `in progress` (gated)
+## Phase 4 — Digital Fitness product — `in progress` (gated)
 
-Done so far: human-reviewed assessment route live (readiness form → D1 →
+Done so far: human-reviewed assessment route live (fitness form → D1 →
 review); `/email-security` checker live (renamed from `/check`, v4.7.0);
-`/scan` instant readiness scan live; `/kedomains` domain search live;
+`/scan` instant fitness scan live; `/kedomains` domain search live;
 `/dns` DNS health check live.
 
 Remaining:
 
 - [ ] Preserve the human-reviewed assessment route through all changes.
-- [x] Write and approve the Instant Public Readiness Scan specification
+- [x] Write and approve the Instant Public Fitness Scan specification
   (`docs/specs/instant-scan.md`, spec + psr-v1 rubric approved 18 Aug 2026).
 - [x] Separate Public Signal Score, Evidence Coverage and Verified Digital
-  Readiness Score in product, copy and results (built into the scan
+  Fitness Score in product, copy and results (built into the scan
   response and its statement text).
 - [x] Complete SSRF, abuse and scoring-replay tests
   (`tests/scan-{ssrf,scoring,abuse}.test.mjs`, 31 tests).
@@ -354,7 +354,7 @@ an understated roadmap is how five guides sat unclickable for weeks.
 - [ ] Publish only approved case evidence with transparent methods. **Not
   started, and blocked on the owner**: no customer has consented to a
   published result, and nothing may be published without that.
-- [~] Measure: readiness starts, qualified partner clicks, approved
+- [~] Measure: assessment starts, qualified partner clicks, approved
   HOSTAFRICA-path clicks, guide engagement, completed enquiries.
   - Server-side page views, referrers, countries and devices: recording
     since v2.x, unblockable, exact.

@@ -1,5 +1,5 @@
 /**
- * Signal evaluation for the Instant Public Readiness Scan: Observations in,
+ * Signal evaluation for the Instant Public Fitness Scan: Observations in,
  * 24 SignalResults out, exactly as tabled in docs/specs/instant-scan.md §9.
  *
  * Pure and deterministic: the same Observations object always produces the
@@ -13,7 +13,7 @@
 import type { Observations } from "./collect.ts";
 import type { SignalResult, SignalStatus, Dimension } from "./rubric.ts";
 
-const VERIFIED_NOTE = "Covered by the Verified Digital Readiness assessment.";
+const VERIFIED_NOTE = "Covered by the Verified Digital Fitness Assessment.";
 
 function signal(
   id: string,
@@ -373,7 +373,7 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   }
 
-  /* ── Agent readiness ── */
+  /* ── Agent fitness ── */
 
   const fileSignal = (
     id: string,
@@ -383,17 +383,17 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     absentMsg: string,
   ) => {
     if (!page.fetched && page.chain.length === 0) {
-      out.push(unobservable(id, "agent-readiness", label, "The request did not complete."));
+      out.push(unobservable(id, "agent-fitness", label, "The request did not complete."));
       return;
     }
     if (page.status !== 200) {
-      out.push(signal(id, "agent-readiness", label, "fail", absentMsg, "Root path only."));
+      out.push(signal(id, "agent-fitness", label, "fail", absentMsg, "Root path only."));
       return;
     }
     out.push(
       signal(
         id,
-        "agent-readiness",
+        "agent-fitness",
         label,
         looksRight ? "pass" : "warn",
         looksRight ? `Present and parseable at status 200.` : `Present at status 200 but did not parse as expected.`,
@@ -405,12 +405,12 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
   fileSignal("sitemap", "sitemap.xml", obs.sitemap, obs.sitemap.looksLikeSitemap, "No sitemap.xml.");
 
   if (!home.fetched) {
-    out.push(unobservable("structured-data", "agent-readiness", "Structured data", "The homepage fetch did not complete."));
+    out.push(unobservable("structured-data", "agent-fitness", "Structured data", "The homepage fetch did not complete."));
   } else {
     out.push(
       signal(
         "structured-data",
-        "agent-readiness",
+        "agent-fitness",
         "Structured data",
         home.hasJsonLd ? (home.jsonLdParses ? "pass" : "warn") : "fail",
         home.hasJsonLd

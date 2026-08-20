@@ -34,10 +34,15 @@ const DIMENSION_LABELS: Record<string, string> = {
   speed: "Speed",
   conversion: "Conversion",
   resilience: "Resilience",
-  "agent-readiness": "Agent readiness",
+  "agent-fitness": "Agent fitness",
+  // Pre-rename id (psr-v1). The cache lookup is pinned to the current
+  // rubric so this should never be reached from a live scan, but an
+  // unknown key falls through to the raw id, and "agent-readiness" printed
+  // on a results page is a worse failure than one redundant line here.
+  "agent-readiness": "Agent fitness",
 };
 
-const DIMENSION_ORDER = ["control", "trust", "speed", "conversion", "resilience", "agent-readiness"];
+const DIMENSION_ORDER = ["control", "trust", "speed", "conversion", "resilience", "agent-fitness"];
 
 const STATUS_WORD: Record<SignalStatus, string> = {
   pass: "PASS",
@@ -180,7 +185,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
             <div>
               <h2>What the public signals show for {result.domain}.</h2>
               <p>
-                Evidence coverage {result.evidenceCoverage}%. The share of the readiness picture
+                Evidence coverage {result.evidenceCoverage}%. The share of the fitness picture
                 that is publicly observable. {result.statement}
               </p>
             </div>
@@ -211,7 +216,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
           })}
 
           <div className="note">
-            This is a Public Signal Score, not a Digital Readiness Score. Items marked NOT PUBLIC
+            This is a Public Signal Score, not a Digital Fitness Score. Items marked NOT PUBLIC
             could not be seen from outside and neither helped nor hurt the score. They are exactly
             what the human-reviewed Verified assessment covers. Scan reference {result.reference},
             run {new Date(result.scannedAt).toLocaleString()}

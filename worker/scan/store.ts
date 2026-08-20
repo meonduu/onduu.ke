@@ -5,7 +5,7 @@
  * submission_throttle pattern.
  */
 import type { Observations } from "./collect.ts";
-import type { SignalResult } from "./rubric.ts";
+import { CURRENT_RUBRIC, type SignalResult } from "./rubric.ts";
 
 export const CACHE_TTL_MS = 24 * 60 * 60 * 1000; // owner decision #1
 export const SCANS_PER_HOUR = 5;
@@ -39,9 +39,10 @@ export async function findRecentScan(
   const row = await db
     .prepare(
       "SELECT reference, domain, rubric_version, observations, signals, score, coverage, created_at" +
-        " FROM scans WHERE domain = ? AND created_at >= ? ORDER BY created_at DESC LIMIT 1",
+        " FROM scans WHERE domain = ? AND created_at >= ? AND rubric_version = ?" +
+        " ORDER BY created_at DESC LIMIT 1",
     )
-    .bind(domain, cutoff)
+    .bind(domain, cutoff, CURRENT_RUBRIC)
     .first<{
       reference: string;
       domain: string;

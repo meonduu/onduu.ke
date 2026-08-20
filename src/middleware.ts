@@ -16,8 +16,14 @@ const REDIRECTS: Record<string, string> = {
   "/email-security/glossary": "/email-security",
   "/check": "/email-security",
   "/domains": "/kedomains",
+  // Digital Readiness became Digital Fitness on the owner's instruction,
+  // 20 August 2026. /readiness carried the primary CTA from launch and is
+  // the most-linked route on the site, so this redirect is load-bearing:
+  // every header, hero and footer link published before the rename points
+  // at it, as do the sitemap entries search engines already hold.
+  "/readiness": "/digital-fitness",
   "/solutions": "/paths",
-  "/solutions/digital-revenue-risk-review": "/readiness",
+  "/solutions/digital-revenue-risk-review": "/digital-fitness",
   "/solutions/website-revenue-system": "/guides/website-revenue-system",
   "/solutions/agent-workflow-pilot": "/guides/agents-on-vps",
   "/infrastructure": "/paths/hostafrica-infrastructure",

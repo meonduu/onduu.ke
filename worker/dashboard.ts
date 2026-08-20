@@ -2,7 +2,7 @@
  * /go — private dashboard, split into sections:
  *   /go                    index and headline numbers
  *   /go/enquiries          form submissions and their sources
- *   /go/scans              readiness scan results
+ *   /go/scans              fitness scan results
  *   /go/email-security     email checker usage
  *   /go/dns                DNS health check usage
  *   /go/kedomains          domain search usage
@@ -55,7 +55,7 @@ const publicLink = (path: string, label = `onduu.ke${path === "/" ? "" : path}`)
 const SECTIONS: [slug: string, label: string][] = [
   ["", "Overview"],
   ["enquiries", "Enquiries"],
-  ["scans", "Readiness scans"],
+  ["scans", "Fitness scans"],
   ["email-security", "Email checker"],
   ["dns", "DNS checker"],
   ["kedomains", "Domain search"],
@@ -246,7 +246,7 @@ ${light}
 
 <div class="cards">
   <div class="card"><b>${num(c !== null, c?.enquiries30)}</b><span>Enquiries, 30 days</span><a href="/go/enquiries">All ${num(c !== null, c?.enquiries)} →</a></div>
-  <div class="card"><b>${num(s !== null, s?.scans30)}</b><span>Readiness scans, 30 days</span><a href="/go/scans">All ${num(s !== null, s?.scansAll)} →</a></div>
+  <div class="card"><b>${num(s !== null, s?.scans30)}</b><span>Fitness scans, 30 days</span><a href="/go/scans">All ${num(s !== null, s?.scansAll)} →</a></div>
   <div class="card"><b>${num(c !== null, c?.views30)}</b><span>Page views, 30 days</span><a href="/go/analytics">All ${num(c !== null, c?.views)} →</a></div>
   <div class="card"><b>${num(outbound !== null, outbound?.n)}</b><span>Routed clicks, 30 days</span><a href="/go/routing">Detail →</a></div>
 </div>
@@ -255,8 +255,8 @@ ${light}
 ${table(
   ["Section", "What it shows", "Client-facing page"],
   [
-    ['<a href="/go/enquiries">Enquiries</a>', "Assessment and contact submissions, with the source that produced them", publicLink("/readiness") + " · " + publicLink("/contact")],
-    ['<a href="/go/scans">Readiness scans</a>', "Stored scan results: domain, score, coverage, rubric version", publicLink("/scan")],
+    ['<a href="/go/enquiries">Enquiries</a>', "Assessment and contact submissions, with the source that produced them", publicLink("/digital-fitness") + " · " + publicLink("/contact")],
+    ['<a href="/go/scans">Fitness scans</a>', "Stored scan results: domain, score, coverage, rubric version", publicLink("/scan")],
     ['<a href="/go/email-security">Email checker</a>', "SPF/DKIM/DMARC checks run, most-checked domains, daily trend", publicLink("/email-security")],
     ['<a href="/go/dns">DNS checker</a>', "DNS health checks run, most-checked domains, daily trend", publicLink("/dns")],
     ['<a href="/go/kedomains">Domain search</a>', "Domain searches run, most-searched names, daily trend", publicLink("/kedomains")],
@@ -298,7 +298,7 @@ async function enquiries(db: D1Database): Promise<Response> {
     "Enquiries",
     `<h1>Enquiries</h1>
 <p class="sub">Assessment and contact submissions. Personal data. Do not export or forward.
-Client-facing pages: ${publicLink("/readiness")} · ${publicLink("/contact")}</p>
+Client-facing pages: ${publicLink("/digital-fitness")} · ${publicLink("/contact")}</p>
 
 <h2>Which source produced enquiries</h2>
 ${table(
@@ -365,8 +365,8 @@ async function scans(db: D1Database): Promise<Response> {
   const c = counts ?? { all_time: 0, d30: 0, domains: 0, avg_score: 0, avg_cov: 0 };
 
   return page(
-    "Readiness scans",
-    `<h1>Readiness scans</h1>
+    "Fitness scans",
+    `<h1>Fitness scans</h1>
 <p class="sub">Fresh runs only, a repeat scan inside 24 hours serves the cached result and writes no row.
 Client-facing page: ${publicLink("/scan")}</p>
 
@@ -879,7 +879,7 @@ ${
     ? `${keyed(clicksByLabel, "Element", "No tagged clicks in this range.")}
 ${keyed(clicksByPath, "Clicked from", "No tagged clicks in this range.")}
 <p class="sub"><a href="${q("&csv=clicks")}">Download CSV</a></p>`
-    : `<div class="empty">No tagged clicks recorded in this range. Only elements carrying <code>data-analytics-event</code> are counted — the readiness CTAs in the header, the heroes and the homepage were tagged on 20 August 2026, so this fills from that date forward. Outbound clicks to HOSTAFRICA and Ujiajiri are counted separately and server-side: see <a href="/go/routing">Routed clicks</a>.</div>`
+    : `<div class="empty">No tagged clicks recorded in this range. Only elements carrying <code>data-analytics-event</code> are counted — the fitness CTAs in the header, the heroes and the homepage were tagged on 20 August 2026, so this fills from that date forward. Outbound clicks to HOSTAFRICA and Ujiajiri are counted separately and server-side: see <a href="/go/routing">Routed clicks</a>.</div>`
 }
 
 <h2>Engagement by page <span class="basis">estimated</span></h2>

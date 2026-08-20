@@ -1,4 +1,4 @@
-# Runbook — launching the Instant Public Readiness Scan
+# Runbook — launching the Instant Public Fitness Scan
 
 Operational steps to take the scan from built-and-dark to publicly live, and
 to reverse it. The spec is `docs/specs/instant-scan.md`; this is the how-to.

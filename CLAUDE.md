@@ -9,12 +9,12 @@ entry whenever a defect happens twice.
 ## Purpose
 
 onduu.ke exists to help established Kenyan businesses and decision-makers
-understand and improve their digital readiness — websites, conversion,
+understand and improve their digital fitness — websites, conversion,
 ownership, trust, resilience and infrastructure decisions.
 
 - **Primary audience:** established Kenyan businesses and their
   decision-makers.
-- **Primary conversion:** complete or request the Digital Readiness
+- **Primary conversion:** complete or request the Digital Fitness
   assessment.
 - **Secondary routes:** independent implementation partners via ujiajiri.ke,
   and the approved HOSTAFRICA product path.
@@ -23,7 +23,7 @@ ownership, trust, resilience and infrastructure decisions.
 
 Who does what:
 
-- **Onduu educates and routes.** It is the education, Digital Readiness,
+- **Onduu educates and routes.** It is the education, Digital Fitness,
   tools, guidance and demand-routing platform. It does not currently act as
   prime contractor, collect partner project payments, manage independent
   implementation or guarantee partner delivery.
@@ -43,9 +43,9 @@ Disclosure and claims:
   decision point where they matter — not only on a legal page.
 - HOSTAFRICA brand assets, programme claims, tracking routes, product
   training and endorsements remain **gated until approved**.
-- The Digital Readiness Score is Onduu's signature entry product. An instant
+- The Digital Fitness Score is Onduu's signature entry product. An instant
   domain scan may report only public observations, a Public Signal Score and
-  Evidence Coverage. A **Verified** Digital Readiness Score requires customer
+  Evidence Coverage. A **Verified** Digital Fitness Score requires customer
   evidence, review and separately authorised tests. A scan must never treat
   missing private evidence as a pass or a failure.
 - Direct-delivery language — "Onduu finds and fixes", Managed Website

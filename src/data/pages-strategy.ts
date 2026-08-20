@@ -52,8 +52,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "Onduu explains the problem. The appropriate provider delivers the solution.",
     intro:
       "Onduu helps you identify the weaknesses, understand the priority and choose the right delivery path. Implementation and infrastructure are supplied by the parties responsible for them, not by Onduu.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "TWO ROUTES",
@@ -86,8 +86,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "Independent providers implement. You contract them directly.",
     intro:
       "Website-design and digital-marketing implementation routes to independent providers through Ujiajiri's private curated introductions. The provider you approve contracts with you and is paid by you directly.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "HOW IT WORKS",
@@ -121,8 +121,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "HOSTAFRICA supplies the products.",
     intro:
       "Domains, hosting, business email and VPS products are provided, sold, billed, provisioned, renewed and supported by HOSTAFRICA through its official channels.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "WHO DOES WHAT",
@@ -159,8 +159,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "Understand the responsibility before adopting the technology.",
     intro:
       "Practical, trigger-based guidance for the decisions behind a working digital operation. Written to be useful before any money is spent, and honest about what each method can and cannot prove.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "THE GUIDES",
@@ -209,8 +209,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "Treat the website as a commercial system - not a collection of pages.",
     intro:
       "The Website Revenue System is Onduu's published framework for aligning the audience, offer, proof, page journey, enquiry route and measurement. Use it to define the work; if implementation is required, select an independent Ujiajiri partner. It is a framework, not an Onduu delivery promise.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "WHAT IT ADDRESSES",
@@ -239,8 +239,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: vpsSource?.title ?? "Choose where your core workload runs. Map where the rest of its data travels.",
     intro:
       "A Kenyan VPS may suit workloads with particular location, control or performance objectives. The decision still depends on architecture, data flow, backup, support and cost. This guide is the set of questions that make it an evidence-based choice.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "PRINCIPLES",
@@ -279,8 +279,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "What an always-on agent needs beyond a VPS.",
     intro:
       "An AI agent that runs unattended is an operational commitment, not a feature flag. Before one touches real work, it needs boundaries, supervision, measurement and a way to stop it. This guide covers what that means in practice.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "SUITABLE WORK",
@@ -313,8 +313,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "Who really controls your domain and DNS?",
     intro:
       "The domain is the one asset everything else hangs off, the website, the email, the brand. Yet in many Kenyan businesses nobody can answer who owns it, where it renews or who can move it. This guide is the set of checks that make the answer definite.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "THE CONTROL QUESTIONS",
@@ -357,8 +357,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "What email-security checks can and cannot prove.",
     intro:
       "SPF, DKIM and DMARC decide one narrow, important thing: whether a stranger can send email that claims to be from your domain, and whether the world's mail servers have been told to refuse it. This guide explains what each record does, and is honest about the limits.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "THE RECORDS",
@@ -387,7 +387,7 @@ export const strategyPages: Record<string, PageContent> = {
           "It does not prove the business is secure or compliant in any general sense",
           "It is not a penetration test, an audit or a certificate",
         ],
-        note: "Published DNS records are the defence the world can see. The rest (mailbox access, recovery, staff practice) is exactly what the human-reviewed readiness assessment examines.",
+        note: "Published DNS records are the defence the world can see. The rest (mailbox access, recovery, staff practice) is exactly what the human-reviewed fitness assessment examines.",
       },
     ],
   },
@@ -424,7 +424,7 @@ export const strategyPages: Record<string, PageContent> = {
         ],
       },
       {
-        eyebrow: "03 / READINESS SCAN",
+        eyebrow: "03 / FITNESS SCAN",
         title: "/scan, a Public Signal Score, never a verdict.",
         body: [
           "Reads only public information about a domain: registry record, DNS, published email records, and the homepage, robots.txt and sitemap any visitor can request. Results are stored (domain, observations, score, reference) so repeat scans within 24 hours serve the cached result and any score can be reproduced; no visitor identity is attached.",
@@ -432,7 +432,7 @@ export const strategyPages: Record<string, PageContent> = {
         items: [
           "The Public Signal Score covers only what is publicly observable; Evidence Coverage says how much that is",
           "Anything not observable from outside is excluded from the score. It never counts as a pass or a failure",
-          "It is not a Digital Readiness Score, a penetration test, a legal opinion or a compliance certificate",
+          "It is not a Digital Fitness Score, a penetration test, a legal opinion or a compliance certificate",
           "A domain owner who wants their domain left alone can ask through the contact form: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is blocked from future scans, and future lookups of it are not recorded",
         ],
       },
@@ -471,8 +471,8 @@ export const strategyPages: Record<string, PageContent> = {
     title: "From hidden weakness to a responsible next step.",
     intro:
       "Onduu begins with the business consequence, not a predetermined package. The work is to identify what is weak or unproven, prioritise what matters, choose the responsible delivery path and agree how the result will be verified.",
-    cta: "Check Your Digital Readiness",
-    ctaHref: "/readiness",
+    cta: "Check Your Digital Fitness",
+    ctaHref: "/digital-fitness",
     sections: [
       {
         eyebrow: "THE STAGES",
@@ -480,7 +480,7 @@ export const strategyPages: Record<string, PageContent> = {
         steps: [
           {
             title: "Assess",
-            body: "Identify the signals and the missing evidence across Control, Trust, Speed, Conversion, Resilience and Agent readiness. Public observations, your declarations and human review are labelled separately.",
+            body: "Identify the signals and the missing evidence across Control, Trust, Speed, Conversion, Resilience and Agent fitness. Public observations, your declarations and human review are labelled separately.",
           },
           {
             title: "Prioritise",
@@ -522,10 +522,10 @@ export const strategyPages: Record<string, PageContent> = {
     ],
   },
 
-  "readiness": {
-    ...briefPages["readiness"],
+  "digital-fitness": {
+    ...briefPages["digital-fitness"],
     sections: [
-      ...briefPages["readiness"].sections,
+      ...briefPages["digital-fitness"].sections,
       {
         eyebrow: "AFTER THE SCORE",
         title: "What happens after the score?",
@@ -548,7 +548,7 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "THE RELATIONSHIPS",
         title: "Who operates what.",
         body: [
-          "Onduu is an expert-content and digital-readiness brand operated by Ujiajiri Enterprises Limited. Onduu publishes practical guidance and routes readers to the appropriate independent provider. Ujiajiri implementation partners contract with clients directly. Wycliffe is also Managing Director of HOSTAFRICA Kenya. HOSTAFRICA provides, bills and supports the HOSTAFRICA products referenced on this site.",
+          "Onduu is an expert-content and digital-fitness brand operated by Ujiajiri Enterprises Limited. Onduu publishes practical guidance and routes readers to the appropriate independent provider. Ujiajiri implementation partners contract with clients directly. Wycliffe is also Managing Director of HOSTAFRICA Kenya. HOSTAFRICA provides, bills and supports the HOSTAFRICA products referenced on this site.",
         ],
         note: "Name, titles, biography and relationship wording remain subject to owner and HOSTAFRICA approval where they concern HOSTAFRICA.",
       },
@@ -561,7 +561,7 @@ export const strategyPages: Record<string, PageContent> = {
     // Overrides the prototype intro, whose "system, programme, pilot" echoed
     // the superseded direct-delivery offers (owner sign-off, 19 Aug 2026).
     intro:
-      "Share the result the website or workflow should produce and the weakness you suspect. Onduu will review the request and recommend the readiness assessment, a guide, an independent partner route, the official infrastructure route or “not yet”.",
+      "Share the result the website or workflow should produce and the weakness you suspect. Onduu will review the request and recommend the fitness assessment, a guide, an independent partner route, the official infrastructure route or “not yet”.",
     sections: [
       {
         eyebrow: "WHO RECEIVES IT",
@@ -577,7 +577,7 @@ export const strategyPages: Record<string, PageContent> = {
         title: "Send the enquiry to the party responsible for it.",
         cards: [
           {
-            title: "Digital Readiness or Onduu content",
+            title: "Digital Fitness or Onduu content",
             body: "Use the form below. It reaches Onduu and nobody else.",
           },
           {

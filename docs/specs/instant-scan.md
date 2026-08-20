@@ -1,4 +1,4 @@
-# Spec — Instant Public Readiness Scan
+# Spec — Instant Public Fitness Scan
 
 **Status: LIVE. Launched 18 August 2026 on the owner's instruction** after
 all §7 gates passed (SSRF/abuse/scoring-replay suites, privacy review with
@@ -16,27 +16,27 @@ observe fully (verified live).
 ## 1. What it is, and is not
 
 A visitor enters a domain and receives, in under ~20 seconds, a report of
-**publicly observable signals** about that domain's digital readiness,
+**publicly observable signals** about that domain's digital fitness,
 summarised as a **Public Signal Score** with an explicit **Evidence
 Coverage** figure. It is Onduu's instant entry product: the widened
 successor to `/check`, and the on-ramp to the human-reviewed assessment
-(the primary conversion) and, later, the **Verified Digital Readiness
+(the primary conversion) and, later, the **Verified Digital Fitness
 Score**.
 
 It is **not** a security audit, a compliance check, a penetration test, or
-a Digital Readiness Score. It observes only what anyone on the internet can
+a Digital Fitness Score. It observes only what anyone on the internet can
 already see. Three sentences govern everything below:
 
 1. The scan reports **only public observations**, each with its evidence
    and its limitation.
 2. **Missing private evidence is never scored as a pass or a failure** — it
    is reported as *not publicly observable* and excluded from scoring.
-3. A **Verified** Digital Readiness Score requires customer evidence, human
+3. A **Verified** Digital Fitness Score requires customer evidence, human
    review and separately authorised tests; the scan must always say so.
 
 ## 2. Observations (v1 signal set)
 
-Grouped by the six readiness dimensions. Every signal is deterministic:
+Grouped by the six fitness dimensions. Every signal is deterministic:
 derived from fetched bytes by fixed rules, no sampling, no model calls.
 
 | Dimension | Publicly observable in v1 | Never observable publicly |
@@ -46,7 +46,7 @@ derived from fetched bytes by fixed rules, no sampling, no model calls.
 | **Speed** | Response basics from one fetch: TTFB band, compressed HTML size, viewport meta present. Reported as coarse bands with the limitation "one request, one location, no browser rendering". | Real-user performance, Core Web Vitals. |
 | **Conversion** | A reachable contact path on the homepage (tel/mailto/contact link/form presence — presence only, nothing submitted); 404 handling returns a page, not an error dump. | Whether enquiries are answered; form delivery. |
 | **Resilience** | Email authentication: SPF, DKIM (common selectors), DMARC, MX — the existing `/check` analysers reused unchanged; DNS provider diversity (single NS provider reported as observation). | Backups, recovery, monitoring, incident response. |
-| **Agent readiness** | robots.txt and sitemap.xml presence and parseability; structured data (JSON-LD) presence on the homepage. | Internal workflows, agent controls. |
+| **Agent fitness** | robots.txt and sitemap.xml presence and parseability; structured data (JSON-LD) presence on the homepage. | Internal workflows, agent controls. |
 
 Fetch surface is fixed and tiny: RDAP for the registrable domain, DNS over
 HTTPS (A/AAAA/NS/TXT/MX/DS as needed), `https://{host}/`,
@@ -83,7 +83,7 @@ is never scored as a failure.
   only. Weights live in a versioned rubric table in the repo
   (`score-model: psr-v1`); every result carries the rubric version. Changing
   weights requires a new version, never an in-place edit.
-- **Evidence Coverage (%).** The share of the full readiness rubric that
+- **Evidence Coverage (%).** The share of the full fitness rubric that
   was publicly observable for this domain. It is displayed as prominently
   as the score, because it is the honest number: a high score at 40%
   coverage must read as "what we could see looks good", never "you are
@@ -107,7 +107,7 @@ The page states, verbatim-level clearly:
 - what was checked and when;
 - that the scan reads public information only, stores no personal data and
   touched nothing private;
-- that this is a Public Signal Score, not a Digital Readiness Score, and
+- that this is a Public Signal Score, not a Digital Fitness Score, and
   what the Verified score additionally requires;
 - one primary CTA: request the human-reviewed assessment.
 
@@ -199,7 +199,7 @@ absent from the sitemap until launch.
 | 4 | Where results live | **Stored with a reference ID** (required anyway by scoring replay, §3) |
 | 5 | DKIM selector list | **Reuse `/check`'s list** unchanged |
 | 6 | Relationship to `/check` | **Keep both**; revisit folding after the scan is live |
-| 7 | Name shown to visitors | **"Instant Public Readiness Scan"** |
+| 7 | Name shown to visitors | **"Instant Public Fitness Scan"** |
 
 ## 9. Rubric `psr-v1` — DRAFT, awaiting owner approval
 
@@ -233,7 +233,7 @@ signals) as a percentage. Unobservable signals leave both sums.
 | | DMARC | 8 | enforcing / p=none or partial / absent |
 | | MX | 4 | per `/check` analyser |
 | | DNS provider diversity | 3 | mail and web not on one failing provider / — / all single-provider |
-| Agent readiness (10) | robots.txt | 4 | present and parseable / present with errors / absent |
+| Agent fitness (10) | robots.txt | 4 | present and parseable / present with errors / absent |
 | | sitemap.xml | 4 | present and parseable / present with errors / absent |
 | | JSON-LD structured data on homepage | 2 | present and parseable / present with errors / absent |
 
