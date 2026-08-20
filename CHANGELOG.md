@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.56.0 — 1823hrs:20th August2026
+CURRENT VERSION: v4.57.0 — 1911hrs:20th August2026
+
+## v4.57.0 — 1911hrs:20th August2026
+
+Three placeholders removed at the owner's instruction, and the question
+they left behind is answered with a policy.
+
+**Removed**: the company registration number and registered address (the
+controller is named and contactable, which is what the notice needs); the
+ODPC's contact details, replaced by a line noting the regulator publishes
+its own route — the **independent right to complain to it stays**, since
+that is statutory; and any stated retention period for a sent report.
+
+**Assessment terms gain section 08, "What may be published without
+asking"** — the aggregate-only policy. Onduu may publish patterns across
+assessments; a published figure covers **at least ten assessments** with
+**no subdivision below five**, and identifying detail is omitted
+regardless of the number: no sector-plus-town-plus-size combination, no
+exact score, no date, no distinctive technical fingerprint. Anything
+narrower than that — one client's findings, however carefully the name is
+removed — requires written consent **against the exact wording proposed**,
+shown before publication. The reasoning is stated on the page: in a market
+this size an "anonymous" example is often recognisable to anyone who knows
+the sector, so the standard is the client's permission rather than Onduu's
+own judgement about identifiability. A test pins both thresholds.
+
+Also corrected: v4.55.0's version note for these terms was written to the
+commercial-relationships page instead (identical placeholder text, first
+match) and was deleted with that page in v4.56.0. The terms are now at
+draft 0.4 and the note records what happened rather than skipping a
+version silently.
+
+211 tests, lint clean.
 
 ## v4.56.0 — 1823hrs:20th August2026
 
