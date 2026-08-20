@@ -125,6 +125,17 @@ td.num{text-align:right;font-variant-numeric:tabular-nums}
 .note b{display:block;margin-bottom:6px}
 .note ol{margin:10px 0 0;padding-left:20px}
 a{color:var(--green)}
+.tabs{display:flex;gap:6px;margin:18px 0 6px;flex-wrap:wrap}
+.tabs a{padding:7px 12px;border:1px solid var(--mist);border-radius:3px;text-decoration:none;font-size:13px}
+.tabs a.on{background:var(--carbon);color:#fff;border-color:var(--carbon)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:12px;margin:16px 0 6px}
+.card{border:1px solid var(--mist);border-radius:3px;padding:14px 16px;background:#fff}
+.card small{display:block;text-transform:uppercase;letter-spacing:.08em;font-size:10px;color:var(--slate)}
+.card b{display:block;font-size:30px;line-height:1.15;margin:6px 0 4px}
+.card span{display:block;font-size:12px;color:var(--slate)}
+.basis{display:inline-block;font-style:normal;font-size:10px;text-transform:uppercase;letter-spacing:.07em;color:var(--slate);border:1px solid var(--mist);border-radius:2px;padding:1px 5px;margin-top:8px}
+h2 .basis{margin:0 0 0 8px;vertical-align:middle}
+.spark{width:100%;height:90px;color:var(--green);display:block;margin:10px 0}
 </style></head><body><main><nav>${nav}</nav>${body}</main></body></html>`,
     {
       headers: {
@@ -475,81 +486,309 @@ ${table(
   );
 }
 
-async function analytics(db: D1Database): Promise<Response> {
-  const [topPages, referrers, daily, countries, devices] = await Promise.all([
+/* ── analytics ───────────────────────────────────────────────────────── */
+
+// Nairobi is UTC+3 with no daylight saving, so a fixed offset is exact and
+// needs no timezone database. D1 stores UTC in 'YYYY-MM-DD HH:MM:SS'.
+const TZ_MS = 3 * 60 * 60 * 1000;
+const DAY_MS = 86_400_000;
+const sqlTime = (ms: number) => new Date(ms).toISOString().slice(0, 19).replace("T", " ");
+
+/** The UTC instant of the most recent Nairobi midnight at or before `ms`. */
+function nairobiMidnight(ms: number): number {
+  const shifted = new Date(ms + TZ_MS);
+  return Date.UTC(shifted.getUTCFullYear(), shifted.getUTCMonth(), shifted.getUTCDate()) - TZ_MS;
+}
+
+const RANGES: Record<string, string> = {
+  today: "Today",
+  yesterday: "Yesterday",
+  "7d": "Last 7 days",
+  "30d": "Last 30 days",
+};
+
+type Range = { key: string; label: string; from: number; to: number; prevFrom: number };
+
+/** Ranges are whole Nairobi days; the comparison period is the same length. */
+function rangeOf(url: URL, now: number): Range {
+  const key = url.searchParams.get("range") ?? "30d";
+  const midnight = nairobiMidnight(now);
+  let from = midnight - 29 * DAY_MS;
+  let to = now;
+  switch (key) {
+    case "today":
+      from = midnight;
+      break;
+    case "yesterday":
+      from = midnight - DAY_MS;
+      to = midnight;
+      break;
+    case "7d":
+      from = midnight - 6 * DAY_MS;
+      break;
+  }
+  const resolved = RANGES[key] ? key : "30d";
+  return { key: resolved, label: RANGES[resolved], from, to, prevFrom: from - (to - from) };
+}
+
+/** Percentage change against the comparison period, or null when it had none. */
+function delta(current: number, previous: number): string {
+  if (previous === 0) return current === 0 ? "—" : "new";
+  const pct = Math.round(((current - previous) / previous) * 100);
+  return `${pct > 0 ? "+" : ""}${pct}%`;
+}
+
+function card(label: string, value: string, note: string, basis: string): string {
+  return `<article class="card"><small>${escape(label)}</small><b>${escape(value)}</b>
+<span>${escape(note)}</span><i class="basis">${escape(basis)}</i></article>`;
+}
+
+/** Inline SVG: no chart library, and it degrades to a note when empty. */
+function sparkline(points: number[]): string {
+  if (points.length < 2) return `<div class="empty">Not enough days in this range to plot.</div>`;
+  const max = Math.max(...points, 1);
+  const w = 720;
+  const h = 90;
+  const step = w / (points.length - 1);
+  const path = points
+    .map((n, i) => `${i === 0 ? "M" : "L"}${(i * step).toFixed(1)},${(h - (n / max) * h).toFixed(1)}`)
+    .join(" ");
+  return `<svg class="spark" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" role="img"
+ aria-label="Daily views, oldest to newest, peak ${max}"><path d="${path}" fill="none"
+ stroke="currentColor" stroke-width="2"/></svg>`;
+}
+
+const csvCell = (v: unknown) => {
+  const s = String(v ?? "");
+  return /[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s;
+};
+
+async function analytics(db: D1Database, url: URL): Promise<Response> {
+  const now = Date.now();
+  const r = rangeOf(url, now);
+  const [from, to, prevFrom] = [sqlTime(r.from), sqlTime(r.to), sqlTime(r.prevFrom)];
+
+  // Server-side views are the ground truth: recorded for every HTML response,
+  // unblockable, no script required. Everything from `events` is an
+  // undercount by design and is labelled as such.
+  const viewsIn = (a: string, b: string) =>
     db
       .prepare(
-        `SELECT path, COUNT(*) AS n FROM page_views
-         WHERE viewed_at >= datetime('now','-30 days') AND path NOT LIKE '/outbound/%'
-         GROUP BY path ORDER BY n DESC LIMIT 30`,
+        `SELECT COUNT(*) AS n FROM page_views
+         WHERE viewed_at >= ? AND viewed_at < ? AND path NOT LIKE '/outbound/%'`,
       )
-      .all(),
+      .bind(a, b)
+      .first<{ n: number }>();
+
+  const group = (column: string, extra = "") =>
     db
       .prepare(
-        `SELECT referrer_host, COUNT(*) AS n FROM page_views
-         WHERE referrer_host IS NOT NULL AND viewed_at >= datetime('now','-30 days')
-         GROUP BY referrer_host ORDER BY n DESC LIMIT 20`,
+        `SELECT ${column} AS k, COUNT(*) AS n FROM page_views
+         WHERE viewed_at >= ? AND viewed_at < ? AND path NOT LIKE '/outbound/%' ${extra}
+         GROUP BY k ORDER BY n DESC LIMIT 25`,
       )
-      .all(),
-    db
-      .prepare(
-        `SELECT substr(viewed_at,1,10) AS day, COUNT(*) AS n FROM page_views
-         WHERE viewed_at >= datetime('now','-30 days') GROUP BY day ORDER BY day DESC`,
-      )
-      .all(),
-    db
-      .prepare(
-        `SELECT COALESCE(country,'unknown') AS country, COUNT(*) AS n FROM page_views
-         WHERE viewed_at >= datetime('now','-30 days') GROUP BY country ORDER BY n DESC LIMIT 15`,
-      )
-      .all(),
-    db
-      .prepare(
-        `SELECT COALESCE(device,'unknown') AS device, COUNT(*) AS n FROM page_views
-         WHERE viewed_at >= datetime('now','-30 days') GROUP BY device ORDER BY n DESC`,
-      )
-      .all(),
+      .bind(from, to)
+      .all();
+
+  // Every query is wrapped: a database missing a table must leave the section
+  // showing an honest empty state, not collapse the whole page into a 404.
+  const [views, prevViews, daily, topPages, referrers, countries, devices] = await Promise.all([
+    safe(viewsIn(from, to), null),
+    safe(viewsIn(prevFrom, from), null),
+    safe(
+      db
+        .prepare(
+          `SELECT substr(datetime(viewed_at,'+3 hours'),1,10) AS day, COUNT(*) AS n
+           FROM page_views WHERE viewed_at >= ? AND viewed_at < ? AND path NOT LIKE '/outbound/%'
+           GROUP BY day ORDER BY day`,
+        )
+        .bind(from, to)
+        .all(),
+      EMPTY,
+    ),
+    safe(group("path"), EMPTY),
+    safe(group("referrer_host", "AND referrer_host IS NOT NULL"), EMPTY),
+    safe(group("COALESCE(country,'unknown')"), EMPTY),
+    safe(group("COALESCE(device,'unknown')"), EMPTY),
   ]);
+
+  // The events tables arrive with migration 0007; until it is applied these
+  // all fail and the coverage panel says so rather than showing a false zero.
+  const [eventRows, sessionRows, healthRows, latestRows] = await Promise.all([
+    safe(
+      db
+        .prepare(`SELECT COUNT(*) AS n FROM events WHERE received_at >= ? AND received_at < ?`)
+        .bind(from, to)
+        .all(),
+      EMPTY,
+    ),
+    safe(
+      db
+        .prepare(
+          `SELECT COUNT(DISTINCT session_id) AS n FROM events
+           WHERE received_at >= ? AND received_at < ? AND session_id IS NOT NULL`,
+        )
+        .bind(from, to)
+        .all(),
+      EMPTY,
+    ),
+    safe(
+      db
+        .prepare(
+          `SELECT COALESCE(SUM(received),0) AS received, COALESCE(SUM(rejected),0) AS rejected
+           FROM event_health WHERE day >= ?`,
+        )
+        .bind(from.slice(0, 10))
+        .all(),
+      EMPTY,
+    ),
+    safe(db.prepare(`SELECT MAX(received_at) AS t FROM events`).all(), EMPTY),
+  ]);
+
+  const n = (rows: D1Result<Record<string, unknown>>, key = "n") =>
+    Number((rowsOf<Record<string, number>>(rows)[0]?.[key] as number) ?? 0);
+
+  // A failed query and a genuinely quiet period both produce nothing; they
+  // must not look the same. null means the source is unavailable.
+  const viewsAvailable = views !== null;
+  const viewCount = views?.n ?? 0;
+  const prevCount = prevViews?.n ?? 0;
+  const eventCount = n(eventRows);
+  const sessions = n(sessionRows);
+  const rejected = n(healthRows, "rejected");
+  const latest = (rowsOf<{ t: string | null }>(latestRows)[0]?.t ?? null) as string | null;
+  const trackerLive = rowsOf<Record<string, unknown>>(eventRows).length > 0;
+
+  const dailyRows = rowsOf<{ day: string; n: number }>(daily);
+
+  // CSV of whichever table was asked for, over the same range.
+  const csv = url.searchParams.get("csv");
+  const CSV_SETS: Record<string, { header: string; rows: string[][] }> = {
+    pages: {
+      header: "path,views",
+      rows: rowsOf<{ k: string; n: number }>(topPages).map((x) => [x.k, String(x.n)]),
+    },
+    referrers: {
+      header: "referrer_host,views",
+      rows: rowsOf<{ k: string; n: number }>(referrers).map((x) => [x.k, String(x.n)]),
+    },
+    countries: {
+      header: "country,views",
+      rows: rowsOf<{ k: string; n: number }>(countries).map((x) => [x.k, String(x.n)]),
+    },
+    devices: {
+      header: "device,views",
+      rows: rowsOf<{ k: string; n: number }>(devices).map((x) => [x.k, String(x.n)]),
+    },
+    daily: { header: "day,views", rows: dailyRows.map((x) => [x.day, String(x.n)]) },
+  };
+  if (csv && CSV_SETS[csv]) {
+    const set = CSV_SETS[csv];
+    const body = [set.header, ...set.rows.map((row) => row.map(csvCell).join(","))].join("\n");
+    return new Response(body, {
+      headers: {
+        "Content-Type": "text/csv; charset=utf-8",
+        "Content-Disposition": `attachment; filename="onduu-${csv}-${r.key}.csv"`,
+        "Cache-Control": "no-store",
+        "Content-Security-Policy": DASHBOARD_CSP,
+      },
+    });
+  }
+
+  const q = (extra: string) => `/go/analytics?range=${r.key}${extra}`;
+  const tabs = Object.entries(RANGES)
+    .map(
+      ([key, label]) =>
+        `<a class="${key === r.key ? "on" : ""}" href="/go/analytics?range=${key}">${escape(label)}</a>`,
+    )
+    .join("");
+
+  const keyed = (rows: D1Result<Record<string, unknown>>, head: string, empty: string, link = false) =>
+    table(
+      [head, "Views"],
+      rowsOf<{ k: string; n: number }>(rows).map((x) => [
+        link ? publicLink(x.k, x.k) : escape(x.k),
+        String(x.n),
+      ]),
+      empty,
+    );
 
   return page(
     "Analytics",
     `<h1>Analytics</h1>
-<p class="sub">First-party page views, recorded server-side. No address, no fingerprint, no identifier. Two views cannot be linked to one person.</p>
+<p class="sub">First-party only. Server-side page views are recorded for every page served and cannot be blocked; the engagement tracker runs in the browser and is an undercount by design. No address, no fingerprint, no identifier that outlives a tab.</p>
 
-<h2>Most read, last 30 days</h2>
+<nav class="tabs">${tabs}</nav>
+<p class="sub">${escape(r.label)}: ${escape(from.slice(0, 16))} to ${escape(to.slice(0, 16))} UTC.
+Compared with ${escape(prevFrom.slice(0, 16))} to ${escape(from.slice(0, 16))} UTC, the immediately preceding window of identical length. Days are Nairobi days.</p>
+
+<div class="cards">
+${
+  viewsAvailable
+    ? card("Page views", String(viewCount), `${delta(viewCount, prevCount)} vs previous period`, "exact — server-side")
+    : card("Page views", "unavailable", "the page_views table is missing", "no source — not a zero")
+}
+${card("Events received", trackerLive ? String(eventCount) : "not recording", trackerLive ? "from the browser tracker" : "migration 0007 not applied", "undercount — blockers and no-JS")}
+${card("Sessions", trackerLive && sessions ? String(sessions) : "—", "one tab, one sitting", "estimated — tab-scoped")}
+${card("Rejected events", trackerLive ? String(rejected) : "—", "counted, never stored", "exact — when recording")}
+</div>
+
+<h2>Daily views <span class="basis">exact</span></h2>
+${sparkline(dailyRows.map((d) => d.n))}
 ${table(
-  ["Path", "Views"],
-  rowsOf<{ path: string; n: number }>(topPages).map((r) => [escape(r.path), String(r.n)]),
-  "No page views recorded yet.",
+  ["Day (Nairobi)", "Views"],
+  dailyRows.map((d) => [escape(d.day), String(d.n)]).reverse(),
+  "No page views in this range.",
 )}
+<p class="sub"><a href="${q("&csv=daily")}">Download CSV</a></p>
 
-<h2>Where readers came from</h2>
-${table(
-  ["Referring site", "Views"],
-  rowsOf<{ referrer_host: string; n: number }>(referrers).map((r) => [escape(r.referrer_host), String(r.n)]),
-  "No external referrers recorded yet.",
-)}
+<h2>Most read <span class="basis">exact</span></h2>
+${keyed(topPages, "Path", "No page views in this range.", true)}
+<p class="sub"><a href="${q("&csv=pages")}">Download CSV</a></p>
 
-<h2>Countries</h2>
-${table(
-  ["Country", "Views"],
-  rowsOf<{ country: string; n: number }>(countries).map((r) => [escape(r.country), String(r.n)]),
-  "No page views recorded yet.",
-)}
+<h2>Where readers came from <span class="basis">exact</span></h2>
+${keyed(referrers, "Referring site", "No external referrers in this range.")}
+<p class="sub"><a href="${q("&csv=referrers")}">Download CSV</a></p>
 
-<h2>Devices</h2>
-${table(
-  ["Device", "Views"],
-  rowsOf<{ device: string; n: number }>(devices).map((r) => [escape(r.device), String(r.n)]),
-  "No page views recorded yet.",
-)}
+<h2>Countries <span class="basis">exact</span></h2>
+${keyed(countries, "Country", "No page views in this range.")}
+<p class="sub"><a href="${q("&csv=countries")}">Download CSV</a></p>
 
-<h2>Daily views</h2>
-${table(
-  ["Day", "Views"],
-  rowsOf<{ day: string; n: number }>(daily).map((r) => [escape(r.day), String(r.n)]),
-  "No page views recorded yet.",
-)}`,
+<h2>Devices <span class="basis">exact</span></h2>
+${keyed(devices, "Device", "No page views in this range.")}
+<p class="sub"><a href="${q("&csv=devices")}">Download CSV</a></p>
+
+<h2>Coverage</h2>
+${
+  trackerLive
+    ? table(
+        ["Measure", "Value"],
+        [
+          ["Server-side views (ground truth)", viewsAvailable ? String(viewCount) : "unavailable"],
+          ["Client events received", String(eventCount)],
+          [
+            "Client coverage",
+            viewsAvailable && viewCount ? `${Math.round((eventCount / viewCount) * 100)}%` : "—",
+          ],
+          ["Rejected events", String(rejected)],
+          ["Most recent event", latest ? escape(latest) : "none yet"],
+        ],
+        "No coverage data.",
+      )
+    : `<div class="empty">The engagement tracker is live in the browser, but migration 0007 has not been applied to this database, so nothing it sends is being stored. Apply it to start recording: <code>npx wrangler d1 execute onduu-leads --remote --file=migrations/0007_analytics_events.sql</code></div>`
+}
+<div class="note">Client events are always fewer than server-side views: script blockers, disabled JavaScript and visitors who leave before the script runs all suppress them. A gap is expected, not a fault. Server-side views are the number to trust.</div>
+
+<h2>What these numbers mean</h2>
+<div class="note"><ol>
+<li><b>Exact</b> — counted server-side for every page served. Cannot be blocked.</li>
+<li><b>Undercount</b> — sent by the browser, so anything that stops scripts stops the count.</li>
+<li><b>Estimated</b> — derived rather than observed. A session is one tab in one sitting; it cannot link two visits or two devices, so it is a proxy for a person, not a count of people.</li>
+<li><b>Page views</b> exclude <code>/outbound/*</code>, which are routed-click records rather than pages read.</li>
+<li><b>Days</b> are Nairobi days (UTC+3, no daylight saving); the range boundaries above are shown in UTC.</li>
+<li><b>Comparison</b> is the immediately preceding period of the same length. "new" means the previous period had none.</li>
+<li>Nothing here identifies a person. There is no address, no fingerprint and no identifier that outlives a browser tab.</li>
+</ol></div>`,
     "analytics",
   );
 }
@@ -696,7 +935,7 @@ export async function handleDashboard(
         blurb: "Kenyan domain searches run by visitors.",
       });
     case "analytics":
-      return analytics(db);
+      return analytics(db, new URL(request.url));
     case "routing":
       return routing(db);
     case "blocklist":

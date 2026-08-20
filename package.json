@@ -1,6 +1,6 @@
 {
   "name": "onduu-ke",
-  "version": "4.47.1",
+  "version": "4.48.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"

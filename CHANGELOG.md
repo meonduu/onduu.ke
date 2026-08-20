@@ -1,6 +1,46 @@
 # Changelog
 
-CURRENT VERSION: v4.47.1 — 0824hrs:20th August2026
+CURRENT VERSION: v4.48.0 — 0906hrs:20th August2026
+
+## v4.48.0 — 0906hrs:20th August2026
+
+Analytics Phase 2, first slice: `/go/analytics` becomes range-aware and
+states the basis of every number it shows.
+
+- **Date ranges** — today, yesterday, 7 days, 30 days — as whole Nairobi
+  days. Nairobi is UTC+3 with no daylight saving, so a fixed offset is
+  exact and needs no timezone data. An unknown `range` falls back to 30
+  days rather than reaching a query.
+- **Comparison** against the immediately preceding window of identical
+  length. The window is printed in full rather than as a rounded day
+  count, which had rendered a 30-day range as "the 29-day period before
+  it" because the range runs to now, not to end of day.
+- **Summary cards, a daily sparkline** (inline SVG, no chart library) and
+  the existing tables, all scoped to the range.
+- **Coverage panel**: server-side views against client events, client
+  coverage as a percentage, rejected events, and the most recent event —
+  with a standing note that client events are always fewer, because
+  blockers and disabled JavaScript suppress them. Before migration 0007 is
+  applied it says so, and gives the command.
+- **CSV export** per table, scoped to the range. An unknown `csv` key
+  renders the page instead of exporting.
+- **A definitions panel**, and a basis on every metric: exact,
+  undercount, or estimated.
+
+**Every number distinguishes "no data" from "no source".** A missing table
+now renders "unavailable — the page_views table is missing", never a zero,
+which would read as no traffic. This was found by the new tests: the
+section previously threw on a missing table and took the whole page down
+as a 404. Every query is now wrapped, so the section degrades to an honest
+empty state instead.
+
+The dashboard had never been exercised while authenticated — existing
+tests only assert it refuses without Cloudflare Access headers. These
+tests send the header, which is what surfaced the 404. `/go`, `/go/enquiries`
+and `/go/overview` share the same latent fragility and are untouched here.
+
+203 tests, lint clean. Verified both ways: against a database with data
+(78 views, 26 events, 3 sessions) and one with no tables at all.
 
 ## v4.47.1 — 0824hrs:20th August2026
 

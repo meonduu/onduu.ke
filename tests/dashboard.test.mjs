@@ -107,3 +107,53 @@ test("the dashboard carries its own CSP, and it forbids script entirely", async 
     "no third-party beacon may be allow-listed on the private dashboard",
   );
 });
+
+// Cloudflare Access strips client-supplied Cf-Access-* headers in production
+// and sets its own, so sending one here simulates an already-authenticated
+// request. That is the only way to exercise the rendered dashboard locally.
+const asOwner = (path) =>
+  fetchPath(path, "text/html", { headers: { "Cf-Access-Authenticated-User-Email": "owner@example.test" } });
+
+test("the analytics section renders ranges, bases and a coverage panel", async () => {
+  const res = await asOwner("/go/analytics?range=30d");
+  assert.equal(res.status, 200, "an authenticated request should render");
+  const html = await res.text();
+
+  for (const range of ["today", "yesterday", "7d", "30d"]) {
+    assert.match(html, new RegExp(`range=${range}"`), `missing the ${range} range`);
+  }
+  // Every metric must declare what it is. Page views are exact when the table
+  // exists and explicitly unavailable when it does not — a missing source must
+  // never be rendered as a zero, which would read as "no traffic".
+  assert.match(
+    html,
+    /exact — server-side|no source — not a zero/,
+    "page views must be labelled exact, or declared unavailable",
+  );
+  assert.match(html, /undercount/, "client events must be labelled an undercount");
+  assert.match(html, /estimated — tab-scoped/, "sessions must be labelled estimated");
+  // The comparison window is stated outright rather than as a rounded day count.
+  assert.match(html, /Compared with .* the immediately preceding window/, "comparison window must be explicit");
+  assert.match(html, /Server-side views \(ground truth\)|migration 0007 has not been applied/,
+    "coverage must either report or explain its absence");
+});
+
+test("the analytics section refuses to be steered by its own query string", async () => {
+  // range and csv come from the URL, so both must fall back rather than
+  // reaching a query or a file path.
+  const bogus = await asOwner("/go/analytics?range=../../etc/passwd");
+  assert.equal(bogus.status, 200);
+  assert.match(await bogus.text(), /Last 30 days/, "an unknown range must fall back to the default");
+
+  const notCsv = await asOwner("/go/analytics?csv=../../secret");
+  assert.match(notCsv.headers.get("content-type") ?? "", /text\/html/, "an unknown csv key must not export");
+});
+
+test("analytics CSV export is a real download, scoped to the range", async () => {
+  const res = await asOwner("/go/analytics?range=7d&csv=pages");
+  assert.equal(res.status, 200);
+  assert.match(res.headers.get("content-type") ?? "", /text\/csv/);
+  assert.match(res.headers.get("content-disposition") ?? "", /attachment; filename="onduu-pages-7d\.csv"/);
+  assert.match(res.headers.get("content-security-policy") ?? "", /script-src 'none'/, "export keeps the policy");
+  assert.match((await res.text()).split("\n")[0], /^path,views$/, "CSV needs a header row");
+});
