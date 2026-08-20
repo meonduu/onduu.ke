@@ -1,6 +1,36 @@
 # Changelog
 
-CURRENT VERSION: v4.59.0 — 2013hrs:20th August2026
+CURRENT VERSION: v4.60.0 — 2049hrs:20th August2026
+
+## v4.60.0 — 2049hrs:20th August2026
+
+The privacy notice stops speaking in internal vocabulary, and the L9 guard
+that was supposed to prevent this is corrected.
+
+Reading the live page found three framing lines the v4.59.0 sweep had
+missed: the banner said items "need Wycliffe's input", the status section
+said entries were "facts only the owner can supply", and the version note
+waited on "the TO CONFIRM items". The guard written hours earlier did not
+catch any of them — it matched a handful of owner phrasings and not the
+ones actually on the page, which is worse than no guard, because it gave
+false confidence. It now also matches "Wycliffe's input", "only the owner
+can" and the phrase "TO CONFIRM" itself on public pages.
+
+**The phrase "TO CONFIRM" is gone from visitor-facing copy entirely.** The
+two genuinely open points — whether to pin the storage region and which
+transfer safeguard to record, and whether to adopt a fixed retention
+period — now read "Still to decide:", which says the same thing to a
+reader who has never seen a project tracker. `ROADMAP.md`, `OPERATIONS.md`
+and the processors register keep the internal term, which is what they are
+for; the register notes the split so the difference is deliberate rather
+than drift.
+
+Checked while there: the notice points visitors at
+`docs/specs/processors-and-transfers.md` "in the site's repository", and
+the repository is in fact public, so that reference is real rather than
+aspirational.
+
+213 tests, lint clean.
 
 ## v4.59.0 — 2013hrs:20th August2026
 
