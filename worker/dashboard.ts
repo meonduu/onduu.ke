@@ -176,6 +176,12 @@ const rowsOf = <T>(r: { results?: unknown[] }) => (r.results ?? []) as T[];
 /* ── sections ────────────────────────────────────────────────────────── */
 
 async function overview(db: D1Database, identity: string): Promise<Response> {
+  const notifyHealth = await safe(
+    db
+      .prepare("SELECT last_outcome, last_code, changed_at FROM notify_health WHERE id = 1")
+      .first<{ last_outcome: string; last_code: string | null; changed_at: string }>(),
+    undefined,
+  );
   const [counts, scanCounts, outbound] = await Promise.all([
     safe(
       db
@@ -218,10 +224,25 @@ async function overview(db: D1Database, identity: string): Promise<Response> {
   // would be worse than either.
   const num = (available: boolean, v: number | undefined) => (available ? String(v ?? 0) : "—");
 
+  // The notification status light (lesson L6): the path failed silently
+  // from launch to 20 Aug 2026. Green = last attempt delivered; red = the
+  // owner is not being told about enquiries RIGHT NOW; amber covers the
+  // not-configured and not-yet-migrated states. undefined = query failed
+  // (pre-0008 database); null result cannot happen with first().
+  const light =
+    notifyHealth === undefined
+      ? `<div class="note">Notification status unknown — migration 0008 is not applied, so outcomes are not recorded. Apply it: <code>npx wrangler d1 execute onduu-leads --remote --file=migrations/0008_notify_health.sql</code></div>`
+      : !notifyHealth
+        ? `<div class="note">No enquiry notification has been attempted since migration 0008 was applied.</div>`
+        : notifyHealth.last_outcome === "sent"
+          ? `<div class="note" style="border-left-color:#2F6B5B;background:#e4ece9">Notifications delivering — last sent ${escape(notifyHealth.changed_at)} UTC.</div>`
+          : `<div class="note" style="border-left-color:#a8342a;background:#f6e3e0"><b>Enquiry notifications ${escape(notifyHealth.last_outcome)}</b> since ${escape(notifyHealth.changed_at)} UTC${notifyHealth.last_code ? ` (${escape(notifyHealth.last_code)})` : ""}. Enquiries are still stored — check /go/enquiries and the Worker log, then re-run OPERATIONS.md checklist item 1.</div>`;
+
   return page(
     "Dashboard",
     `<h1>Onduu dashboard</h1>
 <p class="sub">Signed in via Cloudflare Access as ${escape(identity)}. Nothing here is shared with a third party.</p>
+${light}
 
 <div class="cards">
   <div class="card"><b>${num(c !== null, c?.enquiries30)}</b><span>Enquiries, 30 days</span><a href="/go/enquiries">All ${num(c !== null, c?.enquiries)} →</a></div>

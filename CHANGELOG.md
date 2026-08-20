@@ -1,6 +1,36 @@
 # Changelog
 
-CURRENT VERSION: v4.48.7 — 1158hrs:20th August2026
+CURRENT VERSION: v4.49.0 — 1216hrs:20th August2026
+
+## v4.49.0 — 1216hrs:20th August2026
+
+The system now tells on itself — the two guards the owner approved after
+asking what would make things foolproof (the honest answer being: nothing,
+but failures can be made loud instead of silent).
+
+- **A weekly sentinel** (`.github/workflows/weekly-checks.yml`): every
+  Monday, GitHub Actions runs lint, the full suite (built Worker in local
+  workerd, no credentials) and `npm run check:live` against production.
+  A failure makes GitHub email the owner — deliberately independent of
+  the site's own email path, which is among the things being checked.
+  Previously every check ran only while someone was actively working, so
+  a quiet fortnight would have hidden a revoked token or an edge-injected
+  script; the Cloudflare beacon went unnoticed for days for exactly this
+  reason.
+- **A notification status light** on the /go overview. Migration 0008
+  adds a one-row `notify_health` table (outcome, provider code,
+  timestamp — no personal data); every notify attempt records its
+  outcome; the overview renders it green ("delivering — last sent …"),
+  red ("failing since …, with the code, enquiries still stored"), or the
+  honest in-between states (never attempted; migration not applied, with
+  the command). Lesson L6's failure mode is now a red light on the
+  dashboard the owner already opens, not a log line nobody reads.
+
+**Owner action**: apply migration 0008 to production —
+`npx wrangler d1 execute onduu-leads --remote --file=migrations/0008_notify_health.sql`
+— until then the overview says exactly that. OPERATIONS.md gains checklist
+item 0 ("glance at the lights") and L6 names the new guard. A test pins
+the light rendering in every database state. 209 tests, lint clean.
 
 ## v4.48.7 — 1158hrs:20th August2026
 
