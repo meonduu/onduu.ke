@@ -355,6 +355,14 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
       // identifies the cause without exposing the address or token.
       const detail = (await res.text().catch(() => "")).slice(0, 200);
       const code = detail.match(/"code"\s*:\s*"([A-Z0-9_]+)"/)?.[1] ?? "unknown";
+      // TM_4001 is returned with HTTP 401, which reads like an auth failure
+      // and cost hours on 20 Aug 2026 being treated as one. Its sub_code is
+      // what actually names the cause — SM_111 means the *sender domain* is
+      // not verified in the agent the token belongs to. Capture it, and the
+      // sender's domain, so the mismatch is legible instead of inferred.
+      // The domain only: never the address.
+      const subCode = detail.match(/"sub_code"\s*:\s*"([A-Za-z0-9_]+)"/)?.[1] ?? "";
+      const senderDomain = env.NOTIFY_EMAIL.split("@")[1] ?? "none";
       // Which binding supplied the token, and how long it was — never the
       // token itself. On 20 Aug 2026 it was impossible to tell from the
       // outside whether a new binding was even being read; a name and a
@@ -364,13 +372,21 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
           event: "notify_failed",
           status: res.status,
           code,
+          subCode,
           tokenSource,
+          senderDomain,
           tokenLength: zeptoToken.length,
           hasPrefix: zeptoToken.startsWith("Zoho-enczapikey"),
           ref,
         }),
       );
-      await recordNotifyOutcome(env, "failed", `${res.status} ${code} (${tokenSource})`);
+      // The light now names both halves of the pairing that has to match:
+      // which agent's token, and which domain it tried to send as.
+      await recordNotifyOutcome(
+        env,
+        "failed",
+        `${res.status} ${code}${subCode ? `/${subCode}` : ""} ${tokenSource}→${senderDomain}`,
+      );
       return;
     }
     await recordNotifyOutcome(env, "sent", null);

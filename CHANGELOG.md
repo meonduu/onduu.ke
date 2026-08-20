@@ -1,6 +1,28 @@
 # Changelog
 
-CURRENT VERSION: v4.65.1 — 0012hrs:21st August2026
+CURRENT VERSION: v4.65.2 — 0025hrs:21st August2026
+
+## v4.65.2 — 0025hrs:21st August2026
+
+**`401 TM_4001` is a sender error, not an auth error.** Checked against
+Zoho's own documentation instead of inferred from the HTTP status: TM_4001
+with sub_code `SM_111` means *the sender address domain is not verified in
+your Agent*. The 401 reads like a rejected credential, and was treated as
+one for most of 20 August — including a token regeneration that was never
+going to help.
+
+ZeptoMail authenticates per Mail Agent and each agent sends only from its
+own domain, so the token and `NOTIFY_EMAIL` are one setting in two places.
+`Onduu_ke`+onduu.ke and `ujiajiriKE`+ujiajiri.ke are the only two valid
+pairings here; any crossing gives this error.
+
+The failure now records `sub_code`, the token's binding, and the sender's
+**domain** — never the address — so the light reads
+`401 TM_4001/SM_111 ujiajiri→onduu.ke`: both halves of the pairing that
+must match, stated plainly, rather than an auth-shaped error to be guessed
+at.
+
+225 tests pass.
 
 ## v4.65.1 — 0012hrs:21st August2026
 
