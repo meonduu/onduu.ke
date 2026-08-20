@@ -68,7 +68,7 @@ Disclosure and claims:
   onduu.ke, ujiajiri.ke and the approved HOSTAFRICA destination.
 - Do not duplicate full content between onduu.ke and ujiajiri.ke.
 - Every factual claim needs an approved source or a clear draft/unverified
-  label. Article prose in `app/insights-data.ts` is published content —
+  label. Article prose in `src/data/insights-data.ts` is published content —
   regenerate, never hand-edit.
 
 ## Technical working rules
@@ -93,9 +93,10 @@ Hard-won operational rules — keep these:
   feature branch or worktree, never directly on `main`.** PRs get preview
   URLs.
 - Turnstile: real site key is registered for onduu.ke only; dev uses
-  Cloudflare's published test keys (`app/route-policy.ts` + `.dev.vars`,
-  gitignored). Secrets (`TURNSTILE_SECRET`, `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL`)
-  live only as Worker bindings — never in the repo.
+  Cloudflare's published test keys (`src/data/route-policy.ts` + `.dev.vars`,
+  gitignored). Secrets (`TURNSTILE_SECRET`, `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL`,
+  `SCAN_ENABLED`, `DNS_CHECK_ENABLED`) live only as Worker bindings —
+  never in the repo. `OPERATIONS.md` item 6 is the standing inventory.
 - Stale build caches produce silently wrong builds. For release checks, build
   clean.
 

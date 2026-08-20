@@ -81,6 +81,9 @@ or Claude self-review, step 7 of the work loop) assigns one outcome:
 
 ## Operations and deployment
 
+- The recurring critical-function checklist lives in `OPERATIONS.md`;
+  releases and Cloudflare changes are among its triggers.
+
 - Rollback for this change is understood and stated.
 - Migrations and configuration changes are documented in `CHANGELOG.md`.
 - Production deployment, DNS, Cloudflare settings, permissions and

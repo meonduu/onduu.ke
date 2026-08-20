@@ -11,7 +11,9 @@ just the instance).
 Governing principle, proven the hard way: **a lesson is not learned until
 it is a check that runs.** Prefer an executable guard (a test, a script, a
 log line) over prose. Prose in this file exists to index the guards and to
-hold the few checks only a human can do.
+hold the few checks only a human can do. `CLAUDE.md` requires every
+session to read the register; `REVIEW.md` is where a lesson graduates
+into the shipping standard.
 
 ## Critical-function checklist
 
@@ -65,7 +67,7 @@ be closed only by pointing at its guard.
 beacon was declared gone after checking a single page; five pages said
 otherwise. Earlier, Web Analytics was declared "collecting nothing" while
 it collected from /go. Guard: verify across several pages/sources before
-asserting; `check-live.mjs` checks ten pages precisely so no one has to
+asserting; `scripts/check-live.mjs` checks ten pages precisely so no one has to
 trust a single probe. For Cloudflare state: open the dashboard and look
 (the logged-in Browser pane exists for this) — never theorise from outside.
 
@@ -92,7 +94,11 @@ found only because the status was checked); Phase 6 "not started" with
 measurement shipped; the pinned version line went stale twice in two days.
 Guard: volatile facts (version, test count) live only in CHANGELOG.md and
 are not pinned elsewhere (v4.48.1); a stale status is treated as a defect
-because it hides real ones.
+because it hides real ones. Recurred a fifth time 20 Aug (README described
+the pre-Phase-1 site; CLAUDE.md carried two dead vinext-era paths), so the guard is
+now executable: `tests/docs-consistency.test.mjs` fails the suite when a
+living document names a missing file, describes a retired route, or drops
+a governance cross-reference (v4.48.7).
 
 **L3 — 20 Aug 2026 · Local pass mistaken for production works.** The
 enquiry path "passed" for its entire life against test keys and a local
