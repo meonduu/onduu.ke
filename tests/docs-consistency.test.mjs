@@ -71,3 +71,26 @@ test("the four governance files reference each other", () => {
     }
   }
 });
+
+// package.json's version is read by nothing at runtime, which is exactly
+// why it drifted: it was three releases behind the changelog and the
+// lockfile was twenty-four behind that, still claiming 3.0.0 from the
+// Astro migration. Nothing broke, and that is the problem — a version
+// nobody checks is a version nobody can trust when they finally need it,
+// during an incident or a rollback. CHANGELOG.md is the source of truth.
+test("package.json and the lockfile match the changelog's current version", () => {
+  const changelog = readFileSync(join(ROOT, "CHANGELOG.md"), "utf8");
+  const declared = changelog.match(/^CURRENT VERSION:\s*v(\d+\.\d+\.\d+)/m)?.[1];
+  assert.ok(declared, "CHANGELOG.md must carry a CURRENT VERSION line");
+
+  const pkg = JSON.parse(readFileSync(join(ROOT, "package.json"), "utf8"));
+  assert.equal(pkg.version, declared, "package.json version is behind CHANGELOG.md");
+
+  const lock = JSON.parse(readFileSync(join(ROOT, "package-lock.json"), "utf8"));
+  assert.equal(lock.version, declared, "package-lock.json root version is behind CHANGELOG.md");
+  assert.equal(
+    lock.packages?.[""]?.version,
+    declared,
+    'package-lock.json packages[""] version is behind CHANGELOG.md',
+  );
+});

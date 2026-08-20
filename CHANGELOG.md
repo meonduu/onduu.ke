@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.64.0 — 2152hrs:20th August2026
+CURRENT VERSION: v4.64.1 — 2238hrs:20th August2026
+
+## v4.64.1 — 2238hrs:20th August2026
+
+**The version numbers now agree, and a test keeps them agreeing.**
+`package.json` said 4.62.0 and `package-lock.json` still said 3.0.0 —
+unchanged since the Astro migration on 18 August, twenty-four releases
+back. Both are now 4.64.0.
+
+Nothing reads either value at runtime, which is precisely how they
+drifted this far unnoticed. A version nobody checks is a version nobody
+can trust at the moment it finally matters: during an incident, or a
+rollback, when the question is which build is actually running. So the
+fix is not the bump — it is the guard. `tests/docs-consistency.test.mjs`
+now asserts that both files match the `CURRENT VERSION` line in this
+changelog, which is the source of truth. Confirmed to fail on a
+deliberately stale value before being trusted.
+
+222 tests pass.
 
 ## v4.64.0 — 2152hrs:20th August2026
 
