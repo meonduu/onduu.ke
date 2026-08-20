@@ -44,7 +44,11 @@ or Claude self-review, step 7 of the work loop) assigns one outcome:
 - Are no passwords, credentials or sensitive customer records requested?
 - Do retention, logs, analytics and processors match the privacy notice?
 - Has end-to-end delivery been tested without exposing real personal data
-  (test rows deleted afterwards)?
+  (test rows deleted afterwards)? **In production, when the behaviour
+  depends on production** — secrets, real Turnstile, email sending,
+  Cloudflare settings. A local pass does not discharge this: the enquiry
+  notification was dead from launch until 20 August 2026 while every local
+  test passed.
 
 ## Security and technical quality
 
@@ -55,8 +59,16 @@ or Claude self-review, step 7 of the work loop) assigns one outcome:
 - Safe headers, dependencies and error handling.
 - Scanner changes satisfy the separate SSRF and resource-limit threat model
   (Phase 4 spec).
+- No silent failure on a path the business depends on: a catch or an
+  unchecked response on enquiry delivery, payment-adjacent routing or
+  data recording must log a structured, PII-free line. A critical path
+  that fails without a symptom is treated as broken (the notification
+  send swallowed a 401 for weeks).
 - Full relevant tests, build, type checking and linting pass — run clean
   (stale build caches have shipped wrong builds before).
+- For releases and after any Cloudflare dashboard change:
+  `npm run check:live` passes against production — it catches
+  edge-injected scripts and weakened headers that no local test can see.
 - No unexplained console or network errors on the previewed pages.
 - Performance and accessibility checked for regressions.
 

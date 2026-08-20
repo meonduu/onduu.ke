@@ -1,6 +1,26 @@
 # Changelog
 
-CURRENT VERSION: v4.48.4 — 1107hrs:20th August2026
+CURRENT VERSION: v4.48.5 — 1122hrs:20th August2026
+
+## v4.48.5 — 1122hrs:20th August2026
+
+`REVIEW.md` learns this week's two lessons — its first change since it was
+written on 18 August, owner-approved. The principles stand; two spots
+where the wording let a review pass on paper are sharpened:
+
+- **End-to-end delivery testing now explicitly means production** when the
+  behaviour depends on production (secrets, real Turnstile, email,
+  Cloudflare settings). The enquiry notification was dead from launch
+  until 20 August while every local test passed — blocker #6 was being
+  satisfied locally against a requirement only production could satisfy.
+- **No silent failure on a business-critical path**: a catch or unchecked
+  response on enquiry delivery or data recording must log a structured,
+  PII-free line. A critical path that fails without a symptom is treated
+  as broken.
+- Release checks now include `npm run check:live` against production,
+  which sees edge-injected scripts and weakened headers no local test can.
+
+Documentation only; no site change.
 
 ## v4.48.4 — 1107hrs:20th August2026
 
