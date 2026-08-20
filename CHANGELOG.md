@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.51.0 — 1502hrs:20th August2026
+CURRENT VERSION: v4.52.0 — 1519hrs:20th August2026
+
+## v4.52.0 — 1519hrs:20th August2026
+
+Enquiry notifications now also go to Slack. The `SLACK_WEBHOOK_URL`
+secret has existed on the Worker since before this repo's records —
+flagged as an orphan on 20 August until the owner explained it: Slack
+notifications are why it exists. Nothing had ever used it; now
+`notifySlack()` posts the same minimal message as the email (form type
+and reference only, never submitted content) on every enquiry.
+
+Design: email remains the primary, promised channel — the /go
+notification light reports email alone. Slack is best-effort: a failure
+logs `notify_slack_failed` with the status (no URL, no PII) and affects
+nothing else. Both sends run in parallel inside the same `waitUntil`.
+
+`OPERATIONS.md` item 6 moves the webhook from "unexplained" to expected,
+leaving `VBOUT_API_KEY` as the one known orphan; `CLAUDE.md`'s secrets
+list gains it. 209 tests, lint clean.
 
 ## v4.51.0 — 1502hrs:20th August2026
 
