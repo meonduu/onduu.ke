@@ -1,6 +1,27 @@
 # Changelog
 
-CURRENT VERSION: v4.49.1 — 1302hrs:20th August2026
+CURRENT VERSION: v4.50.0 — 1327hrs:20th August2026
+
+## v4.50.0 — 1327hrs:20th August2026
+
+The "YOUR NEXT STEP / Start with the problem - not the supplier" closing
+section is removed sitewide, on the owner's instruction. It appeared in
+four sources: the shared `FinalCta` component (every standard page), the
+homepage's section 09, and twice in the article renderer (Insights index
+and article pages). All four are gone; the `route` prop that existed only
+to stop `FinalCta` self-linking (v4.38.0) goes with it.
+
+Deliberately kept: the four tool pages' own closing sections ("…one
+layer. Readiness covers the rest." and the scan's variant) — same visual
+pattern, different message, and each page's single CTA. Removing them too
+is a one-line ask if wanted.
+
+Each page now ends at its content (or its form) and the footer, which
+also strengthens the one-primary-CTA rule: the hero already carries it.
+
+Verified against the built Worker: zero occurrences across home, standard
+pages, guides, both Insights views and the paths; tool closers intact;
+the readiness form still renders. 208 tests, lint clean.
 
 ## v4.49.1 — 1302hrs:20th August2026
 
