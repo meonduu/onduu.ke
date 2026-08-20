@@ -1,6 +1,30 @@
 # Changelog
 
-CURRENT VERSION: v4.48.5 — 1122hrs:20th August2026
+CURRENT VERSION: v4.48.6 — 1136hrs:20th August2026
+
+## v4.48.6 — 1136hrs:20th August2026
+
+`OPERATIONS.md` created, at the owner's request: one place for the two
+things that had none. Documentation only.
+
+- A **critical-function checklist** — seven items, each with the exact
+  command or URL and what "good" looks like, run monthly and after any
+  Cloudflare, secret or provider change: the production enquiry test,
+  `check:live`, measurement recency, deploy currency, the four tools,
+  the secrets inventory, and Access on /go. It exists because the site's
+  most important function was silently broken from launch to 20 August
+  and no routine would ever have noticed.
+- A **lessons register** — seven entries covering this week's repeat
+  offenders (silent critical-path failure, local-pass-vs-production,
+  documentation understating reality, the returning flaky test, absence
+  rendered as zero, the shared-checkout collision, single-data-point
+  assertions), each closed by naming the guard now standing. The rule the
+  file encodes: a lesson is not learned until it is a check that runs,
+  and a defect that happens twice means the guard was missing — fix the
+  guard, not the instance.
+
+`CLAUDE.md` now points every session at the register in its required work
+loop, so the file is read at the moment it can prevent a repeat.
 
 ## v4.48.5 — 1122hrs:20th August2026
 
