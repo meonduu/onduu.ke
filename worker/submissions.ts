@@ -13,6 +13,10 @@ export interface SubmissionEnv {
   TURNSTILE_SECRET?: string;
   ZEPTOMAIL_TOKEN?: string;
   NOTIFY_EMAIL?: string;
+  /** Optional second channel: an incoming-webhook URL. The owner set this
+   *  secret for exactly this purpose before any code used it (wired in
+   *  v4.52.0). Email remains the primary, promised channel. */
+  SLACK_WEBHOOK_URL?: string;
 }
 
 const CONSENT_VERSION = "2026-08-15";
@@ -224,6 +228,30 @@ async function recordNotifyOutcome(env: SubmissionEnv, outcome: string, code: st
   }
 }
 
+async function notifySlack(env: SubmissionEnv, kind: string, ref: string) {
+  // Same privacy rule as the email: reference and form type only, never
+  // submitted content. Optional and best-effort — a Slack failure is logged
+  // (visible in Worker logs) but does not touch the notify_health light,
+  // which reports the primary, promised channel.
+  if (!env.SLACK_WEBHOOK_URL) return;
+  try {
+    const res = await fetch(env.SLACK_WEBHOOK_URL, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: `New ${kind} request. ${ref} — details are in the onduu-leads database and at onduu.ke/go/enquiries. This message intentionally contains no personal data.`,
+      }),
+    });
+    if (!res.ok) {
+      console.error(JSON.stringify({ event: "notify_slack_failed", status: res.status, ref }));
+    }
+  } catch (err) {
+    console.error(
+      JSON.stringify({ event: "notify_slack_failed", status: 0, code: (err as Error).name ?? "fetch_error", ref }),
+    );
+  }
+}
+
 async function notify(env: SubmissionEnv, kind: string, ref: string) {
   // The notification deliberately carries no submitted content — only the
   // reference and form type. Details are read from D1 by an authorised person.
@@ -360,7 +388,7 @@ export async function handleSubmit(request: Request, env: SubmissionEnv): Promis
     return json(GENERIC_ERROR, 500);
   }
 
-  await notify(env, kind, ref);
+  await Promise.all([notify(env, kind, ref), notifySlack(env, kind, ref)]);
   console.log(JSON.stringify({ event: "submission_received", kind, ref }));
 
   return json({ ok: true, reference: ref });

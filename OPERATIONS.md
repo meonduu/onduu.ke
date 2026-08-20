@@ -56,9 +56,11 @@ checked as written, that is itself a finding.
 
 6. **Secrets inventory.** Dashboard → onduudotke → Settings → Variables.
    Good: exactly the secrets the code references — `TURNSTILE_SECRET`,
-   `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL`, `SCAN_ENABLED`, `DNS_CHECK_ENABLED`
-   — and nothing unexplained. Unknown names are either dead weight or a
-   sign someone else has been here.
+   `ZEPTOMAIL_TOKEN`, `NOTIFY_EMAIL`, `SLACK_WEBHOOK_URL` (second
+   notification channel, wired v4.52.0), `SCAN_ENABLED`,
+   `DNS_CHECK_ENABLED` — and nothing unexplained. `VBOUT_API_KEY` is a
+   known orphan awaiting the owner's pruning. Unknown names are either
+   dead weight or a sign someone else has been here.
 
 7. **Access still guards /go.** Open https://onduu.ke/go in a private
    browser window. Good: the Cloudflare Access login, never the dashboard.
