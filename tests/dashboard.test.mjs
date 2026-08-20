@@ -157,3 +157,33 @@ test("analytics CSV export is a real download, scoped to the range", async () =>
   assert.match(res.headers.get("content-security-policy") ?? "", /script-src 'none'/, "export keeps the policy");
   assert.match((await res.text()).split("\n")[0], /^path,views$/, "CSV needs a header row");
 });
+
+test("every dashboard section survives a database missing its tables", async () => {
+  // The harness database has no application tables, so this exercises exactly
+  // the failure that took /go/analytics down as a 404 before v4.48.0: one
+  // throwing query collapsing a whole page. Each section must render an
+  // honest empty state instead.
+  for (const path of [
+    "/go",
+    "/go/enquiries",
+    "/go/scans",
+    "/go/email-security",
+    "/go/dns",
+    "/go/kedomains",
+    "/go/analytics",
+    "/go/routing",
+    "/go/blocklist",
+  ]) {
+    const res = await asOwner(path);
+    assert.equal(res.status, 200, `${path} must render rather than fail`);
+    const html = await res.text();
+    assert.match(html, /<h1>/, `${path} rendered no page`);
+    assert.doesNotMatch(html, /ROUTE NOT FOUND/, `${path} fell through to the site 404`);
+  }
+});
+
+test("the overview reports a missing source rather than a confident zero", async () => {
+  const html = await (await asOwner("/go")).text();
+  // With no submissions table, "0 enquiries" would read as "nobody wrote in".
+  assert.match(html, /—/, "counts from an unavailable table must not render as 0");
+});
