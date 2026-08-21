@@ -38,9 +38,21 @@ Who does what:
 
 Disclosure and claims:
 
-- Wycliffe is Managing Director of HOSTAFRICA Kenya. Relevant commercial
-  relationships and any material benefit must be disclosed clearly, at the
-  decision point where they matter — not only on a legal page.
+- Wycliffe is Managing Director of HOSTAFRICA Kenya. **The directorship
+  itself is disclosed at the decision point** — beside the outbound CTA on
+  `/paths/hostafrica-infrastructure` and beside the register link on
+  `/kedomains`, both test-pinned in `tests/seo-and-gates.test.mjs`.
+- **The mechanics of any commercial benefit live on one page only:**
+  `/legal/commercial-relationships`, reachable from every footer. That
+  means the affiliate identifier, what it does and does not pay, and how
+  clicks are counted. Owner decision, 21 August 2026, replacing the
+  earlier rule that repeated this detail at each decision point; it had
+  grown into a seven-line block between the search results and the page.
+  One page is also one place to keep true — four copies of "no
+  commission" had to be corrected together on 21 August when the
+  affiliate identifier was added.
+  Do not reintroduce this detail elsewhere: `tests/domains.test.mjs`
+  fails if a second page carries it, and if the one page loses it.
 - HOSTAFRICA brand assets, programme claims, tracking routes, product
   training and endorsements remain **gated until approved**.
 - The Digital Fitness Score is Onduu's signature entry product. An instant
