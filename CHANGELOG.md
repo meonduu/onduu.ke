@@ -1,8 +1,8 @@
 # Changelog
 
-CURRENT VERSION: v4.86.1 — 0000hrs:22st August2026
+CURRENT VERSION: v4.86.1 — 0000hrs:22nd August2026
 
-## v4.86.1 — 0000hrs:22st August2026
+## v4.86.1 — 0000hrs:22nd August2026
 
 **The homepage lede stops at the route.** Owner's instruction: the
 sentence now ends "...and points to the right next route." The clause
