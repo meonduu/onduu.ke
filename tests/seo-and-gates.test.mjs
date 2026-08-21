@@ -299,6 +299,24 @@ test("Ujiajiri cross-links are present, plain, and honestly worded", async () =>
   const fitness = await (await fetchPath("/digital-fitness")).text();
   assert.ok(fitness.includes(introUrl), "fitness page must offer the introduction route");
   assert.match(fitness, /does not automatically transmit/i, "no-auto-transfer promise stays");
+  // 21 Aug 2026: this page said "Nothing you enter here is shared with
+  // Ujiajiri or anyone else" while the privacy notice named Ujiajiri
+  // Enterprises Limited as the company receiving every enquiry — a
+  // visitor-facing denial contradicting the notice two pages away. The
+  // sentence dated from when "Ujiajiri" meant only the partner pipeline.
+  // No page may deny sharing with the operator; the true promise is that
+  // nothing reaches a PROVIDER without approval, and the page must say it
+  // that way.
+  assert.doesNotMatch(
+    fitness,
+    /(?:not|never|nothing)[^.<]{0,60}shared with Ujiajiri/i,
+    "must not deny sharing with the operator that receives every enquiry",
+  );
+  assert.match(
+    fitness,
+    /seen only inside Ujiajiri Enterprises Limited/i,
+    "the corrected receiver statement must be present",
+  );
   // Phase 2 sign-off (19 Aug 2026): the fee's existence is disclosed at this
   // decision point too, not only on the implementation path page.
   assert.match(fitness, /referral fee/i, "fee existence disclosed beside the fitness CTA");

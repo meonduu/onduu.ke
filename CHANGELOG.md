@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.66.0 — 0812hrs:21st August2026
+CURRENT VERSION: v4.66.1 — 0842hrs:21st August2026
+
+## v4.66.1 — 0842hrs:21st August2026
+
+**A false sharing denial removed from the assessment page.** The owner
+spotted it: `/digital-fitness` said "Nothing you enter here is shared with
+Ujiajiri or anyone else" while the privacy notice names Ujiajiri
+Enterprises Limited as the company that receives and answers every
+enquiry — and the notification email now lands at info@ujiajiri.ke. The
+sentence dated from before 20 August, when "Ujiajiri" on this site meant
+only the partner-introduction pipeline; the controller decision made it
+false and nobody swept this page (L4, on a visitor-facing legal claim).
+
+The true promise — nothing reaches an independent provider or HOSTAFRICA
+without your approval — is now said that way: "Your answers are seen only
+inside Ujiajiri Enterprises Limited, which operates this site."
+
+A sitewide sweep for absolute sharing denials found two more instances of
+the same broken shorthand on `/contact` ("It reaches Onduu and nobody
+else", "goes to Onduu only") — not false in context, since that page
+correctly explains the operator two paragraphs earlier, but leaning on the
+same Onduu-vs-Ujiajiri split; both now name the operator. The internal
+processing register carried the same shorthand and is aligned. Checked
+and left alone as accurate: the qualified report-delivery promise in the
+assessment terms ("never sent … without asking you first"), the
+introduction-procedure claims, the privacy notice's attribution line, and
+the /go dashboard note.
+
+Guard: the routing-promises test now fails if any copy on the assessment
+page denies sharing with the operator, and requires the corrected
+receiver statement.
+
+225 tests pass.
 
 ## v4.66.0 — 0812hrs:21st August2026
 
