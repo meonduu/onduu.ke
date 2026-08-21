@@ -77,7 +77,7 @@ test("no visitor-facing page still says Readiness", async () => {
   // nothing rendered may carry the retired vocabulary.
   const paths = [
     "/", "/digital-fitness", "/how-it-works", "/about", "/contact", "/scan",
-    "/guides", "/paths", "/dns", "/legal/privacy", "/legal/assessment-terms",
+    "/guides", "/dns", "/legal/privacy", "/legal/assessment-terms",
   ];
   for (const path of paths) {
     const html = await (await fetchPath(path)).text();

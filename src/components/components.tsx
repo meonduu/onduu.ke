@@ -8,11 +8,18 @@ import { parseInlineLinks, isExternal } from "./inline-links";
 // searchable and independent of any font file.
 function Wordmark(){return <Link className="wordmark" href="/"><svg className="wordmark-dial" viewBox="0 0 96 96" width="26" height="26" aria-hidden="true" focusable="false"><circle className="track" cx="48" cy="48" r="34" fill="none" strokeWidth="16"/><circle className="arc" cx="48" cy="48" r="34" fill="none" strokeWidth="16" strokeLinecap="round" strokeDasharray="132.4 81.2" transform="rotate(-90 48 48)"/></svg>ONDUU<i aria-hidden="true"/></Link>}
 
-// Primary navigation per the current strategy (docs/strategy/, 18 Aug 2026):
-// Fitness · How It Works · Paths · Guides · About, with the single primary
-// CTA "Check Your Digital Fitness".
+// Primary navigation: Home · Guides · DNS Checker · Email Security ·
+// Domain Search, with the single primary CTA "Check Your Digital Fitness".
+// Paths was dropped on the owner's instruction, 21 Aug 2026 — the page is
+// a signpost to two child pages the footer already lists, so it earned no
+// room in five slots. The page itself stays: /solutions redirects to it
+// and it is in the sitemap.
+//
+// Home duplicates the wordmark, which also links to /. That is deliberate:
+// the wordmark-as-home convention is invisible to plenty of people, and a
+// named link costs one slot.
 export function Header(){
-  const links=[["/paths","Paths"],["/guides","Guides"],["/dns","DNS Checker"],["/email-security","Email Security"],["/kedomains","Domain Search"]] as const;
+  const links=[["/","Home"],["/guides","Guides"],["/dns","DNS Checker"],["/email-security","Email Security"],["/kedomains","Domain Search"]] as const;
   // Below 1000px the inline nav is hidden; the same links live in a native
   // <details> disclosure, which is keyboard-accessible with no client
   // JavaScript — content pages must stay JS-free.
