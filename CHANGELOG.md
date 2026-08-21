@@ -1,6 +1,23 @@
 # Changelog
 
-CURRENT VERSION: v4.84.0 — 2203hrs:21st August2026
+CURRENT VERSION: v4.84.1 — 2230hrs:21st August2026
+
+## v4.84.1 — 2230hrs:21st August2026
+
+**`/email-security` offers the do-not-scan route.** The sentence that
+says the domain checked and the result are kept now continues: if you
+operate a domain and do not want it checked or recorded, ask here. Same
+wording as `/scan`. On the owner's instruction, and only this page —
+`/dns` and `/kedomains` were offered and declined, and the test now pins
+both halves of that decision so the set changes by choice, not drift.
+
+Also today, after v4.84.0 shipped: the owner walked the real route on
+production — request 19:17 UTC, email arrived, button pressed 19:19 UTC,
+`onduu.ke` blocklisted with the note citing the reference — and the
+block was then removed by hand so the scan accepts `onduu.ke` again. The
+request row stays as the record of the test.
+
+No lesson: a copy addition on the owner's instruction.
 
 ## v4.84.0 — 2203hrs:21st August2026
 
