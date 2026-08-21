@@ -15,7 +15,7 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
             <p className="eyebrow">ONDUU / FREE TOOL</p>
             <h1>Is your business name protected in .ke too?</h1>
             <p className="lede">
-              Owning one without the other leaves the door open to cybersquatting.
+              Owning one without the other leaves the door open to a copycat.
             </p>
           </div>
         </section>

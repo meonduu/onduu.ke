@@ -130,13 +130,35 @@ export function DomainsForm() {
                 className={`check-${TONE[r.status]}`}
               >
                 <div className="check-row-head">
-                  <h3>{r.domain}</h3>
+                  <h3>
+                    {r.domain}{" "}
+                    {r.status === "registered" && (
+                      <>
+                        is <strong className="domain-state">TAKEN</strong>.
+                      </>
+                    )}
+                    {r.status === "reserved" && (
+                      <>
+                        is{" "}
+                        <strong className="domain-state domain-state--reserved">
+                          RESERVED by KENIC
+                        </strong>
+                        .
+                      </>
+                    )}
+                    {r.status === "maybe-available" && (
+                      <>
+                        <strong className="domain-state domain-state--free">
+                          appears available
+                        </strong>
+                        .
+                      </>
+                    )}
+                    {r.status === "unknown" && <>could not be checked just now.</>}
+                  </h3>
                 </div>
                 {r.status === "registered" && (
                   <>
-                    <p>
-                      <strong className="domain-state">TAKEN</strong>
-                    </p>
                     {r.registrar && (
                       <p>
                         REGISTRAR:{" "}
@@ -162,7 +184,6 @@ export function DomainsForm() {
                 )}
                 {r.status === "maybe-available" && (
                   <>
-                    <p>Appears available.</p>
                     <a
                       className="button"
                       href={r.registerUrl}
@@ -176,15 +197,10 @@ export function DomainsForm() {
                 )}
                 {r.status === "reserved" && (
                   <>
-                    <p>
-                      <strong className="domain-state domain-state--reserved">
-                        RESERVED by KENIC
-                      </strong>
-                    </p>
                   </>
                 )}
                 {r.status === "unknown" && (
-                  <p>The registries did not answer clearly just now. Try again in a moment.</p>
+                  <p>The registries did not answer clearly. Try again in a moment.</p>
                 )}
               </li>
             ))}
