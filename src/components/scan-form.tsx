@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { eatDateTime } from "../lib/datetime";
 
 // Mirrors the response shape of worker/scan/scan.ts (ScanResponseBody). Kept
 // as a local type so the island has no server import.
@@ -219,7 +220,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
             This is a Public Signal Score, not a Digital Fitness Score. Items marked NOT PUBLIC
             could not be seen from outside and neither helped nor hurt the score. They are exactly
             what the human-reviewed Verified assessment covers. Scan reference {result.reference},
-            run {new Date(result.scannedAt).toLocaleString()}
+            run {eatDateTime(result.scannedAt)} EAT
             {result.cached ? " (a recent result for this domain)." : "."}
           </div>
         </div>

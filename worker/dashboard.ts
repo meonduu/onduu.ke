@@ -24,6 +24,7 @@
  *
  * The page is noindex and disallowed in robots.
  */
+import { eatDateTime } from "../src/lib/datetime.ts";
 
 interface Env {
   onduu_leads?: D1Database;
@@ -235,8 +236,8 @@ async function overview(db: D1Database, identity: string): Promise<Response> {
       : !notifyHealth
         ? `<div class="note">No enquiry notification has been attempted since migration 0008 was applied.</div>`
         : notifyHealth.last_outcome === "sent"
-          ? `<div class="note" style="border-left-color:#2F6B5B;background:#e4ece9">Notifications delivering — last sent ${escape(notifyHealth.changed_at)} UTC.</div>`
-          : `<div class="note" style="border-left-color:#a8342a;background:#f6e3e0"><b>Enquiry notifications ${escape(notifyHealth.last_outcome)}</b> since ${escape(notifyHealth.changed_at)} UTC${notifyHealth.last_code ? ` (${escape(notifyHealth.last_code)})` : ""}. Enquiries are still stored — check /go/enquiries and the Worker log, then re-run OPERATIONS.md checklist item 1.</div>`;
+          ? `<div class="note" style="border-left-color:#2F6B5B;background:#e4ece9">Notifications delivering — last sent ${escape(eatDateTime(notifyHealth.changed_at))} EAT.</div>`
+          : `<div class="note" style="border-left-color:#a8342a;background:#f6e3e0"><b>Enquiry notifications ${escape(notifyHealth.last_outcome)}</b> since ${escape(eatDateTime(notifyHealth.changed_at))} EAT UTC${notifyHealth.last_code ? ` (${escape(notifyHealth.last_code)})` : ""}. Enquiries are still stored — check /go/enquiries and the Worker log, then re-run OPERATIONS.md checklist item 1.</div>`;
 
   return page(
     "Dashboard",
@@ -316,7 +317,7 @@ ${table(
   ["Reference", "Received", "Name", "Email", "Company", "Concern", "Source"],
   rowsOf<Record<string, string>>(list).map((r) => [
     escape(r.reference),
-    escape(r.created_at),
+    escape(eatDateTime(r.created_at)),
     escape(r.full_name),
     `<a href="mailto:${escape(r.business_email)}">${escape(r.business_email)}</a>`,
     escape(r.company),
@@ -398,7 +399,7 @@ ${table(
     escape(r.score),
     `${escape(r.coverage)}%`,
     escape(r.rubric_version),
-    escape(r.created_at),
+    escape(eatDateTime(r.created_at)),
   ]),
   "No scans stored yet.",
 )}`,
@@ -505,7 +506,7 @@ ${table(
 ${table(
   ["When", "Domain or name", "Result"],
   rowsOf<Record<string, string>>(recent).map((r) => [
-    escape(r.created_at),
+    escape(eatDateTime(r.created_at)),
     escape(r.query),
     escape(r.summary || "-"),
   ]),
@@ -1006,7 +1007,7 @@ ${table(
   ["Domain", "Added", "Note"],
   rowsOf<Record<string, string>>(list).map((r) => [
     escape(r.domain),
-    escape(r.created_at),
+    escape(eatDateTime(r.created_at)),
     escape(r.note || "-"),
   ]),
   "No domains have asked to be excluded.",
