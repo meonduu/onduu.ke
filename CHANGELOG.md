@@ -1,6 +1,25 @@
 # Changelog
 
-CURRENT VERSION: v4.67.0 — 1040hrs:21st August2026
+CURRENT VERSION: v4.67.1 — 1102hrs:21st August2026
+
+## v4.67.1 — 1102hrs:21st August2026
+
+**The interior pages had the hero's crowding one level down.** Checking
+the v4.67.0 change across eight interior pages confirmed the 18px
+eyebrow-to-H1 gap propagated everywhere — and found that every content
+section repeats the original defect between its own pair: the
+section-number ("01 / WHY THIS EXISTS") measured **0px** above its h2 on
+every page checked.
+
+`.section-number` gains `margin-bottom:12px` — 12 rather than the hero's
+18 because section h2s run 30–46px against the hero's 64px, so the air
+scales with the type it serves. Verified harmless in the two grid
+contexts where the number sits beside content rather than above it (the
+homepage section-intro and the stakes band): side-by-side placement is
+set by grid columns, not by this margin.
+
+Verified on the dev server at 1440px: content sections 0 → 12px, grids
+intact. 227 tests pass.
 
 ## v4.67.0 — 1040hrs:21st August2026
 
