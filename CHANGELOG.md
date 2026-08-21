@@ -1,6 +1,28 @@
 # Changelog
 
-CURRENT VERSION: v4.75.0 — 1912hrs:21st August2026
+CURRENT VERSION: v4.75.1 — 1938hrs:21st August2026
+
+## v4.75.1 — 1938hrs:21st August2026
+
+**Green now means available, slate means taken.** Owner decision, closing
+the one contradiction left on `/kedomains`: green marked TAKEN in the text
+while the same green marked *available* in the result's left border, so
+the page's strongest colour signal pointed both ways at once.
+
+- `appears available` → green, matching its border exactly
+  (`rgb(47,107,91)` in both)
+- `is TAKEN` → slate, matching its grey border
+- `RESERVED by KENIC` → copper, unchanged, already matched
+
+Slate also weights the page correctly: a taken name is a fact to move
+past, an available one is the reason the visitor came, and the eye should
+land there first.
+
+Contrast measured against the white result ground before trusting it by
+eye — slate 5.11:1, green 6.22:1, copper 5.62:1, all clear of the 4.5:1
+minimum.
+
+234 tests pass.
 
 ## v4.75.0 — 1912hrs:21st August2026
 
