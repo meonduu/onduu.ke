@@ -333,6 +333,24 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
   // 21 Aug 2026 04:23 finally pinned down after the sub_code was captured.
   const notifyFrom = (env.NOTIFY_EMAIL || "").trim();
   const notifyTo = (env.NOTIFY_TO || "").trim() || notifyFrom;
+  // SM_113 survived the trim, so the malformation is more than whitespace —
+  // and it can live in either field, since ZeptoMail's SM_113 covers the
+  // recipient side too while this path's diagnostics only ever showed the
+  // sender's domain. Check both against the same shape rule the form uses,
+  // and name the guilty BINDING in the light. Shape only — the value never
+  // leaves the Worker. A display name ("Ops <a@b.c>"), a second address, or
+  // a stray character all fail here and get called out before any send.
+  const badShape = [
+    !isEmail(notifyFrom) && "NOTIFY_EMAIL",
+    !isEmail(notifyTo) && "NOTIFY_TO",
+  ].filter(Boolean);
+  if (badShape.length) {
+    console.error(
+      JSON.stringify({ event: "notify_failed", code: "config_shape", fields: badShape, ref }),
+    );
+    await recordNotifyOutcome(env, "failed", `bad address shape: ${badShape.join("+")}`);
+    return;
+  }
   if (!zeptoToken || !notifyFrom) {
     console.error(JSON.stringify({ event: "notify_skipped", reason: "secrets_missing", ref }));
     await recordNotifyOutcome(env, "skipped", "secrets_missing");
