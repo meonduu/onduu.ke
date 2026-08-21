@@ -1,6 +1,20 @@
 # Changelog
 
-CURRENT VERSION: v4.65.4 — 0728hrs:21st August2026
+CURRENT VERSION: v4.65.5 — 0738hrs:21st August2026
+
+## v4.65.5 — 0738hrs:21st August2026
+
+**SM_113 survived the trim, so name the malformed binding.** The
+malformation is more than whitespace, and it can sit in either address:
+ZeptoMail's SM_113 covers the recipient fields too, while the light only
+ever showed the sender's domain. Both `NOTIFY_EMAIL` and `NOTIFY_TO` are
+now checked against the same shape rule the enquiry form uses, before any
+send; a failure reads `bad address shape: NOTIFY_TO` on the light. Shape
+only — no address is ever logged. A display name, a second address, or a
+stray character all get called out by binding name instead of surfacing
+as another anonymous TM_4001.
+
+225 tests pass.
 
 ## v4.65.4 — 0728hrs:21st August2026
 
