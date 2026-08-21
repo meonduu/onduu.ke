@@ -3,9 +3,11 @@
  * network request. Matches the domain itself and any subdomain of an entry.
  *
  * Additions go through a normal PR so every entry has history. Policy (owner,
- * 18 Aug 2026): a domain owner who opts out via the contact form has any
- * stored result for their domain deleted and the domain added here so it is
- * not scanned again. The route is published on the /scan page and in the
+ * 18 Aug 2026): a domain owner who opts out has any stored result for their
+ * domain deleted and the domain blocked so it is not scanned again. Runtime
+ * opt-outs land in the scan_blocklist table, not here — since 21 Aug 2026
+ * by self-service at /do-not-scan (worker/do-not-scan.ts), confirmed by
+ * email at the domain. The route is published on the /scan page and in the
  * privacy notice.
  */
 export const DO_NOT_SCAN: ReadonlySet<string> = new Set<string>([

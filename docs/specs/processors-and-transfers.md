@@ -48,11 +48,19 @@ Verify: `migrations/*.sql`, `worker/submissions.ts`, `worker/events.ts`,
   identified and referenced; Onduu has not recorded which version applies.
 
 ### ZeptoMail (Zoho Corporation)
-- **Role**: sends the enquiry notification to the owner.
-- **Receives**: the reference number, which form was used, and the
-  `NOTIFY_EMAIL` address. **No submitted content, no enquirer name or
-  email.** Verify: `notify()` in `worker/submissions.ts`.
-- **Basis**: legitimate interest in knowing an enquiry has arrived.
+- **Role**: sends the enquiry notification to the owner; since 21 August
+  2026 (v4.84.0) also delivers the do-not-scan confirmation link to a
+  domain owner.
+- **Receives**: for notifications, the reference number, which form was
+  used, and the `NOTIFY_EMAIL` address. **No submitted content, no
+  enquirer name or email.** Verify: `notify()` in `worker/submissions.ts`.
+  For a do-not-scan confirmation, the requester's email address (at the
+  domain in question) and the domain, in one message. Verify:
+  `sendConfirmation()` in `worker/do-not-scan.ts`. The notice's ZeptoMail
+  card states this exception.
+- **Basis**: legitimate interest in knowing an enquiry has arrived; for
+  the confirmation, performing the opt-out the requester asked for, with
+  the requester's agreement to that one email given on the form.
 
 ### Slack (Salesforce, Inc.)
 - **Role**: second notification channel, added 20 August 2026 (v4.52.0).

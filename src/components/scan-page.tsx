@@ -46,7 +46,9 @@ export function ScanPage({ children }: { children?: ReactNode }) {
               A Public Signal Score is not a Digital Fitness Score, and this is not a security
               test, a compliance check or a penetration test. It cannot tell you that a domain, a
               mailbox or a business is secure or compliant. If you operate a domain and do not want
-              it scanned, ask via the <a href="/contact">contact form</a> and it will be removed and blocked from future scans.
+              it scanned, <a href="/do-not-scan">ask here</a>: one email to the domain confirms it is
+              yours, and it is removed and blocked from future scans. If a finding about your domain
+              is wrong, say so via the <a href="/contact">contact form</a> and it will be re-examined.
             </div>
           </div>
         </section>

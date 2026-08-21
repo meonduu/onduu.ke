@@ -1,0 +1,36 @@
+---
+// The confirmation step. GET resolves the emailed token and shows a button;
+// POST performs the opt-out. Two methods on one page so that a mail filter
+// pre-fetching the link (a GET) cannot act on the owner's behalf.
+import { env } from "cloudflare:workers";
+import Layout from "../../layouts/Layout.astro";
+import { DoNotScanConfirmPage } from "../../components/do-not-scan-page";
+import { lookupToken, confirmToken, type ConfirmLookup } from "../../../worker/do-not-scan";
+import type { SubmissionEnv } from "../../../worker/submissions";
+
+const db = (env as unknown as SubmissionEnv).onduu_leads;
+let token = "";
+let result: ConfirmLookup = { state: "invalid" };
+
+if (db) {
+  try {
+    if (Astro.request.method === "POST") {
+      const form = await Astro.request.formData();
+      token = String(form.get("token") ?? "");
+      result = await confirmToken(db, env as unknown as SubmissionEnv, token);
+    } else {
+      token = Astro.url.searchParams.get("token") ?? "";
+      result = await lookupToken(db, token);
+    }
+  } catch (err) {
+    // Migration 0010 not applied, or D1 unreachable: the visitor sees
+    // "not recognised" and the log says why.
+    console.error(JSON.stringify({ event: "optout_confirm_failed", code: (err as Error).message.slice(0, 80) }));
+  }
+}
+Astro.response.headers.set("Cache-Control", "no-store");
+---
+
+<Layout title="Confirm: leave my domain alone | Onduu" description="Confirm a request to stop Onduu scanning your domain." noindex>
+  <DoNotScanConfirmPage result={result} token={token} />
+</Layout>

@@ -264,7 +264,7 @@ async function recordNotifyOutcome(env: SubmissionEnv, outcome: string, code: st
   }
 }
 
-async function notifySlack(env: SubmissionEnv, kind: string, ref: string) {
+async function notifySlack(env: SubmissionEnv, kind: string, ref: string, where = "onduu.ke/go/enquiries") {
   // Same privacy rule as the email: reference and form type only, never
   // submitted content. Optional and best-effort — a Slack failure is logged
   // (visible in Worker logs) but does not touch the notify_health light,
@@ -275,7 +275,7 @@ async function notifySlack(env: SubmissionEnv, kind: string, ref: string) {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        text: `New ${kind} request. ${ref} — details are in the onduu-leads database and at onduu.ke/go/enquiries. This message intentionally contains no personal data.`,
+        text: `New ${kind} request. ${ref} — details are in the onduu-leads database and at ${where}. This message intentionally contains no personal data.`,
       }),
     });
     if (!res.ok) {
@@ -288,7 +288,7 @@ async function notifySlack(env: SubmissionEnv, kind: string, ref: string) {
   }
 }
 
-async function notify(env: SubmissionEnv, kind: string, ref: string) {
+async function notify(env: SubmissionEnv, kind: string, ref: string, where = "onduu.ke/go/enquiries") {
   // The notification deliberately carries no submitted content — only the
   // reference and form type. Details are read from D1 by an authorised person.
   //
@@ -353,7 +353,7 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
         from: { address: notifyFrom },
         to: [{ email_address: { address: notifyTo } }],
         subject: `New ${kind} request. ${ref}`,
-        textbody: `A new ${kind} request was received.\n\nReference: ${ref}\n\nThe submitted details are stored in the onduu-leads database. This message intentionally contains no personal data.`,
+        textbody: `A new ${kind} request was received.\n\nReference: ${ref}\n\nThe submitted details are stored in the onduu-leads database and at ${where}. This message intentionally contains no personal data.`,
       }),
     });
     if (!res.ok) {
@@ -413,6 +413,16 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
     console.error(JSON.stringify({ event: "notify_failed", status: 0, code: name, ref }));
     await recordNotifyOutcome(env, "failed", name);
   }
+}
+
+/**
+ * Both owner channels at once, for a module that is not the enquiry form.
+ * The do-not-scan confirmation (worker/do-not-scan.ts) uses this so the
+ * owner hears that a domain left by the same route an enquiry arrives,
+ * and with the same rule: the reference only, never the content.
+ */
+export async function notifyOwner(env: SubmissionEnv, kind: string, ref: string, where: string) {
+  await Promise.all([notify(env, kind, ref, where), notifySlack(env, kind, ref, where)]);
 }
 
 export async function handleSubmit(request: Request, env: SubmissionEnv): Promise<Response> {

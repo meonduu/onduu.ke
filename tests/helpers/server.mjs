@@ -22,7 +22,7 @@
 // Now the port is reserved by binding to :0 and reading back the assigned
 // number, and readiness additionally requires this child's own log to name
 // that port, which only happens when this child is the one serving it.
-import { spawn } from "node:child_process";
+import { spawn, spawnSync } from "node:child_process";
 import { openSync, readFileSync, mkdtempSync, existsSync } from "node:fs";
 import { createServer } from "node:net";
 import { tmpdir } from "node:os";
@@ -49,6 +49,10 @@ function reservePort() {
 
 const readLog = () => (logPath && existsSync(logPath) ? readFileSync(logPath, "utf8") : "");
 
+// Set by startWorkerWithoutSchema(): one spawn with no migrations applied,
+// for tests of how the site behaves when a table is missing.
+let skipMigrations = false;
+
 async function spawnWorker(extraArgs) {
   const root = fileURLToPath(new URL("../..", import.meta.url));
   let lastError = null;
@@ -56,6 +60,20 @@ async function spawnWorker(extraArgs) {
   for (let attempt = 0; attempt < 3; attempt++) {
     const port = await reservePort();
     const stateDir = mkdtempSync(join(tmpdir(), "onduu-test-"));
+    // The Worker gets the real schema. Until 21 Aug 2026 the test database
+    // was empty — every table missing — so a route that touched D1 could
+    // only be exercised with an in-memory stand-in, and the first end-to-end
+    // test of one (the do-not-scan request) met a 500 from a rate-limit
+    // query against a table that did not exist. Applying the migrations
+    // here means "through the real built Worker" includes the database.
+    const applied = skipMigrations ? { status: 0 } : spawnSync(
+      "npx",
+      ["wrangler", "d1", "migrations", "apply", "onduu-leads", "--local", "-c", "dist/server/wrangler.json", "--persist-to", join(stateDir, "state")],
+      { cwd: root, encoding: "utf8" },
+    );
+    if (applied.status !== 0) {
+      throw new Error(`migrations did not apply to the test database:\n${applied.stderr || applied.stdout}`);
+    }
     logPath = join(stateDir, "wrangler.log");
     const logFd = openSync(logPath, "w");
     proc = spawn(
@@ -150,6 +168,28 @@ export async function restartWorker() {
     });
   }
   return restarting;
+}
+
+/**
+ * A Worker whose database has no tables at all — the state production is in
+ * between a deploy and `wrangler d1 migrations apply`. Tears down the shared
+ * Worker, so call it from the LAST test in a file: everything after it in
+ * the same process sees the bare database too.
+ */
+export async function startWorkerWithoutSchema() {
+  try {
+    proc?.kill("SIGTERM");
+  } catch {
+    /* already gone */
+  }
+  baseUrl = null;
+  starting = null;
+  skipMigrations = true;
+  try {
+    return await startWorker(lastExtraArgs);
+  } finally {
+    skipMigrations = false;
+  }
 }
 
 export async function startWorker(extraArgs = []) {

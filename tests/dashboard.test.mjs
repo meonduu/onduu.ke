@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { shouldRecord } from "../worker/pageviews.ts";
-import { startWorker, fetchPath } from "./helpers/server.mjs";
+import { startWorker, startWorkerWithoutSchema, fetchPath } from "./helpers/server.mjs";
 
 // The vinext harness injected a stub env ({ onduu_leads: {} }, DASHBOARD_TOKEN)
 // straight into worker.fetch. The Astro Worker runs in real workerd, so the
@@ -158,22 +158,22 @@ test("analytics CSV export is a real download, scoped to the range", async () =>
   assert.match((await res.text()).split("\n")[0], /^path,views$/, "CSV needs a header row");
 });
 
-test("every dashboard section survives a database missing its tables", async () => {
-  // The harness database has no application tables, so this exercises exactly
-  // the failure that took /go/analytics down as a 404 before v4.48.0: one
-  // throwing query collapsing a whole page. Each section must render an
-  // honest empty state instead.
-  for (const path of [
-    "/go",
-    "/go/enquiries",
-    "/go/scans",
-    "/go/email-security",
-    "/go/dns",
-    "/go/kedomains",
-    "/go/analytics",
-    "/go/routing",
-    "/go/blocklist",
-  ]) {
+const SECTIONS = [
+  "/go",
+  "/go/enquiries",
+  "/go/scans",
+  "/go/email-security",
+  "/go/dns",
+  "/go/kedomains",
+  "/go/analytics",
+  "/go/routing",
+  "/go/blocklist",
+];
+
+test("every dashboard section renders an honest empty state on a fresh schema", async () => {
+  // Since 21 Aug 2026 the harness applies the migrations, so this is the
+  // state right after deploy: every table present, every table empty.
+  for (const path of SECTIONS) {
     const res = await asOwner(path);
     assert.equal(res.status, 200, `${path} must render rather than fail`);
     const html = await res.text();
@@ -182,10 +182,13 @@ test("every dashboard section survives a database missing its tables", async () 
   }
 });
 
-test("the overview reports a missing source rather than a confident zero", async () => {
+test("with real, empty tables the overview shows zeros — a true count, not an excuse", async () => {
   const html = await (await asOwner("/go")).text();
-  // With no submissions table, "0 enquiries" would read as "nobody wrote in".
-  assert.match(html, /—/, "counts from an unavailable table must not render as 0");
+  assert.doesNotMatch(
+    html,
+    /migration 00\d\d is not applied/,
+    "every migration is applied here; a 'not applied' notice would be the dashboard misreading its own database",
+  );
 });
 
 test("the overview shows a notification status light in every database state", async () => {
@@ -199,4 +202,25 @@ test("the overview shows a notification status light in every database state", a
     /Notifications delivering|Enquiry notifications|No enquiry notification has been attempted|migration 0008 is not applied/,
     "the overview must always state the notification path's condition",
   );
+});
+
+/* ── a database with no tables at all ───────────────────────────────── */
+// The state production is in between a deploy and `migrations apply` —
+// exactly where it sits for migration 0010 until the owner runs it. This
+// tears the shared Worker down, so it stays the last test in the file.
+
+test("with no tables, every section still renders and the overview says '—', not 0", async () => {
+  await startWorkerWithoutSchema();
+  for (const path of SECTIONS) {
+    const res = await asOwner(path);
+    assert.equal(res.status, 200, `${path} must render rather than fail on a bare database`);
+    const html = await res.text();
+    assert.match(html, /<h1>/, `${path} rendered no page`);
+  }
+  // This is the failure that took /go/analytics down as a 404 before
+  // v4.48.0: one throwing query collapsing a whole page. And "0 enquiries"
+  // from a table that does not exist would read as "nobody wrote in".
+  const overview = await (await asOwner("/go")).text();
+  assert.match(overview, /—/, "counts from an unavailable table must not render as 0");
+  assert.match(overview, /migration 0008 is not applied/, "the notification light must name the missing migration");
 });

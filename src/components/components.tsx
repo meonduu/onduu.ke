@@ -79,9 +79,9 @@ export function StandardPage({page,children}:{page:PageContent;children?:ReactNo
   // A card with href links from its heading; CSS stretches that link over the
   // whole card, so the card is clickable while the accessible name stays the
   // guide title rather than the whole card's text.
-  <article className={c.href?"card-linked":undefined} key={c.title}>{c.meta&&<small>{c.meta}</small>}<h3>{c.href?<Link href={c.href}>{c.title}</Link>:c.title}</h3><p>{c.body}</p></article>)}</div>}{s.steps&&<div className="steps">{s.steps.map((x,n)=><article key={x.title}><b>{String(n+1).padStart(2,"0")}</b><div><h3>{x.title}</h3><p>{x.body}</p></div></article>)}</div>}{s.links&&<div className="actions">{s.links.map(l=>l.external
+  <article className={c.href?"card-linked":undefined} key={c.title}>{c.meta&&<small>{c.meta}</small>}<h3>{c.href?<Link href={c.href}>{c.title}</Link>:c.title}</h3><p>{withLinks(c.body)}</p></article>)}</div>}{s.steps&&<div className="steps">{s.steps.map((x,n)=><article key={x.title}><b>{String(n+1).padStart(2,"0")}</b><div><h3>{x.title}</h3><p>{x.body}</p></div></article>)}</div>}{s.links&&<div className="actions">{s.links.map(l=>l.external
   ?<a key={l.href} className="button" href={l.href} target="_blank" rel="noopener noreferrer">{l.label}<span aria-hidden="true">↗</span></a>
-  :<Link key={l.href} className="button" href={l.href}>{l.label}<span aria-hidden="true">↗</span></Link>)}</div>}{s.note&&<div className="note">{s.note}</div>}</div></section>)}{page.form&&<FormSection type={page.form}>{children}</FormSection>}</main><Footer/></>}
+  :<Link key={l.href} className="button" href={l.href}>{l.label}<span aria-hidden="true">↗</span></Link>)}</div>}{s.note&&<div className="note">{withLinks(s.note)}</div>}</div></section>)}{page.form&&<FormSection type={page.form}>{children}</FormSection>}</main><Footer/></>}
 
 function FormSection({type,children}:{type:"fitness"|"contact";children?:ReactNode}){
   // Field lists, copy and microcopy come from the definitive brief, sections
