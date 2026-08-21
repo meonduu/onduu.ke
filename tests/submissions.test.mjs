@@ -63,7 +63,10 @@ test("enforces the allowlist on primary concern and enquiry type", () => {
   assert.equal(badConcern.ok, false);
   assert.ok(badConcern.errors.primary_concern);
 
-  assert.equal(validate("fitness", { ...valid, primary_concern: "leads" }).ok, true);
+  assert.equal(
+    validate("fitness", { ...valid, primary_concern: "Not enough enquiries reaching us" }).ok,
+    true,
+  );
 
   const badType = validate("contact", {
     ...valid,

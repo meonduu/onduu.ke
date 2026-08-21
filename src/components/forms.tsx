@@ -16,14 +16,14 @@ type FieldDef = {
 };
 
 const CONCERNS = [
-  "leads",
-  "trust",
-  "speed",
-  "control",
-  "recovery",
-  "brand",
-  "measurement",
-  "agents",
+  "Not enough enquiries reaching us",
+  "Visitors don't trust the site",
+  "The site is slow",
+  "We don't control our own systems",
+  "No plan if something breaks",
+  "Brand looks inconsistent or dated",
+  "We don't know if it's working",
+  "AI agents and automation",
 ];
 
 const FITNESS_FIELDS: FieldDef[] = [
@@ -59,7 +59,12 @@ const CONTACT_FIELDS: FieldDef[] = [
     name: "primary_concern",
     label: "Which issue is most urgent?",
     type: "select",
-    options: [...CONCERNS.slice(0, 7), "data location", "agents", "complaint"],
+    options: [
+      ...CONCERNS.slice(0, 7),
+      "Where our data is hosted",
+      "AI agents and automation",
+      "I have a complaint",
+    ],
     full: true,
   },
   { name: "trigger_now", label: "What triggered the need now?", type: "textarea", full: true },
