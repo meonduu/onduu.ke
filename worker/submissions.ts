@@ -326,7 +326,14 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
   // the cheap one is eliminated in code rather than by eye.
   const tokenSource = env.ZEPTOMAIL_UJIAJIRI_TOKEN ? "ujiajiri" : "onduu";
   const zeptoToken = (env.ZEPTOMAIL_UJIAJIRI_TOKEN || env.ZEPTOMAIL_TOKEN || "").trim();
-  if (!zeptoToken || !env.NOTIFY_EMAIL) {
+  // The addresses need the same treatment as the token, and for the same
+  // reason: a value pasted into the dashboard with a trailing newline is
+  // invisible there, but ZeptoMail rejects the send — 401 TM_4001/SM_113,
+  // "Mandatory Field 'from' has Invalid Value" — which is exactly what
+  // 21 Aug 2026 04:23 finally pinned down after the sub_code was captured.
+  const notifyFrom = (env.NOTIFY_EMAIL || "").trim();
+  const notifyTo = (env.NOTIFY_TO || "").trim() || notifyFrom;
+  if (!zeptoToken || !notifyFrom) {
     console.error(JSON.stringify({ event: "notify_skipped", reason: "secrets_missing", ref }));
     await recordNotifyOutcome(env, "skipped", "secrets_missing");
     return;
@@ -344,8 +351,8 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        from: { address: env.NOTIFY_EMAIL },
-        to: [{ email_address: { address: env.NOTIFY_TO || env.NOTIFY_EMAIL } }],
+        from: { address: notifyFrom },
+        to: [{ email_address: { address: notifyTo } }],
         subject: `New ${kind} request. ${ref}`,
         textbody: `A new ${kind} request was received.\n\nReference: ${ref}\n\nThe submitted details are stored in the onduu-leads database. This message intentionally contains no personal data.`,
       }),
@@ -374,7 +381,7 @@ async function notify(env: SubmissionEnv, kind: string, ref: string) {
           .replace(/[\w.+-]+@[\w.-]+/g, "[address]")
           .replace(/\s+/g, " ")
           .slice(0, 90);
-      const senderDomain = env.NOTIFY_EMAIL.split("@")[1] ?? "none";
+      const senderDomain = notifyFrom.split("@")[1] ?? "none";
       // Which binding supplied the token, and how long it was — never the
       // token itself. On 20 Aug 2026 it was impossible to tell from the
       // outside whether a new binding was even being read; a name and a

@@ -1,6 +1,28 @@
 # Changelog
 
-CURRENT VERSION: v4.65.3 — 0034hrs:21st August2026
+CURRENT VERSION: v4.65.4 — 0728hrs:21st August2026
+
+## v4.65.4 — 0728hrs:21st August2026
+
+**Found it: `SM_113` — the `from` address itself was invalid.** The first
+test after the sub_code capture shipped read
+`401 TM_4001/SM_113 ujiajiri→ujiajiri.ke`. SM_113 is ZeptoMail's
+"Mandatory Field 'from' has Invalid Value": not the token, not the domain,
+not the account — the `NOTIFY_EMAIL` value is malformed, which a trailing
+newline from a dashboard paste produces while remaining invisible on
+screen.
+
+The token was already trimmed (v4.65.1); the addresses were not.
+`NOTIFY_EMAIL` and `NOTIFY_TO` are now trimmed at the same point, closing
+the class rather than the instance: every pasted binding this path reads
+is now whitespace-proof.
+
+The evening in one line: one `401 TM_4001` hid four causes, and each
+diagnostic release eliminated one — agent pairing (v4.65.0), token
+whitespace (v4.65.1), sender domain (v4.65.2) — until capturing the
+sub_code (v4.65.3) named the real one on the next attempt.
+
+225 tests pass.
 
 ## v4.65.3 — 0034hrs:21st August2026
 
