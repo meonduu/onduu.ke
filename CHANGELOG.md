@@ -1,6 +1,27 @@
 # Changelog
 
-CURRENT VERSION: v4.66.2 — 0902hrs:21st August2026
+CURRENT VERSION: v4.66.3 — 0924hrs:21st August2026
+
+## v4.66.3 — 0924hrs:21st August2026
+
+**Footer links were the smallest tap targets on the site.** Found while
+checking the footer change on a phone viewport: all seventeen navigation
+links were the bare 18px line box of 12px text, separated by 12px — below
+the 24px minimum in WCAG 2.5.8, and the Legal column stacks four of them,
+so "Privacy" and "Assessment Terms" were a mis-tap apart.
+
+`footer>div:not(.footer-brand) a` gains `padding:7px 0`, taking every link
+to **32px** (50px for the three that wrap), and the column gap drops
+12px → 2px so the extra height mostly absorbs into space that already
+existed. Measured before and after at 375px: 17 links under 24px → **0**,
+footer 799px → 839px. Desktop unchanged in kind (same 32px, no overflow).
+
+This is the third tap-target defect found the same way this week, after
+the mobile menu (v4.48.x) and the header CTA and privacy link (v4.64.2) —
+each one invisible until someone looked at the real thing at 375px rather
+than trusting the desktop layout.
+
+225 tests pass.
 
 ## v4.66.2 — 0902hrs:21st August2026
 
