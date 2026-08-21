@@ -83,23 +83,12 @@ checked as written, that is itself a finding.
 
 ## Open incident
 
-**Enquiry notification email failing, since 20 August 2026 ~17:30 UTC.**
-The `/go` light reads `failed · 401 TM_4001`. Cause: `NOTIFY_EMAIL` is the
-ZeptoMail **sender** and currently holds an address on a domain ZeptoMail
-has not verified. It was green at 10:44 and 11:51 the same day sending from
-onduu.ke, and the only change since was that value — so the token and code
-are not implicated. Slack notifications are unaffected and have delivered
-throughout, so no enquiry has been missed.
-
-Fix (owner): set `NOTIFY_EMAIL` back to the verified onduu.ke sender.
-`NOTIFY_TO` already routes delivery to info@ujiajiri.ke and should be left
-alone. If it stays red afterwards, the ZeptoMail Mail Agent's permitted
-From address is the thing to check. Verify by submitting one test enquiry
-and watching the light; delete the row afterwards.
-
-The two test rows from that day (`ON-260820-7NJ6`, `ON-260820-KQ14`) were
-deleted from production on 20 August 2026; `submissions` is empty, as it was
-before testing began.
+None. The 20 August notification failure was closed at 04:37 UTC on
+21 August 2026: the light reads `sent`, verified end to end with a live
+submission delivered to info@ujiajiri.ke. Root cause was a malformed
+`NOTIFY_TO` value — see L10 below, which exists so the diagnosis is never
+re-run from theories again. All test rows were deleted; `submissions` is
+empty, as before testing began.
 
 ## Lessons register
 
@@ -116,6 +105,23 @@ nothing enforced it. Guard: a test now pins every processor named in the
 code against the notice (`tests/seo-and-gates.test.mjs`), and the register
 at `docs/specs/processors-and-transfers.md` lists what each one receives,
 so the next addition has an obvious place to be recorded (v4.54.0).
+
+**L10 — 21 Aug 2026 · One error code hid four causes; instrument before
+theorising.** ZeptoMail's `401 TM_4001` covers a mismatched agent/sender
+pairing, a bad token (SERR_157), an unapproved account (SM_128) and a
+malformed address (SM_113) — and the HTTP 401 makes all of them read as
+auth failures. Seven hours and five releases went into eliminating causes
+one theory at a time (including a needless token regeneration), when the
+actual fault was a malformed `NOTIFY_TO` that shape-validation would have
+named in one step. The correct order is: make the failing system report
+its own state first — capture the provider's sub_code, validate config
+shape at the boundary, put the verdict on the light — and only then
+theorise about what remains. Guard: `notify()` now trims and
+shape-checks both addresses before any send and names the guilty binding
+on the `/go` light; failures carry the provider's sub_code
+(`worker/submissions.ts`, v4.65.1–v4.65.5). Corollary: dashboard-pasted
+bindings are hostile input — trim and validate every one at the point of
+use.
 
 **L9 — 20 Aug 2026 · Editorial bookkeeping leaking into published copy.**
 "(owner, 20 August 2026)" reached the live assessment terms, and two gate

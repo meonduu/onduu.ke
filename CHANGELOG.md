@@ -1,6 +1,22 @@
 # Changelog
 
-CURRENT VERSION: v4.65.5 — 0738hrs:21st August2026
+CURRENT VERSION: v4.65.6 — 0748hrs:21st August2026
+
+## v4.65.6 — 0748hrs:21st August2026
+
+**Notification incident closed: the light is green.** With `NOTIFY_TO`
+corrected to a plain address, a live submission delivered end to end —
+`sent`, no error code, 04:37 UTC. Root cause of the entire 20 August
+failure: a malformed `NOTIFY_TO` value, hidden behind a `401` that reads
+as an auth error.
+
+`OPERATIONS.md`: the open incident section is closed, and the episode is
+distilled into **L10** — one error code hid four causes; make the failing
+system report its own state before theorising. Dashboard-pasted bindings
+are hostile input: trim and shape-check every one at the point of use,
+which `notify()` now does.
+
+Docs only; no behaviour change. 225 tests pass.
 
 ## v4.65.5 — 0738hrs:21st August2026
 
