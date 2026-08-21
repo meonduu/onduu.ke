@@ -35,8 +35,30 @@ import { collectRdap, type RdapFacts } from "./scan/collect.ts";
 // false in the same instant and must change in the same release. The
 // paired test in tests/domains.test.mjs exists to make the link and its
 // disclosure impossible to move independently.
-export const REGISTER_URL =
-  "https://panel.hostafrica.com/checkout/0?aff=916&utm_source=onduu&utm_medium=referral&utm_campaign=domain-search";
+const REGISTER_BASE =
+  "https://panel.hostafrica.com/checkout/0?aff=916&ident=keha&utm_source=onduu&utm_medium=referral&utm_campaign=domain-search";
+
+/** Kept for callers and tests that want the destination without a name. */
+export const REGISTER_URL = REGISTER_BASE;
+
+/**
+ * The checkout with the searched name already in its box.
+ *
+ * `ident=keha` is the piece that makes `domain` work, and it was not
+ * guesswork: HOSTAFRICA's own public search at www.hostafrica.ke/domains/
+ * submits `GET /checkout/0?ident=keha&domain=…`, so this is their format,
+ * not one invented here. Without `ident` the checkout ignores `domain`
+ * entirely — which is why an earlier attempt (v4.70.0) concluded the name
+ * could not be carried through at all.
+ *
+ * Verified end to end: the box arrives filled and the page reports the
+ * availability itself. The checkout consumes `domain` and drops it from
+ * the address bar, keeping `ident` and the UTMs; `aff=916` is stored as a
+ * cookie, so attribution survives the parameter being consumed.
+ */
+export function registerUrlFor(domain: string) {
+  return `${REGISTER_BASE}&domain=${encodeURIComponent(domain)}`;
+}
 
 export type Availability = "registered" | "maybe-available" | "reserved" | "unknown";
 
@@ -198,7 +220,7 @@ export async function checkDomain(
     return { domain, status: "registered", registrar: null, locked: undefined, expiryDate: null };
   }
   if (nxdomain) {
-    return { domain, status: "maybe-available", registerUrl: REGISTER_URL };
+    return { domain, status: "maybe-available", registerUrl: registerUrlFor(domain) };
   }
   return { domain, status: "unknown" };
 }

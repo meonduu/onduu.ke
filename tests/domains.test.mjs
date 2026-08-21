@@ -10,6 +10,7 @@ import {
   withinSearchLimit,
   registrarWebsite,
   REGISTER_URL,
+  registerUrlFor,
 } from "../worker/domains.ts";
 
 /* ── candidate generation: the .co.ke / .ke pair ── */
@@ -197,7 +198,16 @@ test("NXDOMAIN plus no RDAP record appears available, with the register link", a
   const fetcher = stubNet({});
   const result = await checkDomain("free-name.co.ke", makeBudget(5000, 10), fetcher);
   assert.equal(result.status, "maybe-available");
-  assert.equal(result.registerUrl, REGISTER_URL);
+  // The link now carries the searched name so the checkout arrives with it
+  // already in the box, rather than asking the visitor to retype what they
+  // just typed here.
+  assert.equal(result.registerUrl, registerUrlFor("free-name.co.ke"));
+  assert.match(result.registerUrl, /[?&]domain=free-name\.co\.ke(&|$)/, "the searched name is carried");
+  // ident=keha is what makes `domain` take effect. It is HOSTAFRICA's own
+  // parameter, taken from the form at www.hostafrica.ke/domains/; without
+  // it the checkout silently ignores the name, which is how v4.70.0
+  // concluded the name could not be carried at all.
+  assert.match(result.registerUrl, /[?&]ident=keha(&|$)/, "ident=keha must accompany domain");
   assert.match(REGISTER_URL, /utm_source=onduu/, "campaign attribution present");
   // Owner instruction, 21 Aug 2026, superseding the 18 Aug "no affiliate
   // parameter" rule: the link carries HOSTAFRICA affiliate id 916, used for
