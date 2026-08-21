@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.67.2 — 1128hrs:21st August2026
+CURRENT VERSION: v4.68.0 — 1204hrs:21st August2026
+
+## v4.68.0 — 1204hrs:21st August2026
+
+**Four pages were printing their section numbers twice**, and the hero
+scorecard carried 7.2px text. Both found by a mobile sweep of thirteen
+routes, neither visible in the source alone.
+
+- **Doubled numbering.** `StandardPage` prints the section index itself
+  (`{i+1} / {eyebrow}`), and 33 eyebrows in the page data carried a
+  hand-written number as well — so `/legal/tool-limitations` read
+  "01 / 01 / EMAIL SECURITY CHECK", and `/legal/privacy`,
+  `/legal/assessment-terms` and `/about` read "02 / 01 / …". It survived
+  every review because the fault exists only in the rendered output: the
+  data looks right in isolation, and so does the renderer. Numbering is
+  the renderer's job; the data now supplies the label only.
+- **7.2px in the scorecard.** `.priority-title` is 9px and its `<small>`
+  child inherited the browser's 0.8em default, making "Evidence status"
+  the smallest text on the site — inside the homepage's visual
+  centrepiece. Now pinned to 9px. Note the tap-target guard's font-size
+  sweep could not have caught this: 7.2px was never declared in the CSS,
+  only computed.
+
+Guard: `tests/docs-consistency.test.mjs` now fails if any eyebrow carries
+its own index. It immediately earned its place — the first strip pass
+matched only the quoted-key style in `pages-brief.ts` and missed five
+unquoted entries in `pages-strategy.ts`, which the guard named.
+
+Also verified across the same thirteen routes: **no horizontal overflow
+anywhere** at 375px, and every other sub-11px string is the intentional
+uppercase eyebrow/section-number label style.
+
+228 tests pass.
 
 ## v4.67.2 — 1128hrs:21st August2026
 

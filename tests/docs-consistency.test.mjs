@@ -94,3 +94,24 @@ test("package.json and the lockfile match the changelog's current version", () =
     'package-lock.json packages[""] version is behind CHANGELOG.md',
   );
 });
+
+// Four pages rendered "02 / 01 / WHO IS RESPONSIBLE" until 21 Aug 2026:
+// StandardPage prints the section index itself (`{i+1} / {eyebrow}`), and
+// 28 eyebrows in the brief data carried a hand-written number as well. It
+// survived every review because the doubling only exists in the rendered
+// output — the data looks correct in isolation, and so does the renderer.
+// Numbering is the renderer's job; the data supplies the label only.
+test("section eyebrows do not carry their own number", () => {
+  const offenders = [];
+  for (const file of ["src/data/pages-brief.ts", "src/data/pages-strategy.ts", "src/data/site-data.ts"]) {
+    const text = readFileSync(join(ROOT, file), "utf8");
+    for (const [, label] of text.matchAll(/"?eyebrow"?:\s*"(\d{2}\s*\/[^"]*)"/g)) {
+      offenders.push(`${file} → "${label}"`);
+    }
+  }
+  assert.deepEqual(
+    offenders,
+    [],
+    `eyebrows carrying their own index — the renderer already prefixes one:\n${offenders.join("\n")}`,
+  );
+});

@@ -320,7 +320,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "01 / WHO IS RESPONSIBLE",
+        "eyebrow": "WHO IS RESPONSIBLE",
         "title": "Who controls this information.",
         "body": [
           "The data controller is Ujiajiri Enterprises Limited, a limited liability company registered in Kenya, which trades as Onduu and operates this website. Onduu is the brand and is not itself a registered company; Ujiajiri Enterprises Limited is the accountable entity."
@@ -328,7 +328,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "Questions about your information can be sent through the contact form. Enquiries are received and answered by Ujiajiri Enterprises Limited, and inside that company are seen only by the people who need them."
       },
       {
-        "eyebrow": "02 / WHAT IS COLLECTED",
+        "eyebrow": "WHAT IS COLLECTED",
         "title": "What you type, and how the pages are used.",
         "body": [
           "The Digital Fitness Assessment request and the contact form collect the fields you complete. Those fields are listed below.",
@@ -348,7 +348,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "The forms ask you not to submit passwords, credentials or sensitive customer data, and you should not do so. Nothing on this site needs them. The arrival details above are recorded so it is possible to tell which article or link actually produced an enquiry; they are held with the enquiry and describe the visit, not you. Page-view records are separate from enquiries and hold nothing that identifies you."
       },
       {
-        "eyebrow": "03 / WHY, AND ON WHAT BASIS",
+        "eyebrow": "WHY, AND ON WHAT BASIS",
         "title": "Why each piece is held.",
         "cards": [
           {
@@ -374,7 +374,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "04 / THE DOMAIN TOOLS",
+        "eyebrow": "THE DOMAIN TOOLS",
         "title": "What the domain tools read, and what they keep.",
         "body": [
           "The email security checker at /email-security sends the domain name to Cloudflare's public DNS resolver so its published SPF, DKIM, DMARC and MX records can be read. Those records are already public. Since 18 August 2026 the domain checked and the result are stored, so Onduu can see which checks are being run and which failures are common. No account or email address is required, and nothing about you is recorded with the result. A stored row says a domain was checked at a time, never who checked it.",
@@ -386,7 +386,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "The basis for storing tool results is a legitimate interest in operating the tools, caching results so they do not repeatedly fetch third-party sites, seeing which checks are run and which failures are common, and being able to reproduce a score. A Public Signal Score describes public observations at a moment in time; it is not a Digital Fitness Score, and not proof that a domain, a mailbox or a business is secure. Results are kept until deleted rather than on a fixed schedule. If you operate a domain and want it left alone, ask through the contact form: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is added to a do-not-scan list so it is not scanned again, and future lookups of it are not recorded. The lookups themselves keep working, because they read only the public records any WHOIS tool can read."
       },
       {
-        "eyebrow": "05 / COOKIES AND ANALYTICS",
+        "eyebrow": "COOKIES AND ANALYTICS",
         "title": "No tracking cookies, and nothing to consent to.",
         "body": [
           "This website runs no advertising tags, no third-party tracking scripts and no product that follows you between sites. There is no cookie banner because there is nothing here that needs one. No analytics company's product runs in your browser. A content-security policy served with every page permits scripts only from this site itself, plus the Turnstile spam check on the forms and an embedded video player; anything else a browser was asked to load would be refused.",
@@ -397,7 +397,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "Cloudflare, which serves this site, may set a short-lived security cookie, and the Turnstile spam check on the forms may set one. Those tell a person from an automated script; they do not measure or profile you. Separately, a browser that visited this domain before August 2026 may still hold analytics cookies set by the previous version of this site, including Google Analytics. Those are not set by the site as it stands, and clearing your cookies for this domain removes them."
       },
       {
-        "eyebrow": "06 / WHO ELSE PROCESSES IT",
+        "eyebrow": "WHO ELSE PROCESSES IT",
         "title": "The other parties involved.",
         "cards": [
           {
@@ -416,7 +416,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "An independent provider is a different case: nothing reaches one because you used this site. If you ask for implementation support, Ujiajiri names the provider it proposes and tells you exactly what would be shared \u2014 your name, contact details and a project summary \u2014 and sends it only after you say yes to that specific introduction. You may decline without it affecting your assessment or advice. No artificial-intelligence or language-model provider receives your form submissions, and no analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
       },
       {
-        "eyebrow": "07 / WHERE IT IS STORED",
+        "eyebrow": "WHERE IT IS STORED",
         "title": "Where the information sits, and where it travels.",
         "body": [
           "Submissions are stored in Cloudflare's database service and are served from Cloudflare's network, which operates data centres in many countries. Information is therefore stored and processed outside Kenya.",
@@ -426,7 +426,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "Still to decide: whether to pin storage to a chosen region, and which transfer safeguard to record under the Data Protection Act. The processing register behind this section is at docs/specs/processors-and-transfers.md in the site's repository."
       },
       {
-        "eyebrow": "08 / HOW LONG IT IS KEPT",
+        "eyebrow": "HOW LONG IT IS KEPT",
         "title": "Kept until deleted.",
         "body": [
           "There is no automatic deletion schedule. Submissions stay in the database until they are deleted by hand, and no fixed retention period is currently set.",
@@ -436,7 +436,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "Still to decide: whether a retention limit should be introduced later. Holding personal data indefinitely is a weaker position under the Data Protection Act than deleting it on a defined schedule."
       },
       {
-        "eyebrow": "09 / SECURITY",
+        "eyebrow": "SECURITY",
         "title": "What is done to protect it, and what that does not prove.",
         "items": [
           "The site is served only over an encrypted connection",
@@ -448,7 +448,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "These are the measures in place. No website can promise that information is completely safe, and this notice does not make that claim."
       },
       {
-        "eyebrow": "10 / YOUR RIGHTS",
+        "eyebrow": "YOUR RIGHTS",
         "title": "What you can ask for.",
         "body": [
           "Under the Kenyan Data Protection Act 2019 you may ask to see the information held about you, to have it corrected, to have it deleted, to object to how it is used, and to receive a copy of it."
@@ -461,14 +461,14 @@ export const briefPages: Record<string, PageContent> = {
         "note": "No response time is published, because no operating commitment has been made. Requests are handled directly by Wycliffe."
       },
       {
-        "eyebrow": "11 / WITHDRAWING CONSENT",
+        "eyebrow": "WITHDRAWING CONSENT",
         "title": "You can change your mind.",
         "body": [
           "Where information is processed because you consented, you can withdraw that consent at any time through the contact form. Withdrawing it does not undo anything already done on the basis of your earlier consent, and it does not affect the separate record kept to show what you agreed to."
         ]
       },
       {
-        "eyebrow": "12 / COMPLAINTS",
+        "eyebrow": "COMPLAINTS",
         "title": "If you are not satisfied.",
         "body": [
           "Raise it directly first, through the contact form, choosing \u0022complaint\u0022 as the issue so it arrives marked as one. Complaints are handled by Ujiajiri Enterprises Limited, the company accountable for this site, and will be looked at properly.",
@@ -477,7 +477,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "The Office of the Data Protection Commissioner publishes its own complaint route; this notice does not reproduce contact details that could go out of date."
       },
       {
-        "eyebrow": "13 / VERSION",
+        "eyebrow": "VERSION",
         "title": "Version and effective date.",
         "body": [
           "Draft version 0.5, prepared 20 August 2026 with facts confirmed by the owner the same day. It has no effective date until a legal professional has reviewed it and the two open points are decided.",
@@ -504,7 +504,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "01 / WHAT THIS IS",
+        "eyebrow": "WHAT THIS IS",
         "title": "A human-reviewed business diagnostic.",
         "body": [
           "An Onduu assessment combines what your team declares, what can be safely observed from public sources, and what an Onduu reviewer checks by hand. It produces a score, evidence labels, stated limitations and a small number of prioritised actions.",
@@ -512,7 +512,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "02 / YOUR AUTHORITY",
+        "eyebrow": "YOUR AUTHORITY",
         "title": "Only submit a domain you are entitled to submit.",
         "body": [
           "By submitting a domain or website you confirm that you own it or are authorised by the owner to have it assessed. If you are acting for a client, that authority must come from the client."
@@ -520,7 +520,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "The free tools on this site read only records that are already published publicly and are governed by the tool limitations page rather than these terms. They should still not be used to build a target list or to profile a business you have no relationship with."
       },
       {
-        "eyebrow": "03 / WHAT IS OBSERVED",
+        "eyebrow": "WHAT IS OBSERVED",
         "title": "Public records, read without touching your systems.",
         "items": [
           "Published DNS records, including MX, SPF, DKIM for common selectors, and DMARC",
@@ -531,7 +531,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "No password, credential or system access is required, and none should be sent. Nothing on this site asks for one."
       },
       {
-        "eyebrow": "04 / WHAT IS NOT DONE",
+        "eyebrow": "WHAT IS NOT DONE",
         "title": "Explicitly out of scope.",
         "items": [
           "No penetration testing and no vulnerability scanning",
@@ -543,7 +543,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "Any of these can be discussed as separate work with its own written scope and permission. None of them happens as part of a standard assessment."
       },
       {
-        "eyebrow": "05 / HOW FINDINGS ARE LABELLED",
+        "eyebrow": "HOW FINDINGS ARE LABELLED",
         "title": "Every finding shows what it is based on.",
         "cards": [
           {
@@ -565,7 +565,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "06 / WHAT A RESULT DOES NOT PROVE",
+        "eyebrow": "WHAT A RESULT DOES NOT PROVE",
         "title": "The limits, stated plainly.",
         "body": [
           "A clean result means the things checked looked correct at the time they were checked. It does not prove that your domain, your mailboxes, your website or your business are secure. It does not prove a backup will restore, that email will reach an inbox, or that any legal or regulatory requirement is met.",
@@ -573,7 +573,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "07 / YOUR REPORT",
+        "eyebrow": "YOUR REPORT",
         "title": "Who sees it.",
         "body": [
           "A report prepared for you is delivered to you privately and is not published. Onduu will not name you, quote you or publish any result about your business without your written consent.",
@@ -582,7 +582,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "Written consent means consent given against the exact words proposed, shown to you before anything appears. Silence is not consent, and agreeing to one piece of writing does not extend to another."
       },
       {
-        "eyebrow": "08 / WHAT MAY BE PUBLISHED WITHOUT ASKING",
+        "eyebrow": "WHAT MAY BE PUBLISHED WITHOUT ASKING",
         "title": "Patterns across many assessments. Never your assessment.",
         "body": [
           "Onduu may publish what it learns across assessments as a pattern: how many of the businesses assessed had no enforcing email policy, how often an enquiry path failed silently, which weaknesses recur. Figures of that kind describe the group, not any business in it, and they are how the guidance on this site stays grounded in what is actually found rather than in opinion.",
@@ -591,7 +591,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "Anything narrower than that \u2014 your findings, your score, your story, however carefully the name is removed \u2014 is published only if you agree in writing, having seen exactly what would be said. In a market this size an \u0022anonymous\u0022 example is often recognisable to anyone who knows the sector, so the standard here is your permission rather than Onduu\u0027s judgement about whether you could be identified."
       },
       {
-        "eyebrow": "09 / RETENTION AND CORRECTIONS",
+        "eyebrow": "RETENTION AND CORRECTIONS",
         "title": "How long it is kept, and fixing what is wrong.",
         "body": [
           "Information submitted through the request forms is kept until it is deleted; there is currently no automatic deletion schedule, as the privacy notice describes. You can ask at any time for it to be deleted, and it will be.",
@@ -599,7 +599,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "10 / INTELLECTUAL PROPERTY",
+        "eyebrow": "INTELLECTUAL PROPERTY",
         "title": "Who owns what.",
         "body": [
           "The report is yours to act on. It is written as a guide, and you may share it with anyone you choose to help you act on it \u2014 your own team, a developer, or an independent provider you engage. Nothing in it is confidential to Onduu in a way that would stop you fixing what it identifies.",
@@ -608,7 +608,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "11 / VERSION",
+        "eyebrow": "VERSION",
         "title": "Version and effective date.",
         "body": [
           "Draft version 0.5, prepared 16 August 2026 and completed on 20 August 2026. Every open question on this page has now been answered. It has no effective date until a legal professional has reviewed it.",
@@ -627,7 +627,7 @@ export const briefPages: Record<string, PageContent> = {
     "ctaHref": "/solutions/digital-revenue-risk-review",
     "sections": [
       {
-        "eyebrow": "01 / WHO RUNS THIS",
+        "eyebrow": "WHO RUNS THIS",
         "title": "Twenty years inside the layer most businesses never see.",
         "body": [
           "Wycliffe Onduu started EACdirectory.co.ke, a .ke domain registrar, in 2005 and ran it for seventeen years until HOSTAFRICA acquired it in 2022. He is now Managing Director for Kenya at HOSTAFRICA.",
@@ -636,7 +636,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "02 / WHY THIS WORK",
+        "eyebrow": "WHY THIS WORK",
         "title": "The failures are boring, and that is the problem.",
         "body": [
           "The faults that cost Kenyan businesses real money are rarely dramatic. A form that submits but reaches nobody. A backup nobody has restored. A domain in a former developer's name. Email that any stranger can send as.",
@@ -645,7 +645,7 @@ export const briefPages: Record<string, PageContent> = {
         "note": "The domain checker was pointed at onduu.ke before it was pointed at anyone else, and it found a fault. That article is published on this site."
       },
       {
-        "eyebrow": "03 / OPERATING PRINCIPLES",
+        "eyebrow": "OPERATING PRINCIPLES",
         "title": "How the work is done.",
         "items": [
           "Evidence before confidence. Label what was declared, observed, reviewed and tested.",
@@ -657,7 +657,7 @@ export const briefPages: Record<string, PageContent> = {
         ]
       },
       {
-        "eyebrow": "04 / DISCLOSURE",
+        "eyebrow": "DISCLOSURE",
         "title": "The relationship you should know about.",
         "body": [
           "Wycliffe is Managing Director for Kenya at HOSTAFRICA, a hosting and infrastructure provider. Infrastructure products referenced on this site are supplied and supported by HOSTAFRICA, not by Onduu.",
