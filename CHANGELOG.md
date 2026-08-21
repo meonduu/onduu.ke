@@ -1,6 +1,25 @@
 # Changelog
 
-CURRENT VERSION: v4.70.0 — 1412hrs:21st August2026
+CURRENT VERSION: v4.70.1 — 1428hrs:21st August2026
+
+## v4.70.1 — 1428hrs:21st August2026
+
+**Tighter copy on `/kedomains`**, owner instruction.
+
+- Search button: "Search with the .ke twin" → **"Search"**. The twin
+  behaviour is what the results demonstrate; the button only needs to say
+  what pressing it does.
+- Lede: the two-clause explanation of the mechanism becomes **"Owning one
+  without the other leaves the door open to cybersquatting."** — the
+  consequence rather than the method, which is what the headline above it
+  is asking about. Lower-case "cybersquatting" per house style; it is a
+  common noun, not a proper one.
+
+The mechanism it dropped is not lost: the section immediately below still
+explains that a search checks the pair, and `/legal/tool-limitations`
+states it precisely.
+
+231 tests pass.
 
 ## v4.70.0 — 1412hrs:21st August2026
 
