@@ -1,6 +1,36 @@
 # Changelog
 
-CURRENT VERSION: v4.66.1 — 0842hrs:21st August2026
+CURRENT VERSION: v4.66.2 — 0902hrs:21st August2026
+
+## v4.66.2 — 0902hrs:21st August2026
+
+**The HOSTAFRICA directorship comes out of the sitewide footer**, on the
+owner's instruction. Removed: "Wycliffe is Managing Director of HOSTAFRICA
+Kenya; HOSTAFRICA provides, bills and supports its own products. Material
+commercial relationships are disclosed at the relevant decision point."
+The footer keeps the operator identity — "Onduu is operated by Ujiajiri
+Enterprises Limited" — which is the controller line the privacy notice
+depends on.
+
+This does not weaken the disclosure rule. CLAUDE.md requires the
+relationship to be disclosed "at the decision point where they matter —
+not only on a legal page", and a sitewide footer is the opposite of a
+decision point: the place a repeated notice stops being read. Verified
+still present where a reader is choosing to act:
+
+- `/paths/hostafrica-infrastructure`, beside the outbound CTA
+- `/kedomains`, beside the registration links
+- `/about`, and in full on `/legal/commercial-relationships`
+- inline in the two Insights articles that link to HOSTAFRICA
+
+The first two are pinned by tests and were already; `tests/seo-and-gates`
+had also asserted the footer copy, so it was narrowed to the operator
+line, with the reasoning recorded beside it and a note that the owner may
+restore the footer sentence without breaking a test. What must never
+disappear is the decision-point disclosure, and that stays asserted
+rather than assumed.
+
+225 tests pass.
 
 ## v4.66.1 — 0842hrs:21st August2026
 

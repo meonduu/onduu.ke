@@ -264,10 +264,23 @@ test("every page carries the browser security headers, with a short-start HSTS",
   }
 });
 
-test("the footer carries the responsibility disclosure", async () => {
+test("the footer identifies the operator", async () => {
   const home = await (await fetchPath("/")).text();
-  assert.match(home, /operated by Ujiajiri Enterprises Limited/);
-  assert.match(home, /HOSTAFRICA provides, bills and supports/);
+  assert.match(home, /operated by Ujiajiri Enterprises Limited/, "controller must be named sitewide");
+  // The footer also carried the HOSTAFRICA directorship until the owner
+  // removed it on 21 August 2026 (v4.66.2). That is not a weakening of the
+  // disclosure rule: CLAUDE.md requires the relationship to be disclosed
+  // "at the decision point where they matter — not only on a legal page",
+  // and the sitewide footer is the opposite of a decision point — it is
+  // the place a repeated notice goes unread. The disclosure remains where
+  // a reader is actually choosing to act on it, and the two tests below
+  // pin exactly those places: /paths/hostafrica-infrastructure beside the
+  // outbound CTA, and /kedomains beside the registration links. It is also
+  // on /about and in full on /legal/commercial-relationships.
+  //
+  // So: no assertion here that the footer carries it, and none that it
+  // does not — the owner may put it back. What must never disappear is
+  // the decision-point disclosure, which is asserted, not assumed.
 });
 
 test("the approved HOSTAFRICA destination is UTM-tagged with no affiliate parameter", async () => {
