@@ -107,7 +107,7 @@ export function DomainsForm() {
           />
         </label>
         <button className="button" type="submit" disabled={state === "loading"}>
-          {state === "loading" ? "Checking the registries…" : "Search with the .ke twin"}
+          {state === "loading" ? "Checking the registries…" : "Search"}
           <span aria-hidden="true">↗</span>
         </button>
       </form>

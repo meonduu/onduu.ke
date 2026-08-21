@@ -15,8 +15,7 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
             <p className="eyebrow">ONDUU / FREE TOOL</p>
             <h1>Is your business name protected in .ke too?</h1>
             <p className="lede">
-              Search a name in any Kenyan extension and this checks it together with its .ke twin,
-              because owning one without the other leaves the door open for someone else.
+              Owning one without the other leaves the door open to cybersquatting.
             </p>
           </div>
         </section>
