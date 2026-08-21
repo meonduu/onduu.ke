@@ -1,6 +1,47 @@
 # Changelog
 
-CURRENT VERSION: v4.70.2 — 1447hrs:21st August2026
+CURRENT VERSION: v4.71.0 — 1524hrs:21st August2026
+
+## v4.71.0 — 1524hrs:21st August2026
+
+**Available-domain links now carry HOSTAFRICA affiliate id 916.** Owner
+instruction, 21 August 2026, superseding the 18 August decision of "UTM
+attribution only, no affiliate parameter".
+
+The owner confirmed, when asked directly, that **id 916 attributes the
+referral and pays Onduu nothing**. That answer decided the whole shape of
+this release: four places on the site published "no commission", one of
+them under his byline, and an affiliate id arriving silently beside them
+would have looked like a disclosure quietly broken. The claim stays —
+because it is still true — but every statement now names the id rather
+than saying "attribution tags only":
+
+- `/kedomains`: "…carries HOSTAFRICA affiliate identifier 916 and campaign
+  tags, used to attribute routed demand rather than to earn on it."
+- `/legal/tool-limitations`: "…which attribute the referral but pay Onduu
+  no commission."
+- The 18 August article's disclosure gains a dated sentence recording the
+  change, following the postscript convention it already uses.
+- `/paths/hostafrica-infrastructure` is untouched and still accurate: that
+  route's link carries no affiliate id.
+
+**Path kept at `/checkout/0`.** The instruction named the panel root; that
+would have reverted v4.70.0, which the owner had confirmed an hour earlier
+through an explicit question, so the affiliate id was added to the
+existing checkout path instead and flagged rather than silently swapped.
+
+Guard: `tests/domains.test.mjs` asserted `aff=` could never appear — it was
+written to prevent exactly this, and correctly failed. It now asserts the
+opposite and, more usefully, **pins the id to its disclosure**: both pages
+must name identifier 916, must still state that no commission is earned,
+and must not carry the old "attribution tags only" phrasing. Verified by
+softening the disclosure back with the id in place, which fails.
+
+If id 916 ever starts paying, those disclosures become false in the same
+instant and must change in the same release. The paired test is what makes
+the two impossible to move independently.
+
+232 tests pass.
 
 ## v4.70.2 — 1447hrs:21st August2026
 
