@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v4.68.0 — 1204hrs:21st August2026
+CURRENT VERSION: v4.68.1 — 1246hrs:21st August2026
+
+## v4.68.1 — 1246hrs:21st August2026
+
+**Two mobile layout fixes on the legal pages**, from a 375px review of all
+four.
+
+- **The draft banner label was crushed.** `.gate` is a flex row, so
+  "PREVIEW / APPROVAL GATE" was squeezed into **59px and wrapped over four
+  lines** — it needs 222px to sit on one. This is the first thing a reader
+  meets on the most sensitive pages, and it looked broken rather than
+  deliberate. Below 620px the banner now stacks: label on one line, its
+  explanation at full width beneath. Measured 59×54 (4 lines) → **323×14
+  (1 line)**.
+- **The heading hierarchy had collapsed.** H1 and H2 both bottomed out at
+  their clamp minimums on mobile — 34px against 30px, a **1.13×** ratio
+  where desktop has 1.27×. On a fourteen-section notice that difference is
+  what tells a scrolling reader whether they are at the top of the
+  document or the middle of it. The H2 minimum drops 30px → 26px, giving
+  **1.31×**, with line-height nudged 1.1 → 1.12 for the smaller size.
+
+The H2 change is sitewide and affects widths below ~937px: identical at
+1100px and above, 28.8px instead of 30px at 900px, 26px below 812px. That
+removes a hard floor in favour of continuous scaling, checked at 375, 768
+and 1440.
+
+Checked and left alone: no horizontal overflow on any of the four pages,
+18px/30.6px body copy that reads well on a phone, and the single section
+numbering from v4.68.0 holding.
+
+Noted, not changed: `/legal/privacy` is 21,241px on mobile — about 26
+screens. That is inherent to a thorough notice; a jump-list of its
+fourteen sections would help navigation if the owner wants one.
+
+228 tests pass.
 
 ## v4.68.0 — 1204hrs:21st August2026
 
