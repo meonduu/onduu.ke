@@ -82,7 +82,7 @@ footer .wordmark .track{stroke:#28323C}footer .wordmark .arc{stroke:#CD7A50}foot
    headline while the paragraph floated 45px below it, so the headline was
    wedged against its own kicker. These even it out across all three hero
    types. Specificity beats the bare .lede rule, so order does not matter. */
-.page-hero .eyebrow,.hero-copy .eyebrow,.article-head .eyebrow{margin-bottom:6px}
+.page-hero .eyebrow,.hero-copy .eyebrow,.article-head .eyebrow{margin-bottom:18px}
 .page-hero .lede,.hero-copy .lede,.article-head .lede{margin-top:14px}
 
 /* Result status reads first (19 Aug 2026). The badge sat right-aligned at

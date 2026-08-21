@@ -1,6 +1,37 @@
 # Changelog
 
-CURRENT VERSION: v4.66.4 — 0956hrs:21st August2026
+CURRENT VERSION: v4.67.0 — 1040hrs:21st August2026
+
+## v4.67.0 — 1040hrs:21st August2026
+
+**Hero typography: the eyebrow gets air, the H1 gets breathing room.**
+Owner review of the desktop hero found the "01 · Digital fitness" kicker
+sitting 6px above the 64px headline — the 28px bordered box practically
+resting on the H1's ascenders, and tighter above the headline than the
+14px below it, so the label looked more bonded to the H1 than the H1's
+own lede did.
+
+- Eyebrow gap 6px → **18px** on desktop, 12px below 620px (proportionate
+  to the 38px mobile H1). Shared with the page-hero and article-head
+  eyebrows, so every page benefits.
+- H1 line-height 1.02 → **1.08**: the headline wraps to two lines, and at
+  1.02 Georgia's long descenders ("digitally") nearly rested on the caps
+  of "business?".
+- H1 letter-spacing −.03em → **−.015em**: more tightening than Georgia
+  tolerates, hardest at the 38px mobile size where serifs began to touch.
+- Eyebrow 10px → **11px on desktop only**. Two scoping corrections found
+  by looking rather than assuming: bumping the shared rule made the
+  narrow section-number columns wrap ("02 / THE HIDDEN OPERATIONAL /
+  GAP"), so section-numbers keep 10px; and 11px broke the mobile hero
+  eyebrow onto two lines with "BUSINESSES" orphaned under the 01 box, so
+  mobile keeps 10px too.
+
+Georgia itself stays, deliberately: a webfont would buy a more
+distinctive face with 30–60KB, layout shift and a new dependency, against
+a site whose credibility partly is its performance discipline.
+
+Verified with before/after screenshots at 1440px and 375px. 227 tests
+pass.
 
 ## v4.66.4 — 0956hrs:21st August2026
 
