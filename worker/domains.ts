@@ -24,10 +24,19 @@ import { collectRdap, type RdapFacts } from "./scan/collect.ts";
 // name there. If HOSTAFRICA publishes a pre-fill parameter, adding it here
 // is the whole change.
 //
-// Attribution rules are unchanged and still enforced by tests/domains: UTM
-// only, never an affiliate parameter, no commission.
+// Attribution (owner instruction, 21 Aug 2026, superseding the 18 Aug
+// "no affiliate parameter" decision): the link now carries HOSTAFRICA
+// affiliate id 916 as well as the UTMs. The owner confirmed that id 916 is
+// used for ATTRIBUTION ONLY and pays Onduu no commission — which is why
+// the disclosures on /kedomains and /legal/tool-limitations now name the
+// affiliate id explicitly instead of saying "attribution tags only".
+//
+// If that ever changes and the id starts paying, those disclosures become
+// false in the same instant and must change in the same release. The
+// paired test in tests/domains.test.mjs exists to make the link and its
+// disclosure impossible to move independently.
 export const REGISTER_URL =
-  "https://panel.hostafrica.com/checkout/0?utm_source=onduu&utm_medium=referral&utm_campaign=domain-search";
+  "https://panel.hostafrica.com/checkout/0?aff=916&utm_source=onduu&utm_medium=referral&utm_campaign=domain-search";
 
 export type Availability = "registered" | "maybe-available" | "reserved" | "unknown";
 

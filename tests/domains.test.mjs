@@ -198,8 +198,14 @@ test("NXDOMAIN plus no RDAP record appears available, with the register link", a
   const result = await checkDomain("free-name.co.ke", makeBudget(5000, 10), fetcher);
   assert.equal(result.status, "maybe-available");
   assert.equal(result.registerUrl, REGISTER_URL);
-  assert.match(REGISTER_URL, /utm_source=onduu/, "attribution is UTM");
-  assert.doesNotMatch(REGISTER_URL, /aff=/, "no affiliate parameter");
+  assert.match(REGISTER_URL, /utm_source=onduu/, "campaign attribution present");
+  // Owner instruction, 21 Aug 2026, superseding the 18 Aug "no affiliate
+  // parameter" rule: the link carries HOSTAFRICA affiliate id 916, used for
+  // attribution only — the owner confirmed it pays Onduu no commission.
+  // That claim is published on /kedomains and /legal/tool-limitations, so
+  // the id and its disclosure are pinned together below: if the id ever
+  // starts paying, both must move in the same release.
+  assert.match(REGISTER_URL, /[?&]aff=916(&|$)/, "affiliate id 916 present for attribution");
   // Owner instruction, 21 Aug 2026: an available result goes to the
   // checkout, not the panel home page, so the next click is the one that
   // registers the name. Pinned because the difference is invisible in
@@ -266,4 +272,32 @@ test("the per-connection search limit refuses after the cap and resets", () => {
   assert.equal(withinSearchLimit("test-key", t0 + 100), false);
   assert.equal(withinSearchLimit("other-key", t0 + 100), true);
   assert.equal(withinSearchLimit("test-key", t0 + 61 * 60 * 1000), true);
+});
+
+// The link and the promise about the link must not be able to drift apart.
+// The site says the affiliate id attributes the referral and earns nothing;
+// if the id is removed the sentence is wrong, and if the sentence is
+// softened back to "attribution tags only" the URL contradicts it.
+test("the affiliate id and its disclosure move together", async () => {
+  const { fetchPath } = await import("./helpers/server.mjs");
+  assert.match(REGISTER_URL, /aff=916/, "the register link carries the affiliate id");
+
+  for (const path of ["/kedomains", "/legal/tool-limitations"]) {
+    const html = await (await fetchPath(path)).text();
+    assert.match(
+      html,
+      /affiliate identifier 916/,
+      `${path} must name the affiliate id it routes visitors through`,
+    );
+    assert.match(
+      html,
+      /no commission|pay Onduu no commission/,
+      `${path} must still state that no commission is earned`,
+    );
+    assert.doesNotMatch(
+      html,
+      /attribution tags only/,
+      `${path} still claims "attribution tags only" while the link carries an affiliate id`,
+    );
+  }
 });

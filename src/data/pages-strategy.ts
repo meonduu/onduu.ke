@@ -419,7 +419,7 @@ export const strategyPages: Record<string, PageContent> = {
         ],
         items: [
           "“Appears available” is an observation, not a reservation. Availability and price are confirmed at the registrar's checkout",
-          "Registration, billing, renewal and support happen at HOSTAFRICA, not on this site; Onduu earns no commission and the outbound link carries attribution tags only",
+          "Registration, billing, renewal and support happen at HOSTAFRICA, not on this site; the outbound link carries HOSTAFRICA affiliate identifier 916 and campaign tags, which attribute the referral but pay Onduu no commission",
           "Registry data can lag or be incomplete; the registry's own answer is authoritative",
         ],
       },

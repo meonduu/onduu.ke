@@ -168,7 +168,7 @@ export const articles: Article[] = [
         "nodes": [
           {
             "t": "em",
-            "v": "Disclosure: registration links in the domain search go to HOSTAFRICA, where I am Managing Director of the Kenyan business. Onduu earns no commission on them."
+            "v": "Disclosure: registration links in the domain search go to HOSTAFRICA, where I am Managing Director of the Kenyan business. Onduu earns no commission on them. Since 21 August 2026 those links also carry HOSTAFRICA affiliate identifier 916, which attributes the referral; it pays Onduu nothing, and the tool limitations page says so too."
           }
         ]
       },

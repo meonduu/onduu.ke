@@ -56,8 +56,9 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
               If a name is available, registration, billing, renewal and support happen at
               HOSTAFRICA through its official panel, not on this site. Wycliffe, who operates
               Onduu, is also Managing Director of HOSTAFRICA Kenya. Onduu receives no commission on
-              registrations; the outbound link carries attribution tags so routed demand can be
-              measured, and clicks are counted here in aggregate only.
+              registrations. The outbound link carries HOSTAFRICA affiliate identifier 916 and
+              campaign tags, used to attribute routed demand rather than to earn on it, and clicks
+              are counted here in aggregate only.
             </p>
             <p>
               Already own the domain? The next question is whether its records protect you. {" "}
