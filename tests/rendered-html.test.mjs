@@ -20,6 +20,21 @@ test("home page server-renders", async () => {
   assert.doesNotMatch(html, /Your site is taking shape|react-loading-skeleton/i);
 });
 
+test("the hero question stays one readable sentence across its line break", async () => {
+  // The H1 is split so "How digitally fit is" and "your business?" sit on
+  // their own lines, with "is" in green. The wrapper is display:block, which
+  // means the space before "your" is doing nothing visually and is very easy
+  // to drop — and dropping it renders "isyour business?" to a screen reader,
+  // to a copy-paste, and to whatever reads the accessible name. Markup, not
+  // CSS, has to carry that space.
+  const html = await (await fetchPath("/")).text();
+  const h1 = html.match(/<h1>([\s\S]*?)<\/h1>/)?.[1] ?? "";
+  assert.ok(h1, "the homepage must render an h1");
+  const text = h1.replace(/<[^>]+>/g, "").replace(/\s+/g, " ").trim();
+  assert.equal(text, "How digitally fit is your business?");
+  assert.match(h1, /class="pivot"[^>]*>is</, '"is" must be the coloured pivot word');
+});
+
 test("insights index lists every migrated article", async () => {
   const response = await render("/insights");
   assert.equal(response.status, 200);

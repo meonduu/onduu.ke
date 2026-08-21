@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.85.0 — 2244hrs:21st August2026
+CURRENT VERSION: v4.86.0 — 2354hrs:21st August2026
+
+## v4.86.0 — 2354hrs:21st August2026
+
+**The homepage question breaks after "is", and "is" turns green.** Owner's
+instruction, colour left to me. The hero H1 now sets "How digitally fit
+is" on one line and "your business?" on the next.
+
+The colour is `--green` (#2F6B5B), and the reasoning is worth keeping: the
+palette holds exactly two accents, copper already carries the subject, and
+green is this system's colour for a healthy signal everywhere else — a
+passing scan row, the sparkline, an available domain. Colouring the verb
+green makes the question carry the answer it is asking about. It reuses
+the existing `em` italic and weight, so only the hue changes, and it
+measures 5.52:1 on ivory — above AA for body text, let alone a 64px
+heading.
+
+**One defect caught in the making.** The wrapper is `display:block`, which
+collapses the space before "your" — the rendered text became "How
+digitally fit isyour business?" for a screen reader, a copy-paste, and the
+accessible name, while looking perfectly correct on screen. A space that
+CSS makes invisible still has to exist in the markup. `{" "}` restores it,
+and a new test in `tests/rendered-html.test.mjs` strips the tags and
+asserts the H1 reads as one sentence, because this is exactly the kind of
+break that no visual check would ever catch.
+
+Two lines at 1440px and at 375px, no overflow either way.
+
+No lesson: a copy and colour change on the owner's instruction; the
+spacing defect was caught by this change's own test before it shipped.
 
 ## v4.85.0 — 2244hrs:21st August2026
 
