@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.80.1 — 0148hrs:22nd August2026
+CURRENT VERSION: v4.81.0 — 1859hrs:21st August2026
+
+## v4.81.0 — 1859hrs:21st August2026
+
+**`/scan` lede shortened, redundant reassurance removed.** The intro
+paragraph dropped its parenthetical list of what the scan reads (registry,
+DNS, email, homepage) — that detail is already covered by the "01 / WHAT
+THIS IS" section below it — and now reads "Enter your domain. Onduu
+reports a Public Signal Score. It is a starting point, not a verdict."
+
+The status line under the form no longer shows "This reads public
+information only. It touches nothing private and never asks you to log
+in." while idle — the same point is made in the page body, and the line
+sat between the button and the results with nothing to do most of the
+time. It still appears during the scan itself ("Reading public records:
+registry, DNS, email and the homepage…"), where it is the only progress
+indicator.
+
+No lesson: a copy trim on the owner's instruction, not a fix.
 
 ## v4.80.1 — 0148hrs:22nd August2026
 
