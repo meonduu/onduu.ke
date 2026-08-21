@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v4.68.1 — 1246hrs:21st August2026
+CURRENT VERSION: v4.69.0 — 1338hrs:21st August2026
+
+## v4.69.0 — 1338hrs:21st August2026
+
+**A contents list for the long legal pages.** `/legal/privacy` runs
+fourteen sections and about 26 phone screens; finding "who else processes
+it" meant thumbing through the whole notice. It and
+`/legal/assessment-terms` (twelve sections) now open with a numbered
+contents list, its numbers matching the ones each section already shows.
+
+- **Real anchors, not just navigation.** Each section gains a readable id
+  derived from its eyebrow, so a clause can be linked directly —
+  `/legal/privacy#who-is-responsible` — which matters for a page a lawyer
+  or a client may need to point at. Ids are de-duplicated, and generated
+  from the same source as the list, so the two cannot drift apart.
+- **Threshold, not a per-page flag**: eight sections or more. A page that
+  grows past it gets a contents list without anyone remembering to ask,
+  and the four short pages correctly do not have one.
+- No JavaScript: plain anchors, `scroll-behavior` already sitewide, with
+  `scroll-margin-top:18px` so a heading does not land flush to the
+  viewport edge. Links are 34px tall — standalone navigation, so WCAG
+  2.5.8's inline exception does not apply.
+- Two columns on desktop via multi-column so entries read **down** each
+  column as a contents list should, balancing automatically at eight
+  entries or fourteen; one column on a phone, where all fourteen fit a
+  single screen.
+
+Caught in preview: globals.css carries a bare `nav{display:flex}` for the
+header, which caught this nav too and stood the label beside its own list
+until `.jump-list` was forced back to `display:block`.
+
+Guard: `tests/jump-list.test.mjs` — every contents link resolves to a
+section on the page, ids are unique, and short pages stay bare. Verified
+by stripping the ids from the renderer, which fails it. Note that
+renaming a section heading does **not** fail it, and should not: both
+halves derive from one source, so the anchors follow the heading.
+
+231 tests pass.
 
 ## v4.68.1 — 1246hrs:21st August2026
 
