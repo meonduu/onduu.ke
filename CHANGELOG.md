@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.81.0 — 1859hrs:21st August2026
+CURRENT VERSION: v4.82.0 — 2035hrs:21st August2026
+
+## v4.82.0 — 2035hrs:21st August2026
+
+**"Primary concern" options rewritten as plain sentences.** The assessment
+and contact forms asked visitors to pick from single bare words — `leads`,
+`trust`, `speed`, `control`, `recovery`, `brand`, `measurement`, `agents`,
+plus `data location` and `complaint` on the contact form — with no copy
+anywhere explaining what any of them meant. A word like `recovery` or
+`measurement` could mean several different things and forced a guess.
+
+Each option is now a short first-person sentence stating the actual
+concern, e.g. `recovery` → "No plan if something breaks",
+`measurement` → "We don't know if it's working", `agents` → "AI agents and
+automation". Six of the eight assessment options now line up with the
+site's own six dimensions (Control, Trust, Speed, Conversion, Resilience,
+Agent Fitness); "brand" and "measurement" don't map to a dimension and
+were deliberately left as plain business language rather than forced into
+one that would misrepresent the visitor's answer.
+
+Both allowlists moved together — `CONCERNS` in `src/components/forms.tsx`
+(what's shown and submitted) and the matching list in
+`worker/submissions.ts` (what's accepted). Checked before shipping: the
+longest new value is 33 characters, under the existing 40-character
+`primary_concern` limit, so no validation-limit change was needed. The
+column is plain `TEXT` with no CHECK constraint, so old stored rows keep
+their old wording in `/go/enquiries` going forward — cosmetic only, no
+migration required.
+
+No lesson: a content rename on the owner's instruction, not a fix.
 
 ## v4.81.0 — 1859hrs:21st August2026
 

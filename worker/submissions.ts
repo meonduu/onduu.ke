@@ -45,18 +45,18 @@ const CONSENT_TEXT =
 
 // Allowlists — anything outside these is rejected rather than coerced.
 const CONCERNS = [
-  "leads",
-  "trust",
-  "speed",
-  "control",
-  "recovery",
-  "brand",
-  "measurement",
-  "data location",
-  "agents",
+  "Not enough enquiries reaching us",
+  "Visitors don't trust the site",
+  "The site is slow",
+  "We don't control our own systems",
+  "No plan if something breaks",
+  "Brand looks inconsistent or dated",
+  "We don't know if it's working",
+  "Where our data is hosted",
+  "AI agents and automation",
   // A complaint route the privacy notice can point at: complaints arrive
   // tagged rather than buried in free text (owner, 20 Aug 2026).
-  "complaint",
+  "I have a complaint",
 ];
 const ENQUIRY_TYPES = ["website", "infrastructure", "agent workflow", "combination"];
 
