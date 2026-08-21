@@ -1,6 +1,33 @@
 # Changelog
 
-CURRENT VERSION: v4.73.2 — 1748hrs:21st August2026
+CURRENT VERSION: v4.74.0 — 1822hrs:21st August2026
+
+## v4.74.0 — 1822hrs:21st August2026
+
+**One status word per domain result.** Owner instruction, three changes to
+`/kedomains`.
+
+- **"TAKEN" was printed twice** — once in the outlined badge, once as the
+  green word added in v4.73.1. The **badge** goes rather than the green
+  word: the owner had asked for that green deliberately, and removing the
+  badge also stops "RESERVED by KENIC" duplicating its own badge in the
+  same way. The status is now one coloured word under the domain name, in
+  every state. The now-dead `BADGE` map is deleted; `.check-badge` stays,
+  since `/scan` still uses it.
+- **Reserved reads "RESERVED by KENIC"** instead of "Not registered",
+  which said what the name is *not* and left the reader to work out why.
+  Copper, matching the tone its badge used to carry — reserved is not the
+  same answer as taken: nobody holds it, the registry withholds it.
+- **The raw registry sentence is gone** — "This domain is not allowed
+  under registry policy", rendered in a `<code>` block, read as an error
+  message rather than an explanation. `reservedNote` is still returned by
+  the API and stored; only the display drops it.
+
+Verified with the owner's own search, "tom": one taken result, one
+reserved, TAKEN appearing exactly once on the page, no badges left, and
+both removed strings absent.
+
+234 tests pass.
 
 ## v4.73.2 — 1748hrs:21st August2026
 
