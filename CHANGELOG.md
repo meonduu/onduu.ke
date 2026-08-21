@@ -1,6 +1,39 @@
 # Changelog
 
-CURRENT VERSION: v4.71.0 — 1524hrs:21st August2026
+CURRENT VERSION: v4.72.0 — 1608hrs:21st August2026
+
+## v4.72.0 — 1608hrs:21st August2026
+
+**The searched name now arrives in HOSTAFRICA's checkout box.** v4.70.0
+concluded this was impossible; that conclusion was wrong, and the reason
+is instructive.
+
+The missing parameter is **`ident=keha`**, and it was not guessed:
+HOSTAFRICA's own public search at `www.hostafrica.ke/domains/` submits
+`GET /checkout/0?ident=keha&domain=…`. Without `ident` the checkout
+ignores `domain` silently — which is precisely why the earlier probe,
+testing `domain`/`query`/`search` in isolation against a nonsense control,
+saw no difference and concluded the name could not be carried. The control
+was right that nothing was happening; the mistake was inferring that
+nothing *could*. Reading the vendor's own form settled in one grep what
+parameter-guessing could not.
+
+`registerUrlFor(domain)` builds the per-result link, so `.co.ke` and `.ke`
+each carry their own name. Verified by following a real result through:
+the box arrives filled, the page reports "Great news! … is available!",
+the UTMs stay in the address bar, and `aff=916` is written to a cookie so
+attribution survives the parameter being consumed.
+
+The result copy drops its apology — "where you enter the name again"
+becomes "which opens with this name already entered" — since the thing it
+warned about no longer happens.
+
+Guard: the domain test now asserts both the carried name and that
+`ident=keha` accompanies it, with a comment recording why the pairing
+matters. Losing `ident` alone would silently return the site to making the
+visitor retype, with no other symptom.
+
+232 tests pass.
 
 ## v4.71.0 — 1524hrs:21st August2026
 
