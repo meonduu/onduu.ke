@@ -48,13 +48,6 @@ const TONE = {
   unknown: "warn",
 } as const;
 
-const BADGE = {
-  "maybe-available": "APPEARS AVAILABLE",
-  registered: "TAKEN",
-  reserved: "RESERVED",
-  unknown: "UNKNOWN",
-} as const;
-
 export function DomainsForm() {
   const [query, setQuery] = useState("");
   const [state, setState] = useState<"idle" | "loading">("idle");
@@ -138,7 +131,6 @@ export function DomainsForm() {
               >
                 <div className="check-row-head">
                   <h3>{r.domain}</h3>
-                  <span className={`check-badge check-${TONE[r.status]}`}>{BADGE[r.status]}</span>
                 </div>
                 {r.status === "registered" && (
                   <>
@@ -185,9 +177,10 @@ export function DomainsForm() {
                 {r.status === "reserved" && (
                   <>
                     <p>
-                      <strong>Not registered</strong>
+                      <strong className="domain-state domain-state--reserved">
+                        RESERVED by KENIC
+                      </strong>
                     </p>
-                    {r.reservedNote && <code>{r.reservedNote}</code>}
                   </>
                 )}
                 {r.status === "unknown" && (
