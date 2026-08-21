@@ -90,6 +90,25 @@ submission delivered to info@ujiajiri.ke. Root cause was a malformed
 re-run from theories again. All test rows were deleted; `submissions` is
 empty, as before testing began.
 
+## What keeps this register honest
+
+`tests/lessons-register.test.mjs` runs with every release. If the current
+`CHANGELOG.md` entry describes a fault — "regression", "outage",
+"incident", "was wrong", "my mistake" — it must either cite a lesson
+(new or existing) or carry a line beginning **`No lesson:`** saying why
+none is needed. Both are acceptable answers; silence is not.
+
+It deliberately does **not** demand a lesson per release. Forcing one every
+time would fill this file with filler and devalue the entries that matter,
+so what it forces is a decision. The trigger words were tuned against the
+real changelog rather than guessed: "broke" and "silently" were tried and
+rejected because they appear most often describing a guard working
+correctly. Backtested over sixteen releases it flags two, both genuine
+misses — L11 and L12 exist because of them.
+
+It also checks that a cited lesson actually exists, and that no number is
+used twice.
+
 ## Lessons register
 
 Newest first. Format: what happened → root cause → the guard now standing.
@@ -105,6 +124,23 @@ nothing enforced it. Guard: a test now pins every processor named in the
 code against the notice (`tests/seo-and-gates.test.mjs`), and the register
 at `docs/specs/processors-and-transfers.md` lists what each one receives,
 so the next addition has an obvious place to be recorded (v4.54.0).
+
+**L12 — 20 Aug 2026 · A rename that the database refused.** Backfilled
+21 Aug 2026, when the lesson check below found this release had described
+a production outage without recording anything. v4.64.0 renamed the form
+kind from `readiness` to `fitness` and left migration 0001's
+`CHECK (kind IN ('readiness','contact'))` untouched, so every assessment
+insert violated the constraint and returned 500. The conversion path was
+down about forty minutes. Nothing was lost — the table was empty and the
+visitor saw an error rather than a false success — but the whole suite
+passed throughout, because `validate()` was tested directly and nothing
+ever exercised the insert. Rule: a rename that reaches storage is not a
+copy change. Grep `migrations/` for the old value before renaming it;
+a CHECK or enum there must learn the new word first, and a migration that
+widens a constraint ships to production in the same release as the code
+relying on it, never merged and left pending. Guard:
+`tests/kind-schema.test.mjs` parses the constraint out of the migrations
+and asserts everything the form accepts is storable (v4.64.3).
 
 **L11 — 21 Aug 2026 · Ask the vendor's own front end before probing its
 API.** v4.70.0 concluded HOSTAFRICA's checkout could not receive the

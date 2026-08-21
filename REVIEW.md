@@ -67,6 +67,11 @@ or Claude self-review, step 7 of the work loop) assigns one outcome:
 - Full relevant tests, build, type checking and linting pass — run clean
   (stale build caches have shipped wrong builds before).
 - For releases and after any Cloudflare dashboard change:
+  A release that describes a fault cites a lesson in `OPERATIONS.md`, or
+  says `No lesson:` and why. `tests/lessons-register.test.mjs` enforces
+  this; before it existed, two releases described faults and recorded
+  nothing, both caught only because the owner asked.
+
   `npm run check:live` passes against production — it catches
   edge-injected scripts and weakened headers that no local test can see.
 - No unexplained console or network errors on the previewed pages.

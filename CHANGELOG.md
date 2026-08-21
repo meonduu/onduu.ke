@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v4.72.1 — 1626hrs:21st August2026
+CURRENT VERSION: v4.73.0 — 1704hrs:21st August2026
+
+## v4.73.0 — 1704hrs:21st August2026
+
+**The lessons register now enforces itself.** The owner's question — what
+makes anyone actually write in it — had an uncomfortable answer: nothing
+did. Twice a release described a fault and recorded none, and both times a
+person noticed, which is the mechanism a register exists to replace.
+
+`tests/lessons-register.test.mjs` reads the current `CHANGELOG.md` entry.
+If it describes a fault, the entry must either cite a lesson — new or
+existing — or carry a line beginning `No lesson:` explaining why none is
+needed. Both answers are fine; silence is not. It also verifies a cited
+lesson exists, and that no number is used twice.
+
+It deliberately does **not** demand a lesson per release: forcing one every
+time would fill the register with filler and devalue the entries that
+matter. What it forces is a decision.
+
+The trigger words were tuned against the real changelog, not guessed.
+"broke" and "silently" were tried and **rejected** — they appear most often
+describing a guard working correctly, so they flagged healthy releases.
+Backtested across sixteen releases the final set flags two, both genuine
+misses; negations ("no regression", "prevents a regression") are excluded.
+
+**L12 backfilled**, found by running the check against history: v4.64.3
+described a forty-minute production outage and recorded no lesson. The
+rename that the database refused now has one — grep `migrations/` for a
+value before renaming it, and ship a widening migration in the same
+release as the code that needs it.
+
+`REVIEW.md` gains the requirement; `OPERATIONS.md` explains what the check
+does and why it is selective rather than universal.
+
+234 tests pass.
 
 ## v4.72.1 — 1626hrs:21st August2026
 
