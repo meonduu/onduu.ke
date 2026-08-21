@@ -1,6 +1,46 @@
 # Changelog
 
-CURRENT VERSION: v4.66.3 — 0924hrs:21st August2026
+CURRENT VERSION: v4.66.4 — 0956hrs:21st August2026
+
+## v4.66.4 — 0956hrs:21st August2026
+
+**Sitewide tap-target sweep: 24 routes measured at 375px, one real defect
+found.** The category is now closed rather than being discovered one page
+at a time.
+
+The one failure: the **article back-link** ("← All insights") was the 15px
+line box of 10px text — standalone navigation, so WCAG 2.5.8's inline
+exception does not cover it. Now `padding:6px 0` for 27px, with the bottom
+margin reduced 34px → 28px so the article's opening rhythm is unchanged.
+
+Also raised, though it was already compliant: the **consent checkbox**
+22px → 24px. Its `<label>` wraps the input, so the activation target was
+always the full 323×63 row; 24px means the exemption never has to be
+argued. Worth correcting the record from v4.64.2, which called the
+privacy-notice link "the genuine 2.5.8 failure" of that batch — it is
+inline, inside the consent sentence, and therefore exempt. The header CTA
+at 8px was the real defect there.
+
+**Everything else measured clean.** The remaining sub-24px hits are all
+covered by 2.5.8's Inline exception — prose links in articles, on /scan
+and in the consent sentence, whose size is constrained by the line-height
+of the text around them. No route overflows horizontally.
+
+Method worth recording, since two attempts were wrong first: measuring
+pages inside an offscreen iframe reported the hidden desktop nav as
+visible (stylesheet not yet applied), and a same-origin iframe against
+production is blocked outright by the site's own `X-Frame-Options: DENY`.
+What worked was swapping each route's `<main>` into a real 375px viewport
+that already had the stylesheet loaded, with a sanity assertion that the
+desktop nav computed to `display:none` before trusting a single number.
+
+Guard: `tests/tap-targets.test.mjs` pins the five CSS rules that set these
+sizes, matching declarations individually because the build reorders them.
+Verified by removing the footer padding and restoring the 8px CTA — both
+failed, each naming its rule. It deliberately does not pin the exempt
+cases; pinning them would invite someone to "fix" what is already correct.
+
+227 tests pass.
 
 ## v4.66.3 — 0924hrs:21st August2026
 
