@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.65.6 — 0748hrs:21st August2026
+CURRENT VERSION: v4.66.0 — 0812hrs:21st August2026
+
+## v4.66.0 — 0812hrs:21st August2026
+
+**Migration 0009 applied to production; the `kind` shim retired.**
+
+The owner applied `migrations/0009_kind_fitness.sql` at 04:56 UTC — the
+safest moment it will ever have, with `submissions` at zero rows. Verified
+directly afterwards: the constraint reads
+`CHECK (kind IN ('fitness', 'contact', 'readiness'))`, all four indexes
+were recreated, and a direct `'fitness'` insert succeeded and was removed.
+
+With the database now speaking the site's vocabulary:
+
+- **`storageKind()` is deleted**, as its own comment promised: it existed
+  only to translate `fitness` back to `readiness` at the D1 boundary while
+  the old constraint stood. New rows store `fitness`.
+- `normaliseKind()` **stays**: a browser tab from before the rename still
+  posts `readiness`, and the constraint deliberately keeps that value
+  legal for exactly this reason.
+- The terminology guard drops the storage-shim exemption; two shims
+  remain (the wire-compat mapping and the psr-v1 dimension label).
+- `tests/kind-schema.test.mjs` now checks the **final** constraint — the
+  end state of a fully migrated database — rather than demanding every
+  historical CHECK hold at once, which would forbid ever widening one.
+  The rule that survives from the incident: a migration that widens a
+  constraint ships to production in the same release as the code that
+  relies on it, never merged and left pending.
+
+Verified live end to end after deploy: one submission stored with
+`kind='fitness'`, notification sent, light green, test row deleted.
+
+225 tests pass.
 
 ## v4.65.6 — 0748hrs:21st August2026
 
