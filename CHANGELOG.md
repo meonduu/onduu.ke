@@ -1,6 +1,41 @@
 # Changelog
 
-CURRENT VERSION: v4.79.1 — 0042hrs:22nd August2026
+CURRENT VERSION: v4.80.0 — 0116hrs:22nd August2026
+
+## v4.80.0 — 0116hrs:22nd August2026
+
+**Article dates join the sitewide format.** Owner instruction. Bylines and
+related-article cards now read `18-08-2026` rather than "18 August 2026",
+completing the change begun in v4.79.0.
+
+They are **derived, not rewritten**. Every article carried an ISO `date`
+*and* a hand-written `dateLabel` — the same fact twice. All twelve
+happened to agree when checked, but nothing enforced that: a corrected
+date with a stale label would have published a contradiction, and the
+prose field is exactly the kind of thing a hurried edit misses. The label
+is now computed from `date` with the shared formatter, and `dateLabel` is
+deleted from the type and all twelve entries. Two facts became one.
+
+This also sidesteps the CLAUDE.md rule about article prose: no published
+sentence was touched, a duplicated metadata field was removed.
+
+**What deliberately did not change:**
+
+- The `<time datetime="2025-02-10">` attribute stays ISO. That is what
+  search engines and feed readers parse; only the human-visible text is
+  reformatted.
+- RSS `pubDate` stays RFC-822 ("Tue, 18 Aug 2026 00:00:00 GMT") — the
+  feed spec requires it, and a reader would reject dd-mm-yyyy.
+
+Dates are zero-padded now, so "4 August 2026" reads `04-08-2026`. That is
+what a fixed-width format means, and it makes the list scan cleanly.
+
+Guard: `tests/datetime.test.mjs` fails if `dateLabel` returns to the data,
+and pins that the `<time>` attribute still carries the ISO date.
+
+No lesson: a formatting change and a de-duplication, not a fault.
+
+245 tests pass.
 
 ## v4.79.1 — 0042hrs:22nd August2026
 

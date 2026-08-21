@@ -58,3 +58,24 @@ test("the /scan result timestamp is labelled EAT in the rendered bundle", async 
   assert.match(js, /Africa\/Nairobi/, "the scan result must format in EAT");
   assert.doesNotMatch(js, /toLocaleString\(\)/, "the unqualified toLocaleString must be gone");
 });
+
+// Article dates were a second copy of the same fact: every entry carried
+// an ISO `date` AND a hand-written `dateLabel` ("18 August 2026"). All
+// twelve happened to agree when checked, but nothing enforced that — a
+// corrected date with a stale label would have published a contradiction.
+// The label is now derived, so the two cannot disagree.
+test("article dates are derived, not duplicated", async () => {
+  const { readFileSync } = await import("node:fs");
+  const data = readFileSync("src/data/insights-data.ts", "utf8");
+  assert.doesNotMatch(
+    data,
+    /dateLabel/,
+    "dateLabel is a second copy of `date` — derive it with eatDate() instead",
+  );
+
+  const article = readFileSync("src/components/article.tsx", "utf8");
+  assert.match(article, /eatDate\(/, "article dates must come from the shared formatter");
+  // The machine-readable attribute stays ISO: feeds and search engines
+  // parse that, not the visible text.
+  assert.match(article, /dateTime=\{(article|a)\.date\}/, "the <time> attribute keeps the ISO date");
+});

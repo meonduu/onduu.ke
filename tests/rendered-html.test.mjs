@@ -53,7 +53,9 @@ test("an article renders its prose, metadata and tags", async () => {
 
   const html = await response.text();
   assert.match(html, /Top 10 items every business owner must know about their domain/);
-  assert.match(html, /10 February 2025/);
+  assert.match(html, /<time dateTime="2025-02-10">10-02-2025<\/time>/,
+    "the visible date is dd-mm-yyyy while the datetime attribute stays ISO");
+  assert.doesNotMatch(html, /10 February 2025/, "the old prose format is gone");
   assert.match(html, /Wycliffe Onduu/);
   assert.match(html, /#domains/);
   assert.match(html, /Keep your contact information up to date/);
