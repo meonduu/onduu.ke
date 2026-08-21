@@ -1,6 +1,47 @@
 # Changelog
 
-CURRENT VERSION: v4.78.1 — 2338hrs:21st August2026
+CURRENT VERSION: v4.79.0 — 0018hrs:22nd August2026
+
+## v4.79.0 — 0018hrs:22nd August2026
+
+**One date format sitewide: `dd-mm-yyyy at hh:mm`, 24-hour, East Africa
+Time.** Owner instruction. `src/lib/datetime.ts` is the single formatter,
+shared by the client island and the Worker.
+
+Two places were wrong, in different directions:
+
+- **`/scan`** called `toLocaleString()` with no arguments, so the same
+  scan showed a different time to a Nairobi reader and a London one, in
+  whatever format their browser preferred, with no timezone label. It now
+  reads `run 22-08-2026 at 01:30 EAT`.
+- **`/go`** printed SQLite's raw `YYYY-MM-DD HH:MM:SS`, which is UTC —
+  three hours behind the owner reading it. Four table columns and both
+  notification-light timestamps are converted. The hardcoded "UTC" label
+  went with them: a wrong label is worse than none.
+
+`/kedomains` already showed `dd-mm-yyyy` and is unchanged.
+
+Two details that would have been silent bugs:
+
+- SQLite writes timestamps with **no timezone marker**, and `Date.parse`
+  reads those as *local* time. The parser adds the marker explicitly, so
+  a stored value is not shifted by whatever zone the Worker happens to
+  run in. Pinned by a test asserting the string and ISO forms agree.
+- The day rolls over at **EAT midnight, not UTC midnight**. 22:30 UTC is
+  already tomorrow in Nairobi; without this an evening enquiry would be
+  dated to the previous day. Two boundary cases are pinned.
+
+EAT is UTC+3 year-round — Kenya has never observed daylight saving — but
+the timezone is named rather than hardcoded as +3, so the platform does
+the arithmetic.
+
+**Left alone deliberately:** the Insights article dates, which read
+"18 August 2026" in a byline. Those are editorial prose, not timestamps,
+and `dd-mm-yyyy` reads worse there; they are also published article data
+that CLAUDE.md says to regenerate rather than hand-edit. Say the word if
+they should change too.
+
+244 tests pass.
 
 ## v4.78.1 — 2338hrs:21st August2026
 
