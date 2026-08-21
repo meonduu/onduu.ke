@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.69.0 — 1338hrs:21st August2026
+CURRENT VERSION: v4.70.0 — 1412hrs:21st August2026
+
+## v4.70.0 — 1412hrs:21st August2026
+
+**An available domain now routes to HOSTAFRICA's checkout**, not the panel
+home page. Owner instruction, 21 August 2026. `REGISTER_URL` becomes
+`panel.hostafrica.com/checkout/0`, keeping the same UTM attribution and
+still carrying no affiliate parameter — the standing rules are unchanged
+and still enforced by `tests/domains`.
+
+Scope confirmed with the owner before implementing, because "redirected"
+had two readings: the links change, the `/kedomains` tool stays. Redirecting
+the page itself would have removed one of the three free tools the
+18 August article is built around.
+
+**The searched domain does not carry through**, and the result copy now
+says so: "Confirm and register at HOSTAFRICA's checkout, where you enter
+the name again." Four parameter names appeared to work
+(`domain`, `query`, `search`, `sld`+`tld`) but a control test with a
+nonsense parameter reflected identically — the checkout echoes any query
+string into its own state without pre-filling the search. If HOSTAFRICA
+publishes a real pre-fill parameter, adding it to `REGISTER_URL` is the
+whole change; the comment there says so.
+
+Guard: `tests/domains.test.mjs` now pins the checkout path as well as the
+attribution rules. Both destinations are the approved host with identical
+UTMs, so the difference is invisible in review and needs a test rather
+than an eye.
+
+Verified with a live search on the dev server: an available result renders
+the checkout link, attribution intact.
+
+231 tests pass.
 
 ## v4.69.0 — 1338hrs:21st August2026
 

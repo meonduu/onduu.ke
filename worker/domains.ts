@@ -14,8 +14,20 @@
 import { type Budget, makeBudget, normaliseHost, isScannableHost, dohQuery } from "./scan/net.ts";
 import { collectRdap, type RdapFacts } from "./scan/collect.ts";
 
+// Owner instruction, 21 Aug 2026: an available-domain result sends the
+// visitor to HOSTAFRICA's checkout rather than the panel home page, so the
+// next step after "appears available" is the step that registers it.
+//
+// The searched domain does NOT carry through: the checkout reflects any
+// query parameter into its own state without pre-filling the search (a
+// nonsense parameter reflects identically), so the visitor re-enters the
+// name there. If HOSTAFRICA publishes a pre-fill parameter, adding it here
+// is the whole change.
+//
+// Attribution rules are unchanged and still enforced by tests/domains: UTM
+// only, never an affiliate parameter, no commission.
 export const REGISTER_URL =
-  "https://panel.hostafrica.com/?utm_source=onduu&utm_medium=referral&utm_campaign=domain-search";
+  "https://panel.hostafrica.com/checkout/0?utm_source=onduu&utm_medium=referral&utm_campaign=domain-search";
 
 export type Availability = "registered" | "maybe-available" | "reserved" | "unknown";
 
