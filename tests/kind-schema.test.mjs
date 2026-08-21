@@ -4,7 +4,7 @@ import { readFileSync, readdirSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { validate, normaliseKind, storageKind } from "../worker/submissions.ts";
+import { validate, normaliseKind } from "../worker/submissions.ts";
 
 // v4.64.0 renamed the form kind from "readiness" to "fitness" and left
 // migration 0001's `CHECK (kind IN ('readiness','contact'))` untouched.
@@ -17,13 +17,21 @@ import { validate, normaliseKind, storageKind } from "../worker/submissions.ts";
 // see the disagreement — the two halves were never compared.
 //
 // This compares them. It does not need a database: the constraint is in
-// the migrations, the stored value comes from storageKind(), and the
-// invariant is that one always satisfies the other.
+// the migrations, the stored value is the normalised wire value (the
+// storageKind() shim was retired when migration 0009 was applied to
+// production on 21 Aug 2026), and the invariant is that one always
+// satisfies the other.
 //
-// Every CHECK across every migration must hold, not just the newest,
-// because a migration applied locally is not necessarily applied to
-// production — that gap is exactly what broke the site. Satisfying all of
-// them means the code is correct whichever have run.
+// The constraint that matters is the LAST one defined — migrations run in
+// order, and 0009 rebuilds the table, so the final state of a fully
+// migrated database carries 0009's set, not 0001's. Until 21 Aug 2026 this
+// test demanded every historical CHECK hold at once, because "a migration
+// applied locally is not necessarily applied to production" was exactly
+// the gap that broke the site; that ended when the owner applied 0009 to
+// production (verified: constraint read back, fitness insert succeeded).
+// The rule that survives: a migration that WIDENS a constraint must be
+// applied to production in the same release as the code that relies on
+// the widening — never merged and left pending.
 
 const ROOT = fileURLToPath(new URL("..", import.meta.url));
 const MIGRATIONS = join(ROOT, "migrations");
@@ -37,7 +45,9 @@ function kindConstraints() {
       sets.push({ file, allowed });
     }
   }
-  return sets;
+  // Later migrations rebuild the table, so only the last definition is the
+  // live schema; earlier ones are history.
+  return sets.slice(-1);
 }
 
 test("the migrations really do constrain kind", () => {
@@ -63,7 +73,7 @@ test("every kind the form accepts can actually be stored", () => {
   for (const wire of ["fitness", "contact", "readiness"]) {
     assert.equal(validate(wire, valid).ok, true, `${wire} should validate`);
 
-    const stored = storageKind(normaliseKind(wire));
+    const stored = normaliseKind(wire);
     for (const { file, allowed } of sets) {
       assert.ok(
         allowed.includes(stored),
