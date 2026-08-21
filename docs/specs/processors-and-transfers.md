@@ -107,7 +107,9 @@ in `ROADMAP.md` (owner decision, 19 August 2026).
 Access, correction, deletion, objection, portability and consent
 withdrawal all route through the contact form at `/contact` (the owner's
 personal address was removed from the site on 20 August 2026, v4.51.0).
-Submissions from that form reach Onduu only.
+Submissions from that form stay inside Ujiajiri Enterprises Limited,
+which operates Onduu; no partner, provider or HOSTAFRICA team receives
+them (processors per section 2).
 
 - **OWNER**: the ODPC contact details and complaint route to publish.
 - **OWNER**: how assessment reports are delivered, stored and accessed,

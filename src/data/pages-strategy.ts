@@ -531,7 +531,7 @@ export const strategyPages: Record<string, PageContent> = {
         title: "What happens after the score?",
         body: [
           "Need implementation? Ask Ujiajiri for a private curated introduction: Ujiajiri proposes one suitable independent provider, asks your permission before sharing your information, and the provider contracts and delivers directly. HOSTAFRICA product enquiries continue through the approved official HOSTAFRICA route.",
-          "Onduu does not automatically transmit your assessment answers to either destination. Nothing you enter here is shared with Ujiajiri or anyone else. The routes are plain outbound links you follow yourself.",
+          "Onduu does not automatically transmit your assessment answers to either destination. Your answers are seen only inside Ujiajiri Enterprises Limited, which operates this site \u2014 no independent provider and no HOSTAFRICA team sees them unless you approve a specific introduction. The routes are plain outbound links you follow yourself.",
           "Ujiajiri may receive a referral fee from the proposed provider; its existence is disclosed before you approve an introduction.",
         ],
         links: [
@@ -578,7 +578,7 @@ export const strategyPages: Record<string, PageContent> = {
         cards: [
           {
             title: "Digital Fitness or Onduu content",
-            body: "Use the form below. It reaches Onduu and nobody else.",
+            body: "Use the form below. It reaches only Ujiajiri Enterprises Limited, which operates Onduu \u2014 no partner or provider sees it.",
           },
           {
             title: "Website or digital-marketing implementation",
@@ -589,7 +589,7 @@ export const strategyPages: Record<string, PageContent> = {
             body: "Product, billing and support enquiries belong with HOSTAFRICA's official route. Onduu cannot resolve them and does not pass your details along.",
           },
         ],
-        note: "One enquiry is never silently sent to all three organisations. What you submit here goes to Onduu only.",
+        note: "One enquiry is never silently sent to all three organisations. What you submit here stays with Onduu\u2019s operator, Ujiajiri Enterprises Limited.",
       },
       ...(prototypePages["contact"]?.sections ?? []),
     ],
