@@ -1,6 +1,20 @@
 # Changelog
 
-CURRENT VERSION: v4.73.0 — 1704hrs:21st August2026
+CURRENT VERSION: v4.73.1 — 1726hrs:21st August2026
+
+## v4.73.1 — 1726hrs:21st August2026
+
+**"REGISTERED" becomes a bold green "TAKEN"** on a taken domain result.
+Owner instruction. New `.domain-state` class rather than reusing
+`.value-good`, whose name claims the value is good — this is a state. The
+green token is `#2F6B5B`, 6.2:1 on the white result ground, clear of the
+4.5:1 minimum.
+
+Verified with a live search for "bata": both results render TAKEN in
+`rgb(47,107,91)` at weight 800, and "REGISTERED" no longer appears
+anywhere on the page.
+
+234 tests pass.
 
 ## v4.73.0 — 1704hrs:21st August2026
 
