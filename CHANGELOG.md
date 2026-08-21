@@ -1,6 +1,22 @@
 # Changelog
 
-CURRENT VERSION: v4.73.1 — 1726hrs:21st August2026
+CURRENT VERSION: v4.73.2 — 1748hrs:21st August2026
+
+## v4.73.2 — 1748hrs:21st August2026
+
+**An available result now says just "Appears available."** Owner
+instruction; the sentence about confirming at HOSTAFRICA's checkout and
+the name arriving pre-entered is removed.
+
+Nothing load-bearing goes with it. The button directly beneath still reads
+"Register it at HOSTAFRICA ↗", and the page's own note still carries the
+caveat that matters: "'Appears available' is a public observation from DNS
+and the registry, not a reservation. Availability and price are confirmed
+at the registrar's checkout." The pre-fill is now something the visitor
+discovers by clicking rather than being promised in advance, which costs
+nothing.
+
+234 tests pass.
 
 ## v4.73.1 — 1726hrs:21st August2026
 

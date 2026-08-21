@@ -170,7 +170,7 @@ export function DomainsForm() {
                 )}
                 {r.status === "maybe-available" && (
                   <>
-                    <p>Appears available. Confirm and register at HOSTAFRICA&apos;s checkout, which opens with this name already entered.</p>
+                    <p>Appears available.</p>
                     <a
                       className="button"
                       href={r.registerUrl}
