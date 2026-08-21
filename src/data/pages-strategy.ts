@@ -128,7 +128,7 @@ export const strategyPages: Record<string, PageContent> = {
         eyebrow: "WHO DOES WHAT",
         title: "The boundary.",
         items: [
-          "HOSTAFRICA provides, bills, provisions, renews and supports its products",
+          "[HOSTAFRICA](https://www.hostafrica.ke) provides, bills, provisions, renews and supports its products",
           "Onduu explains use cases, trade-offs and operating responsibilities",
           "Onduu does not resell, administer or support HOSTAFRICA products",
           "A local server does not automatically create compliance or prove data location",

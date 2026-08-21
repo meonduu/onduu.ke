@@ -1,6 +1,55 @@
 # Changelog
 
-CURRENT VERSION: v4.76.0 — 2034hrs:21st August2026
+CURRENT VERSION: v4.77.0 — 2144hrs:21st August2026
+
+## v4.77.0 — 2144hrs:21st August2026
+
+**HOSTAFRICA is now a link on four pages** — `/legal/commercial-
+relationships`, `/about`, `/paths/hostafrica-infrastructure` and
+`/kedomains` — on the first mention that can carry one, pointing at
+`www.hostafrica.ke`, plain and untracked, opening in a new tab.
+
+Four, not the fifty-two mentions the site carries. Fifteen links to one
+destination on the commercial relationships page would be link-spam, and a
+screen-reader user would hear "link, HOSTAFRICA" fifteen times on a page
+about who is responsible for what. These four are the pages where a reader
+may reasonably want to check the company behind a disclosure; the other
+nine mention HOSTAFRICA in passing as a routing option, where a link
+informs nobody and turns a disclosure into an advert on a site whose
+position is that the role is disclosed, never sold.
+
+`.ke` rather than the group `.com`: the audience is Kenyan businesses and
+that site is titled "Web Hosting Services in Kenya". Untracked, matching
+the standing rule that only the approved product route carries
+attribution — and keeping these clear of the "tracking routes remain
+gated" clause.
+
+**New: an inline link renderer.** Body copy is data and React escapes it,
+so three of the four pages could not hold a link at all — a raw anchor in
+a content string prints as visible markup, a mistake caught just before
+shipping on 20 August. `src/components/inline-links.ts` parses a strict
+`[text](href)` token; `components.tsx` renders the tokens. The parse is
+split from the JSX so `node --test` can exercise it directly, which is
+also why it is a parser and not a markdown engine — no emphasis, no
+images, no nesting, because widening it would put arbitrary markup back
+into content strings.
+
+**Caught by its own guard, before anyone saw it:** the first attempt put
+the token in the HOSTAFRICA path page's `intro`, which is not rendered
+through the parser — and which doubles as that page's **meta
+description**, so the raw token would have shipped into search results.
+The link moved to a rendered field and the constraint is now a comment
+beside the lede, where the next person will be tempted.
+
+Guard: `tests/hostafrica-links.test.mjs` — exactly one link on each chosen
+page and none on the eight others, no `utm_` or `aff=` on them, the parser
+unit-tested including stray brackets, and no page anywhere leaking an
+unrendered token.
+
+No lesson: caught in development by a guard written in the same change,
+not a fault that reached anyone.
+
+238 tests pass.
 
 ## v4.76.0 — 2034hrs:21st August2026
 

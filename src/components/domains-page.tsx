@@ -53,9 +53,12 @@ export function DomainsPage({ children }: { children?: ReactNode }) {
           </div>
           <div className="section-body">
             <p>
-              If a name is available, registration, billing, renewal and support happen at
-              HOSTAFRICA through its official panel, not on this site. Wycliffe, who operates
-              Onduu, is also Managing Director of HOSTAFRICA Kenya.
+              If a name is available, registration, billing, renewal and support happen at{" "}
+              <a href="https://www.hostafrica.ke" target="_blank" rel="noopener noreferrer">
+                HOSTAFRICA
+              </a>{" "}
+              through its official panel, not on this site. Wycliffe, who operates Onduu, is also
+              Managing Director of HOSTAFRICA Kenya.
             </p>
             <p>
               Already own the domain? The next question is whether its records protect you. {" "}

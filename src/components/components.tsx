@@ -1,5 +1,6 @@
 import { Link } from "./nav-link";
 import type { ReactNode } from "react";
+import { parseInlineLinks, isExternal } from "./inline-links";
 
 // Study A (Dial) + Study D (Letterhead), the pairing recommended in
 // logos/README.md. The dial is inline SVG so it costs no request and can
@@ -44,6 +45,19 @@ function sectionIds(sections:ContentSection[]){
   });
 }
 
+// Renders the tokens from inline-links.ts. The parsing lives there,
+// without JSX, so it can be unit-tested directly by node --test.
+export function withLinks(text: string): ReactNode {
+  const tokens = parseInlineLinks(text);
+  if (tokens.length === 1 && typeof tokens[0] === "string") return tokens[0];
+  return tokens.map((t, i) =>
+    typeof t === "string" ? t
+      : isExternal(t.href)
+        ? <a key={i} href={t.href} target="_blank" rel="noopener noreferrer">{t.label}</a>
+        : <Link key={i} href={t.href}>{t.label}</Link>,
+  );
+}
+
 // The submission form hydrates as an Astro island, so it is passed in as
 // children from the .astro page rather than imported here; everything in this
 // file renders to static HTML with no client JavaScript.
@@ -54,7 +68,7 @@ export function StandardPage({page,children}:{page:PageContent;children?:ReactNo
   // phone screens. Threshold rather than a per-page flag, so a page that
   // grows past it gets one without anybody remembering to ask.
   const showContents=page.sections.length>=8;
-  return <><Header/><main id="main"><section className="page-hero"><div><p className="eyebrow">{page.eyebrow||"ONDUU / DIGITAL FITNESS"}</p><h1>{page.title}</h1><p className="lede">{page.intro}</p>{page.cta&&<Button href={page.ctaHref||"/contact"} event="conversion" label="fitness-cta-hero">{page.cta}</Button>}</div><aside className="hero-index"><span>Assess.</span><span>Prioritise.</span><span>Choose a path.</span><span>Verify.</span></aside></section>{page.gate&&<div className="gate"><b>PREVIEW / APPROVAL GATE</b><span>{page.gate}</span></div>}{showContents&&<nav className="jump-list" aria-label="Sections on this page"><b>On this page</b><ol>{page.sections.map((s,i)=><li key={s.title}><a href={`#${ids[i]}`}>{s.eyebrow||s.title}</a></li>)}</ol></nav>}{page.sections.map((s,i)=><section className="content-section" id={ids[i]} key={s.title}><div><p className="section-number">{String(i+1).padStart(2,"0")} / {s.eyebrow||"DETAIL"}</p><h2>{s.title}</h2></div><div className="section-body">{s.body?.map(p=><p key={p}>{p}</p>)}{s.items&&<ul>{s.items.map(x=><li key={x}>{x}</li>)}</ul>}{s.cards&&<div className="content-cards">{s.cards.map(c=>
+  return <><Header/><main id="main"><section className="page-hero"><div><p className="eyebrow">{page.eyebrow||"ONDUU / DIGITAL FITNESS"}</p><h1>{page.title}</h1><p className="lede">{page.intro}</p>{/* intro is plain text on purpose: it is also this page's meta description, so a [text](href) token here would ship raw into search results. Link from a section body or items instead, which withLinks renders. */}{page.cta&&<Button href={page.ctaHref||"/contact"} event="conversion" label="fitness-cta-hero">{page.cta}</Button>}</div><aside className="hero-index"><span>Assess.</span><span>Prioritise.</span><span>Choose a path.</span><span>Verify.</span></aside></section>{page.gate&&<div className="gate"><b>PREVIEW / APPROVAL GATE</b><span>{page.gate}</span></div>}{showContents&&<nav className="jump-list" aria-label="Sections on this page"><b>On this page</b><ol>{page.sections.map((s,i)=><li key={s.title}><a href={`#${ids[i]}`}>{s.eyebrow||s.title}</a></li>)}</ol></nav>}{page.sections.map((s,i)=><section className="content-section" id={ids[i]} key={s.title}><div><p className="section-number">{String(i+1).padStart(2,"0")} / {s.eyebrow||"DETAIL"}</p><h2>{s.title}</h2></div><div className="section-body">{s.body?.map(p=><p key={p}>{withLinks(p)}</p>)}{s.items&&<ul>{s.items.map(x=><li key={x}>{withLinks(x)}</li>)}</ul>}{s.cards&&<div className="content-cards">{s.cards.map(c=>
   // A card with href links from its heading; CSS stretches that link over the
   // whole card, so the card is clickable while the accessible name stays the
   // guide title rather than the whole card's text.

@@ -274,7 +274,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "HOSTAFRICA",
         "title": "Relationship with HOSTAFRICA.",
         "body": [
-          "Wycliffe is the Managing Director of HOSTAFRICA Kenya. HOSTAFRICA is the provider, seller, biller, provisioner, renewer and supporter of any HOSTAFRICA domains, hosting, email, VPS or other infrastructure products referenced on this website.",
+          "Wycliffe is the Managing Director of [HOSTAFRICA](https://www.hostafrica.ke) Kenya. HOSTAFRICA is the provider, seller, biller, provisioner, renewer and supporter of any HOSTAFRICA domains, hosting, email, VPS or other infrastructure products referenced on this website.",
           "Onduu may explain infrastructure use cases and direct an interested visitor to an approved official HOSTAFRICA route. Onduu and Ujiajiri do not themselves supply or support HOSTAFRICA products and must not be understood as substitutes for HOSTAFRICA's contracts, terms, billing or support.",
           "An Ujiajiri introduction is separate from a HOSTAFRICA product route. An independent provider introduced by Ujiajiri is not thereby a HOSTAFRICA employee, agent or approved partner. Customers are not required to purchase HOSTAFRICA products merely because they use Onduu or request an Ujiajiri introduction.",
           "The domain search links an available name to HOSTAFRICA's checkout. That link carries HOSTAFRICA affiliate identifier 916 and campaign tags, which attribute the referral and pay Onduu no commission. Clicks on it are counted in aggregate only, with nothing recorded about the visitor who clicked.",
@@ -631,7 +631,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "WHO RUNS THIS",
         "title": "Twenty years inside the layer most businesses never see.",
         "body": [
-          "Wycliffe Onduu started EACdirectory.co.ke, a .ke domain registrar, in 2005 and ran it for seventeen years until HOSTAFRICA acquired it in 2022. He is now Managing Director for Kenya at HOSTAFRICA.",
+          "Wycliffe Onduu started EACdirectory.co.ke, a .ke domain registrar, in 2005 and ran it for seventeen years until [HOSTAFRICA](https://www.hostafrica.ke) acquired it in 2022. He is now Managing Director for Kenya at HOSTAFRICA.",
           "That is two decades spent underneath Kenyan businesses rather than in front of them: registrations and renewals, DNS and mail routing, hosting migrations, outages at inconvenient hours, and the recurring discovery that a company does not control the domain its whole operation depends on.",
           "Onduu is the independent practice built from that experience. It applies the same operational view to the commercial side of a website. Whether enquiries arrive, whether anyone can prove they do, and what happens when a supplier or a person disappears."
         ]
