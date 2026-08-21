@@ -1,4 +1,5 @@
 import { Link } from "./nav-link";
+import { eatDate } from "../lib/datetime";
 import { Header, Footer } from "./components";
 import type { Article, Block, Inline } from "../data/insights-data";
 import { articles } from "../data/insights-data";
@@ -96,7 +97,7 @@ export function ArticlePage({ article }: { article: Article }) {
             <h1>{article.title}</h1>
             <p className="lede">{article.lede}</p>
             <div className="article-meta">
-              <time dateTime={article.date}>{article.dateLabel}</time>
+              <time dateTime={article.date}>{eatDate(article.date)}</time>
               <span>· {article.readTime}</span>
               <span>· {article.author}</span>
             </div>
@@ -124,7 +125,7 @@ export function ArticlePage({ article }: { article: Article }) {
               <div className="content-cards">
                 {related.map((a) => (
                   <article key={a.slug}>
-                    <small>{a.dateLabel}</small>
+                    <small>{eatDate(a.date)}</small>
                     <h3>
                       <Link href={`/insights/${a.slug}`}>{a.title}</Link>
                     </h3>
@@ -180,7 +181,7 @@ export function InsightsIndex() {
                   <Link className="post-row" href={`/insights/${a.slug}`}>
                     <div className="post-row-meta">
                       <span className="post-row-category">{a.category}</span>
-                      <time dateTime={a.date}>{a.dateLabel}</time>
+                      <time dateTime={a.date}>{eatDate(a.date)}</time>
                       <span>· {a.readTime}</span>
                     </div>
                     <h3>{a.title}</h3>

@@ -17,7 +17,6 @@ export type Article = {
   title: string;
   lede: string;
   date: string;
-  dateLabel: string;
   readTime: string;
   author: string;
   category: string;
@@ -32,7 +31,6 @@ export const articles: Article[] = [
     "title": "Three free checks for your domain. I pointed them at mine first.",
     "lede": "Three free tools are now live on onduu.ke. An email spoofing check, a .ke domain search and a public fitness scan. The first domain I tested was my own, and it failed three of the checks.",
     "date": "2026-08-18",
-    "dateLabel": "18 August 2026",
     "readTime": "3 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -206,7 +204,6 @@ export const articles: Article[] = [
     "title": "Over 100 parastatal CEOs face action on email security. Check yours.",
     "lede": "State agency heads face action over domain and email protection. I built a free checker to see what Kenyan domains actually publish. The first one it caught was mine.",
     "date": "2026-08-04",
-    "dateLabel": "4 August 2026",
     "readTime": "7 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -688,7 +685,6 @@ export const articles: Article[] = [
     "title": "An AI agent in your inbox obeys whoever emails you",
     "lede": "Connect an assistant to your email and every message becomes an instruction it might follow. Part of the defence is not in the AI. It is in your DNS.",
     "date": "2026-08-12",
-    "dateLabel": "12 August 2026",
     "readTime": "8 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -1167,7 +1163,6 @@ export const articles: Article[] = [
     "title": "What Running Infrastructure Taught Me",
     "lede": "Lessons from building systems in real markets, and why operational reliability still matters more than the next big idea.",
     "date": "2026-05-22",
-    "dateLabel": "22 May 2026",
     "readTime": "5 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -1353,7 +1348,6 @@ export const articles: Article[] = [
     "title": "AI in Kenya Is About Workflow, Not Hype",
     "lede": "Where AI is already creating real value for SMEs, and where the conversation has gotten ahead of itself.",
     "date": "2026-05-15",
-    "dateLabel": "15 May 2026",
     "readTime": "5 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -1588,7 +1582,6 @@ export const articles: Article[] = [
     "title": "Reliability Is Still Africa's Biggest Tech Gap",
     "lede": "Why infrastructure thinking still matters, and why the next wave of tech depends on the boring parts working.",
     "date": "2026-05-08",
-    "dateLabel": "8 May 2026",
     "readTime": "5 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -1806,7 +1799,6 @@ export const articles: Article[] = [
     "title": "Freelancer's Guide to Ethical Domain Management in Kenya",
     "lede": "How Kenyan freelancers should handle client domains: register in the client's name, hand over credentials, set auto-renewal, and never use access as leverage.",
     "date": "2025-05-26",
-    "dateLabel": "26 May 2025",
     "readTime": "2 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -2289,7 +2281,6 @@ export const articles: Article[] = [
     "title": "Navigating Client Domains: Best Practices for Kenyan Digital Agencies",
     "lede": "Many Kenyan agencies mishandle domain ownership without meaning to. Register in the client's name, document everything, and plan the handover early.",
     "date": "2025-05-16",
-    "dateLabel": "16 May 2025",
     "readTime": "3 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -2678,7 +2669,6 @@ export const articles: Article[] = [
     "title": "Boss Encounters: Episode 1, “Sir, I Want to Speak to the Boss!”",
     "lede": "A business owner storms in: three websites down, the IT guy vanished, and no document proving he owns the domains. A short story about what ownership means.",
     "date": "2025-05-14",
-    "dateLabel": "14 May 2025",
     "readTime": "1 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -3004,7 +2994,6 @@ export const articles: Article[] = [
     "title": "Protecting Your Online Presence: Domain Management for Kenyan SMEs",
     "lede": "Your domain is your business's digital identity. Freelancer registrations, missed renewals and no legal cover are how Kenyan SMEs lose it.",
     "date": "2025-05-11",
-    "dateLabel": "11 May 2025",
     "readTime": "2 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -3338,7 +3327,6 @@ export const articles: Article[] = [
     "title": "Startup Founders: Securing Your Digital Identity in Kenya",
     "lede": "Your domain is your brand's digital identity. Register it yourself, use a KeNIC-accredited registrar, and trademark the name before a dispute forces you to.",
     "date": "2025-05-07",
-    "dateLabel": "7 May 2025",
     "readTime": "2 min read",
     "author": "Wycliffe Onduu",
     "tags": [
@@ -3610,7 +3598,6 @@ export const articles: Article[] = [
     "title": "Top 10 items every business owner must know about their domain",
     "lede": "Practical checks for your domain: current contact details, auto-renewal, registrar lock, 2FA, WHOIS privacy, and documented proof of ownership.",
     "date": "2025-02-10",
-    "dateLabel": "10 February 2025",
     "readTime": "2 min read",
     "author": "Wycliffe Onduu",
     "tags": [
