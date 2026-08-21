@@ -200,6 +200,15 @@ test("NXDOMAIN plus no RDAP record appears available, with the register link", a
   assert.equal(result.registerUrl, REGISTER_URL);
   assert.match(REGISTER_URL, /utm_source=onduu/, "attribution is UTM");
   assert.doesNotMatch(REGISTER_URL, /aff=/, "no affiliate parameter");
+  // Owner instruction, 21 Aug 2026: an available result goes to the
+  // checkout, not the panel home page, so the next click is the one that
+  // registers the name. Pinned because the difference is invisible in
+  // review — both URLs are the approved host with the same attribution.
+  assert.match(
+    REGISTER_URL,
+    /^https:\/\/panel\.hostafrica\.com\/checkout\//,
+    "available domains route to the HOSTAFRICA checkout",
+  );
 });
 
 test("when KeNIC's RDAP is down, the rdap.org fallback still answers for .ke", async () => {
