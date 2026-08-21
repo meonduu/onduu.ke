@@ -234,7 +234,10 @@ test("the confirm page acts only on POST, and a bad or missing token is harmless
 /* ── 4. the published route, and the notice that describes it ─────── */
 
 test("every page that offers the opt-out points at /do-not-scan, not the sales form", async () => {
-  for (const path of ["/scan", "/legal/privacy", "/legal/tool-limitations"]) {
+  // /email-security added on the owner's instruction (v4.84.1); /dns and
+  // /kedomains deliberately not — offered, declined. The set is pinned so
+  // it changes by decision rather than by drift.
+  for (const path of ["/scan", "/email-security", "/legal/privacy", "/legal/tool-limitations"]) {
     const html = await (await fetchPath(path)).text();
     assert.match(html, /href="\/do-not-scan"/, `${path} must link the self-service route`);
     assert.doesNotMatch(
@@ -242,6 +245,10 @@ test("every page that offers the opt-out points at /do-not-scan, not the sales f
       /left alone[^.]{0,80}contact form|do not want it scanned[^.]{0,40}contact form/i,
       `${path} still routes the opt-out through the contact form`,
     );
+  }
+  for (const path of ["/dns", "/kedomains"]) {
+    const html = await (await fetchPath(path)).text();
+    assert.doesNotMatch(html, /href="\/do-not-scan"/, `${path} does not carry the offer (owner decision, 21 Aug 2026)`);
   }
   const sitemap = await (await fetchPath("/sitemap.xml", "application/xml")).text();
   assert.match(sitemap, /<loc>https:\/\/onduu\.ke\/do-not-scan<\/loc>/);
