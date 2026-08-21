@@ -997,6 +997,21 @@ async function blocklist(db: D1Database): Promise<Response> {
       .all(),
     EMPTY,
   );
+  // Requests still waiting for the owner's click, and recent confirmed ones.
+  // Migration 0010; EMPTY until it is applied. The email is shown here
+  // because this is the one place the "who asked" record is read — behind
+  // Access, by the person handling it.
+  const requests = await safe(
+    db
+      .prepare(
+        `SELECT reference, domain, email, created_at, expires_at, confirmed_at FROM do_not_scan_requests ORDER BY created_at DESC LIMIT 50`,
+      )
+      .all(),
+    EMPTY,
+  );
+  const now = new Date().toISOString();
+  const status = (r: Record<string, string | null>) =>
+    r.confirmed_at ? `confirmed ${eatDateTime(r.confirmed_at)}` : (r.expires_at ?? "") < now ? "expired, unconfirmed" : "waiting for the click";
 
   return page(
     "Do-not-scan",
@@ -1013,9 +1028,23 @@ ${table(
   "No domains have asked to be excluded.",
 )}
 
-<div class="note"><b>Adding a domain</b>
-The opt-out command is in <code>docs/runbooks/scan-launch.md</code>: it records the domain here
-and deletes any stored scan result for it in one step.</div>`,
+<h2>Requests</h2>
+<p class="sub">Self-service since 21 Aug 2026 (<a href="/do-not-scan">/do-not-scan</a>): a request lands here, a link goes to an address at the domain, and the click moves the domain into the list above. A request that sits at "waiting" for long usually means the confirmation email did not arrive — check the notification light on the overview.</p>
+${table(
+  ["Reference", "Domain", "Asked from", "Asked", "Status"],
+  rowsOf<Record<string, string | null>>(requests).map((r) => [
+    escape(r.reference ?? ""),
+    escape(r.domain ?? ""),
+    escape(r.email ?? ""),
+    escape(eatDateTime(r.created_at ?? "")),
+    escape(status(r)),
+  ]),
+  "No requests yet — or migration 0010 is not applied.",
+)}
+
+<div class="note"><b>Adding a domain by hand</b>
+Still possible, for a request that arrives some other way: the command is in <code>docs/runbooks/scan-launch.md</code>
+and does what the click does — records the domain here and deletes any stored result for it in one step.</div>`,
     "blocklist",
   );
 }

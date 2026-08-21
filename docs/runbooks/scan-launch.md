@@ -80,9 +80,11 @@ that is when the scan becomes publicly discoverable.
 
 ## Domain-owner opt-out
 
-When an owner emails me@onduu.ke asking to be left alone, record the block and
-delete every stored record of the domain — scan results and lookup-tool
-results — in one command:
+The self-service route is `/do-not-scan` (v4.84.0): the owner confirms by
+email at the domain and the click does everything below. Requests and their
+status show on `/go/blocklist`. For a request that arrives some other way,
+record the block and delete every stored record of the domain — scan results
+and lookup-tool results — in one command:
 
 ```
 npx wrangler d1 execute onduu_leads --remote --command "INSERT INTO scan_blocklist (domain, created_at, note) VALUES ('example.co.ke', datetime('now'), 'owner request'); DELETE FROM scans WHERE domain='example.co.ke' OR domain LIKE '%.example.co.ke'; DELETE FROM tool_checks WHERE query='example.co.ke' OR query LIKE '%.example.co.ke' OR detail LIKE '%\"example.co.ke\"%';"

@@ -139,10 +139,20 @@ the platform backstop.
   `DO_NOT_SCAN` set for permanent, version-controlled exclusions, and a
   `scan_blocklist` D1 table (migration `0005`) that logs per-domain opt-outs
   at runtime. A block on a domain covers its subdomains.
-- **Owner opt-out (policy, 18 Aug 2026):** when a domain owner emails
-  me@onduu.ke, `optOutDomain()` records the domain in `scan_blocklist` and
-  deletes any stored result for it and its subdomains. Run in production as:
-  `wrangler d1 execute onduu_leads --remote --command "INSERT INTO scan_blocklist (domain, created_at, note) VALUES ('example.co.ke', datetime('now'), 'owner request'); DELETE FROM scans WHERE domain='example.co.ke' OR domain LIKE '%.example.co.ke';"`
+- **Owner opt-out (policy, 18 Aug 2026; self-service 21 Aug 2026):**
+  `optOutDomain()` records the domain in `scan_blocklist` and deletes any
+  stored result for it and its subdomains. Since v4.84.0 the owner asks at
+  `/do-not-scan` (`worker/do-not-scan.ts`, migration `0010`): the request
+  is stored, a one-time link is emailed to an address *at the domain* —
+  exact match, so nobody at `x.co.ke` can block `co.ke` — and the POST
+  behind the link runs `optOutDomain()`. Links expire in 48 hours; one
+  email per domain per hour. Proof of control was the gap in the earlier
+  contact-form route, and the reason it is now required is that a
+  blocklist without it is a denial-of-service tool against any
+  competitor's domain (Shadowserver, the nearest published precedent,
+  requires the same). The hand-run command in
+  `docs/runbooks/scan-launch.md` remains for requests arriving any other
+  way.
 - **Stored data:** domain, observations, score, rubric version, timestamps.
   No visitor identity attached to scan results; the scanning client's IP is
   used for rate limiting only and not stored with the result. Retention

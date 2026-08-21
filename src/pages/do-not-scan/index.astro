@@ -1,0 +1,18 @@
+---
+// Domain-owner opt-out request. The action happens on ./confirm after the
+// owner proves control of the domain by email (worker/do-not-scan.ts).
+import Layout from "../../layouts/Layout.astro";
+import { DoNotScanPage } from "../../components/do-not-scan-page";
+import { DoNotScanForm } from "../../components/do-not-scan-form";
+import { TURNSTILE_SITE_KEY } from "../../data/route-policy";
+---
+
+<Layout
+  title="Leave my domain alone | Onduu"
+  description="Ask Onduu to stop scanning your domain and delete every stored record of it. One email to an address at the domain confirms it is yours; no other questions are asked."
+  canonical="https://onduu.ke/do-not-scan"
+>
+  <DoNotScanPage>
+    <DoNotScanForm client:load siteKey={TURNSTILE_SITE_KEY} />
+  </DoNotScanPage>
+</Layout>

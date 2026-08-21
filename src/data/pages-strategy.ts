@@ -400,7 +400,7 @@ export const strategyPages: Record<string, PageContent> = {
           "The Public Signal Score covers only what is publicly observable; Evidence Coverage says how much that is",
           "Anything not observable from outside is excluded from the score. It never counts as a pass or a failure",
           "It is not a Digital Fitness Score, a penetration test, a legal opinion or a compliance certificate",
-          "A domain owner who wants their domain left alone can ask through the contact form: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is blocked from future scans, and future lookups of it are not recorded",
+          "A domain owner who wants their domain left alone can ask at [/do-not-scan](/do-not-scan), confirming by email at the domain: every stored record of it is deleted (scan results and any stored email or domain lookups), the domain is blocked from future scans, and future lookups of it are not recorded",
         ],
       },
       {

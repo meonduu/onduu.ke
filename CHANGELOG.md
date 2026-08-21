@@ -1,6 +1,71 @@
 # Changelog
 
-CURRENT VERSION: v4.83.0 — 2118hrs:21st August2026
+CURRENT VERSION: v4.84.0 — 2203hrs:21st August2026
+
+## v4.84.0 — 2203hrs:21st August2026
+
+**A domain owner can now be left alone without filling in a sales form.**
+`/do-not-scan` asks for the domain, an email address at that domain, and
+nothing else. A one-time link goes to that address; the button behind it
+refuses the domain from future scans, deletes every stored record of it,
+and stops future lookups being recorded. Requested by the owner after a
+review of how Shodan, Censys, SecurityScorecard, BitSight, Shadowserver
+and Qualys SSL Labs handle the same request.
+
+Until now the route was the contact form — company name and "what
+business result should the website produce" required in order to be
+left alone — and the action was a hand-run SQL command. Nothing checked
+that the requester controlled the domain, so the list could be aimed at
+a competitor. The email is that check, and it is an exact match: the
+mailbox host must equal the domain, because a suffix rule would let
+someone@example.co.ke block co.ke and silence every .co.ke business.
+Registry extensions are refused outright as well.
+
+Design notes worth keeping. The link's GET only shows a button and the
+POST does the work, because corporate mail filters fetch every link
+before the reader sees it, and a GET that acted would let a filter opt a
+domain out. One confirmation email per domain per hour, behind Turnstile
+and the shared rate limit, bounds what the form can be made to send. A
+failed send deletes the pending row, so "try again later" is true rather
+than a silent hour-long lock. Astro's checkOrigin guard refuses the
+confirm POST from any other site — the first version of the test met a
+403 and that was the guard working, not the page failing. Tokens are
+stored hashed; a read of the table yields no usable link.
+
+`/scan` now offers the correction route beside the opt-out: the ratings
+firms learned that most people who write in want a finding fixed, not
+the record removed.
+
+**Privacy notice and processors register, same release (L8, L14).**
+ZeptoMail's card said it never receives a visitor's address. It now
+delivers this one email, so for that message it receives the requester's
+address and the domain; the card says so, the domain-tools section says
+why an address is asked for, and `docs/specs/processors-and-transfers.md`
+records it. `/legal/tool-limitations` and `/scan` point at the new route.
+
+Two defects found on the way. The inline-link renderer (v4.77.0) skipped
+section notes and card bodies, so the privacy notice's new link would
+have shipped as raw brackets; both now render links. And the test harness
+had been spawning every Worker against a database with no tables at all —
+every "through the real built Worker" test ran without D1. It now applies
+the migrations first, which is why the count rises from 250 to 266 and
+why one dashboard test had to be restated: the "missing table renders —,
+not 0" check now asks for a bare Worker explicitly
+(`startWorkerWithoutSchema`), since that state — production between a
+deploy and `migrations apply` — is exactly where 0010 sits until applied.
+
+**Needs the owner:** migration 0010 is not yet applied to production.
+Until it is, a request at `/do-not-scan` returns "could not complete"
+and the log says why; nothing else on the site is affected. Apply with
+`npx wrangler d1 migrations apply onduu-leads --remote`.
+
+New: `worker/do-not-scan.ts`, `src/pages/do-not-scan/`,
+`src/components/do-not-scan-*.tsx`, `migrations/0010_*.sql`,
+`tests/do-not-scan.test.mjs` (15 tests). `/go/blocklist` gains a
+requests table with each one's status.
+
+No lesson: a new route on the owner's instruction; the two defects were
+caught by this change's own tests before anything shipped.
 
 ## v4.83.0 — 2118hrs:21st August2026
 
