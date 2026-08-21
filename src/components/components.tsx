@@ -29,10 +29,32 @@ export function Button({href,children,secondary=false,event,label}:{href:string;
 export type ContentSection={eyebrow?:string;title:string;body?:string[];items?:string[];cards?:{title:string;body:string;meta?:string;href?:string}[];steps?:{title:string;body:string}[];note?:string;links?:{label:string;href:string;external?:boolean}[]};
 export type PageContent={eyebrow?:string;title:string;intro:string;cta?:string;ctaHref?:string;gate?:string;sections:ContentSection[];form?:"fitness"|"contact"};
 
+// Anchor id for a section, derived from its eyebrow so a reader can link to
+// one clause directly (/legal/privacy#who-is-responsible) rather than to the
+// top of a 21,000px page. Falls back to the index when an eyebrow is absent,
+// and de-duplicates so two sections can never claim the same anchor.
+function sectionIds(sections:ContentSection[]){
+  const seen=new Set<string>();
+  return sections.map((s,i)=>{
+    const base=(s.eyebrow||s.title||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"").slice(0,48);
+    let id=base||`section-${i+1}`;
+    if(seen.has(id)) id=`${id}-${i+1}`;
+    seen.add(id);
+    return id;
+  });
+}
+
 // The submission form hydrates as an Astro island, so it is passed in as
 // children from the .astro page rather than imported here; everything in this
 // file renders to static HTML with no client JavaScript.
-export function StandardPage({page,children}:{page:PageContent;children?:ReactNode}){return <><Header/><main id="main"><section className="page-hero"><div><p className="eyebrow">{page.eyebrow||"ONDUU / DIGITAL FITNESS"}</p><h1>{page.title}</h1><p className="lede">{page.intro}</p>{page.cta&&<Button href={page.ctaHref||"/contact"} event="conversion" label="fitness-cta-hero">{page.cta}</Button>}</div><aside className="hero-index"><span>Assess.</span><span>Prioritise.</span><span>Choose a path.</span><span>Verify.</span></aside></section>{page.gate&&<div className="gate"><b>PREVIEW / APPROVAL GATE</b><span>{page.gate}</span></div>}{page.sections.map((s,i)=><section className="content-section" key={s.title}><div><p className="section-number">{String(i+1).padStart(2,"0")} / {s.eyebrow||"DETAIL"}</p><h2>{s.title}</h2></div><div className="section-body">{s.body?.map(p=><p key={p}>{p}</p>)}{s.items&&<ul>{s.items.map(x=><li key={x}>{x}</li>)}</ul>}{s.cards&&<div className="content-cards">{s.cards.map(c=>
+export function StandardPage({page,children}:{page:PageContent;children?:ReactNode}){
+  const ids=sectionIds(page.sections);
+  // A contents list earns its place only where the page is long enough to
+  // get lost in: the privacy notice runs fourteen sections and about 26
+  // phone screens. Threshold rather than a per-page flag, so a page that
+  // grows past it gets one without anybody remembering to ask.
+  const showContents=page.sections.length>=8;
+  return <><Header/><main id="main"><section className="page-hero"><div><p className="eyebrow">{page.eyebrow||"ONDUU / DIGITAL FITNESS"}</p><h1>{page.title}</h1><p className="lede">{page.intro}</p>{page.cta&&<Button href={page.ctaHref||"/contact"} event="conversion" label="fitness-cta-hero">{page.cta}</Button>}</div><aside className="hero-index"><span>Assess.</span><span>Prioritise.</span><span>Choose a path.</span><span>Verify.</span></aside></section>{page.gate&&<div className="gate"><b>PREVIEW / APPROVAL GATE</b><span>{page.gate}</span></div>}{showContents&&<nav className="jump-list" aria-label="Sections on this page"><b>On this page</b><ol>{page.sections.map((s,i)=><li key={s.title}><a href={`#${ids[i]}`}>{s.eyebrow||s.title}</a></li>)}</ol></nav>}{page.sections.map((s,i)=><section className="content-section" id={ids[i]} key={s.title}><div><p className="section-number">{String(i+1).padStart(2,"0")} / {s.eyebrow||"DETAIL"}</p><h2>{s.title}</h2></div><div className="section-body">{s.body?.map(p=><p key={p}>{p}</p>)}{s.items&&<ul>{s.items.map(x=><li key={x}>{x}</li>)}</ul>}{s.cards&&<div className="content-cards">{s.cards.map(c=>
   // A card with href links from its heading; CSS stretches that link over the
   // whole card, so the card is clickable while the accessible name stays the
   // guide title rather than the whole card's text.
