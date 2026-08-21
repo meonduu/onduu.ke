@@ -400,7 +400,7 @@ export const strategyPages: Record<string, PageContent> = {
     gate: "Draft for professional review, maintained against the code that runs the tools.",
     sections: [
       {
-        eyebrow: "01 / EMAIL SECURITY CHECK",
+        eyebrow: "EMAIL SECURITY CHECK",
         title: "/email-security, published DNS records only.",
         body: [
           "Reads a domain's public SPF, DKIM (common selectors only), DMARC and MX records through Cloudflare's public DNS resolver, and explains them in plain language. The domain checked and the result are stored (since 18 August 2026) with no visitor identity attached.",
@@ -412,7 +412,7 @@ export const strategyPages: Record<string, PageContent> = {
         ],
       },
       {
-        eyebrow: "02 / DOMAIN SEARCH",
+        eyebrow: "DOMAIN SEARCH",
         title: "/kedomains, public availability signals, confirmed at checkout.",
         body: [
           "Checks the extension you enter alongside its .ke twin, using public DNS and registry (RDAP) records. Taken domains show their registrar, transfer-lock status and expiry where the registry publishes them; some registries publish little or nothing. The name searched and what was found are stored (since 18 August 2026) with no visitor identity attached.",
@@ -424,7 +424,7 @@ export const strategyPages: Record<string, PageContent> = {
         ],
       },
       {
-        eyebrow: "03 / FITNESS SCAN",
+        eyebrow: "FITNESS SCAN",
         title: "/scan, a Public Signal Score, never a verdict.",
         body: [
           "Reads only public information about a domain: registry record, DNS, published email records, and the homepage, robots.txt and sitemap any visitor can request. Results are stored (domain, observations, score, reference) so repeat scans within 24 hours serve the cached result and any score can be reproduced; no visitor identity is attached.",
@@ -437,7 +437,7 @@ export const strategyPages: Record<string, PageContent> = {
         ],
       },
       {
-        eyebrow: "04 / DNS HEALTH CHECK",
+        eyebrow: "DNS HEALTH CHECK",
         title: "/dns, coherence of the public records, not a verdict on them.",
         body: [
           "Reads a domain's nameservers, delegation, zone record, addresses, mail routing and DNSSEC from public DNS and registry (RDAP) data, and compares them against each other. It also asks a parent-zone nameserver and each of the domain's own nameservers a standard read-only question directly, which is where the parent's glue records and each server's zone serial come from. The domain checked and a summary of the outcome are stored, with no visitor identity attached.",
@@ -451,7 +451,7 @@ export const strategyPages: Record<string, PageContent> = {
         ],
       },
       {
-        eyebrow: "05 / ALL TOOLS",
+        eyebrow: "ALL TOOLS",
         title: "Shared boundaries.",
         items: [
           "No tool on this site promises guaranteed security, compliance, rankings, leads, revenue, uptime, recovery or agent accuracy",
