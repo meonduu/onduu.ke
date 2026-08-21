@@ -118,7 +118,7 @@ export function DomainsForm() {
         </div>
       )}
 
-      <p className="check-note" role="status" aria-live="polite">
+      <p className="sr-only" role="status" aria-live="polite">
         {state === "loading" ? "Reading public DNS and registry records…" : ""}
       </p>
 
