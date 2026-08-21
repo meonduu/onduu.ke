@@ -125,6 +125,20 @@ code against the notice (`tests/seo-and-gates.test.mjs`), and the register
 at `docs/specs/processors-and-transfers.md` lists what each one receives,
 so the next addition has an obvious place to be recorded (v4.54.0).
 
+**L13 — 22 Aug 2026 · A chained command shipped a red suite.** v4.79.0
+was committed, merged and deployed while `npm test` reported `fail 1`.
+The tests ran, printed the failure, and the deploy proceeded — because
+they were all one `&&`-free shell chain, so a non-zero result from a
+grepped test run never gated anything. Nothing broke in production (the
+failure was this register's own check, not a code defect), which is
+precisely why it is worth recording: the same habit with a real defect
+ships it. `REVIEW.md` says the suite passes before shipping, and for a
+whole session the mechanism could not enforce that because the two steps
+lived in one command. Rule: run the checks, **read the result**, then
+ship as a separate action. A build-and-deploy chain must never contain
+its own test step, because a chain reports the last command's status, not
+the worst one.
+
 **L12 — 20 Aug 2026 · A rename that the database refused.** Backfilled
 21 Aug 2026, when the lesson check below found this release had described
 a production outage without recording anything. v4.64.0 renamed the form

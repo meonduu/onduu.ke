@@ -1,6 +1,27 @@
 # Changelog
 
-CURRENT VERSION: v4.79.0 — 0018hrs:22nd August2026
+CURRENT VERSION: v4.79.1 — 0042hrs:22nd August2026
+
+## v4.79.1 — 0042hrs:22nd August2026
+
+**v4.79.0 was deployed with a failing test, and this records why.** The
+lessons-register check added in v4.73.0 fired on that release — its entry
+said "two places were wrong" without citing a lesson or declining one —
+and the failure was printed, seen by nobody, and shipped anyway, because
+the test run and the merge were one shell chain. A chain reports the last
+command's status, not the worst one.
+
+Nothing broke: the failure was the governance check, not a code defect,
+and 243 of 244 tests passed. That is exactly what makes it worth writing
+down — the same habit with a real defect ships the defect. It had been
+the working pattern for most of a session.
+
+**L13** records it: run the checks, read the result, then ship as a
+separate action; a deploy chain must never contain its own test step.
+
+The v4.79.0 entry now cites L13, which is what the check was asking for.
+
+244 tests pass, and this time that was read before merging.
 
 ## v4.79.0 — 0018hrs:22nd August2026
 
@@ -34,6 +55,8 @@ Two details that would have been silent bugs:
 EAT is UTC+3 year-round — Kenya has never observed daylight saving — but
 the timezone is named rather than hardcoded as +3, so the platform does
 the arithmetic.
+
+This release was deployed while its own governance check was failing; see **L13** and v4.79.1.
 
 **Left alone deliberately:** the Insights article dates, which read
 "18 August 2026" in a byline. Those are editorial prose, not timestamps,
