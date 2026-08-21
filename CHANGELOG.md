@@ -1,6 +1,24 @@
 # Changelog
 
-CURRENT VERSION: v4.67.1 — 1102hrs:21st August2026
+CURRENT VERSION: v4.67.2 — 1128hrs:21st August2026
+
+## v4.67.2 — 1128hrs:21st August2026
+
+**The six dimension cards no longer waste half their height.** Owner
+review: each card held its number top-left, then 58px of nothing, then the
+title — inside a 220px minimum — so "01" and "Control" sat a full empty
+band apart and two-thirds of every card was blank.
+
+Each card is now a small grid: number and title share the first row on a
+common baseline, the question spans the second, and the card is as tall as
+its text. `min-height:220px` and `h3{margin-top:58px}` are gone; the
+number goes 9px → 10px with light tracking so it reads as a label beside
+the 30px title rather than a speck above it; right padding keeps the
+question clear of the corner arrow. Desktop cards 250px → **158px**, the
+whole grid ~500px → **316px**. Verified at 1440px and 375px, no overflow.
+No markup change.
+
+227 tests pass.
 
 ## v4.67.1 — 1102hrs:21st August2026
 
