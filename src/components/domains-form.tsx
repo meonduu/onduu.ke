@@ -143,7 +143,7 @@ export function DomainsForm() {
                 {r.status === "registered" && (
                   <>
                     <p>
-                      <strong>REGISTERED</strong>
+                      <strong className="domain-state">TAKEN</strong>
                     </p>
                     {r.registrar && (
                       <p>
