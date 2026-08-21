@@ -106,6 +106,26 @@ code against the notice (`tests/seo-and-gates.test.mjs`), and the register
 at `docs/specs/processors-and-transfers.md` lists what each one receives,
 so the next addition has an obvious place to be recorded (v4.54.0).
 
+**L11 — 21 Aug 2026 · Ask the vendor's own front end before probing its
+API.** v4.70.0 concluded HOSTAFRICA's checkout could not receive the
+searched domain, after testing `domain`, `query`, `search` and `sld`/`tld`
+one at a time against a nonsense-parameter control. The control was sound
+and the conclusion still wrong: the checkout needs **two** parameters
+together — `ident=keha&domain=…` — and ignores `domain` silently without
+`ident`, so every single-parameter probe looked identical to the control.
+Guessing one variable at a time cannot find a pair. What settled it in one
+command was reading HOSTAFRICA's own public search form at
+`www.hostafrica.ke/domains/` and seeing exactly what it submits. The
+result copy meanwhile told visitors to retype a name the site could have
+carried for them. Rule: when integrating with a third party, read the
+request their own client makes — view-source on their form, or their
+network tab — before hand-probing parameters, and treat "the vendor does
+not support this" as a claim needing that evidence rather than the
+absence of a working guess. Guard: `tests/domains.test.mjs` pins the
+carried name **and** its companion `ident`, because losing `ident` alone
+returns the site to making people retype with no other symptom
+(v4.72.0).
+
 **L10 — 21 Aug 2026 · One error code hid four causes; instrument before
 theorising.** ZeptoMail's `401 TM_4001` covers a mismatched agent/sender
 pairing, a bad token (SERR_157), an unapproved account (SM_128) and a

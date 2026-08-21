@@ -1,6 +1,25 @@
 # Changelog
 
-CURRENT VERSION: v4.72.0 — 1608hrs:21st August2026
+CURRENT VERSION: v4.72.1 — 1626hrs:21st August2026
+
+## v4.72.1 — 1626hrs:21st August2026
+
+**L11 recorded**, at the owner's prompting. The v4.72.0 finding went into
+the changelog and a code comment but never reached the lessons register —
+which is the one place a future session actually reads before starting
+work, and precisely the gap the register exists to close. Noticing that
+the lesson about a silent omission had itself been silently omitted is
+not lost on anyone.
+
+**L11 — Ask the vendor's own front end before probing its API.** The
+checkout needed two parameters together, `ident=keha&domain=…`, and
+ignored `domain` without `ident`, so every one-at-a-time probe matched the
+control. Guessing one variable at a time cannot find a pair. Reading
+HOSTAFRICA's own public search form settled it in one command. Rule:
+treat "the vendor does not support this" as a claim needing the evidence
+of their own client's request, not as the absence of a working guess.
+
+232 tests pass. Documentation only.
 
 ## v4.72.0 — 1608hrs:21st August2026
 
