@@ -1,6 +1,42 @@
 # Changelog
 
-CURRENT VERSION: v4.77.0 — 2144hrs:21st August2026
+CURRENT VERSION: v4.78.0 — 2302hrs:21st August2026
+
+## v4.78.0 — 2302hrs:21st August2026
+
+**Home replaces Paths in the header, and `/paths` is removed entirely.**
+Owner instruction.
+
+Header navigation is now **Home · Guides · DNS Checker · Email Security ·
+Domain Search**, with Home pointing at the index. It duplicates the
+wordmark, which also links to `/` — kept deliberately, because the
+wordmark-as-home convention is invisible to plenty of visitors and a named
+link costs one slot.
+
+**Why `/paths` went rather than moving to the footer**, which was the plan
+until the page was actually examined: it carried **two links in its body,
+and both were sitewide** — the accessibility skip link and the standard
+"Check Your Digital Fitness" CTA. Its two route cards, "Website and
+digital-marketing implementation" and "Domains, hosting, email and VPS
+infrastructure", were plain text. A page headed "Continue through the
+right route" offered no way to continue. It was a signpost with no arrows,
+and the honest options were to fix it or retire it.
+
+- The page definition is deleted, so it leaves the sitemap automatically.
+- `/paths` now 301s to `/digital-fitness`, and `/solutions` moves with it
+  rather than chaining through a dead route.
+- **Its two children survive untouched** and keep their footer links —
+  they are the pages that carry the actual routes, and
+  `/paths/hostafrica-infrastructure` is the approved product route.
+
+The nav test was rewritten to match on **labels** rather than bare hrefs:
+Home points at "/", which the wordmark also uses, so counting `href="/"`
+would have passed even if the menu item vanished. It also asserts Paths
+cannot creep back into the five header slots.
+
+No lesson: a deliberate removal by the owner, not a fault.
+
+238 tests pass.
 
 ## v4.77.0 — 2144hrs:21st August2026
 

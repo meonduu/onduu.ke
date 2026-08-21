@@ -6,7 +6,10 @@ import { fetchPath } from "./helpers/server.mjs";
 // The paths-and-guides architecture from the 18 August 2026 strategy
 // (docs/strategy/). These must be live, indexable, in the sitemap and linked.
 const PUBLISHED_ROUTES = [
-  "paths",
+  // The /paths index was removed on the owner's instruction, 21 Aug 2026:
+  // its two route cards were plain text, so the page's only body links
+  // were the sitewide skip link and the sitewide CTA — a signpost with no
+  // arrows. Its children survive and carry the actual routes.
   "paths/website-and-digital-marketing",
   "paths/hostafrica-infrastructure",
   "guides",
@@ -23,7 +26,8 @@ const REDIRECTED = {
   "/check": "/email-security",
   "/domains": "/kedomains",
   "/email-security/glossary": "/email-security",
-  "/solutions": "/paths",
+  "/paths": "/digital-fitness",
+  "/solutions": "/digital-fitness",
   "/solutions/digital-revenue-risk-review": "/digital-fitness",
   "/solutions/website-revenue-system": "/guides/website-revenue-system",
   "/solutions/agent-workflow-pilot": "/guides/agents-on-vps",
@@ -412,10 +416,24 @@ test("the header carries the no-JS mobile disclosure menu", async () => {
   // reachable through the <details> disclosure (v4.43.0, 19 Aug 2026).
   const home = await (await fetchPath("/")).text();
   assert.match(home, /<details class="mobile-nav"><summary>Menu<\/summary>/);
-  for (const href of ["/paths", "/guides", "/dns", "/email-security", "/kedomains"]) {
-    const links = home.match(new RegExp(`href="${href}"`, "g")) ?? [];
-    assert.ok(links.length >= 2, `${href} must appear in both the inline nav and the disclosure`);
+
+  // Matched on the LABEL, not the bare href: Home points at "/", which the
+  // wordmark also uses, so counting `href="/"` would pass even if the menu
+  // item vanished. Paths was replaced by Home on 21 Aug 2026.
+  for (const label of ["Home", "Guides", "DNS Checker", "Email Security", "Domain Search"]) {
+    const found = home.match(new RegExp(`>${label}</a>`, "g")) ?? [];
+    assert.ok(
+      found.length >= 2,
+      `"${label}" must appear in both the inline nav and the disclosure, found ${found.length}`,
+    );
   }
+
+  // Home must actually go home, and Paths must not creep back into the five
+  // slots — its child pages are in the footer, which is where they belong.
+  assert.match(home, />Home<\/a>/, "the Home item must be present");
+  assert.match(home, /href="\/"[^>]*>Home</, "Home must link to the index page");
+  const navOnly = home.slice(0, home.indexOf("</header>"));
+  assert.doesNotMatch(navOnly, /href="\/paths"/, "Paths was removed from the header nav");
 });
 
 test("the contact hero recommends routes, not superseded offers", async () => {

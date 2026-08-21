@@ -22,7 +22,8 @@ const REDIRECTS: Record<string, string> = {
   // every header, hero and footer link published before the rename points
   // at it, as do the sitemap entries search engines already hold.
   "/readiness": "/digital-fitness",
-  "/solutions": "/paths",
+  "/paths": "/digital-fitness",
+  "/solutions": "/digital-fitness",
   "/solutions/digital-revenue-risk-review": "/digital-fitness",
   "/solutions/website-revenue-system": "/guides/website-revenue-system",
   "/solutions/agent-workflow-pilot": "/guides/agents-on-vps",

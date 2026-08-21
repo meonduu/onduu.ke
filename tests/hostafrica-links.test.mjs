@@ -21,7 +21,7 @@ const LINKED = [
   "/paths/hostafrica-infrastructure",
   "/kedomains",
 ];
-const UNLINKED = ["/", "/digital-fitness", "/contact", "/paths", "/how-it-works",
+const UNLINKED = ["/", "/digital-fitness", "/contact", "/how-it-works",
                   "/legal/tool-limitations", "/legal/privacy", "/guides/kenyan-vps"];
 
 function bodyOf(html) {

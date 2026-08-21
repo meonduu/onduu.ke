@@ -47,39 +47,6 @@ const pilotSource = prototypePages["solutions/agent-workflow-pilot"];
 
 export const strategyPages: Record<string, PageContent> = {
   // ── The two delivery paths ──────────────────────────────────────────
-  "paths": {
-    eyebrow: "ONDUU / CHOOSE A PATH",
-    title: "Onduu explains the problem. The appropriate provider delivers the solution.",
-    intro:
-      "Onduu helps you identify the weaknesses, understand the priority and choose the right delivery path. Implementation and infrastructure are supplied by the parties responsible for them, not by Onduu.",
-    cta: "Check Your Digital Fitness",
-    ctaHref: "/digital-fitness",
-    sections: [
-      {
-        eyebrow: "TWO ROUTES",
-        title: "Continue through the right route.",
-        cards: [
-          {
-            title: "Website and digital-marketing implementation",
-            body: "Independent providers, reached through Ujiajiri's private curated introductions. Ujiajiri proposes a suitable provider and asks your permission before sharing your information; the provider contracts and delivers directly. Ujiajiri and Onduu do not quote, collect payment for or guarantee the provider's work.",
-            meta: "UJIAJIRI INTRODUCTIONS",
-          },
-          {
-            title: "Domains, hosting, email and VPS infrastructure",
-            body: "An official HOSTAFRICA destination for product information, ordering, billing, provisioning, renewal and product support. Onduu explains suitable use cases and responsibilities but does not resell or support the product.",
-            meta: "HOSTAFRICA",
-          },
-        ],
-      },
-      {
-        eyebrow: "WHY THIS SPLIT",
-        title: "Responsibility stays with the party doing the work.",
-        body: [
-          "A recommendation is only useful when it is clear who is accountable for delivering it. Onduu's role ends at evidence, priorities and routing; the partner or provider you choose is responsible for its own scope, price, delivery, warranty and support.",
-        ],
-      },
-    ],
-  },
 
   "paths/website-and-digital-marketing": {
     eyebrow: "PATHS / IMPLEMENTATION",
