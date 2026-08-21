@@ -498,7 +498,7 @@ export const strategyPages: Record<string, PageContent> = {
         title: "What happens after the score?",
         body: [
           "Need implementation? Ask Ujiajiri for a private curated introduction: Ujiajiri proposes one suitable independent provider, asks your permission before sharing your information, and the provider contracts and delivers directly. HOSTAFRICA product enquiries continue through the approved official HOSTAFRICA route.",
-          "Onduu does not automatically transmit your assessment answers to either destination. Your answers are seen only inside Ujiajiri Enterprises Limited, which operates this site \u2014 no independent provider and no HOSTAFRICA team sees them unless you approve a specific introduction. The routes are plain outbound links you follow yourself.",
+          "Onduu does not automatically transmit your assessment answers to either destination. No independent provider and no HOSTAFRICA team sees them unless you approve a specific introduction. Your answers are handled inside Ujiajiri Enterprises Limited, which operates this site, and by the third-party AI services its assessment agents run on — which receive the substance of your answers with your name, email address and company name removed first, so your identity never leaves Onduu. The routes are plain outbound links you follow yourself.",
           "Ujiajiri may receive a referral fee from the proposed provider; its existence is disclosed before you approve an introduction.",
         ],
         links: [

@@ -331,8 +331,19 @@ test("Ujiajiri cross-links are present, plain, and honestly worded", async () =>
   );
   assert.match(
     fitness,
-    /seen only inside Ujiajiri Enterprises Limited/i,
+    /inside Ujiajiri Enterprises Limited/i,
     "the corrected receiver statement must be present",
+  );
+  // 21 Aug 2026, second correction. The statement above used to read "seen
+  // only inside Ujiajiri Enterprises Limited". Assessment agents run partly
+  // on third-party AI services, which therefore receive assessment content,
+  // so "only inside" became the same kind of false denial as the sentence
+  // guarded above — true of providers and HOSTAFRICA, untrue of the
+  // processors that actually see the answers.
+  assert.doesNotMatch(
+    fitness,
+    /(?:seen|held|stay|stays|remain|remains)\s+only\s+(?:inside|within)\s+Ujiajiri/i,
+    "must not claim answers stay only inside the operator once agents process them",
   );
   // Phase 2 sign-off (19 Aug 2026): the fee's existence is disclosed at this
   // decision point too, not only on the implementation path page.

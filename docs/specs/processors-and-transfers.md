@@ -67,10 +67,29 @@ nameservers questioned by `/dns`, and the public pages fetched by `/scan`.
 Each sees a request from Onduu's infrastructure carrying only the domain
 being checked — never anything about the visitor who asked.
 
+### Third-party AI services (assessment agents)
+- **Role**: some of Onduu's assessment agents run on third-party AI
+  services. They perform the first-pass analysis of an assessment across
+  the six dimensions; a person reviews every finding, score and
+  recommendation before a report is issued. Live since 21 August 2026.
+- **Receives**: the substance of the assessment — declared answers, the
+  domain and the public evidence — **with the name, email address and
+  company name removed before anything is sent.** No identifying data
+  leaves Onduu.
+- **Scope**: the Digital Fitness Assessment only. `/scan`, `/dns`,
+  `/email-security` and `/kedomains` are deterministic checks and involve
+  no agent.
+- **Basis**: performance of the assessment the customer requested.
+- **TO NAME**: the specific services are not yet recorded here, and the
+  privacy notice therefore describes them generically while naming
+  Cloudflare, ZeptoMail and Slack. Name them here and add a card to the
+  notice's "WHO ELSE PROCESSES IT" section in the same release.
+- **LAWYER**: confirm each service's data processing terms, that
+  submissions are not used to train models, and what it retains.
+
 ### Explicitly not processors
-No analytics company. No advertising network. No AI or language-model
-provider receives submissions. Cloudflare Web Analytics was disabled on
-20 August 2026 and its beacon no longer served — verify with
+No analytics company. No advertising network. Cloudflare Web Analytics
+was disabled on 20 August 2026 and its beacon no longer served — verify with
 `npm run check:live`, which fails if any injected script returns.
 `VBOUT_API_KEY` is parked for a future email-marketing integration and is
 **not** wired to anything; using it would add a processor and require this

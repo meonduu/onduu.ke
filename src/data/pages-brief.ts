@@ -80,13 +80,14 @@ export const briefPages: Record<string, PageContent> = {
           },
           {
             "title": "Review",
-            "body": "Onduu checks the evidence and chooses the three priorities."
+            "body": "Agents work through the evidence; a person chooses the three priorities."
           },
           {
             "title": "Receive",
             "body": "The report is delivered privately with an interpretation route."
           }
-        ]
+        ],
+        "note": "Every assessment runs the same framework over the same six dimensions, so nothing is skipped and no finding depends on what a reviewer happened to remember. Onduu's agents do that first pass across your declared answers and the public evidence, and some of those agents run on third-party AI services. Agents misread things, which is why a person reviews every finding, score and recommendation before your report is issued."
       },
       {
         "eyebrow": "LIMITATIONS",
@@ -414,7 +415,7 @@ export const briefPages: Record<string, PageContent> = {
             "body": "Receives the same one-line notification as the email, for the same reason: the reference number and which form was used, nothing you wrote and nothing that identifies you. Added 20 August 2026."
           }
         ],
-        "note": "An independent provider is a different case: nothing reaches one because you used this site. If you ask for implementation support, Ujiajiri names the provider it proposes and tells you exactly what would be shared \u2014 your name, contact details and a project summary \u2014 and sends it only after you say yes to that specific introduction. You may decline without it affecting your assessment or advice. No artificial-intelligence or language-model provider receives your form submissions, and no analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
+        "note": "An independent provider is a different case: nothing reaches one because you used this site. If you ask for implementation support, Ujiajiri names the provider it proposes and tells you exactly what would be shared \u2014 your name, contact details and a project summary \u2014 and sends it only after you say yes to that specific introduction. You may decline without it affecting your assessment or advice. Assessment answers are analysed by Onduu's own agents, and some of those agents run on third-party AI services. What reaches those services is the substance of the assessment — your declared answers, the domain and the public evidence — with your name, email address and company name removed before anything is sent, so they never receive anything that identifies you or your business. The free domain, DNS and email tools use no agents at all. No analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
       },
       {
         "eyebrow": "WHERE IT IS STORED",
@@ -563,7 +564,8 @@ export const briefPages: Record<string, PageContent> = {
             "title": "Directly tested",
             "body": "Observed in a test you permitted, such as an authorised enquiry trace."
           }
-        ]
+        ],
+        "note": "These labels describe where a finding came from, not how it was analysed. Onduu's agents assist the analysis of every assessment, and that assistance is never itself an evidence basis: an agent produces no facts, it organises and interprets the facts your declarations, public observation or a permitted test supplied. \"Manually reviewed\" continues to mean a person examined the evidence."
       },
       {
         "eyebrow": "WHAT A RESULT DOES NOT PROVE",
