@@ -1,6 +1,30 @@
 # Changelog
 
-CURRENT VERSION: v4.78.0 — 2302hrs:21st August2026
+CURRENT VERSION: v4.78.1 — 2338hrs:21st August2026
+
+## v4.78.1 — 2338hrs:21st August2026
+
+**The five guide titles on `/guides` are no longer underlined**, and still
+link where they did. Owner instruction.
+
+The underline came from `.section-body a:not(.button):not(.text-link)`,
+which exists so inline prose links are visibly links — correct for a link
+inside a sentence, unnecessary for a card heading. The whole card is
+already the target: a `:after` overlay stretches the heading's link across
+it, hover and focus-visible both repaint the card, and the copper
+separates the title from the slate body text. Colour and weight are
+unchanged; only the rule is dropped.
+
+Scoped tightly. Prose links on `/legal/commercial-relationships`,
+`/about` and `/kedomains` were checked afterwards and still carry their
+underline — a card heading is the exception, not a new sitewide default.
+
+The first attempt did nothing, and the reason is worth writing down:
+`.content-cards .card-linked h3 a` is (0,2,2) against the existing rule's
+(0,3,1), because each `:not()` counts as a class. Selector length is not
+specificity. The winning selector adds `.section-body` for (0,3,2).
+
+238 tests pass.
 
 ## v4.78.0 — 2302hrs:21st August2026
 
