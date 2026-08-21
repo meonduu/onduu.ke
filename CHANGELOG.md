@@ -1,6 +1,35 @@
 # Changelog
 
-CURRENT VERSION: v4.70.1 — 1428hrs:21st August2026
+CURRENT VERSION: v4.70.2 — 1447hrs:21st August2026
+
+## v4.70.2 — 1447hrs:21st August2026
+
+**"Reading public DNS and registry records…" no longer displays** on
+`/kedomains`. Owner instruction.
+
+The paragraph moves from `.check-note` to `.sr-only`, so it renders as a
+clipped 1×1px box — confirmed absent from `document.body.innerText`
+mid-search — while staying in the DOM as the `role="status"`
+`aria-live="polite"` region. Deleting the text outright would have left
+screen-reader users in silence during the wait: the visual affordance is
+the progress bar above it, and a bar alone announces nothing. Sighted
+users see the bar; assistive technology hears the sentence; neither is
+worse off.
+
+That paragraph held no other copy — it was empty except while loading —
+so nothing else changed on the page.
+
+**Left alone deliberately:** the two similar strings on `/scan`
+("Reading public signals…" on the button, and the longer aria-live note).
+That note also carries visible idle copy — "This reads public information
+only. It touches nothing private and never asks you to log in." — which is
+a reassurance worth keeping on screen, so it is a different case rather
+than the same one twice. Say the word if it should go too.
+
+Verified with a live search: phrase absent from the rendered page, results
+still returned.
+
+231 tests pass.
 
 ## v4.70.1 — 1428hrs:21st August2026
 
