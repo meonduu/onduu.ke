@@ -17,7 +17,7 @@ import { fetchPath } from "./helpers/server.mjs";
 //      evidence" alone is that promise; "a person reviews every finding
 //      before the report is issued" is what makes it truthful.
 //   3. The free tools must stay out of it. /scan, /dns, /email-security
-//      and /kedomains are deterministic public checks with no agent
+//      and /domains are deterministic public checks with no agent
 //      anywhere near them, and letting the disclosure blur across them
 //      would misdescribe four tools to make one page read better.
 
@@ -85,7 +85,7 @@ test("the agent claim is never made without the human review beside it", async (
 test("the free tools are not described as agent-analysed", async () => {
   // Deterministic checks. If a future edit extends the disclosure to them
   // it is describing something the code does not do.
-  for (const path of ["/scan", "/dns", "/email-security", "/kedomains"]) {
+  for (const path of ["/scan", "/dns", "/email-security", "/domains"]) {
     const text = (await (await fetchPath(path)).text()).replace(/<[^>]+>/g, " ");
     assert.doesNotMatch(
       text,

@@ -94,7 +94,7 @@ async function preflight(
     return {
       scannable: false,
       error: `${domain} is not registered, and the registry does not allow it to be registered${rdap.reservedNote ? `: ${rdap.reservedNote.toLowerCase()}` : ""}. There is nothing to scan.`,
-      next: { label: "Search Kenyan domains", href: "/kedomains" },
+      next: { label: "Search Kenyan domains", href: "/domains" },
     };
   }
   if (rdap.fetched) return { scannable: true }; // registered, simply not pointing anywhere yet
@@ -102,7 +102,7 @@ async function preflight(
     return {
       scannable: false,
       error: `${domain} is not registered, so there is nothing to scan yet. If you are thinking of using this name, check whether it is still available.`,
-      next: { label: "Check availability", href: "/kedomains" },
+      next: { label: "Check availability", href: "/domains" },
     };
   }
   // The registry did not answer. Say so rather than scoring an absence.

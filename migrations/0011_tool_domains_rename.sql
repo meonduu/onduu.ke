@@ -1,0 +1,15 @@
+-- The domain search moved from /kedomains back to /domains (owner,
+-- 21 Aug 2026, v4.85.0), and tool_checks.tool stored the route's old name.
+--
+-- Lesson L12: a rename that stops at the code leaves the database speaking
+-- the old vocabulary. There the stored value hit a CHECK constraint and
+-- took submissions down; here the column is plain TEXT, so nothing would
+-- have broken loudly — the 47 existing rows would simply have stopped
+-- appearing under the tool that produced them, and the dashboard would
+-- have shown a tool with no history and no error. A silent loss is worse
+-- to find than a 500, which is why this ships in the same release.
+--
+-- worker/dashboard.ts reads both spellings regardless, so history survives
+-- whether or not this has been applied; this makes the stored vocabulary
+-- single again.
+UPDATE tool_checks SET tool = 'domains' WHERE tool = 'kedomains';

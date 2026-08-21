@@ -19,7 +19,7 @@ const LINKED = [
   "/legal/commercial-relationships",
   "/about",
   "/paths/hostafrica-infrastructure",
-  "/kedomains",
+  "/domains",
 ];
 const UNLINKED = ["/", "/digital-fitness", "/contact", "/how-it-works",
                   "/legal/tool-limitations", "/legal/privacy", "/guides/kenyan-vps"];

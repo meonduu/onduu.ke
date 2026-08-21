@@ -23,7 +23,7 @@ const HEADERS = { "User-Agent": UA, Accept: "text/html,application/xhtml+xml" };
 
 const PAGES = [
   "/", "/about", "/guides", "/digital-fitness", "/contact",
-  "/legal/privacy", "/dns", "/email-security", "/kedomains", "/scan",
+  "/legal/privacy", "/dns", "/email-security", "/domains", "/scan",
 ];
 
 // The only third-party script origin the policy permits.

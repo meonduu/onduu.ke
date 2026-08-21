@@ -1,6 +1,46 @@
 # Changelog
 
-CURRENT VERSION: v4.84.1 — 2230hrs:21st August2026
+CURRENT VERSION: v4.85.0 — 2244hrs:21st August2026
+
+## v4.85.0 — 2244hrs:21st August2026
+
+**The domain search is back at `/domains`.** Owner's instruction. It
+launched as `/domains`, moved to `/kedomains` on 18 August 2026, and
+returns now; `/kedomains` 301s to it, and every link, the nav, the
+footer, the sitemap, the scan's next-step suggestions and the four
+disclosure pages point at the new route.
+
+**Reversing a redirect means editing the line, not adding one.**
+`src/middleware.ts` already held `/domains → /kedomains`. Adding the
+reverse beside it would have produced an infinite redirect with each end
+pointing at the other, taking the tool down for everyone — the one way
+this change could have caused an outage. A new test now asserts that
+every redirect target resolves to a real 200 page, and it was verified by
+briefly reintroducing the old line: it failed with exactly the loop
+(`/kedomains redirects to /domains, which is not a page (301 →
+/kedomains)`), then passed once removed.
+
+**The rename reached the database too (L12).** `tool_checks.tool` stored
+`'kedomains'` for 47 production rows. The column is plain TEXT with no
+CHECK constraint, so unlike the Digital Fitness rename nothing would have
+broken loudly — the dashboard would simply have shown a tool with no
+history and no error, which is harder to notice than a 500. Migration
+`0011` renames the stored value, and `toolUsage()` now reads a list of
+names rather than one, so `/go/domains` keeps its history whether or not
+the migration has been applied. Page-view counting keeps both paths, since
+views recorded before today are filed under the old one.
+
+`/go/kedomains` becomes `/go/domains`. The dashboard's unknown-section
+fallback ("No such section") already handled the old internal URL.
+
+**Needs the owner:** apply migration 0011 to production —
+`npx wrangler d1 migrations apply onduu-leads --remote`. Until then the
+47 rows still read `'kedomains'` and appear anyway, because the dashboard
+reads both.
+
+No lesson: a route rename on the owner's instruction. L12's guard —
+trace a rename into storage in the same release — is what caught the
+stored value, and it worked.
 
 ## v4.84.1 — 2230hrs:21st August2026
 

@@ -212,7 +212,7 @@ test("NXDOMAIN plus no RDAP record appears available, with the register link", a
   // Owner instruction, 21 Aug 2026, superseding the 18 Aug "no affiliate
   // parameter" rule: the link carries HOSTAFRICA affiliate id 916, used for
   // attribution only — the owner confirmed it pays Onduu no commission.
-  // That claim is published on /kedomains and /legal/tool-limitations, so
+  // That claim is published on /domains and /legal/tool-limitations, so
   // the id and its disclosure are pinned together below: if the id ever
   // starts paying, both must move in the same release.
   assert.match(REGISTER_URL, /[?&]aff=916(&|$)/, "affiliate id 916 present for attribution");
@@ -301,9 +301,9 @@ test("the affiliate mechanics live on exactly one page", async () => {
   assert.match(html, /pay Onduu no commission/, `${home} must state that it pays nothing`);
   assert.match(html, /aggregate only/, `${home} must explain how clicks are counted`);
 
-  // Every other page must stay silent on the mechanics. /kedomains keeps
+  // Every other page must stay silent on the mechanics. /domains keeps
   // the directorship — that is a different disclosure, pinned elsewhere.
-  for (const path of ["/kedomains", "/legal/tool-limitations", "/paths/hostafrica-infrastructure"]) {
+  for (const path of ["/domains", "/legal/tool-limitations", "/paths/hostafrica-infrastructure"]) {
     const other = await (await fetchPath(path)).text();
     assert.doesNotMatch(
       other,
@@ -313,10 +313,10 @@ test("the affiliate mechanics live on exactly one page", async () => {
   }
 
   // The directorship disclosure at the decision point is unaffected.
-  const kedomains = await (await fetchPath("/kedomains")).text();
+  const domains = await (await fetchPath("/domains")).text();
   assert.match(
-    kedomains,
+    domains,
     /Managing Director of HOSTAFRICA Kenya/,
-    "/kedomains must still disclose the directorship beside the register link",
+    "/domains must still disclose the directorship beside the register link",
   );
 });

@@ -218,7 +218,7 @@ test("an unregistered domain is reported as such, never scored", async () => {
     assert.equal(outcome.ok, false);
     assert.equal(outcome.status, 404);
     assert.match(outcome.error, /is not registered/i);
-    assert.equal(outcome.next.href, "/kedomains", "the visitor is sent somewhere useful");
+    assert.equal(outcome.next.href, "/domains", "the visitor is sent somewhere useful");
     assert.equal(db.scans.length, 0, "nothing may be stored for a domain that does not exist");
   } finally { restore(); }
 });
@@ -345,7 +345,7 @@ test("opt-out deletes stored lookup results as well as scans", async () => {
   // A direct check of the domain, and a bare-name search that returned it.
   await logToolCheck(db, { tool: "email-security", query: "leaveme.co.ke", summary: "50/100 C" });
   await logToolCheck(db, {
-    tool: "kedomains",
+    tool: "domains",
     query: "leaveme",
     summary: "leaveme.co.ke: registered",
     detail: [{ domain: "leaveme.co.ke", status: "registered" }],
@@ -364,7 +364,7 @@ test("after opt-out, further lookups of that domain are not recorded", async () 
   await optOutDomain(db, "quiet.co.ke");
   await logToolCheck(db, { tool: "email-security", query: "quiet.co.ke", summary: "70/100 B" });
   await logToolCheck(db, {
-    tool: "kedomains",
+    tool: "domains",
     query: "quiet",
     summary: "quiet.co.ke: registered",
     domains: ["quiet.co.ke", "quiet.ke"],
