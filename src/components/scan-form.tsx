@@ -157,11 +157,11 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
         </button>
       </form>
 
-      <p className="check-note" role="status" aria-live="polite">
-        {state === "loading"
-          ? "Reading public records: registry, DNS, email and the homepage…"
-          : "This reads public information only. It touches nothing private and never asks you to log in."}
-      </p>
+      {state === "loading" && (
+        <p className="check-note" role="status" aria-live="polite">
+          Reading public records: registry, DNS, email and the homepage…
+        </p>
+      )}
 
       {error && (
         <div className="check-error" role="alert" tabIndex={-1} ref={outcomeRef}>
