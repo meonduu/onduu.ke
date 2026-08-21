@@ -1,6 +1,34 @@
 # Changelog
 
-CURRENT VERSION: v4.80.0 — 0116hrs:22nd August2026
+CURRENT VERSION: v4.80.1 — 0148hrs:22nd August2026
+
+## v4.80.1 — 0148hrs:22nd August2026
+
+**The three tool titles fit one line.** `/scan`, `/kedomains` and
+`/email-security` now set their heading on a single line on a desktop
+screen, at the same 44px as before.
+
+The font size was never the cause. Measured in the real face, the longest
+of the three — "Can someone send email pretending to be you?" — is 885px
+wide at 44px, against 1238px of hero width at 1440. It was
+`max-width:17ch` that clamped the heading to about seventeen characters
+and forced three lines onto a screen with room for one. That constraint
+is now 60ch, wide enough to stop constraining these three and narrow
+enough to keep a sane measure if a future tool title is much longer.
+
+Mobile improves too, without a size change: 17ch was narrower than the
+323px available at 375px, so the same heading was wrapping to three lines
+where two now suffice. Headline, lede and search box all sit above the
+fold.
+
+**Why not "never wraps at any width", which was the original ask:** at
+375px that heading needs **16px** to hold one line — smaller than the
+18px body text, which would make the headline the least prominent thing
+on the page. One line is achievable from about 1024px up, and below that
+the screen has to give. Shortening the titles is the only route to one
+line on a phone, and that is the owner's wording to choose, not mine.
+
+245 tests pass.
 
 ## v4.80.0 — 0116hrs:22nd August2026
 

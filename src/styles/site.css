@@ -76,7 +76,7 @@ footer .wordmark .track{stroke:#28323C}footer .wordmark .arc{stroke:#CD7A50}foot
 
 /* Tool-first hero (19 Aug 2026). Last in the file on purpose: these share
    specificity with the .page-hero rules above and must win the cascade. */
-.page-hero--tool{grid-template-columns:1fr;gap:22px;padding-bottom:30px;border-bottom:0}.page-hero--tool h1{font-size:clamp(30px,3.4vw,44px);max-width:17ch}.page-hero--tool .lede{max-width:640px;font-size:17px}.page-hero--tool+.check-section{padding-top:26px}@media(max-width:760px){.page-hero--tool{padding-bottom:20px}.page-hero--tool+.check-section{padding-top:20px}}
+.page-hero--tool{grid-template-columns:1fr;gap:22px;padding-bottom:30px;border-bottom:0}.page-hero--tool h1{font-size:clamp(30px,3.4vw,44px);max-width:60ch}.page-hero--tool .lede{max-width:640px;font-size:17px}.page-hero--tool+.check-section{padding-top:26px}@media(max-width:760px){.page-hero--tool{padding-bottom:20px}.page-hero--tool+.check-section{padding-top:20px}}
 
 /* Hero rhythm (19 Aug 2026). Measured before: the eyebrow sat 10px off the
    headline while the paragraph floated 45px below it, so the headline was
