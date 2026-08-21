@@ -1,6 +1,48 @@
 # Changelog
 
-CURRENT VERSION: v4.82.0 — 2035hrs:21st August2026
+CURRENT VERSION: v4.83.0 — 2118hrs:21st August2026
+
+## v4.83.0 — 2118hrs:21st August2026
+
+**The assessment says that agents analyse it, and the privacy notice stops
+denying it.** Onduu's assessment is analysed by its own agents, some of
+which run on third-party AI services, with a person reviewing every
+finding, score and recommendation before a report is issued (owner,
+21 August 2026).
+
+The privacy notice carried the sentence "No artificial-intelligence or
+language-model provider receives your form submissions". It was true when
+written and false once agents were introduced, and it was live in that
+state. It now states what actually happens: the substance of the
+assessment reaches those services with the name, email address and
+company name removed first, so nothing identifying is sent. The free
+domain, DNS and email tools use no agents and are scoped out explicitly.
+
+A sweep for the same claim in other words found a second one:
+`/digital-fitness` said assessment answers were "seen only inside
+Ujiajiri Enterprises Limited" — true of providers and HOSTAFRICA, untrue
+of the processors that actually see them, and it would have sat on the
+same page as the new disclosure, contradicting it. Lesson L14.
+
+The new copy leads with rigour rather than with the tooling, per the
+CLAUDE.md rule against leading with AI: the same framework runs over the
+same six dimensions every time, agents do that first pass, and because
+agents misread things a person reviews everything before issue. The
+capability claim and the human review are deliberately inseparable —
+stating the first without the second is the agent-accuracy promise
+CLAUDE.md forbids.
+
+`/legal/assessment-terms` gains a ruling on the evidence labels: agent
+assistance is never itself an evidence basis, because an agent produces
+no facts — it organises and interprets facts that came from a
+declaration, a public observation or a permitted test. "Manually
+reviewed" continues to mean a person examined the evidence.
+
+`tests/agent-disclosure.test.mjs` is new: five guards pinning that no page
+denies AI processing, that the services are disclosed, that the
+de-identification claim travels with them, that the agent claim never
+appears without the human review, and that the four deterministic tools
+are never described as agent-analysed.
 
 ## v4.82.0 — 2035hrs:21st August2026
 

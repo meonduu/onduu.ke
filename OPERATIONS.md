@@ -125,6 +125,33 @@ code against the notice (`tests/seo-and-gates.test.mjs`), and the register
 at `docs/specs/processors-and-transfers.md` lists what each one receives,
 so the next addition has an obvious place to be recorded (v4.54.0).
 
+**L14 — 21 Aug 2026 · A true sentence went false while nobody was
+looking.** The privacy notice said "No artificial-intelligence or
+language-model provider receives your form submissions". That was
+accurate when written and became false when assessment agents were
+introduced, and it stayed published in that state. A sweep for the same
+claim in other words found a second copy on `/digital-fitness` —
+assessment answers "seen only inside Ujiajiri Enterprises Limited" — so
+the correction had to land in two files and two vocabularies at once.
+
+This is **L8 for the second time**: a processor added without telling the
+notice. L8's guard pins every processor *named in the code* against the
+notice, and it could not see this one, because agents are an operational
+arrangement rather than a binding in `wrangler.jsonc` — no import, no
+secret, no fetch to a new hostname. A processor can now arrive without
+touching the repository at all, and the existing check is blind to
+exactly that case.
+
+The deeper pattern is not "we forgot to update a page". Both this and the
+21 August "no commission" correction were sentences that were true on the
+day they were written; nothing re-examines a claim when the world it
+describes changes. Guard: `tests/agent-disclosure.test.mjs` pins the
+disclosure and its de-identification claim, so the assurance and the
+pipeline must change together. Standing rule: **a change to how the
+business operates is a documentation change**, and the first question on
+any new processing arrangement is which published sentence it just
+falsified.
+
 **L13 — 22 Aug 2026 · A chained command shipped a red suite.** v4.79.0
 was committed, merged and deployed while `npm test` reported `fail 1`.
 The tests ran, printed the failure, and the deploy proceeded — because
