@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v4.74.0 — 1822hrs:21st August2026
+CURRENT VERSION: v4.75.0 — 1912hrs:21st August2026
+
+## v4.75.0 — 1912hrs:21st August2026
+
+**Each domain result is now a sentence.** Owner's idea: "sam.ke is
+RESERVED by KENIC, and sam.co.ke is TAKEN. Looks nice to read." It does —
+a name with a status word stacked underneath is a data row; a statement is
+how someone would say it aloud.
+
+    sam.co.ke is TAKEN.
+    sam.ke is RESERVED by KENIC.
+    onduusentence2026.co.ke appears available.
+
+The statement is the heading, so each result keeps one `h3` and the status
+keeps its colour. Registrar and expiry follow beneath a taken name as
+before.
+
+**"appears available" keeps its hedge deliberately.** The owner's phrasing
+was "when available, same", and "is available" would have read more
+naturally — but `/legal/tool-limitations` quotes that exact phrase as "an
+observation, not a reservation", and DNS plus RDAP cannot prove a name is
+free, only that nothing answered. Hardening the wording would have made
+the legal page quote something the tool no longer says.
+
+The available status is deliberately **not** green: green already marks
+TAKEN here, at the owner's request in v4.73.1, and one colour cannot mean
+both "you can have it" and "you cannot". It inherits the heading colour
+and lets the result's green left border carry the positive signal.
+
+Lede: "leaves the door open to cybersquatting" → **"leaves the door open
+to a copycat"**. Plain English a business owner grasps at a glance, where
+the original is a term of art. It also matches the section below, which
+already says "a competing business, a copycat, or worse".
+
+234 tests pass.
 
 ## v4.74.0 — 1822hrs:21st August2026
 
