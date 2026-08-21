@@ -1,6 +1,48 @@
 # Changelog
 
-CURRENT VERSION: v4.75.1 — 1938hrs:21st August2026
+CURRENT VERSION: v4.76.0 — 2034hrs:21st August2026
+
+## v4.76.0 — 2034hrs:21st August2026
+
+**The affiliate mechanics now live on one page: `/legal/commercial-
+relationships`.** Owner decision, replacing the rule that repeated the
+detail wherever a HOSTAFRICA link appeared.
+
+The detail — identifier 916, that it pays nothing, and that clicks are
+counted in aggregate only — moves to the HOSTAFRICA section of the page
+whose entire purpose is commercial relationships, and which was until now
+the one page that did **not** mention it. Removed from `/kedomains`,
+`/legal/tool-limitations` and the 18 August article, which now points to
+the page rather than restating it.
+
+**The directorship stays at the decision point.** `/kedomains` still says
+"Wycliffe, who operates Onduu, is also Managing Director of HOSTAFRICA
+Kenya" beside the register link, as does the HOSTAFRICA path page; both
+remain test-pinned. What moved is the mechanics, not the relationship —
+the owner's instruction quoted the commission and identifier sentences,
+not the directorship.
+
+**A sentence that would have become false was caught in the move.** The
+same page's HOSTAFRICA section ended "…will be disclosed at the relevant
+decision point" — a promise the new arrangement breaks. It now reads
+"is disclosed on this page. It is reachable from the footer of every page
+on this site", which is both true and the reason the single page works:
+the footer link is on all 24 routes.
+
+`CLAUDE.md` records the decision and its date rather than quietly dropping
+the old rule, and splits it in two: the directorship is disclosed at the
+decision point, the mechanics on one page.
+
+Guard: `tests/domains.test.mjs` now enforces the arrangement in **both**
+directions — the one page must carry all three facts, and `/kedomains`,
+`/legal/tool-limitations` and the HOSTAFRICA path must not. Verified by
+re-adding a second copy (fails) and by stripping the identifier from the
+one page (fails). `/kedomains` is separately asserted to keep the
+directorship.
+
+No lesson: a deliberate policy change by the owner, not a fault.
+
+234 tests pass.
 
 ## v4.75.1 — 1938hrs:21st August2026
 

@@ -284,30 +284,39 @@ test("the per-connection search limit refuses after the cap and resets", () => {
   assert.equal(withinSearchLimit("test-key", t0 + 61 * 60 * 1000), true);
 });
 
-// The link and the promise about the link must not be able to drift apart.
-// The site says the affiliate id attributes the referral and earns nothing;
-// if the id is removed the sentence is wrong, and if the sentence is
-// softened back to "attribution tags only" the URL contradicts it.
-test("the affiliate id and its disclosure move together", async () => {
+// The link and the promise about the link must not drift apart, and the
+// promise now lives in exactly one place. Owner decision, 21 Aug 2026: the
+// affiliate mechanics sit on /legal/commercial-relationships alone, after
+// the same detail repeated on three pages had to be corrected in one go
+// when the identifier was added. One page is one place to keep true — but
+// only if nothing quietly re-adds a second copy, and only if the one page
+// never loses it.
+test("the affiliate mechanics live on exactly one page", async () => {
   const { fetchPath } = await import("./helpers/server.mjs");
   assert.match(REGISTER_URL, /aff=916/, "the register link carries the affiliate id");
 
-  for (const path of ["/kedomains", "/legal/tool-limitations"]) {
-    const html = await (await fetchPath(path)).text();
-    assert.match(
-      html,
-      /affiliate identifier 916/,
-      `${path} must name the affiliate id it routes visitors through`,
-    );
-    assert.match(
-      html,
-      /no commission|pay Onduu no commission/,
-      `${path} must still state that no commission is earned`,
-    );
+  const home = "/legal/commercial-relationships";
+  const html = await (await fetchPath(home)).text();
+  assert.match(html, /affiliate identifier 916/, `${home} must name the affiliate id`);
+  assert.match(html, /pay Onduu no commission/, `${home} must state that it pays nothing`);
+  assert.match(html, /aggregate only/, `${home} must explain how clicks are counted`);
+
+  // Every other page must stay silent on the mechanics. /kedomains keeps
+  // the directorship — that is a different disclosure, pinned elsewhere.
+  for (const path of ["/kedomains", "/legal/tool-limitations", "/paths/hostafrica-infrastructure"]) {
+    const other = await (await fetchPath(path)).text();
     assert.doesNotMatch(
-      html,
-      /attribution tags only/,
-      `${path} still claims "attribution tags only" while the link carries an affiliate id`,
+      other,
+      /affiliate identifier 916|aff=916/,
+      `${path} repeats the affiliate mechanics — they belong on ${home} alone`,
     );
   }
+
+  // The directorship disclosure at the decision point is unaffected.
+  const kedomains = await (await fetchPath("/kedomains")).text();
+  assert.match(
+    kedomains,
+    /Managing Director of HOSTAFRICA Kenya/,
+    "/kedomains must still disclose the directorship beside the register link",
+  );
 });

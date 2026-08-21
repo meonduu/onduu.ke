@@ -277,7 +277,8 @@ export const briefPages: Record<string, PageContent> = {
           "Wycliffe is the Managing Director of HOSTAFRICA Kenya. HOSTAFRICA is the provider, seller, biller, provisioner, renewer and supporter of any HOSTAFRICA domains, hosting, email, VPS or other infrastructure products referenced on this website.",
           "Onduu may explain infrastructure use cases and direct an interested visitor to an approved official HOSTAFRICA route. Onduu and Ujiajiri do not themselves supply or support HOSTAFRICA products and must not be understood as substitutes for HOSTAFRICA's contracts, terms, billing or support.",
           "An Ujiajiri introduction is separate from a HOSTAFRICA product route. An independent provider introduced by Ujiajiri is not thereby a HOSTAFRICA employee, agent or approved partner. Customers are not required to purchase HOSTAFRICA products merely because they use Onduu or request an Ujiajiri introduction.",
-          "Any commission, referral benefit, sponsorship, free product or other material commercial relationship connected to a recommendation or link will be disclosed at the relevant decision point."
+          "The domain search links an available name to HOSTAFRICA's checkout. That link carries HOSTAFRICA affiliate identifier 916 and campaign tags, which attribute the referral and pay Onduu no commission. Clicks on it are counted in aggregate only, with nothing recorded about the visitor who clicked.",
+          "Any commission, referral benefit, sponsorship, free product or other material commercial relationship connected to a recommendation or link is disclosed on this page. It is reachable from the footer of every page on this site."
         ]
       },
       {
