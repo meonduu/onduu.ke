@@ -5,7 +5,7 @@
  *   /go/scans              fitness scan results
  *   /go/email-security     email checker usage
  *   /go/dns                DNS health check usage
- *   /go/kedomains          domain search usage
+ *   /go/domains          domain search usage
  *   /go/analytics          first-party page views
  *   /go/routing            outbound clicks to routed destinations
  *   /go/blocklist          do-not-scan list
@@ -59,7 +59,7 @@ const SECTIONS: [slug: string, label: string][] = [
   ["scans", "Fitness scans"],
   ["email-security", "Email checker"],
   ["dns", "DNS checker"],
-  ["kedomains", "Domain search"],
+  ["domains", "Domain search"],
   ["analytics", "Analytics"],
   ["routing", "Routed clicks"],
   ["blocklist", "Do-not-scan"],
@@ -260,7 +260,7 @@ ${table(
     ['<a href="/go/scans">Fitness scans</a>', "Stored scan results: domain, score, coverage, rubric version", publicLink("/scan")],
     ['<a href="/go/email-security">Email checker</a>', "SPF/DKIM/DMARC checks run, most-checked domains, daily trend", publicLink("/email-security")],
     ['<a href="/go/dns">DNS checker</a>', "DNS health checks run, most-checked domains, daily trend", publicLink("/dns")],
-    ['<a href="/go/kedomains">Domain search</a>', "Domain searches run, most-searched names, daily trend", publicLink("/kedomains")],
+    ['<a href="/go/domains">Domain search</a>', "Domain searches run, most-searched names, daily trend", publicLink("/domains")],
     ['<a href="/go/analytics">Analytics</a>', "First-party page views: pages, referrers, countries, devices, daily trend", publicLink("/", "onduu.ke (all pages)")],
     ['<a href="/go/routing">Routed clicks</a>', "Outbound clicks to HOSTAFRICA and other routed destinations", publicLink("/paths/hostafrica-infrastructure")],
     ['<a href="/go/blocklist">Do-not-scan</a>', "Domains that asked not to be scanned", publicLink("/legal/tool-limitations")],
@@ -414,9 +414,15 @@ ${table(
  */
 async function toolUsage(
   db: D1Database,
-  opts: { slug: string; tool: string; title: string; paths: string[]; blurb: string },
+  opts: { slug: string; tool: string | string[]; title: string; paths: string[]; blurb: string },
 ): Promise<Response> {
   const placeholders = opts.paths.map(() => "?").join(",");
+  // A tool may answer to more than one stored name after a rename. The
+  // domain search stored "kedomains" until 21 Aug 2026 (migration 0011);
+  // reading both means its 47 rows of history appear whether or not the
+  // migration has run, instead of the page going quietly empty.
+  const tools = Array.isArray(opts.tool) ? opts.tool : [opts.tool];
+  const toolIn = tools.map(() => "?").join(",");
   const [checks, recent, top, visits, daily] = await Promise.all([
     safe(
       db
@@ -425,9 +431,9 @@ async function toolUsage(
                   SUM(CASE WHEN created_at >= datetime('now','-30 days') THEN 1 ELSE 0 END) AS d30,
                   SUM(CASE WHEN created_at >= datetime('now','-7 days') THEN 1 ELSE 0 END) AS d7,
                   COUNT(DISTINCT query) AS domains
-           FROM tool_checks WHERE tool = ?`,
+           FROM tool_checks WHERE tool IN (${toolIn})`,
         )
-        .bind(opts.tool)
+        .bind(...tools)
         .first<{ all_time: number; d30: number; d7: number; domains: number }>(),
       { all_time: 0, d30: 0, d7: 0, domains: 0 },
     ),
@@ -435,9 +441,9 @@ async function toolUsage(
       db
         .prepare(
           `SELECT query, summary, created_at FROM tool_checks
-           WHERE tool = ? ORDER BY created_at DESC LIMIT 100`,
+           WHERE tool IN (${toolIn}) ORDER BY created_at DESC LIMIT 100`,
         )
-        .bind(opts.tool)
+        .bind(...tools)
         .all(),
       EMPTY,
     ),
@@ -445,9 +451,9 @@ async function toolUsage(
       db
         .prepare(
           `SELECT query, COUNT(*) AS n, MAX(created_at) AS last_seen FROM tool_checks
-           WHERE tool = ? GROUP BY query ORDER BY n DESC, last_seen DESC LIMIT 25`,
+           WHERE tool IN (${toolIn}) GROUP BY query ORDER BY n DESC, last_seen DESC LIMIT 25`,
         )
-        .bind(opts.tool)
+        .bind(...tools)
         .all(),
       EMPTY,
     ),
@@ -466,10 +472,10 @@ async function toolUsage(
       db
         .prepare(
           `SELECT substr(created_at,1,10) AS day, COUNT(*) AS n FROM tool_checks
-           WHERE tool = ? AND created_at >= datetime('now','-30 days')
+           WHERE tool IN (${toolIn}) AND created_at >= datetime('now','-30 days')
            GROUP BY day ORDER BY day DESC`,
         )
-        .bind(opts.tool)
+        .bind(...tools)
         .all(),
       EMPTY,
     ),
@@ -1102,12 +1108,12 @@ export async function handleDashboard(
         paths: ["/dns"],
         blurb: "DNS health checks run by visitors: nameservers, delegation, addresses, DNSSEC.",
       });
-    case "kedomains":
+    case "domains":
       return toolUsage(db, {
-        slug: "kedomains",
-        tool: "kedomains",
+        slug: "domains",
+        tool: ["domains", "kedomains"], // both spellings; see migration 0011
         title: "Domain search",
-        paths: ["/kedomains", "/domains"],
+        paths: ["/domains", "/kedomains"], // /kedomains: views counted before the 21 Aug rename
         blurb: "Kenyan domain searches run by visitors.",
       });
     case "analytics":

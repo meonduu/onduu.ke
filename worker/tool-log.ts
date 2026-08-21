@@ -13,7 +13,7 @@
 
 import { isDomainBlocklisted } from "./scan/store.ts";
 
-export type ToolName = "email-security" | "kedomains" | "dns";
+export type ToolName = "email-security" | "domains" | "dns";
 
 export interface ToolCheck {
   tool: ToolName;
@@ -119,7 +119,7 @@ interface DomainSearchBody {
 export function summariseDomainSearch(body: DomainSearchBody): ToolCheck | null {
   if (!body?.ok || !body.query || !body.results?.length) return null;
   return {
-    tool: "kedomains",
+    tool: "domains",
     query: body.query,
     // The typed query may be a bare name; the blocklist is checked against
     // the domains the search actually concerned.

@@ -235,7 +235,7 @@ test("the confirm page acts only on POST, and a bad or missing token is harmless
 
 test("every page that offers the opt-out points at /do-not-scan, not the sales form", async () => {
   // /email-security added on the owner's instruction (v4.84.1); /dns and
-  // /kedomains deliberately not — offered, declined. The set is pinned so
+  // /domains deliberately not — offered, declined. The set is pinned so
   // it changes by decision rather than by drift.
   for (const path of ["/scan", "/email-security", "/legal/privacy", "/legal/tool-limitations"]) {
     const html = await (await fetchPath(path)).text();
@@ -246,7 +246,7 @@ test("every page that offers the opt-out points at /do-not-scan, not the sales f
       `${path} still routes the opt-out through the contact form`,
     );
   }
-  for (const path of ["/dns", "/kedomains"]) {
+  for (const path of ["/dns", "/domains"]) {
     const html = await (await fetchPath(path)).text();
     assert.doesNotMatch(html, /href="\/do-not-scan"/, `${path} does not carry the offer (owner decision, 21 Aug 2026)`);
   }

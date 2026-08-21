@@ -18,13 +18,13 @@ const PUBLISHED_ROUTES = [
   "guides/agents-on-vps",
   "guides/domains-and-dns",
   "guides/email-and-trust",
-  "kedomains",
+  "domains",
 ];
 
 // Old delivery-offer routes 301 to their strategy successors.
 const REDIRECTED = {
   "/check": "/email-security",
-  "/domains": "/kedomains",
+  "/kedomains": "/domains",
   "/email-security/glossary": "/email-security",
   "/paths": "/digital-fitness",
   "/solutions": "/digital-fitness",
@@ -92,6 +92,25 @@ test("old delivery-offer routes 301 to their strategy successors", async () => {
   }
 });
 
+test("no redirect lands on another redirect", async () => {
+  // The domain search has now moved twice: /domains → /kedomains on 18 Aug
+  // 2026, and back on 21 Aug. Reversing a redirect means editing the line
+  // rather than adding one, because a map holding BOTH directions is an
+  // infinite loop that takes the route down for everyone while each end
+  // points at the other. A 301 whose target is not a real page is the
+  // symptom, whichever way it was caused.
+  for (const [from, to] of Object.entries(REDIRECTED)) {
+    const landed = await fetchPath(to);
+    assert.equal(
+      landed.status,
+      200,
+      `${from} redirects to ${to}, which is not a page (${landed.status}${
+        landed.status >= 300 && landed.status < 400 ? ` → ${landed.headers.get("location")}` : ""
+      })`,
+    );
+  }
+});
+
 test("the retired Labs route leaves nothing behind", async () => {
   // Removed 19 Aug 2026 (owner): the page is gone, the redirect is covered
   // above, and no page may still advertise it.
@@ -147,7 +166,7 @@ test("tool limitations page states the honest limits of all four tools", async (
   assert.match(html, /never counts as a pass or a failure/i, "scan rule 2 stated");
   assert.match(html, /contact form/i, "opt-out route published (via the contact form)");
   // Every live tool must appear here, or the page under-describes the site.
-  for (const tool of ["/email-security", "/kedomains", "/scan", "/dns"]) {
+  for (const tool of ["/email-security", "/domains", "/scan", "/dns"]) {
     assert.ok(html.includes(tool), `tool limitations must cover ${tool}`);
   }
   assert.match(html, /not a propagation checker/i, "DNS check vantage limit stated");
@@ -279,7 +298,7 @@ test("the footer identifies the operator", async () => {
   // the place a repeated notice goes unread. The disclosure remains where
   // a reader is actually choosing to act on it, and the two tests below
   // pin exactly those places: /paths/hostafrica-infrastructure beside the
-  // outbound CTA, and /kedomains beside the registration links. It is also
+  // outbound CTA, and /domains beside the registration links. It is also
   // on /about and in full on /legal/commercial-relationships.
   //
   // So: no assertion here that the footer carries it, and none that it
@@ -293,7 +312,7 @@ test("the approved HOSTAFRICA destination is UTM-tagged with no affiliate parame
   assert.doesNotMatch(paths, /aff=/, "affiliate parameters are not approved");
   assert.match(paths, /Managing Director of HOSTAFRICA Kenya/, "disclosure at the decision point");
 
-  const domains = await (await fetchPath("/kedomains")).text();
+  const domains = await (await fetchPath("/domains")).text();
   assert.match(domains, /Managing Director of HOSTAFRICA Kenya/, "domain page carries the disclosure");
   assert.doesNotMatch(domains, /aff=/);
 });
@@ -410,7 +429,7 @@ test("the owner's personal email appears on no public page", async () => {
   // replaced by the contact form. Deletion requests, complaints, consent
   // withdrawal and the domain opt-out all route through /contact now.
   for (const path of [
-    "/", "/contact", "/digital-fitness", "/scan", "/kedomains", "/dns",
+    "/", "/contact", "/digital-fitness", "/scan", "/domains", "/dns",
     "/email-security", "/legal/privacy", "/legal/tool-limitations",
     "/legal/commercial-relationships", "/legal/assessment-terms", "/about",
   ]) {

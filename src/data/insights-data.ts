@@ -113,7 +113,7 @@ export const articles: Article[] = [
           {
             "t": "a",
             "v": "domain search",
-            "href": "/kedomains"
+            "href": "/domains"
           },
           {
             "t": "text",

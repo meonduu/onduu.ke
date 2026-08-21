@@ -28,7 +28,7 @@ import { collectRdap, type RdapFacts } from "./scan/collect.ts";
 // "no affiliate parameter" decision): the link now carries HOSTAFRICA
 // affiliate id 916 as well as the UTMs. The owner confirmed that id 916 is
 // used for ATTRIBUTION ONLY and pays Onduu no commission — which is why
-// the disclosures on /kedomains and /legal/tool-limitations now name the
+// the disclosures on /domains and /legal/tool-limitations now name the
 // affiliate id explicitly instead of saying "attribution tags only".
 //
 // If that ever changes and the id starts paying, those disclosures become

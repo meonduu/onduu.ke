@@ -9,13 +9,17 @@ import { recordPageView, shouldRecord } from "../worker/pageviews";
 // Route history, each old URL 301ing to its successor: the checker began
 // life at /email-security (v8.8), moved to /check in the rebuild, and moved
 // back to /email-security on 18 Aug 2026 (owner rename, with /domains →
-// /kedomains). The /solutions and /infrastructure trees were removed by the
+// /kedomains, reversed again on 21 Aug 2026). The /solutions and /infrastructure trees were removed by the
 // 18 August 2026 strategy (docs/strategy/): delivery offers became guides
 // and paths.
 const REDIRECTS: Record<string, string> = {
   "/email-security/glossary": "/email-security",
   "/check": "/email-security",
-  "/domains": "/kedomains",
+  // Renamed back to /domains on the owner's instruction, 21 Aug 2026
+  // (v4.85.0). This line pointed the other way from 18 Aug: /domains →
+  // /kedomains. Both directions must never exist at once — that is an
+  // infinite redirect, and it would take the tool down for everyone.
+  "/kedomains": "/domains",
   // Digital Readiness became Digital Fitness on the owner's instruction,
   // 20 August 2026. /readiness carried the primary CTA from launch and is
   // the most-linked route on the site, so this redirect is load-bearing:

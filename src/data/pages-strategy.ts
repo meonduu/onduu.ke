@@ -113,7 +113,7 @@ export const strategyPages: Record<string, PageContent> = {
             href: "https://panel.hostafrica.com/?utm_source=onduu&utm_medium=referral&utm_campaign=infrastructure-path",
             external: true,
           },
-          { label: "Search Kenyan domains first", href: "/kedomains" },
+          { label: "Search Kenyan domains first", href: "/domains" },
         ],
         note: "Product information, ordering, billing, provisioning, renewal and support all happen at HOSTAFRICA.",
       },
@@ -302,7 +302,7 @@ export const strategyPages: Record<string, PageContent> = {
           "The pair matters too: owning yourbusiness.co.ke without yourbusiness.ke (or the reverse) leaves the twin open for anyone, including someone who wants to send email that looks like yours.",
         ],
         links: [
-          { label: "Check a domain now: registrar, lock and expiry", href: "/kedomains" },
+          { label: "Check a domain now: registrar, lock and expiry", href: "/domains" },
         ],
       },
       {
@@ -380,7 +380,7 @@ export const strategyPages: Record<string, PageContent> = {
       },
       {
         eyebrow: "DOMAIN SEARCH",
-        title: "/kedomains, public availability signals, confirmed at checkout.",
+        title: "/domains, public availability signals, confirmed at checkout.",
         body: [
           "Checks the extension you enter alongside its .ke twin, using public DNS and registry (RDAP) records. Taken domains show their registrar, transfer-lock status and expiry where the registry publishes them; some registries publish little or nothing. The name searched and what was found are stored (since 18 August 2026) with no visitor identity attached.",
         ],
