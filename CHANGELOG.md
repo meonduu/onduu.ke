@@ -1,6 +1,21 @@
 # Changelog
 
-CURRENT VERSION: v4.86.0 — 2354hrs:21st August2026
+CURRENT VERSION: v4.86.1 — 0000hrs:22st August2026
+
+## v4.86.1 — 0000hrs:22st August2026
+
+**The homepage lede stops at the route.** Owner's instruction: the
+sentence now ends "...and points to the right next route." The clause
+naming the two destinations — an independent Ujiajiri implementation
+partner, an official HOSTAFRICA product path — is gone from the hero.
+
+Nothing is hidden by the removal. Both routes are still named further
+down the homepage and linked there, and the fee disclosure sits beside
+the introduction CTA where it belongs, so the pinned cross-links in
+`tests/seo-and-gates.test.mjs` all still hold. What the hero loses is a
+list of answers to a question the visitor has not asked yet.
+
+No lesson: a copy trim on the owner's instruction.
 
 ## v4.86.0 — 2354hrs:21st August2026
 
