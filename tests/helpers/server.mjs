@@ -89,6 +89,12 @@ async function spawnWorker(extraArgs) {
         "0",
         "--persist-to",
         join(stateDir, "state"),
+        // /go verifies the Cloudflare Access assertion cryptographically
+        // (22 Aug 2026) and no test can mint one. This lets the harness in
+        // on the email header alone; production never sets it, and
+        // tests/access-jwt.test.mjs asserts wrangler.jsonc never will.
+        "--var",
+        "ACCESS_DEV_BYPASS:true",
         ...extraArgs,
       ],
       { cwd: root, stdio: ["ignore", logFd, logFd] },

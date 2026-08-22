@@ -24,23 +24,64 @@
  *
  * The page is noindex and disallowed in robots.
  */
+import { verifyAccessJwt } from "./access-jwt.ts";
 import { eatDateTime } from "../src/lib/datetime.ts";
 
 interface Env {
   onduu_leads?: D1Database;
   CLIENT_KEY_SECRET?: string;
+  /** Test harness only; see accessIdentity. Never set in production. */
+  ACCESS_DEV_BYPASS?: string;
 }
 
 /**
- * Cloudflare Access sets these on every request it authenticates, and strips
- * any a client tries to send. Their absence means the request did not come
- * through Access.
+ * Who is asking, established from the signed assertion rather than from a
+ * header.
+ *
+ * Cloudflare Access sets these on every request it authenticates and
+ * strips any a client sends, so their absence still means the request did
+ * not come through Access. What changed on 22 Aug 2026 is that presence is
+ * no longer enough: the JWT is verified against Cloudflare's published
+ * keys, and the email is read from the verified payload.
+ *
+ * Returns null to refuse. `degraded` is true only when the keys could not
+ * be fetched, in which case the old header check stands and /go says so —
+ * see the reasoning in worker/access-jwt.ts.
  */
-function accessIdentity(request: Request): string | null {
+async function accessIdentity(
+  request: Request,
+  devBypass = false,
+): Promise<{ identity: string; degraded: boolean } | null> {
   const email = request.headers.get("Cf-Access-Authenticated-User-Email");
   const jwt = request.headers.get("Cf-Access-Jwt-Assertion");
   if (!jwt && !email) return null;
-  return email || "authenticated";
+
+  // The test harness cannot mint a Cloudflare-signed assertion, so it sets
+  // ACCESS_DEV_BYPASS on the worker it spawns. It is never set in
+  // wrangler.jsonc and a test asserts that it never is: with it, an email
+  // header alone is enough, which is precisely what production must not
+  // accept.
+  if (devBypass && email) return { identity: email, degraded: true };
+
+  if (!jwt) {
+    // Access always sends the assertion alongside the email. An email
+    // header arriving without one did not come from Access.
+    console.error(JSON.stringify({ event: "access_no_assertion" }));
+    return null;
+  }
+
+  const verified = await verifyAccessJwt(jwt);
+  if (verified.ok) return { identity: verified.email || email || "authenticated", degraded: false };
+
+  if (verified.reason === "unverifiable") {
+    console.error(JSON.stringify({ event: "access_certs_unreachable" }));
+    return { identity: email || "authenticated", degraded: true };
+  }
+
+  // Forged, expired, wrong audience, wrong issuer, unknown key: refused.
+  // The reason is logged; the token never is.
+  console.error(JSON.stringify({ event: "access_rejected", reason: verified.reason }));
+  return null;
 }
 
 const escape = (value: unknown) =>
@@ -177,7 +218,12 @@ const rowsOf = <T>(r: { results?: unknown[] }) => (r.results ?? []) as T[];
 
 /* ── sections ────────────────────────────────────────────────────────── */
 
-async function overview(db: D1Database, identity: string, keyed = true): Promise<Response> {
+async function overview(
+  db: D1Database,
+  identity: string,
+  keyed = true,
+  accessDegraded = false,
+): Promise<Response> {
   const notifyHealth = await safe(
     db
       .prepare("SELECT last_outcome, last_code, changed_at FROM notify_health WHERE id = 1")
@@ -249,12 +295,23 @@ async function overview(db: D1Database, identity: string, keyed = true): Promise
 reversible by anyone holding this database, and the processing register calls them pseudonymous.
 Set it: <code>npx wrangler secret put CLIENT_KEY_SECRET</code></div>`;
 
+  // Verification of the Access assertion is unavailable, so the dashboard
+  // is running on the header check alone. Not an outage — Access is still
+  // in front — but it must not be invisible.
+  const accessLight = accessDegraded
+    ? `<div class="note" style="border-left-color:#a8342a;background:#f6e3e0"><b>Access assertions are not being verified.</b>
+Cloudflare's signing keys could not be fetched, so this page is trusting the Access headers rather than a
+checked signature. It should clear by itself; if it persists, the team domain or audience in
+<code>worker/access-jwt.ts</code> no longer matches the Access application.</div>`
+    : "";
+
   return page(
     "Dashboard",
     `<h1>Onduu dashboard</h1>
 <p class="sub">Signed in via Cloudflare Access as ${escape(identity)}. Nothing here is shared with a third party.</p>
 ${light}
 ${keyLight}
+${accessLight}
 
 <div class="cards">
   <div class="card"><b>${num(c !== null, c?.enquiries30)}</b><span>Enquiries, 30 days</span><a href="/go/enquiries">All ${num(c !== null, c?.enquiries)} →</a></div>
@@ -1073,10 +1130,10 @@ export async function handleDashboard(
   env: Env,
   section = "",
 ): Promise<Response> {
-  // Fail closed, on every section. No Access headers means the request did
-  // not come through Cloudflare Access, so it sees nothing.
-  const identity = accessIdentity(request);
-  if (!identity) {
+  // Fail closed, on every section. No valid Access assertion means the
+  // request did not come through Cloudflare Access, so it sees nothing.
+  const access = await accessIdentity(request, env.ACCESS_DEV_BYPASS === "true");
+  if (!access) {
     return new Response("Not available.", {
       status: 403,
       headers: {
@@ -1097,7 +1154,7 @@ export async function handleDashboard(
   const db = env.onduu_leads;
   switch (section.replace(/\/$/, "")) {
     case "":
-      return overview(db, identity, Boolean(env.CLIENT_KEY_SECRET));
+      return overview(db, access.identity, Boolean(env.CLIENT_KEY_SECRET), access.degraded);
     case "enquiries":
       return enquiries(db);
     case "scans":

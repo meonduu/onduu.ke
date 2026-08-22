@@ -1,6 +1,59 @@
 # Changelog
 
-CURRENT VERSION: v4.93.0 — 1450hrs:22nd August2026
+CURRENT VERSION: v4.94.0 — 1514hrs:22nd August2026
+
+## v4.94.0 — 1514hrs:22nd August2026
+
+**The Access assertion on /go is verified, and CI is pinned.**
+Recommendations 9 and 1 of the security review.
+
+**/go trusted a header.** It let the request through if
+`Cf-Access-Authenticated-User-Email` or `Cf-Access-Jwt-Assertion` was
+merely *present*, and printed the email straight from the header — no
+signature, no expiry, no audience. Nothing was open: the Worker has no
+workers.dev route, it is itself the origin, and Access overwrites those
+headers on every request, so there was no way to reach it except through
+Access. The weakness was the absence of a second line for the day that
+stops being true — a route added in a hurry, a policy edited to cover
+fewer paths.
+
+The assertion is now checked properly: RS256 against Cloudflare's
+published keys, issuer, audience and expiry, with the identity read from
+the verified payload. The algorithm is dictated by the verifier and never
+read from the token, so `"alg": "none"` is refused as malformed. Claims
+are examined only after the signature passes.
+
+The team domain and audience are not secrets — both appear in the
+redirect an unauthenticated request receives, which is where these came
+from. They live in code rather than in a binding that could go missing
+and silently disable the check, and a test compares them against that
+live redirect so a recreated Access application fails loudly instead of
+locking the dashboard.
+
+**One failure is treated differently.** If Cloudflare's keys cannot be
+fetched, the old header check stands and /go shows a red panel saying so.
+Access is still in front; locking the owner out during a network blip
+would be worse than a defence-in-depth layer being briefly unavailable.
+Every other outcome — forged, expired, wrong audience, wrong issuer,
+unknown key — is a refusal.
+
+**CI.** Actions were on `@v4`, a pointer their owner can repoint at any
+time; both are now full commit SHAs. The workflow had no `permissions`
+block, so its token carried whatever the repository default allows; it is
+now `contents: read`. Pinning without automation is just an old
+dependency with extra steps, so `.github/dependabot.yml` raises weekly PRs
+for actions and npm, with majors left to be taken deliberately.
+
+Eleven new tests in `tests/access-jwt.test.mjs`, against real generated
+RSA keys rather than a mocked verifier: wrong signer, tampered payload,
+expired, another application's audience, another team's issuer, the
+`none` algorithm, unknown key, garbage, and unreachable keys reported as
+unverifiable rather than as forgery. The harness cannot mint a
+Cloudflare-signed token, so it spawns its worker with
+`ACCESS_DEV_BYPASS` — and a test asserts that flag never appears in the
+deployed config, because with it the whole change is undone.
+
+No lesson: external review, no repeat failure here.
 
 ## v4.93.0 — 1450hrs:22nd August2026
 

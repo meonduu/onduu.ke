@@ -6,6 +6,17 @@
 # the site's own email path, which is one of the things being checked.
 name: weekly-checks
 
+# Least privilege: this job reads the repository and nothing else. Without
+# an explicit block the default token can carry write scopes, so a
+# compromised action in the chain below could push. Actions are pinned to
+# full commit SHAs rather than mutable tags — "@v4" is a moving pointer the
+# action's owner can repoint at any time, which is the supply-chain path
+# that matters here (security review, 22 Aug 2026). Dependabot keeps the
+# pins current; see .github/dependabot.yml, because a pin nobody updates
+# becomes its own stale-dependency problem.
+permissions:
+  contents: read
+
 on:
   schedule:
     # Mondays 04:00 UTC (07:00 Nairobi)
@@ -17,8 +28,8 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 25
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
         with:
           node-version: 22
           cache: npm
