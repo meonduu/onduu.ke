@@ -34,6 +34,16 @@ interface Env {
   ACCESS_DEV_BYPASS?: string;
 }
 
+/** Was this request made to a loopback address? Only true in dev and tests. */
+function isLoopback(request: Request): boolean {
+  try {
+    const host = new URL(request.url).hostname;
+    return host === "localhost" || host === "127.0.0.1" || host === "::1" || host === "[::1]";
+  } catch {
+    return false;
+  }
+}
+
 /**
  * Who is asking, established from the signed assertion rather than from a
  * header.
@@ -57,11 +67,19 @@ async function accessIdentity(
   if (!jwt && !email) return null;
 
   // The test harness cannot mint a Cloudflare-signed assertion, so it sets
-  // ACCESS_DEV_BYPASS on the worker it spawns. It is never set in
-  // wrangler.jsonc and a test asserts that it never is: with it, an email
-  // header alone is enough, which is precisely what production must not
-  // accept.
-  if (devBypass && email) return { identity: email, degraded: true };
+  // ACCESS_DEV_BYPASS on the worker it spawns, and .dev.vars sets it for
+  // local preview. With it, an email header alone is enough — precisely
+  // what production must never accept.
+  //
+  // Two independent conditions, not one. The flag is absent from
+  // wrangler.jsonc and the built config (asserted by a test), AND the
+  // request must have arrived at a loopback address. Production requests
+  // arrive at onduu.ke, so setting the flag there by accident still would
+  // not open anything: Cloudflare routes on the real hostname, and a
+  // forged Host header does not reach a Worker that is not routed for it.
+  if (devBypass && email && isLoopback(request)) {
+    return { identity: email, degraded: true };
+  }
 
   if (!jwt) {
     // Access always sends the assertion alongside the email. An email
