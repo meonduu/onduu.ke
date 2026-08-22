@@ -1,6 +1,42 @@
 # Changelog
 
-CURRENT VERSION: v5.0.0 — 1737hrs:22nd August2026
+CURRENT VERSION: v5.1.0 — 1746hrs:22nd August2026
+
+## v5.1.0 — 1746hrs:22nd August2026
+
+**The closing note is gone from the scan and DNS results.** Owner's
+instruction, finishing what v5.0.0 started: the per-finding caveats went
+first, and these were the same argument once more at the bottom of the
+page.
+
+**Three things left with the scan's note, and none of them was a
+caveat:** the scan reference, the time it ran, and the "(a recent result
+for this domain)" marker that distinguished a cached result from a fresh
+one. That last is the one worth knowing about — someone who fixes a
+record and scans again now has nothing on the page telling them they may
+be looking at the earlier answer. All three are still returned by the API
+and recorded against the scan, so `/go/scans` is unchanged, and a comment
+in the component says where they went. A single line restoring the run
+time and the cached marker is easy if the loss turns out to matter.
+
+**`/email-security` keeps its note, deliberately**, and it was not part
+of the instruction. One sentence in it does real work: "Selectors cannot
+be listed from DNS, only guessed, so a missing DKIM key here is not proof
+that signing is off." Without it, a DKIM row reading NEEDS WORK tells a
+business its email signing is broken when it may be perfectly fine — the
+same distinction that kept the `/dns` per-finding caveats in v5.0.0.
+
+**A test needed restating rather than deleting.** "The /scan result
+timestamp is labelled EAT" failed, correctly: it required Africa/Nairobi
+to appear in that bundle, which had quietly become a requirement for a
+timestamp to exist at all. The rule was never that. It now says the
+prohibition instead — no client bundle may format a date in the visitor's
+own zone, and any zone it does name must be Africa/Nairobi — which holds
+whether or not a given island prints a date, and covers every island
+rather than one.
+
+No lesson: a copy removal on the owner's instruction; the test change is
+L16 applied again — a guard is worth what it actually forbids.
 
 ## v5.0.0 — 1737hrs:22nd August2026
 
