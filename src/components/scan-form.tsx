@@ -183,10 +183,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
               <span>/100 Public Signal Score</span>
             </div>
             <div>
-              <h2>What the public signals show for {result.domain}.</h2>
-              <p>
-                Evidence coverage {result.evidenceCoverage}%. {result.statement}
-              </p>
+              <h2>Signal for {result.domain}</h2>
             </div>
           </div>
 

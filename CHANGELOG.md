@@ -1,6 +1,29 @@
 # Changelog
 
-CURRENT VERSION: v5.4.0 — 1929hrs:22nd August2026
+CURRENT VERSION: v5.5.0 — 1942hrs:22nd August2026
+
+## v5.5.0 — 1942hrs:22nd August2026
+
+**The scan result opens with the score and the domain, nothing else.**
+Owner's instruction. The heading "What the public signals show for
+example.co.ke." becomes "Signal for example.co.ke", and the paragraph
+under it — the Evidence Coverage figure and the Verified sentence — is
+gone.
+
+The coverage figure has now been removed from this spot twice today, the
+second time explicitly. That is a decision rather than drift, so the
+guard that restored it last time is retired rather than worked around,
+with the reasoning left in its place: the figure is still computed,
+returned by the API, shown on `/go/scans` and explained on the `/scan`
+page itself; what changed is only what the result panel leads with.
+CLAUDE.md's "may report ... a Public Signal Score and Evidence Coverage"
+reads as a ceiling on claims, not a floor on layout — and the retired
+test's comment says where to look if a reviewer reads it the other way.
+
+`result.statement` and `result.evidenceCoverage` stay on the API
+response; nothing downstream changed.
+
+No lesson: copy on the owner's instruction.
 
 ## v5.4.0 — 1929hrs:22nd August2026
 
