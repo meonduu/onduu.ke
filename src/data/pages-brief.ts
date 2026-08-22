@@ -473,7 +473,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "COMPLAINTS",
         "title": "If you are not satisfied.",
         "body": [
-          "Raise it directly first, through the contact form, choosing \u0022complaint\u0022 as the issue so it arrives marked as one. Complaints are handled by Ujiajiri Enterprises Limited, the company accountable for this site, and will be looked at properly.",
+          "Raise it directly first, through the contact form, choosing \u0022I have a complaint\u0022 as the issue so it arrives marked as one. Complaints are handled by Ujiajiri Enterprises Limited, the company accountable for this site, and will be looked at properly.",
           "You also have the right to complain to the Office of the Data Protection Commissioner in Kenya. That right is independent: it does not require you to contact Onduu first, and using the contact form does not replace it."
         ],
         "note": "The Office of the Data Protection Commissioner publishes its own complaint route; this notice does not reproduce contact details that could go out of date."

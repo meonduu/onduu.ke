@@ -12,6 +12,7 @@
  * outbound work per request.
  */
 import { type Budget, makeBudget, normaliseHost, isScannableHost, dohQuery } from "./scan/net.ts";
+import { clientKeyOf } from "./submissions.ts";
 import { collectRdap, type RdapFacts } from "./scan/collect.ts";
 
 // Owner instruction, 21 Aug 2026: an available-domain result sends the
@@ -225,7 +226,19 @@ export async function checkDomain(
   return { domain, status: "unknown" };
 }
 
-/* ── per-isolate rate limiting (no database dependency) ─────────────── */
+/* ── rate limiting ────────────────────────────────────────────────────
+ * Two layers. The in-memory bucket is a fast reject inside one isolate —
+ * it costs nothing and stops a burst before any database call. The D1
+ * window (migration 0012) is the one that actually holds: an isolate is
+ * recycled whenever Cloudflare decides, and many isolates serve the site
+ * at once, so the in-memory count alone meant 30 an hour PER ISOLATE and
+ * a reset at any moment. This was the busiest public tool with the
+ * weakest limit.
+ *
+ * Both key on the hashed client key, never the address. The Map used to
+ * hold raw IPs in Worker memory, which is the one thing every other
+ * counter here is careful to avoid.
+ */
 
 const WINDOW_MS = 60 * 60 * 1000;
 const SEARCHES_PER_HOUR = 30;
@@ -243,6 +256,50 @@ export function withinSearchLimit(key: string, now = Date.now()): boolean {
   return true;
 }
 
+/**
+ * The durable half. Same sliding window as withinScanRateLimit; survives
+ * isolate recycling and is shared across every isolate. Returns true when
+ * the database is unavailable — a search is a public read, and refusing
+ * everyone because the counter is unreachable is the worse failure.
+ */
+export async function withinSearchLimitDurable(
+  db: D1Database | undefined,
+  clientKey: string,
+  now = Date.now(),
+): Promise<boolean> {
+  if (!db) return true;
+  try {
+    const windowStart = new Date(now - WINDOW_MS).toISOString();
+    const row = await db
+      .prepare("SELECT count, window_start FROM search_throttle WHERE client_key = ?")
+      .bind(clientKey)
+      .first<{ count: number; window_start: string }>();
+
+    if (!row || row.window_start < windowStart) {
+      await db
+        .prepare(
+          "INSERT INTO search_throttle (client_key, window_start, count) VALUES (?, ?, 1)" +
+            " ON CONFLICT(client_key) DO UPDATE SET window_start = excluded.window_start, count = 1",
+        )
+        .bind(clientKey, new Date(now).toISOString())
+        .run();
+      return true;
+    }
+
+    if (row.count >= SEARCHES_PER_HOUR) return false;
+
+    await db
+      .prepare("UPDATE search_throttle SET count = count + 1 WHERE client_key = ?")
+      .bind(clientKey)
+      .run();
+    return true;
+  } catch {
+    // Migration 0012 not applied, or D1 unreachable. The in-memory bucket
+    // still applies; the tool keeps working.
+    return true;
+  }
+}
+
 /* ── the request handler ─────────────────────────────────────────────── */
 
 const json = (body: unknown, status = 200) =>
@@ -254,6 +311,7 @@ const json = (body: unknown, status = 200) =>
 export async function handleDomainSearch(
   request: Request,
   fetcher: typeof fetch = fetch,
+  db?: D1Database,
 ): Promise<Response> {
   if (request.method !== "GET") {
     return new Response("Method not allowed", { status: 405, headers: { Allow: "GET" } });
@@ -266,10 +324,10 @@ export async function handleDomainSearch(
     return json({ ok: false, error: "Please enter a valid domain or name, like yourbusiness or yourbusiness.co.ke." }, 400);
   }
 
-  const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
-  if (!withinSearchLimit(ip)) {
-    return json({ ok: false, error: "Too many searches from this connection. Please try again later." }, 429);
-  }
+  const clientKey = await clientKeyOf(request);
+  const tooMany = { ok: false, error: "Too many searches from this connection. Please try again later." };
+  if (!withinSearchLimit(clientKey)) return json(tooMany, 429);
+  if (!(await withinSearchLimitDurable(db, clientKey))) return json(tooMany, 429);
 
   const budget = makeBudget(10_000, 12);
   const results = await Promise.all(candidates.map((d) => checkDomain(d, budget, fetcher)));

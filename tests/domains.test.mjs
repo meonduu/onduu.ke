@@ -2,12 +2,14 @@
 // request handler — entirely offline with a stub fetcher.
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import { makeBudget } from "../worker/scan/net.ts";
 import {
   candidatesFor,
   checkDomain,
   handleDomainSearch,
   withinSearchLimit,
+  withinSearchLimitDurable,
   registrarWebsite,
   REGISTER_URL,
   registerUrlFor,
@@ -282,6 +284,79 @@ test("the per-connection search limit refuses after the cap and resets", () => {
   assert.equal(withinSearchLimit("test-key", t0 + 100), false);
   assert.equal(withinSearchLimit("other-key", t0 + 100), true);
   assert.equal(withinSearchLimit("test-key", t0 + 61 * 60 * 1000), true);
+});
+
+// The in-memory bucket above is only the fast path. It lives in one
+// isolate, and Cloudflare recycles isolates and runs many at once, so on
+// its own it meant 30 searches an hour PER ISOLATE with a reset at any
+// moment — the busiest public tool carrying the weakest limit. These pin
+// the durable half (migration 0012).
+
+function throttleDb() {
+  const rows = new Map();
+  return {
+    rows,
+    prepare(sql) {
+      return {
+        bind(...args) {
+          return {
+            async first() {
+              return rows.get(args[0]) ?? null;
+            },
+            async run() {
+              if (sql.startsWith("INSERT INTO search_throttle")) {
+                rows.set(args[0], { window_start: args[1], count: 1 });
+              } else if (sql.startsWith("UPDATE search_throttle")) {
+                rows.get(args[0]).count += 1;
+              }
+              return { meta: { changes: 1 } };
+            },
+          };
+        },
+      };
+    },
+  };
+}
+
+test("the durable search limit survives the isolate and refuses after the cap", async () => {
+  const db = throttleDb();
+  const t0 = Date.parse("2026-08-22T10:00:00Z");
+  for (let i = 0; i < 30; i++) {
+    assert.equal(await withinSearchLimitDurable(db, "hashed-key", t0 + i), true, `call ${i + 1}`);
+  }
+  assert.equal(await withinSearchLimitDurable(db, "hashed-key", t0 + 100), false, "the 31st must be refused");
+  assert.equal(await withinSearchLimitDurable(db, "other-key", t0 + 100), true, "a different visitor is unaffected");
+  // The whole point: the count is in the database, so a fresh isolate —
+  // an empty Map — still sees it.
+  assert.equal(await withinSearchLimitDurable(db, "hashed-key", t0 + 200), false, "a new isolate must not reset the count");
+  assert.equal(
+    await withinSearchLimitDurable(db, "hashed-key", t0 + 61 * 60 * 1000),
+    true,
+    "the window still rolls over after an hour",
+  );
+});
+
+test("the search stays open when the counter cannot be reached", async () => {
+  // A public read refused because the throttle table is missing would be a
+  // worse failure than an unmetered search. Both the absent-database case
+  // (migration 0012 not yet applied on a given environment) and a throwing
+  // query fail open.
+  assert.equal(await withinSearchLimitDurable(undefined, "hashed-key"), true);
+  const broken = { prepare() { throw new Error("no such table: search_throttle"); } };
+  assert.equal(await withinSearchLimitDurable(broken, "hashed-key"), true);
+});
+
+test("the limiter never keys on a raw IP address", async () => {
+  // worker/submissions.ts: "Never store or log the raw IP." The in-memory
+  // bucket used to hold cf-connecting-ip verbatim in Worker memory; the
+  // handler now hashes through clientKeyOf() first.
+  const src = readFileSync(new URL("../worker/domains.ts", import.meta.url), "utf8");
+  assert.doesNotMatch(
+    src,
+    /withinSearchLimit\w*\(\s*(?:db,\s*)?ip\b/,
+    "the rate limiter must be keyed on the hashed client key, not the address",
+  );
+  assert.match(src, /clientKeyOf\(request\)/, "the handler must derive the hashed key");
 });
 
 // The link and the promise about the link must not drift apart, and the

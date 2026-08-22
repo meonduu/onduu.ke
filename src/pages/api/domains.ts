@@ -8,7 +8,11 @@ import { handleDomainSearch } from "../../../worker/domains";
 import { logToolCheck, summariseDomainSearch } from "../../../worker/tool-log";
 
 export const ALL: APIRoute = async ({ request, locals }) => {
-  const response = await handleDomainSearch(request);
+  // The database is passed for the durable half of the rate limit
+  // (migration 0012); without it the search falls back to the per-isolate
+  // bucket alone, which is what it used to rely on entirely.
+  const db = (env as { onduu_leads?: D1Database }).onduu_leads;
+  const response = await handleDomainSearch(request, fetch, db);
   if (response.ok) {
     const copy = response.clone();
     locals.cfContext?.waitUntil(
