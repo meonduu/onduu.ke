@@ -1,6 +1,47 @@
 # Changelog
 
-CURRENT VERSION: v5.1.0 — 1746hrs:22nd August2026
+CURRENT VERSION: v5.2.0 — 1809hrs:22nd August2026
+
+## v5.2.0 — 1809hrs:22nd August2026
+
+**The last of the small print is gone: `/dns` per-finding caveats and the
+`/email-security` closing note.** All four tools now show a verdict, the
+evidence, and nothing hedging underneath.
+
+**I resisted this twice and was wrong both times.** The argument was that
+some of these were load-bearing rather than hedging — that
+"A repeat check usually resolves this; it is a lookup failure, not a
+finding about the domain" stops a visitor reading a transient failure as a
+fault on their domain, and that the note on `/email-security` was the only
+place saying a missing DKIM key might be the tool guessing wrong.
+
+Reading them properly on the third ask, every one was already said in the
+finding itself:
+
+- Nameservers: the detail reads "The nameserver query did not complete, so
+  nothing can be said about delegation on this run."
+- Delegation: "...so the registry side of delegation is not observable
+  from here."
+- Parent delegation: "...is unverified this time."
+- DKIM: "Selectors cannot be discovered from DNS, they can only be
+  guessed, so this is not proof that DKIM is missing" — the exact sentence
+  the footer note was being kept for, sitting next to the result it
+  concerns rather than four screens below it.
+
+All three DNS cases also carry `severity: "info"`, so they were never
+being presented as failures in the first place. The caveats were not
+protecting anything; they were repeating protection that already existed
+in a better place.
+
+Worth naming, since it happened three times in a row: I was reasoning
+from the caveat text rather than from what the reader actually sees. The
+sentence looked essential in isolation. In context it was the second copy.
+
+Both fields stay on the finding, unrendered, for the same reason as the
+scan's: they record what a check examined. Comments say so.
+
+No lesson: the general form — a check that repeats itself is not the same
+as a check that protects twice — is L16's territory already.
 
 ## v5.1.0 — 1746hrs:22nd August2026
 
