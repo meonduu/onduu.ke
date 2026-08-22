@@ -1,6 +1,41 @@
 # Changelog
 
-CURRENT VERSION: v4.86.1 — 0000hrs:22nd August2026
+CURRENT VERSION: v4.87.0 — 1032hrs:22nd August2026
+
+## v4.87.0 — 1032hrs:22nd August2026
+
+**The domain search gets a rate limit that survives.** Owner's
+instruction. It was limited by a Map in the Worker isolate, which meant
+two things nobody would see in testing: Cloudflare recycles an isolate
+whenever it likes, taking every count with it, and many isolates serve
+the site at once — so the real ceiling was 30 searches an hour *per
+isolate*, not 30 an hour. The busiest public tool had the weakest limit
+of the four.
+
+Migration `0012` adds `search_throttle`, the same sliding window as
+`scan_throttle` and a separate budget on purpose: running 30 domain
+searches should not spend the budget for a scan. The in-memory bucket
+stays as a fast reject inside one isolate, so a burst costs no database
+call; D1 is the layer that actually holds.
+
+It fails open. A public read refused because the counter is unreachable
+is a worse failure than an unmetered search, so a missing table or a
+throwing query leaves the in-memory bucket in charge and the tool
+working.
+
+**A second defect found while in there.** The limiter keyed on
+`cf-connecting-ip` — raw addresses held in Worker memory, in a codebase
+whose own comment reads "Never store or log the raw IP" and which hashes
+the key everywhere else. It now goes through `clientKeyOf()` like the
+enquiry, scan and opt-out limiters, and a test greps the source to keep
+it that way.
+
+**Also:** the privacy notice told people to choose "complaint" as the
+issue; v4.82.0 renamed that option to "I have a complaint". The notice
+now quotes the label that exists.
+
+No lesson: hardening on the owner's instruction. The raw-IP handling was
+pre-existing and is corrected here rather than recorded as a recurrence.
 
 ## v4.86.1 — 0000hrs:22nd August2026
 
