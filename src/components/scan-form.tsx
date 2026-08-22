@@ -207,7 +207,6 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
                         </span>
                       </div>
                       <p>{s.evidence}</p>
-                      <small>{s.limitation}</small>
                     </li>
                   ))}
                 </ul>
