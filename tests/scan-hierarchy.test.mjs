@@ -138,3 +138,21 @@ test("on /domains, where a row is the answer, the row title leads its own detail
   const src = readFileSync(new URL("../src/components/domains-form.tsx", import.meta.url), "utf8");
   assert.match(src, /className="check-list check-list--lead"/, "/domains must opt into the leading-row size");
 });
+
+test("/dns categories carry the same numbered head as the scan's dimensions", async () => {
+  const css = await servedCss();
+  const num = block(css, ".dns-cat-title span");
+  assert.ok(num, "no rule for the /dns category number");
+  assert.match(num, /color:var\(--copper\)/, "the number is copper, as on /scan and the homepage grid");
+  assert.match(num, /font-weight:800/, "same weight as its siblings");
+  assert.equal(sizeOf(css, ".dns-cat-title span"), 10, "same 10px eyebrow as /scan");
+
+  // The counts (2 OK / 1 OBSERVED) must stay pushed right, which needs the
+  // head to keep exactly two flex children — number and title are wrapped
+  // together. A third child would spread all three across the row.
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../src/components/dns-form.tsx", import.meta.url), "utf8");
+  assert.match(src, /<div className="dns-cat-title">/, "number and title must be wrapped together");
+  assert.match(src, /CATEGORIES\.map\(\(\{ key, label \}, n\)/, "the number comes from the CATEGORIES index");
+  assert.match(src, /String\(n \+ 1\)\.padStart\(2, "0"\)/, "two digits, as on /scan");
+});

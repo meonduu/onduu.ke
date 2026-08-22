@@ -48,7 +48,10 @@ footer{background:#0b1117;color:#fff;padding:75px clamp(24px,7vw,110px) 55px;dis
 .scan-dimension{margin-top:40px}.scan-dimension-head{display:flex;align-items:baseline;gap:12px;border-bottom:2px solid var(--carbon);padding-bottom:9px}.scan-dimension-head span{font-size:10px;color:var(--copper);font-weight:800;letter-spacing:.08em}.scan-dimension-head h3{font-size:23px;margin:0}.scan-dimension+.scan-dimension{margin-top:44px}
 .dns-cat{margin-top:40px}
 .dns-cat-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap;border-bottom:2px solid var(--carbon);padding-bottom:9px}
-.dns-cat-head h3{font-size:23px;margin:0}
+/* The number sits with the title on the left; the OK/WARN counts stay
+   pushed right, so the head keeps two flex children. Same copper
+   eyebrow as .scan-dimension-head and the homepage grid. */
+.dns-cat-title{display:flex;align-items:baseline;gap:12px}.dns-cat-title span{font-size:10px;color:var(--copper);font-weight:800;letter-spacing:.08em}.dns-cat-head h3{font-size:23px;margin:0}
 .dns-counts{display:flex;gap:6px;flex-wrap:wrap}
 .dns-counts span{font:800 9px Arial;letter-spacing:.1em;padding:5px 9px;border:1px solid currentColor;white-space:nowrap}
 .dns-counts .check-pass{color:var(--green)}.dns-counts .check-warn{color:var(--copper)}.dns-counts .check-fail{color:#a8342a}.dns-counts .check-info{color:var(--slate)}
