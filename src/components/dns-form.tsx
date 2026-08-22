@@ -421,7 +421,6 @@ export function DnsForm() {
                       {finding.evidence && finding.evidence.length > 0 && (
                         <code>{finding.evidence.join(" · ")}</code>
                       )}
-                      {finding.limitation && <p className="check-limitation">{finding.limitation}</p>}
                       {finding.link && (
                         <p>
                           <a className="text-link" href={finding.link.href}>

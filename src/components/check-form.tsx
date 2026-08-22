@@ -178,13 +178,6 @@ export function CheckForm() {
             </div>
           )}
 
-          <div className="note">
-            This reads {result.selectorsProbed} common DKIM selectors and the public SPF, DMARC
-            and MX records for {result.domain}. Selectors cannot be listed from DNS, only guessed,
-            so a missing DKIM key here is not proof that signing is off. A passing result means
-            these records are published correctly. It does not prove the domain, the mailboxes or
-            the business behind them are secure.
-          </div>
         </div>
       )}
     </>

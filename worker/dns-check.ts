@@ -41,6 +41,11 @@ export interface DnsFinding {
   title: string;
   detail: string;
   evidence?: string[];
+  /** No longer displayed (owner, 22 Aug 2026). Every one of these repeated
+   *  something the finding's own `detail` already said — "nothing can be
+   *  said about delegation on this run", "not observable from here" — and
+   *  the ones that mattered were also carried by `severity: "info"`. Kept
+   *  on the finding because it records what a check actually examined. */
   limitation?: string;
   link?: { href: string; label: string };
 }
