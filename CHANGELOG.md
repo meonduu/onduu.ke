@@ -1,6 +1,26 @@
 # Changelog
 
-CURRENT VERSION: v4.99.0 — 1716hrs:22nd August2026
+CURRENT VERSION: v4.99.1 — 1723hrs:22nd August2026
+
+## v4.99.1 — 1723hrs:22nd August2026
+
+**The Evidence Coverage figure is back beside the score**, on the owner's
+decision after v4.99.0 flagged its absence. The result now reads
+"Evidence coverage 62%." followed by the single Verified sentence — the
+figure restored, the four sentences it used to trail still gone.
+
+**And this time there is a guard that can see it.** The test that carried
+this promise fetched the `/scan` HTML, while the result is a React island
+rendered in the browser — so it passed happily through the release that
+removed the figure. The new one reads the component's headline block and
+requires `evidenceCoverage` wherever `publicSignalScore` appears. Proven
+by taking the figure out again and watching it fail, which the old test
+never did.
+
+That is the whole point of L16, done properly: a guard is worth what it
+can actually reach, not what its name claims.
+
+No lesson: L16 applied.
 
 ## v4.99.0 — 1716hrs:22nd August2026
 
