@@ -1,6 +1,27 @@
 # Changelog
 
-CURRENT VERSION: v4.97.0 — 1643hrs:22nd August2026
+CURRENT VERSION: v4.97.1 — 1651hrs:22nd August2026
+
+## v4.97.1 — 1651hrs:22nd August2026
+
+**Both outbound links now name this site the same way.** The domain
+search's checkout link still said `utm_source=onduu` after v4.97.0
+changed the infrastructure CTA to `onduu.ke`, which would have split this
+site's traffic across two source names in HOSTAFRICA's reporting for as
+long as nobody noticed. Owner's instruction.
+
+Only the source changed. The host stays `panel.hostafrica.com`, because
+this link has a different job: it must land on the checkout with the
+searched name already in the box, which the marketing site does not do.
+`aff=916`, `ident=keha` and the `domain=` parameter are untouched.
+
+The test that should have protected this asserted `/utm_source=onduu/`,
+which matches inside `onduu.ke` — so it would have passed on either value
+and verified nothing. It now requires the exact value with a boundary, and
+that was checked by putting the old value back and watching three
+assertions fail.
+
+No lesson: a follow-on from v4.97.0, flagged in that release and taken up.
 
 ## v4.97.0 — 1643hrs:22nd August2026
 

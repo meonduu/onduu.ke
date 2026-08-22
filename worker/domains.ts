@@ -36,8 +36,14 @@ import { collectRdap, type RdapFacts } from "./scan/collect.ts";
 // false in the same instant and must change in the same release. The
 // paired test in tests/domains.test.mjs exists to make the link and its
 // disclosure impossible to move independently.
+// utm_source is onduu.ke, matching the infrastructure-path CTA (22 Aug
+// 2026). The two said "onduu" and "onduu.ke" for a few minutes, which
+// would have split this site's traffic across two names in HOSTAFRICA's
+// reporting. The host stays panel.hostafrica.com here: this link has to
+// land on the checkout with the name prefilled, which the marketing site
+// does not do.
 const REGISTER_BASE =
-  "https://panel.hostafrica.com/checkout/0?aff=916&ident=keha&utm_source=onduu&utm_medium=referral&utm_campaign=domain-search";
+  "https://panel.hostafrica.com/checkout/0?aff=916&ident=keha&utm_source=onduu.ke&utm_medium=referral&utm_campaign=domain-search";
 
 /** Kept for callers and tests that want the destination without a name. */
 export const REGISTER_URL = REGISTER_BASE;
