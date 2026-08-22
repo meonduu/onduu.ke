@@ -169,8 +169,13 @@ honoured. `retain_until` is stamped two years ahead on each submission but
 **nothing enforces it** — it is an advisory marker only, recorded as such
 in `ROADMAP.md` (owner decision, 19 August 2026).
 
-- **OWNER**: whether to adopt a fixed retention period. The notice already
-  states that indefinite retention is a weaker position under the Act.
+- **Decided 22 Aug 2026 (owner):** enquiries only. Free-text answers
+  cleared at 12 months, the rest deleted at 24, both from the last
+  contact, with the consent trail kept in `consent_records` carrying no
+  personal data (v4.96.0, `worker/cleanup.ts`). Spent throttle rows and
+  opt-out links that expired unconfirmed go too (v4.95.0). **Still open:**
+  page views, engagement events, scans and tool checks are kept until
+  removed by hand — they hold no identifier, but they accumulate.
 - Pruning statements the owner can run are documented in
   `migrations/0007_analytics_events.sql` and `OPERATIONS.md`.
 
