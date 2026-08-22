@@ -12,17 +12,22 @@ No deadlines are listed anywhere in this file because none have been agreed.
   **`CHANGELOG.md` is the only record of the current version — do not pin one
   here**; this line has gone stale twice already. Deploys automatically from
   `main` via Workers Builds; PRs get preview URLs.
-- Working today: the repositioned architecture (Fitness · How It Works ·
-  Paths · Guides · About); assessment and contact forms end-to-end
-  (validation, Turnstile, rate limiting, D1 `onduu-leads`); **four free
-  tools** — `/email-security`, `/kedomains`, `/scan` (secret-gated on
+- Working today: the repositioned architecture (Digital Fitness ·
+  How It Works · `/paths/*` · Guides · About — the `/paths` index itself was
+  removed on 21 Aug 2026, its two children remain); assessment and contact
+  forms end-to-end (validation, Turnstile, rate limiting, D1 `onduu-leads`);
+  **four free tools** — `/email-security`, `/domains` (named `/kedomains`
+  from 18 to 21 Aug 2026), `/scan` (secret-gated on
   `SCAN_ENABLED`) and `/dns` (secret-gated on `DNS_CHECK_ENABLED`; spec
   `docs/specs/dns-check.md`); `/go` dashboard behind Cloudflare Access with
-  per-tool usage sections; stored lookup results with the deletion route
-  and do-not-scan list; first-party page views and routed-click counting;
-  the Dial + Letterhead identity with adaptive favicon and OG cards;
-  legal pages published as marked drafts; a first-party engagement tracker
-  (v4.46.0, storing nothing until migration 0007 is applied) and the
+  per-tool usage sections; stored lookup results, the self-service
+  do-not-scan route at `/do-not-scan` (confirmed by email at the domain)
+  and the blocklist behind it; first-party page views and routed-click
+  counting; the Dial + Letterhead identity with adaptive favicon and OG
+  cards; **all four legal pages published as v1.0, effective 22 Aug 2026**,
+  each stating that a lawyer has not reviewed it; a first-party engagement
+  tracker
+  (v4.46.0; migration 0007 is applied in production, so it is recording) and the
   `/go/analytics` section built on it; the test count lives in `CHANGELOG.md`
   rather than here, for the same reason as the version.
 - Google Analytics, Tag Manager and the consent banner were removed (v2.7.0);
@@ -252,7 +257,7 @@ labels on production claims without owner sign-off; passes `REVIEW.md`.
 
 Done so far: human-reviewed assessment route live (fitness form → D1 →
 review); `/email-security` checker live (renamed from `/check`, v4.7.0);
-`/scan` instant fitness scan live; `/kedomains` domain search live;
+`/scan` instant fitness scan live; `/domains` domain search live;
 `/dns` DNS health check live.
 
 Remaining:

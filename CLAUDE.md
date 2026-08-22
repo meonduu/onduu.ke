@@ -41,7 +41,7 @@ Disclosure and claims:
 - Wycliffe is Managing Director of HOSTAFRICA Kenya. **The directorship
   itself is disclosed at the decision point** — beside the outbound CTA on
   `/paths/hostafrica-infrastructure` and beside the register link on
-  `/kedomains`, both test-pinned in `tests/seo-and-gates.test.mjs`.
+  `/domains`, both test-pinned in `tests/seo-and-gates.test.mjs`.
 - **The mechanics of any commercial benefit live on one page only:**
   `/legal/commercial-relationships`, reachable from every footer. That
   means the affiliate identifier, what it does and does not pay, and how

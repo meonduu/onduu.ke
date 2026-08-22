@@ -51,7 +51,7 @@ checked as written, that is itself a finding.
    mode `workers_dev`/naming rules in CLAUDE.md exist to prevent.
 
 5. **Tools answer.** Run one query on each: /email-security, /dns,
-   /kedomains, /scan. Good: a rendered result (not an error card) on all
+   /domains, /scan. Good: a rendered result (not an error card) on all
    four, and the Turnstile on /scan solving without a visible challenge.
 
 6. **Secrets inventory.** Dashboard → onduudotke → Settings → Variables.
@@ -115,15 +115,22 @@ Newest first. Format: what happened → root cause → the guard now standing.
 Add an entry whenever a defect recurs or a check above fails; an entry may
 be closed only by pointing at its guard.
 
-**L8 — 20 Aug 2026 · A processor added without telling the notice.** The
-Slack notification channel (v4.52.0) added a company that receives data
-about enquiries, and the privacy notice was not updated in the same
-change — for three hours the notice named two processors while the code
-used three. REVIEW.md already required processors to match the notice;
-nothing enforced it. Guard: a test now pins every processor named in the
-code against the notice (`tests/seo-and-gates.test.mjs`), and the register
-at `docs/specs/processors-and-transfers.md` lists what each one receives,
-so the next addition has an obvious place to be recorded (v4.54.0).
+**L15 — 22 Aug 2026 · A flaky test, and the fix that looks like pressing
+run again.** `tests/dashboard.test.mjs` failed once in a full-suite run
+and passed standalone and on re-run. Nothing was wrong with the code: the
+test harness applies the migrations before every worker spawn (added
+21 Aug, so "through the real Worker" includes the database), which made a
+spawn materially more expensive while its readiness deadline stayed at
+the 60 seconds set before that cost existed. Twenty test files start a
+worker each; under that load one missed the deadline.
+
+The danger was never the failed run — it was the obvious response to it.
+A green re-run is indistinguishable from a fix, and a suite you learn to
+re-run is a suite that has stopped gating anything, which is L13 arriving
+by a slower route. Rule: **a test that passes on retry is a defect until
+its cause is named.** Guard: the deadline is 120s, matched to what a
+spawn now costs, with the reasoning written beside it so the next person
+to change spawn cost knows what else moves (v4.91.0).
 
 **L14 — 21 Aug 2026 · A true sentence went false while nobody was
 looking.** The privacy notice said "No artificial-intelligence or
@@ -229,6 +236,16 @@ occurrence. Guard: a test sweeps the public legal and form pages for
 provenance markers and owner-vocabulary (v4.59.0). Dated decisions belong
 in `CHANGELOG.md`, this register and code comments — never in what a
 visitor reads.
+
+**L8 — 20 Aug 2026 · A processor added without telling the notice.** The
+Slack notification channel (v4.52.0) added a company that receives data
+about enquiries, and the privacy notice was not updated in the same
+change — for three hours the notice named two processors while the code
+used three. REVIEW.md already required processors to match the notice;
+nothing enforced it. Guard: a test now pins every processor named in the
+code against the notice (`tests/seo-and-gates.test.mjs`), and the register
+at `docs/specs/processors-and-transfers.md` lists what each one receives,
+so the next addition has an obvious place to be recorded (v4.54.0).
 
 **L7 — 20 Aug 2026 · One assertion from one data point.** The Cloudflare
 beacon was declared gone after checking a single page; five pages said

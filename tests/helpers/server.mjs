@@ -106,7 +106,15 @@ async function spawnWorker(extraArgs) {
     };
     process.once("exit", cleanup);
 
-    const deadline = Date.now() + 60_000;
+    // 120s, not 60s. Since 21 Aug 2026 every spawn applies the migrations
+    // first (see above), so a worker costs materially more to start than
+    // when this budget was set — and the suite starts ~20 of them at once,
+    // one per test file. dashboard.test.mjs failed exactly once under that
+    // load on 22 Aug while passing standalone and on re-run: a flake, and
+    // the worst kind, because the fix looks like pressing run again. The
+    // deadline is a backstop against a worker that never comes up, not a
+    // performance assertion, so widening it hides nothing.
+    const deadline = Date.now() + 120_000;
     let reason = "timed out before responding";
     while (Date.now() < deadline && !exited) {
       const log = readLog();

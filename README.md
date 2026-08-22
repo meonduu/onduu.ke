@@ -16,7 +16,7 @@ first.
   `/guides/*` (six guides), `/about`, `/contact`, Insights, and the legal
   pages (published as marked drafts pending professional review).
 - **Four free tools**: `/email-security` (SPF/DKIM/DMARC/MX), `/dns`
-  (delegation and DNS health), `/kedomains` (Kenyan domain search),
+  (delegation and DNS health), `/domains` (Kenyan domain search),
   `/scan` (Instant Public Fitness Scan; Public Signal Score only, never
   a verdict). The scan and DNS check are gated on the `SCAN_ENABLED` and
   `DNS_CHECK_ENABLED` Worker secrets.
