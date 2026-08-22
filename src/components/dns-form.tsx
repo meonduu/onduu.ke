@@ -179,7 +179,7 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
         <p className="dns-advice" style={{ borderLeftColor: "var(--green)" }}>
           Asked {p.source} (a .{p.zone} parent server) directly, without caching.
         </p>
-        <table className="dns-table">
+        <div className="dns-table-wrap"><table className="dns-table">
           <thead><tr><th>Delegated nameserver</th><th>TTL</th><th>Glue address at parent</th></tr></thead>
           <tbody>
             {p.delegation.map((d) => (
@@ -190,13 +190,13 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
               </tr>
             ))}
           </tbody>
-        </table>
+        </table></div>
       </>
     );
   }
   if (cat === "registry" && detail.registryObservable) {
     return (
-      <table className="dns-table">
+      <div className="dns-table-wrap"><table className="dns-table">
         <thead><tr><th>Nameserver on file at the registry</th><th>Answering?</th></tr></thead>
         <tbody>
           {detail.registryNs.map((h) => {
@@ -209,12 +209,12 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
             );
           })}
         </tbody>
-      </table>
+      </table></div>
     );
   }
   if (cat === "nameservers" && detail.nsHosts.length > 0) {
     return (
-      <table className="dns-table">
+      <div className="dns-table-wrap"><table className="dns-table">
         <thead><tr><th>Nameserver</th><th>Address</th><th>At registry?</th></tr></thead>
         <tbody>
           {detail.nsHosts.map((h) => (
@@ -225,7 +225,7 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table></div>
     );
   }
   if (cat === "soa" && detail.soa) {
@@ -241,15 +241,15 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
     ];
     return (
       <>
-        <table className="dns-table">
+        <div className="dns-table-wrap"><table className="dns-table">
           <thead><tr><th>Field</th><th>Value</th></tr></thead>
           <tbody>{rows.map(([k, v]) => <tr key={k}><td>{k}</td><td>{v}</td></tr>)}</tbody>
-        </table>
+        </table></div>
         {detail.soaAdvice.map((a) => (
           <p key={a} className="dns-advice">{a}</p>
         ))}
         {detail.serials.length > 0 && (
-          <table className="dns-table">
+          <div className="dns-table-wrap"><table className="dns-table">
             <thead><tr><th>Authoritative server</th><th>Serial it reports</th></tr></thead>
             <tbody>
               {detail.serials.map((row) => (
@@ -259,25 +259,25 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
                 </tr>
               ))}
             </tbody>
-          </table>
+          </table></div>
         )}
       </>
     );
   }
   if (cat === "web") {
     return (
-      <table className="dns-table">
+      <div className="dns-table-wrap"><table className="dns-table">
         <thead><tr><th>Name</th><th>Addresses</th></tr></thead>
         <tbody>
           <tr><td>apex</td><td>{detail.apexAddresses.join(", ") || "none"}</td></tr>
           <tr><td>www</td><td>{detail.wwwAddresses.join(", ") || "none"}</td></tr>
         </tbody>
-      </table>
+      </table></div>
     );
   }
   if (cat === "mail" && detail.mx.length > 0) {
     return (
-      <table className="dns-table">
+      <div className="dns-table-wrap"><table className="dns-table">
         <thead><tr><th>Priority</th><th>Mail server</th><th>Address</th><th>Reverse DNS</th></tr></thead>
         <tbody>
           {detail.mx.map((m) => (
@@ -289,7 +289,7 @@ function CategoryTable({ cat, detail }: { cat: Category; detail: Detail }) {
             </tr>
           ))}
         </tbody>
-      </table>
+      </table></div>
     );
   }
   return null;

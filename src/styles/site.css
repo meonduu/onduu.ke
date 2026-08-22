@@ -59,9 +59,25 @@ footer{background:#0b1117;color:#fff;padding:75px clamp(24px,7vw,110px) 55px;dis
 .dns-counts{display:flex;gap:6px;flex-wrap:wrap}
 .dns-counts span{font:800 9px Arial;letter-spacing:.1em;padding:5px 9px;border:1px solid currentColor;white-space:nowrap}
 .dns-counts .check-pass{color:var(--green)}.dns-counts .check-warn{color:var(--copper)}.dns-counts .check-fail{color:#a8342a}.dns-counts .check-info{color:var(--slate)}
-.dns-table{width:100%;border-collapse:collapse;margin-top:16px;background:#fff;font:13px ui-monospace,Menlo,monospace}
+/* On a 375px phone the three-column tables crushed their columns until
+   hostnames broke mid-word — "jose.ns.cl / oudflare.c / om" across three
+   lines. The table now scrolls inside its own box, like the delegation
+   diagram above it, and min-width keeps the host column wide enough that
+   a nameserver name stays in one piece. The page itself never scrolls
+   sideways. */
+.dns-table-wrap{overflow-x:auto;margin-top:16px}.dns-table{width:100%;min-width:520px;border-collapse:collapse;background:#fff;font:13px ui-monospace,Menlo,monospace}
 .dns-table th{font:800 9px Arial;letter-spacing:.09em;text-transform:uppercase;color:var(--slate);text-align:left;padding:9px 12px;border-bottom:1px solid #b7c1bd}
-.dns-table td{padding:9px 12px;border-bottom:1px solid #dbe0dd;word-break:break-word;vertical-align:top}
+/* No word-break here, deliberately. It was `break-word`, which splits a
+   word wherever it runs out of room — on a 375px phone that produced
+   "jose.ns.cloudfl / are.com" and "smtp.goog / le.com". Every value in
+   these tables is a discrete token (a hostname, an IP, a number) or a
+   comma-separated list of them, and a token split down the middle is
+   unreadable and misleading. Default wrapping breaks at spaces only, so
+   an address list still wraps between its items while each item stays
+   whole; anything too wide for the screen scrolls in .dns-table-wrap.
+   Targeting the hostname column alone does not work — the mail table
+   carries its hostname in the second column. */
+.dns-table td{padding:9px 12px;border-bottom:1px solid #dbe0dd;vertical-align:top}
 .dns-advice{margin:10px 0 0;font-size:13.5px;color:var(--slate);border-left:3px solid var(--copper);padding-left:12px;line-height:1.6}
 .dns-diagram{margin-top:28px;border:1px solid #c5cac7;background:#fff;padding:12px 8px;overflow-x:auto}
 .dns-diagram svg{display:block;margin:0 auto}

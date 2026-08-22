@@ -525,3 +525,39 @@ test("the /dns score box tallies each severity in its own colour, worst first", 
     "OBSERVED keeps the neutral slate it carries everywhere else on the site",
   );
 });
+
+test("the /dns tables never split a hostname, and scroll rather than crush", async () => {
+  // Owner, 22 Aug 2026, on a 375px phone: the nameserver table rendered
+  // "jose.ns.cloudfl / are.com" and "smtp.goog / le.com". `word-break:
+  // break-word` splits a word wherever it runs out of room, and the columns
+  // had run out. A hostname cut down the middle is unreadable and reads as
+  // a different name.
+  const { readFileSync } = await import("node:fs");
+  const css = readFileSync(new URL("../src/styles/site.css", import.meta.url), "utf8");
+  const src = readFileSync(new URL("../src/components/dns-form.tsx", import.meta.url), "utf8");
+
+  const cellRule = css.match(/\.dns-table td\{([^}]*)\}/)?.[1];
+  assert.ok(cellRule, "the .dns-table td rule moved; this guard needs repointing");
+  assert.doesNotMatch(
+    cellRule,
+    /word-break|overflow-wrap/,
+    "table cells must wrap at spaces only: a break inside a hostname or an IP " +
+      "makes it unreadable. Wide content scrolls in .dns-table-wrap instead.",
+  );
+
+  // Every table must sit in the scroll container — one unwrapped table is a
+  // page that pans sideways on a phone.
+  const tables = (src.match(/<table className="dns-table">/g) ?? []).length;
+  const wrapped = (src.match(/<div className="dns-table-wrap"><table className="dns-table">/g) ?? []).length;
+  assert.ok(tables > 0, "no dns tables found; this guard needs repointing");
+  assert.equal(wrapped, tables, `${tables - wrapped} of ${tables} tables are not inside .dns-table-wrap`);
+
+  assert.match(
+    css,
+    /\.dns-table-wrap\{[^}]*overflow-x:auto/,
+    "the wrapper must scroll horizontally",
+  );
+  // Without a min-width the columns collapse again on a narrow screen and
+  // the wrapper never has anything to scroll.
+  assert.match(css, /\.dns-table\{[^}]*min-width:\d+px/, "the table needs a min-width to scroll against");
+});
