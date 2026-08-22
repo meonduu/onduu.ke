@@ -8,6 +8,8 @@
  * infrastructure referral.
  */
 
+import { withinLimit, clientKeyOf } from "./rate-limit.ts";
+
 export interface SubmissionEnv {
   onduu_leads?: D1Database;
   TURNSTILE_SECRET?: string;
@@ -37,6 +39,10 @@ export interface SubmissionEnv {
    *  secret for exactly this purpose before any code used it (wired in
    *  v4.52.0). Email remains the primary, promised channel. */
   SLACK_WEBHOOK_URL?: string;
+  /** HMAC key for the abuse-counter client identifier (22 Aug 2026). Absent
+   *  means the identifier falls back to an unkeyed digest — see
+   *  worker/rate-limit.ts, and the light on /go. */
+  CLIENT_KEY_SECRET?: string;
 }
 
 const CONSENT_VERSION = "2026-08-15";
@@ -212,39 +218,14 @@ export async function verifyTurnstile(token: string, secret: string, ip: string 
   }
 }
 
-async function withinRateLimit(db: D1Database, clientKey: string) {
-  const windowStart = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  const row = await db
-    .prepare("SELECT count, window_start FROM submission_throttle WHERE client_key = ?")
-    .bind(clientKey)
-    .first<{ count: number; window_start: string }>();
+const withinRateLimit = (db: D1Database, clientKey: string) =>
+  withinLimit(db, "submission_throttle", clientKey, 5, 60 * 60 * 1000);
 
-  if (!row || row.window_start < windowStart) {
-    await db
-      .prepare(
-        "INSERT INTO submission_throttle (client_key, window_start, count) VALUES (?, ?, 1)\n         ON CONFLICT(client_key) DO UPDATE SET window_start = excluded.window_start, count = 1"
-      )
-      .bind(clientKey, new Date().toISOString())
-      .run();
-    return true;
-  }
-
-  if (row.count >= 5) return false;
-
-  await db
-    .prepare("UPDATE submission_throttle SET count = count + 1 WHERE client_key = ?")
-    .bind(clientKey)
-    .run();
-  return true;
-}
-
-// Coarse, hashed client key. Never store or log the raw IP.
-// Exported for reuse by the scan rate limiter — same coarse, hashed key.
-export async function clientKeyOf(request: Request) {
-  const ip = request.headers.get("cf-connecting-ip") ?? "unknown";
-  const digest = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(ip));
-  return [...new Uint8Array(digest)].slice(0, 8).map((b) => b.toString(16).padStart(2, "0")).join("");
-}
+// clientKeyOf moved to worker/rate-limit.ts on 22 Aug 2026 and is keyed
+// with a secret there. Re-exported so the scan and event routes keep one
+// import site, and because the old one truncated an unkeyed digest to
+// 64 bits over a 2^32 address space.
+export { clientKeyOf };
 
 async function recordNotifyOutcome(env: SubmissionEnv, outcome: string, code: string | null) {
   // The /go overview reads this single row as a status light (lesson L6:
@@ -455,7 +436,7 @@ export async function handleSubmit(request: Request, env: SubmissionEnv): Promis
 
   if (!env.onduu_leads) return json({ ...GENERIC_ERROR, reason: "unconfigured" }, 503);
 
-  const clientKey = await clientKeyOf(request);
+  const clientKey = await clientKeyOf(request, "submission", env.CLIENT_KEY_SECRET);
   if (!(await withinRateLimit(env.onduu_leads, clientKey))) {
     return json(
       { ...GENERIC_ERROR, error: "Too many requests. Please try again later." },

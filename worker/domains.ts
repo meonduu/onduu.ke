@@ -12,7 +12,7 @@
  * outbound work per request.
  */
 import { type Budget, makeBudget, normaliseHost, isScannableHost, dohQuery } from "./scan/net.ts";
-import { clientKeyOf } from "./submissions.ts";
+import { clientKeyOf, withinLimit } from "./rate-limit.ts";
 import { collectRdap, type RdapFacts } from "./scan/collect.ts";
 
 // Owner instruction, 21 Aug 2026: an available-domain result sends the
@@ -269,33 +269,12 @@ export async function withinSearchLimitDurable(
 ): Promise<boolean> {
   if (!db) return true;
   try {
-    const windowStart = new Date(now - WINDOW_MS).toISOString();
-    const row = await db
-      .prepare("SELECT count, window_start FROM search_throttle WHERE client_key = ?")
-      .bind(clientKey)
-      .first<{ count: number; window_start: string }>();
-
-    if (!row || row.window_start < windowStart) {
-      await db
-        .prepare(
-          "INSERT INTO search_throttle (client_key, window_start, count) VALUES (?, ?, 1)" +
-            " ON CONFLICT(client_key) DO UPDATE SET window_start = excluded.window_start, count = 1",
-        )
-        .bind(clientKey, new Date(now).toISOString())
-        .run();
-      return true;
-    }
-
-    if (row.count >= SEARCHES_PER_HOUR) return false;
-
-    await db
-      .prepare("UPDATE search_throttle SET count = count + 1 WHERE client_key = ?")
-      .bind(clientKey)
-      .run();
-    return true;
+    return await withinLimit(db, "search_throttle", clientKey, SEARCHES_PER_HOUR, WINDOW_MS, now);
   } catch {
-    // Migration 0012 not applied, or D1 unreachable. The in-memory bucket
-    // still applies; the tool keeps working.
+    // Migration 0012 not applied, or D1 unreachable. Not "no limit": the
+    // in-memory bucket is checked first and still refuses, so this
+    // degrades to the per-isolate behaviour rather than disabling the
+    // control. A public read is not worth failing closed over.
     return true;
   }
 }
@@ -312,6 +291,7 @@ export async function handleDomainSearch(
   request: Request,
   fetcher: typeof fetch = fetch,
   db?: D1Database,
+  clientKeySecret?: string,
 ): Promise<Response> {
   if (request.method !== "GET") {
     return new Response("Method not allowed", { status: 405, headers: { Allow: "GET" } });
@@ -324,7 +304,7 @@ export async function handleDomainSearch(
     return json({ ok: false, error: "Please enter a valid domain or name, like yourbusiness or yourbusiness.co.ke." }, 400);
   }
 
-  const clientKey = await clientKeyOf(request);
+  const clientKey = await clientKeyOf(request, "search", clientKeySecret);
   const tooMany = { ok: false, error: "Too many searches from this connection. Please try again later." };
   if (!withinSearchLimit(clientKey)) return json(tooMany, 429);
   if (!(await withinSearchLimitDurable(db, clientKey))) return json(tooMany, 429);

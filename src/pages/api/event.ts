@@ -48,7 +48,7 @@ export const POST: APIRoute = async ({ request, locals }) => {
     return new Response(null, { status: 400 });
   }
 
-  if (db && !(await withinEventRateLimit(db, await clientKeyOf(request)))) {
+  if (db && !(await withinEventRateLimit(db, await clientKeyOf(request, "event", (env as { CLIENT_KEY_SECRET?: string }).CLIENT_KEY_SECRET)))) {
     return new Response(null, { status: 429 });
   }
 

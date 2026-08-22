@@ -23,10 +23,10 @@
  * the owner's behalf.
  */
 import { normaliseHost, isScannableHost } from "./scan/net.ts";
+import { withinLimit, clientKeyOf } from "./rate-limit.ts";
 import { optOutDomain, isDomainBlocklisted } from "./scan/store.ts";
 import {
   type SubmissionEnv,
-  clientKeyOf,
   reference,
   verifyTurnstile,
   notifyOwner,
@@ -192,7 +192,7 @@ export async function handleOptOutRequest(request: Request, env: SubmissionEnv):
   if (!checked.ok) return json({ ...GENERIC, fields: checked.errors }, 400);
   const { domain, email, note } = checked.data;
 
-  const clientKey = await clientKeyOf(request);
+  const clientKey = await clientKeyOf(request, "submission", env.CLIENT_KEY_SECRET);
   if (!(await withinRateLimit(db, clientKey))) {
     return json({ ...GENERIC, error: "Too many requests. Please try again later." }, 429);
   }
@@ -262,27 +262,10 @@ export async function handleOptOutRequest(request: Request, env: SubmissionEnv):
   }
 }
 
-// Same sliding window as submissions and scans; a separate import would
-// drag the whole enquiry module's private helper into the open.
-async function withinRateLimit(db: D1Database, clientKey: string) {
-  const windowStart = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  const row = await db
-    .prepare("SELECT count, window_start FROM submission_throttle WHERE client_key = ?")
-    .bind(clientKey)
-    .first<{ count: number; window_start: string }>();
-  if (!row || row.window_start < windowStart) {
-    await db
-      .prepare(
-        "INSERT INTO submission_throttle (client_key, window_start, count) VALUES (?, ?, 1) ON CONFLICT(client_key) DO UPDATE SET window_start = excluded.window_start, count = 1",
-      )
-      .bind(clientKey, new Date().toISOString())
-      .run();
-    return true;
-  }
-  if (row.count >= 5) return false;
-  await db.prepare("UPDATE submission_throttle SET count = count + 1 WHERE client_key = ?").bind(clientKey).run();
-  return true;
-}
+// The shared limiter (worker/rate-limit.ts). This file carried its own
+// copy of the read-then-write version until 22 Aug 2026.
+const withinRateLimit = (db: D1Database, clientKey: string) =>
+  withinLimit(db, "submission_throttle", clientKey, 5, 60 * 60 * 1000);
 
 /* ── The confirm page ────────────────────────────────────────────────── */
 

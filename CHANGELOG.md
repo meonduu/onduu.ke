@@ -1,6 +1,61 @@
 # Changelog
 
-CURRENT VERSION: v4.91.0 — 1229hrs:22nd August2026
+CURRENT VERSION: v4.92.0 — 1337hrs:22nd August2026
+
+## v4.92.0 — 1337hrs:22nd August2026
+
+**Rate limits are now atomic, and the client identifier is keyed.** Both
+from an external security review (OWASP Top 10:2025, A04 and A10), and
+both were wrong in all five places the logic had been copied to:
+submissions, the do-not-scan request, scans, domain searches and
+analytics events.
+
+**The limit did not hold against the only traffic it exists for.** Every
+copy read the counter, decided, then wrote it back, with a database round
+trip in between. Concurrent requests all read the same number and all
+concluded they were under the ceiling. Measured against the old shape:
+**twenty simultaneous requests, limit of five, twenty admitted.** It is
+now one upsert that resets or increments and returns the value actually
+written, so the decision uses a number nothing else can have changed.
+Same measurement now admits exactly five.
+
+**The identifier was reversible.** `SHA-256(ip)` truncated to 64 bits with
+no key. IPv4 is a 2^32 space, so anyone holding the database could walk it
+and recover every address — and `docs/specs/processors-and-transfers.md`
+called those rows "pseudonymous" on that basis, so the weakness was also
+making a published claim untrue. Now HMAC-SHA-256 under
+`CLIENT_KEY_SECRET`, with a per-purpose prefix so the four tables cannot
+be joined on one visitor, and a daily bucket so identifiers stop matching
+by construction rather than by a cleanup job. The register carries a dated
+correction rather than a quiet edit.
+
+**Failure behaviour is now decided per surface rather than by accident**
+(the review's fourth point, partly). Analytics fails open — a statistics
+table is not worth losing a page view over. The domain search degrades to
+its in-memory bucket, which still refuses, so it is fail-safe rather than
+fail-open. Submissions, the opt-out and scans let the error reach the
+caller, because those write state or send mail.
+
+If `CLIENT_KEY_SECRET` is unset the old unkeyed derivation returns, since
+refusing every request over a missing secret would take the site down for
+a privacy improvement — so `/go` shows a red panel naming the secret and
+the command to set it. A control that is quietly absent looks exactly like
+one that is working.
+
+`tests/rate-limit.test.mjs` is new: the concurrency regression, window
+rollover, per-visitor isolation, key unlinkability across purposes, daily
+expiry, and a source guard that no read-then-write limiter returns. The
+hand-written throttle stubs in three older files are replaced by real
+in-process SQLite (`tests/helpers/throttle-db.mjs`) — they had modelled
+the old SQL, so each only confirmed what its author already assumed, and
+none could have caught this.
+
+**Needs the owner:** `npx wrangler secret put CLIENT_KEY_SECRET` — any
+long random string. Until then the dashboard panel stays red and the
+identifiers remain reversible.
+
+No lesson: found by external review rather than by a repeat failure here.
+The register correction is recorded where the claim lives.
 
 ## v4.91.0 — 1229hrs:22nd August2026
 

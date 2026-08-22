@@ -55,6 +55,19 @@ function fakeDb() {
         bind(...args) {
           return {
             async first() {
+              // The limiter is one atomic upsert since 22 Aug 2026, so the
+              // decision arrives through first() on an INSERT ... RETURNING
+              // rather than a SELECT followed by a write.
+              if (sql.includes("INTO scan_throttle")) {
+                const [key, nowIso, cutoff] = args;
+                const row = throttle.get(key);
+                if (!row || row.window_start < cutoff) {
+                  throttle.set(key, { window_start: nowIso, count: 1 });
+                  return { count: 1 };
+                }
+                row.count += 1;
+                return { count: row.count };
+              }
               if (sql.includes("FROM scan_throttle")) return throttle.get(args[0]) ?? null;
               if (sql.includes("FROM scan_blocklist")) {
                 // args are the candidate suffixes; hit if any is blocklisted.

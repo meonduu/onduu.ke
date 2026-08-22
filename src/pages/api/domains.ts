@@ -12,7 +12,12 @@ export const ALL: APIRoute = async ({ request, locals }) => {
   // (migration 0012); without it the search falls back to the per-isolate
   // bucket alone, which is what it used to rely on entirely.
   const db = (env as { onduu_leads?: D1Database }).onduu_leads;
-  const response = await handleDomainSearch(request, fetch, db);
+  const response = await handleDomainSearch(
+    request,
+    fetch,
+    db,
+    (env as { CLIENT_KEY_SECRET?: string }).CLIENT_KEY_SECRET,
+  );
   if (response.ok) {
     const copy = response.clone();
     locals.cfContext?.waitUntil(
