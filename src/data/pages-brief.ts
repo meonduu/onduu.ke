@@ -87,7 +87,7 @@ export const briefPages: Record<string, PageContent> = {
             "body": "The report is delivered privately with an interpretation route."
           }
         ],
-        "note": "Every assessment runs the same framework over the same six dimensions, so nothing is skipped and no finding depends on what a reviewer happened to remember. Onduu's agents do that first pass across your declared answers and the public evidence, and some of those agents run on third-party AI services. Agents misread things, which is why a person reviews every finding, score and recommendation before your report is issued."
+        "note": "Every assessment runs the same framework over the same six dimensions, so nothing is skipped and no finding depends on what a reviewer happened to remember. Onduu's agents — Hermes and Buzz — do that first pass across your declared answers and the public evidence, on servers provided by HOSTAFRICA. Agents misread things, which is why a person reviews every finding, score and recommendation before your report is issued."
       },
       {
         "eyebrow": "LIMITATIONS",
@@ -311,8 +311,7 @@ export const briefPages: Record<string, PageContent> = {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Privacy notice.",
     "intro": "What Onduu collects when you use this website, why it is collected, who else can see it, how long it is kept and what you can ask for.",
-    "gate": "Draft for professional review. Two points below are still being decided, and no lawyer has checked this page yet.",
-    "sections": [
+        "sections": [
       {
         "eyebrow": "STATUS",
         "title": "This is a draft.",
@@ -411,11 +410,15 @@ export const briefPages: Record<string, PageContent> = {
             "body": "Sends the notification that tells Onduu a request has arrived. That message contains only the reference number and which form was used, none of your answers, and not your name or email address. One exception, since 21 August 2026: when a domain owner asks to be left alone, ZeptoMail delivers the confirmation link to the address they gave at that domain, so for that one message it receives that address and the domain."
           },
           {
+            "title": "HOSTAFRICA",
+            "body": "Provides the servers Onduu's assessment agents, Hermes and Buzz, run on, so it holds the substance of an assessment while it is being analysed \u2014 never your name, email address or company name, which are removed first. Onduu's operator is also a director of HOSTAFRICA Kenya. Added 22 August 2026."
+          },
+          {
             "title": "Slack",
             "body": "Receives the same one-line notification as the email, for the same reason: the reference number and which form was used, nothing you wrote and nothing that identifies you. Added 20 August 2026."
           }
         ],
-        "note": "An independent provider is a different case: nothing reaches one because you used this site. If you ask for implementation support, Ujiajiri names the provider it proposes and tells you exactly what would be shared \u2014 your name, contact details and a project summary \u2014 and sends it only after you say yes to that specific introduction. You may decline without it affecting your assessment or advice. Assessment answers are analysed by Onduu's own agents, and some of those agents run on third-party AI services. What reaches those services is the substance of the assessment — your declared answers, the domain and the public evidence — with your name, email address and company name removed before anything is sent, so they never receive anything that identifies you or your business. The free domain, DNS and email tools use no agents at all. No analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
+        "note": "An independent provider is a different case: nothing reaches one because you used this site. If you ask for implementation support, Ujiajiri names the provider it proposes and tells you exactly what would be shared \u2014 your name, contact details and a project summary \u2014 and sends it only after you say yes to that specific introduction. You may decline without it affecting your assessment or advice. Assessment answers are analysed by Onduu's own agents, Hermes and Buzz, which run on servers provided by HOSTAFRICA. What reaches those servers is the substance of the assessment — your declared answers, the domain and the public evidence — with your name, email address and company name removed before anything is sent, so nothing that identifies you or your business goes with it. Onduu's operator is also a director of HOSTAFRICA Kenya, which is disclosed here because it is the same company: what that relationship does and does not involve is set out on the [commercial relationships](/legal/commercial-relationships) page. The free domain, DNS and email tools use no agents at all. No analytics company receives anything at all. No information from these forms is sold, and none is passed to an infrastructure supplier, an implementation provider or any other third party without asking you first. Two further parties are contacted by the domain tools but receive nothing about you: the registries that answer RDAP lookups, and the nameservers the DNS check questions directly. Both see a request from Onduu's infrastructure carrying only the domain being checked."
       },
       {
         "eyebrow": "WHERE IT IS STORED",
@@ -482,7 +485,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.5, prepared 20 August 2026 with facts confirmed by the owner the same day. It has no effective date until a legal professional has reviewed it and the two open points are decided.",
+          "Version 1.0, effective 22 August 2026. Published on the owner's decision, replacing draft 0.5 of 20 August 2026. It describes the practice actually running, and where an operational decision is still open the section concerned says so rather than leaving the whole notice undated.",
+          "What changed in 1.0: the notice was published. Its content is draft 0.5 with the assessment agents added (21 August 2026): the substance of an assessment reaches third-party services with the name, email address and company name removed first. Nothing else was altered in the move from draft to published.",
           "What changed in 0.5: the owner confirmed that Onduu itself is not a registered company and that Ujiajiri Enterprises Limited, a limited liability company registered in Kenya, is the accountable entity; the complaints section names that company and points at the contact form\u0027s new \u0022complaint\u0022 option, while keeping the independent right to complain to the Data Protection Commissioner. The registration number and registered address remain outstanding.",
           "What changed in 0.4: Slack was added to the list of parties that receive a notification, correcting an omission made when that channel was wired up earlier the same day; and where the information is stored is now stated exactly (Cloudflare's Eastern Europe region, single copy, no replicas) rather than as \u0022many countries\u0022. A processing register recording every processor, what each receives and the decisions still outstanding is published in the site's repository.",
           "What changed in 0.3: the cookies and analytics section now describes the first-party measurement script this site runs in the browser — which pages were opened, roughly how long each was on screen, and clicks on explicitly marked elements, with a tab-scoped label in session storage and nothing that can recognise a returning visitor — and records that the script honours the Global Privacy Control and Do Not Track signals. Three further sections were corrected to match it: what is collected no longer claims nothing is gathered as you browse, why-and-on-what-basis states the legitimate interest relied on for the measurement, and how-long-it-is-kept covers the counted views and events rather than form submissions alone.",
@@ -496,8 +500,7 @@ export const briefPages: Record<string, PageContent> = {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Assessment terms.",
     "intro": "The terms that apply when you request a human-reviewed Digital Fitness Assessment, or when a deeper piece of work is separately scoped and agreed in writing. The free tools on this site are covered by the tool limitations page.",
-    "gate": "Draft for professional review. Everything on this page is settled and current; what it has not had is a lawyer's check.",
-    "sections": [
+        "sections": [
       {
         "eyebrow": "STATUS",
         "title": "This is a draft.",
@@ -614,7 +617,8 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "VERSION",
         "title": "Version and effective date.",
         "body": [
-          "Draft version 0.5, prepared 16 August 2026 and completed on 20 August 2026. Every open question on this page has now been answered. It has no effective date until a legal professional has reviewed it.",
+          "Version 1.0, effective 22 August 2026. Published on the owner's decision, replacing draft 0.5, which was prepared on 16 August 2026 and completed on 20 August 2026. Every open question on this page has been answered.",
+          "What changed in 1.0: the terms were published, and the evidence labels gained a ruling (21 August 2026) that agent assistance is never itself an evidence basis \u2014 \u0022Manually reviewed\u0022 continues to mean a person examined the evidence.",
           "What changed in 0.5: ownership is settled. The report and its findings are the client\u0027s to act on and to share with whoever helps them act on it; the scoring method, the six dimensions, the evidence labels and any blank template remain Onduu\u0027s, usable by the client for their own business but not to be repackaged or resold.",
           "What changed in 0.4: a new section states exactly what Onduu may publish without asking \u2014 patterns across at least ten assessments, no subdivision below five, identifying detail left out regardless \u2014 and confirms that anything narrower needs written consent against the exact wording proposed. Report delivery and sole readership moved into the body. (Version 0.3 was prepared on 20 August but its note was written to the wrong page and lost when that page was replaced; this is the corrected record.)",
           "What changed in 0.2: a retention claim was corrected — draft 0.1 stated a fixed two-year retention period and cited the privacy notice, which actually states there is no automatic deletion schedule; the terms now match the notice and the running code. The scope was narrowed to the human-reviewed assessment and separately agreed work, with the four free tools pointed at the tool limitations page that already governs them. The DKIM wording now matches the code (common selectors)."

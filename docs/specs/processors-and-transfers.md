@@ -5,6 +5,11 @@ reading the running code and querying production, not from memory. Every
 factual claim below is checkable by the command or file named beside it.
 Items marked **OWNER** need a decision only Wycliffe can make; items marked
 **LAWYER** need the professional review that `ROADMAP.md` Phase 3 awaits.
+Note (22 Aug 2026): the privacy notice and assessment terms were published
+as v1.0 on the owner's decision without waiting for that review. Publishing
+them did not answer any question below — every **LAWYER** item here is still
+open, and a published notice that turns out to be wrong is now wrong in
+public rather than in draft.
 The public pages no longer use the phrase "TO CONFIRM" — visitor-facing
 copy says "still to decide" instead (v4.60.0). This register keeps the
 internal vocabulary, which is what it is for.
@@ -75,25 +80,34 @@ nameservers questioned by `/dns`, and the public pages fetched by `/scan`.
 Each sees a request from Onduu's infrastructure carrying only the domain
 being checked — never anything about the visitor who asked.
 
-### Third-party AI services (assessment agents)
-- **Role**: some of Onduu's assessment agents run on third-party AI
-  services. They perform the first-pass analysis of an assessment across
-  the six dimensions; a person reviews every finding, score and
-  recommendation before a report is issued. Live since 21 August 2026.
+### HOSTAFRICA (assessment agents)
+- **Role**: provides the servers Onduu's assessment agents — **Hermes** and
+  **Buzz** — run on. The agents perform the first-pass analysis of an
+  assessment across the six dimensions; a person reviews every finding,
+  score and recommendation before a report is issued. Agents live since
+  21 August 2026; HOSTAFRICA named here 22 August 2026 (owner).
 - **Receives**: the substance of the assessment — declared answers, the
   domain and the public evidence — **with the name, email address and
   company name removed before anything is sent.** No identifying data
   leaves Onduu.
 - **Scope**: the Digital Fitness Assessment only. `/scan`, `/dns`,
-  `/email-security` and `/kedomains` are deterministic checks and involve
-  no agent.
+  `/email-security` and `/domains` are deterministic checks and involve no
+  agent.
 - **Basis**: performance of the assessment the customer requested.
-- **TO NAME**: the specific services are not yet recorded here, and the
-  privacy notice therefore describes them generically while naming
-  Cloudflare, ZeptoMail and Slack. Name them here and add a card to the
-  notice's "WHO ELSE PROCESSES IT" section in the same release.
-- **LAWYER**: confirm each service's data processing terms, that
-  submissions are not used to train models, and what it retains.
+- **Relationship**: Onduu's operator is Managing Director of HOSTAFRICA
+  Kenya. This is not an arm's-length processor, and the privacy notice
+  says so at the point it names HOSTAFRICA. The commercial mechanics stay
+  on `/legal/commercial-relationships` (CLAUDE.md, one page only).
+- **OWNER**: confirm whether the agents call any external model API from
+  those servers. "Runs on HOSTAFRICA servers" answers where the compute
+  is, not which model sees the text; if a hosted model API is called, that
+  provider is a further processor and must be added here and to the notice
+  in the same release. Recorded as open rather than assumed either way —
+  the notice deliberately makes no claim that nobody else receives it.
+- **LAWYER**: whether a processing agreement exists between Ujiajiri
+  Enterprises Limited and HOSTAFRICA, and what it says about
+  confidentiality, retention and sub-processing. A directorship is not a
+  substitute for one.
 
 ### Explicitly not processors
 No analytics company. No advertising network. Cloudflare Web Analytics

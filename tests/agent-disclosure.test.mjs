@@ -2,9 +2,9 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { fetchPath } from "./helpers/server.mjs";
 
-// Onduu's assessment is analysed by its own agents, some of which run on
-// third-party AI services (owner, 21 August 2026). Three things have to
-// hold once that is true, and none of them is self-enforcing:
+// Onduu's assessment is analysed by its own agents, Hermes and Buzz,
+// running on servers provided by HOSTAFRICA (owner, 21-22 August 2026).
+// Four things have to hold once that is true, and none is self-enforcing:
 //
 //   1. The privacy notice must not deny it. It carried the sentence "No
 //      artificial-intelligence or language-model provider receives your
@@ -16,7 +16,12 @@ import { fetchPath } from "./helpers/server.mjs";
 //      CLAUDE.md forbids promising agent accuracy. "Agents analyse your
 //      evidence" alone is that promise; "a person reviews every finding
 //      before the report is issued" is what makes it truthful.
-//   3. The free tools must stay out of it. /scan, /dns, /email-security
+//   3. The company must be named, not the software. A processor card
+//      exists to tell a data subject WHICH ORGANISATION holds their
+//      information; "Hermes and Buzz" answers a different question. And
+//      because Onduu's operator directs HOSTAFRICA Kenya, this processor
+//      is not arm's length, so the relationship is disclosed beside it.
+//   4. The free tools must stay out of it. /scan, /dns, /email-security
 //      and /domains are deterministic public checks with no agent
 //      anywhere near them, and letting the disclosure blur across them
 //      would misdescribe four tools to make one page read better.
@@ -33,12 +38,22 @@ test("no page denies that an AI provider receives assessment content", async () 
   }
 });
 
-test("the privacy notice discloses the third-party AI services", async () => {
-  const text = (await (await fetchPath("/legal/privacy")).text()).replace(/<[^>]+>/g, " ");
+test("the privacy notice names where the agents run, and the relationship", async () => {
+  // Named 22 Aug 2026 (owner): the agents are Hermes and Buzz, running on
+  // HOSTAFRICA servers. A processor card has to name the company that
+  // receives the data, not the pet name of the software — and this one is
+  // not arm's length, so the directorship belongs beside it.
+  const text = (await (await fetchPath("/legal/privacy")).text())
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#x27;/g, "'")
+    .replace(/\s+/g, " ");
+  assert.match(text, /HOSTAFRICA/, "the notice must name the company holding assessment content");
+  assert.match(text, /Hermes/, "the agents must be named");
+  assert.match(text, /Buzz/, "the agents must be named");
   assert.match(
     text,
-    /third-party AI services/i,
-    "the notice must say assessment content reaches third-party AI services",
+    /director of HOSTAFRICA Kenya/i,
+    "the notice must disclose that the processor is not arm's length",
   );
 });
 
@@ -49,16 +64,16 @@ test("the privacy notice discloses the third-party AI services", async () => {
 // name, email or company, this sentence becomes a false assurance about
 // personal data rather than a stale marketing line. Pinned so the claim
 // and the pipeline have to change together.
-test("the de-identification claim is stated wherever the AI services are named", async () => {
+test("the de-identification claim is stated wherever the agent servers are named", async () => {
   for (const path of ["/legal/privacy", "/digital-fitness"]) {
     const text = (await (await fetchPath(path)).text())
       .replace(/<[^>]+>/g, " ")
       .replace(/\s+/g, " ");
-    if (!/third-party AI services/i.test(text)) continue;
+    if (!/HOSTAFRICA servers|servers provided by HOSTAFRICA/i.test(text)) continue;
     assert.match(
       text,
       /name, email address and company name removed/i,
-      `${path} names the AI services without stating what is stripped first`,
+      `${path} names where the agents run without stating what is stripped first`,
     );
   }
 });

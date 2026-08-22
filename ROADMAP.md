@@ -396,7 +396,7 @@ owner approves:
 | Approve governance files (this commit) | everything | **approved 19 Aug 2026** — explicit owner sign-off of `CLAUDE.md`, `ROADMAP.md` and `REVIEW.md` recorded during the full-repo audit session (v4.39.1) |
 | Approve Astro migration merge after preview | Phase 0.5 | **approved and merged 18 Aug 2026** (PR #1, v3.0.0, live) |
 | Approved HOSTAFRICA destination + wording | Phase 2 | **decided 18 Aug 2026**: panel.hostafrica.com with UTM attribution only, no affiliate parameter, no commission (v4.1.0) |
-| Identity/contact facts; lift draft markings | Phase 3 | outstanding |
+| Identity/contact facts; lift draft markings | Phase 3 | **decided 22 Aug 2026** — the privacy notice and assessment terms are published as v1.0, effective 22 Aug 2026 (v4.88.0). Owner's decision; a lawyer has not reviewed them, so the `LAWYER` markers in `docs/specs/processors-and-transfers.md` still stand. `/legal/commercial-relationships` and `/legal/tool-limitations` keep their draft gates. |
 | Retention policy: deletion on request, no fixed period | Phase 3 | **decided 19 Aug 2026** — `retain_until` stays advisory only (v4.39.1) |
 | Instant-scan specification approval | Phase 4 | **approved 18 Aug 2026** (spec + psr-v1 rubric) |
 | Scanner public launch approval | Phase 4 | **approved and launched 18 Aug 2026** (v4.2.0, `SCAN_ENABLED` set) |
