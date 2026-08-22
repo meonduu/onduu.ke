@@ -228,8 +228,8 @@ async function overview(
   // stopped running, and the second is only ever noticed later.
   const lastCleanup = await safe(
     db
-      .prepare("SELECT ran_at, throttle_deleted, optout_deleted FROM cleanup_runs ORDER BY ran_at DESC LIMIT 1")
-      .first<{ ran_at: string; throttle_deleted: number; optout_deleted: number }>(),
+      .prepare("SELECT ran_at, throttle_deleted, optout_deleted, redacted, submissions_deleted FROM cleanup_runs ORDER BY ran_at DESC LIMIT 1")
+      .first<{ ran_at: string; throttle_deleted: number; optout_deleted: number; redacted: number; submissions_deleted: number }>(),
     null,
   );
 
@@ -319,9 +319,11 @@ checked signature. It should clear by itself; if it persists, the team domain or
   // shouting about counts.
   const cleanupNote = lastCleanup
     ? `<div class="note">Cleanup last ran ${escape(eatDateTime(lastCleanup.ran_at))} EAT \u2014 removed
-${lastCleanup.throttle_deleted} spent throttle ${lastCleanup.throttle_deleted === 1 ? "row" : "rows"} and
-${lastCleanup.optout_deleted} expired opt-out ${lastCleanup.optout_deleted === 1 ? "request" : "requests"}.
-It touches nothing anyone sent: enquiries, analytics, scan results and the do-not-scan list are out of scope.</div>`
+${lastCleanup.throttle_deleted} spent throttle ${lastCleanup.throttle_deleted === 1 ? "row" : "rows"},
+${lastCleanup.optout_deleted} expired opt-out ${lastCleanup.optout_deleted === 1 ? "request" : "requests"},
+cleared the free text on ${lastCleanup.redacted ?? 0} ${(lastCleanup.redacted ?? 0) === 1 ? "enquiry" : "enquiries"} past 12 months,
+and deleted ${lastCleanup.submissions_deleted ?? 0} past 24 months (their consent record is kept, with no personal data in it).
+Analytics, scan results and the do-not-scan list are out of scope.</div>`
     : `<div class="note">Cleanup has not run yet. It sweeps spent throttle counters and opt-out links that
 expired unconfirmed, at most once every six hours, and records each run here. Nothing until migration 0013
 is applied.</div>`;

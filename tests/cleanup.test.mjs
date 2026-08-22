@@ -25,7 +25,16 @@ function db() {
     token_hash TEXT NOT NULL UNIQUE, created_at TEXT NOT NULL, expires_at TEXT NOT NULL, confirmed_at TEXT)`);
   raw.exec(`CREATE TABLE cleanup_runs (
     id INTEGER PRIMARY KEY AUTOINCREMENT, ran_at TEXT NOT NULL,
-    throttle_deleted INTEGER NOT NULL DEFAULT 0, optout_deleted INTEGER NOT NULL DEFAULT 0)`);
+    throttle_deleted INTEGER NOT NULL DEFAULT 0, optout_deleted INTEGER NOT NULL DEFAULT 0,
+    redacted INTEGER NOT NULL DEFAULT 0, submissions_deleted INTEGER NOT NULL DEFAULT 0)`);
+  raw.exec(`CREATE TABLE submissions (
+    reference TEXT PRIMARY KEY, kind TEXT NOT NULL, full_name TEXT, business_email TEXT, company TEXT,
+    trigger_now TEXT, business_result TEXT, current_manager TEXT, consequence_six_months TEXT,
+    consent_text TEXT NOT NULL, consent_version TEXT NOT NULL,
+    created_at TEXT NOT NULL, last_contact_at TEXT, redacted_at TEXT)`);
+  raw.exec(`CREATE TABLE consent_records (
+    reference TEXT PRIMARY KEY, kind TEXT NOT NULL, consent_version TEXT NOT NULL,
+    consent_text TEXT NOT NULL, consented_at TEXT NOT NULL, submission_deleted_at TEXT NOT NULL)`);
   return {
     raw,
     count: (t) => raw.prepare(`SELECT count(*) AS n FROM ${t}`).get().n,
@@ -39,6 +48,9 @@ function db() {
           },
           async first() {
             return stmt.get(...args) ?? null;
+          },
+          async all() {
+            return { results: stmt.all(...args) };
           },
         }),
       };
@@ -127,23 +139,30 @@ test("a database missing the tables is survived, not thrown from", async () => {
   // request must not fail because a sweep could not run.
   const bare = { prepare() { throw new Error("no such table"); } };
   const r = await runCleanup(bare, NOW);
-  assert.deepEqual(r, { throttleDeleted: 0, optoutDeleted: 0 });
+  assert.deepEqual(r, { throttleDeleted: 0, optoutDeleted: 0, redacted: 0, submissionsDeleted: 0 });
 });
 
-test("it touches nothing anyone sent", async () => {
-  // The scope line from the owner's decision, as a test. If a future edit
-  // adds a table here, this fails and the decision gets revisited.
+test("the scope is exactly what was decided, and nothing else", async () => {
+  // The owner's decision as an executable boundary. Enquiries came into
+  // scope on 22 Aug 2026 with agreed periods; everything below stayed out
+  // because how long to keep it is still an open question. A future edit
+  // that widens this fails here and sends the decision back.
   const { readFileSync } = await import("node:fs");
   const src = readFileSync(new URL("../worker/cleanup.ts", import.meta.url), "utf8");
-  const deletes = [...src.matchAll(/DELETE FROM (\w+)/g)].map((m) => m[1]);
+  const deletes = [...new Set([...src.matchAll(/DELETE FROM (\w+)/g)].map((m) => m[1]))].sort();
   assert.deepEqual(
-    [...new Set(deletes)].sort(),
-    ["cleanup_runs", "do_not_scan_requests"],
-    "throttle tables are interpolated from a fixed list; nothing else may be deleted from",
+    deletes,
+    ["cleanup_runs", "do_not_scan_requests", "submissions"],
+    "throttle tables come from a fixed list; nothing beyond these may be deleted from",
   );
-  for (const protectedTable of ["submissions", "page_views", "events", "scans", "tool_checks", "scan_blocklist"]) {
-    assert.doesNotMatch(src, new RegExp(`DELETE FROM ${protectedTable}\\b`), `${protectedTable} must never be swept`);
+  for (const untouched of [
+    "page_views", "events", "scans", "tool_checks", "scan_blocklist", "consent_records",
+  ]) {
+    assert.doesNotMatch(src, new RegExp(`DELETE FROM ${untouched}\\b`), `${untouched} must never be swept`);
   }
+  // consent_records is the trail that outlives the person; deleting from
+  // it would defeat the whole design.
+  assert.match(src, /INSERT INTO consent_records/, "the consent trail must be written before a deletion");
 });
 
 test("one isolate sweeps at most once every six hours", async () => {
@@ -152,4 +171,96 @@ test("one isolate sweeps at most once every six hours", async () => {
   assert.equal(cleanupIsDue(NOW + 1000), false, "a second request moments later must not sweep again");
   assert.equal(cleanupIsDue(NOW + 5 * HOUR), false);
   assert.equal(cleanupIsDue(NOW + 7 * HOUR), true, "due again after the interval");
+});
+
+/* ── enquiry retention (owner, 22 Aug 2026) ──────────────────────────── */
+
+const MONTH = 30 * DAY;
+
+function enquiry(d, ref, ageMs, lastContactMs) {
+  d.raw
+    .prepare("INSERT INTO submissions VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,NULL)")
+    .run(
+      ref, "fitness", "A Person", `${ref}@example.co.ke`, "Example Ltd",
+      "our backups were never tested", "more enquiries", "a developer who left", "we lose the site",
+      "I agree to the privacy notice", "2026-08-15",
+      iso(NOW - ageMs), lastContactMs === undefined ? null : iso(NOW - lastContactMs),
+    );
+}
+
+test("free text is cleared at 12 months; the enquiry itself stays", async () => {
+  const d = db();
+  enquiry(d, "old", 13 * MONTH);
+  enquiry(d, "recent", 3 * MONTH);
+  const r = await runCleanup(d, NOW);
+
+  assert.equal(r.redacted, 1);
+  const old = d.raw.prepare("SELECT * FROM submissions WHERE reference='old'").get();
+  assert.ok(old, "the enquiry is not deleted at 12 months, only cleared");
+  assert.equal(old.trigger_now, null, "the most revealing field must be gone");
+  assert.equal(old.consequence_six_months, null);
+  assert.equal(old.full_name, "A Person", "who they are survives to 24 months");
+  assert.equal(old.business_email, "old@example.co.ke");
+  assert.ok(old.redacted_at, "the clearing is recorded");
+
+  const recent = d.raw.prepare("SELECT trigger_now FROM submissions WHERE reference='recent'").get();
+  assert.equal(recent.trigger_now, "our backups were never tested", "a 3-month-old enquiry is untouched");
+});
+
+test("an enquiry is not redacted twice", async () => {
+  const d = db();
+  enquiry(d, "old", 13 * MONTH);
+  await runCleanup(d, NOW);
+  const second = await runCleanup(d, NOW);
+  assert.equal(second.redacted, 0, "redacted_at must stop it being counted again");
+});
+
+test("at 24 months the enquiry goes and the consent record remains, without a person in it", async () => {
+  const d = db();
+  enquiry(d, "ancient", 25 * MONTH);
+  const r = await runCleanup(d, NOW);
+
+  assert.equal(r.submissionsDeleted, 1);
+  assert.equal(d.count("submissions"), 0);
+
+  const consent = d.raw.prepare("SELECT * FROM consent_records WHERE reference='ancient'").get();
+  assert.ok(consent, "the proof that consent was given must outlive the data");
+  assert.equal(consent.consent_version, "2026-08-15");
+  assert.equal(consent.kind, "fitness");
+  // The whole point: nothing here identifies anyone.
+  const values = Object.values(consent).join(" ");
+  for (const personal of ["A Person", "ancient@example.co.ke", "Example Ltd", "backups"]) {
+    assert.ok(!values.includes(personal), `consent record must not carry ${personal}`);
+  }
+});
+
+test("the clock runs from the last contact, not the form", async () => {
+  const d = db();
+  // Submitted two years ago, but they wrote again last month: still live.
+  enquiry(d, "revived", 25 * MONTH, 1 * MONTH);
+  const r = await runCleanup(d, NOW);
+  assert.equal(r.submissionsDeleted, 0, "a recent exchange must restart the clock");
+  assert.equal(r.redacted, 0, "and the 12-month clock too");
+  assert.ok(d.raw.prepare("SELECT 1 FROM submissions WHERE reference='revived'").get());
+});
+
+test("an enquiry is never deleted without its consent record being written first", async () => {
+  // If the consent insert fails, the enquiry must stay. The reverse order
+  // would destroy both the enquiry and the proof consent was ever given.
+  const d = db();
+  enquiry(d, "ancient", 25 * MONTH);
+  d.raw.exec("DROP TABLE consent_records");
+  const r = await runCleanup(d, NOW);
+  assert.equal(r.submissionsDeleted, 0, "no consent record means no deletion");
+  assert.equal(d.count("submissions"), 1, "the enquiry must survive the failure");
+});
+
+test("the run records both new tiers", async () => {
+  const d = db();
+  enquiry(d, "old", 13 * MONTH);
+  enquiry(d, "ancient", 25 * MONTH);
+  await runCleanup(d, NOW);
+  const row = d.raw.prepare("SELECT redacted, submissions_deleted FROM cleanup_runs").get();
+  assert.equal(row.redacted, 1);
+  assert.equal(row.submissions_deleted, 1);
 });
