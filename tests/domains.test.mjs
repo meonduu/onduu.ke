@@ -211,7 +211,14 @@ test("NXDOMAIN plus no RDAP record appears available, with the register link", a
   // it the checkout silently ignores the name, which is how v4.70.0
   // concluded the name could not be carried at all.
   assert.match(result.registerUrl, /[?&]ident=keha(&|$)/, "ident=keha must accompany domain");
-  assert.match(REGISTER_URL, /utm_source=onduu/, "campaign attribution present");
+  // Exact, with a boundary: /utm_source=onduu/ alone also matches
+  // "onduu.ke", so it would have passed whichever value was there and
+  // verified nothing.
+  assert.match(
+    REGISTER_URL,
+    /utm_source=onduu\.ke(&|$)/,
+    "attribution must name this site the same way the infrastructure CTA does",
+  );
   // Owner instruction, 21 Aug 2026, superseding the 18 Aug "no affiliate
   // parameter" rule: the link carries HOSTAFRICA affiliate id 916, used for
   // attribution only — the owner confirmed it pays Onduu no commission.
