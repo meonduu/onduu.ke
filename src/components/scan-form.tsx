@@ -191,12 +191,18 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
               cached marker: the note carrying them was removed on the owner's
               instruction, 22 Aug 2026. All three are still returned by the
               API and recorded against the scan, so /go/scans is unchanged. */}
-          {DIMENSION_ORDER.map((dim) => {
+          {DIMENSION_ORDER.map((dim, n) => {
             const items = result.signals.filter((s) => s.dimension === dim);
             if (items.length === 0) return null;
+            // Numbered from DIMENSION_ORDER, not from the rendered position,
+            // so Control is always 01 and Agent fitness always 06 even when
+            // a dimension has nothing to show and is skipped.
             return (
               <div key={dim} className="scan-dimension">
-                <h3>{DIMENSION_LABELS[dim] ?? dim}</h3>
+                <div className="scan-dimension-head">
+                  <span>{String(n + 1).padStart(2, "0")}</span>
+                  <h3>{DIMENSION_LABELS[dim] ?? dim}</h3>
+                </div>
                 <ul className="check-list">
                   {items.map((s) => (
                     <li key={s.id} className={`check-${s.status === "unobservable" ? "info" : s.status}`}>

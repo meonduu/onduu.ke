@@ -1,6 +1,43 @@
 # Changelog
 
-CURRENT VERSION: v5.5.0 — 1942hrs:22nd August2026
+CURRENT VERSION: v5.6.0 — 1959hrs:22nd August2026
+
+## v5.6.0 — 1959hrs:22nd August2026
+
+**The scan's six dimension headings are numbered and sized to sit above
+their findings.** Owner noticed the fonts and asked for an analysis
+first. The measurement said it plainly: `.scan-dimension h3` had no CSS
+rule at all, so "Control", "Trust" and the rest rendered at the browser's
+bare 16px default — *under* finding titles set at 25px. The group was
+smaller than its members, and the same size as the body text beneath
+them. Nothing told a reader that "Control" was organising the four rows
+below it.
+
+The same six names already had a treatment elsewhere: the homepage
+dimension grid sets them as a copper number beside a 30px Georgia title,
+and `/dns` gives its category heads a rule beneath and space above. The
+scan was the one place the grouping heading had never been styled. It
+now gets both: `01 Control` … `06 Agent fitness`, copper number, 30px
+title, 2px rule, 40px of air above each block.
+
+**The first attempt was wrong, and the screenshot showed it.** Matching
+`/dns` at 23px fixed the bare default and still left the heading smaller
+than the 25px rows under it — visibly, in the very screenshot taken to
+confirm it. Matching a sibling page was the wrong target; the only floor
+that means anything for a group heading is "larger than what it groups".
+30px is that, and also the homepage grid's size for these names. The
+guard in `tests/scan-hierarchy.test.mjs` now asserts the relationship
+strictly, against the real row size, rather than a number copied from
+another page.
+
+The numbers come from `DIMENSION_ORDER`, not from render position, so a
+scan with nothing observable in Speed still shows Conversion as 04. A test
+reads the component to hold that, since the skipped-dimension case needs
+a specific domain to reproduce.
+
+No lesson: a styling gap on the owner's instruction. The 23px misstep is
+the L16 shape — checking against a convenient reference rather than the
+thing itself — and it was caught before shipping.
 
 ## v5.5.0 — 1942hrs:22nd August2026
 
