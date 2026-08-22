@@ -1,6 +1,41 @@
 # Changelog
 
-CURRENT VERSION: v5.3.0 — 1858hrs:22nd August2026
+CURRENT VERSION: v5.4.0 — 1929hrs:22nd August2026
+
+## v5.4.0 — 1929hrs:22nd August2026
+
+**The scan read one house style of HTML, not HTML.** Owner asked for the
+result on wpfoss.com: score 88, with four findings — no viewport meta, no
+meta description, no structured data, no sitemap. The site has all four.
+Every point of the gap was the scanner's error.
+
+wpfoss.com serves minified HTML: attributes unquoted and in whatever
+order the minifier chose — `<meta content="…" name=viewport>`,
+`<script type=application/ld+json>`. All valid. The extractors matched
+`name="viewport"` literally: quotes required, `name` first. Three wrong
+findings from one assumption. They now tokenise a tag's attributes and
+read by name, so quoting, order, case and intervening attributes no longer
+matter. A decoy test holds the other edge: `content="name=viewport"` must
+not count, and the first version of the fix got that wrong until the test
+said so.
+
+The fourth was different. The scan fetched `/sitemap.xml` and nothing
+else, but the standard way to publish a sitemap is a `Sitemap:` line in
+robots.txt — which wpfoss.com has, pointing at `sitemap-index.xml`. When
+the conventional path is absent the collector now follows that line,
+same host only, so a robots.txt cannot send the scanner anywhere it would
+not have gone by itself. The row is labelled "Sitemap" rather than
+"sitemap.xml", and its absence message names both places it looked.
+
+wpfoss.com now scores 100 through the built Worker.
+
+**Lesson L17, which is L13 again.** v5.3.0 shipped with a test that threw
+`ReferenceError` on every run, under release notes saying 329/329. The
+suite had passed; the test was then edited once more; lint ran on the new
+version; the release went out on the old result. L13's rule needed its
+missing clause — the checks must run after the *last* edit, and any edit
+after them reopens the gate. Lint is not the suite and a test file is
+source. Found by the next full run, one release later.
 
 ## v5.3.0 — 1858hrs:22nd August2026
 

@@ -56,7 +56,7 @@ test("the scan hands off to the email check with the domain, and the check only 
   assert.ok(block.startsWith("useEffect("), "the prefill must live in an effect, not a useState initialiser");
   assert.match(block, /setDomain\(/, "it prefills the box");
   assert.doesNotMatch(block, /onSubmit|fetch\(|\.submit\(/, "it must not auto-run the check on page load");
-  assert.match(prefill, /\/\^\[a-z0-9.-\]/, "only a hostname-shaped value goes into the box");
+  assert.match(block, /\/\^\[a-z0-9.-\]/, "only a hostname-shaped value goes into the box");
 });
 
 test("insights index lists every migrated article", async () => {

@@ -128,6 +128,25 @@ Newest first. Format: what happened → root cause → the guard now standing.
 Add an entry whenever a defect recurs or a check above fails; an entry may
 be closed only by pointing at its guard.
 
+**L17 — 22 Aug 2026 · L13 again: a green suite that predated the last
+edit.** v5.3.0 was committed with a test referencing an undefined
+variable — a `ReferenceError` on every run — while the release notes said
+329/329. The suite had genuinely passed; then the test was rewritten once
+more, lint was run on the new version, and the release went out on the
+earlier result. The next full run, a release later, found it.
+
+L13 said "run the checks, read the result, then ship as a separate
+action." This was that, in order, and still wrong, because one more edit
+landed between "read the result" and "ship". The rule needs its missing
+clause: **the checks must run after the last edit, and any edit after
+them — however small, including to a test — reopens the gate.** Lint is
+not the suite. A test file is source.
+
+Guard: none mechanical yet. The honest statement is that a checklist
+failed where a checklist was the control, and the fix is to stop trusting
+a result older than the working tree. `git status` before shipping should
+show nothing newer than the last `npm test`.
+
 **L16 — 22 Aug 2026 · Severity computed from a count, not a judgement.**
 The email checker marked an SPF record at 10 of 10 DNS lookups NEEDS
 WORK, beside the words "This is correct." Ten is the maximum RFC 7208

@@ -99,7 +99,43 @@ export interface Observations {
 
 /* ── page fact extraction ────────────────────────────────────────────── */
 
-function extractPageFacts(result: Awaited<ReturnType<typeof safeFetch>>): PageFacts {
+/**
+ * Read one attribute off an HTML tag, whatever the quoting and order.
+ *
+ * The fact extractors below used to match `name="viewport"` and
+ * `type="application/ld+json"` literally — quotes required, attributes in
+ * the order the author happened to write them. wpfoss.com (22 Aug 2026)
+ * serves minified HTML: `<meta content="…" name=viewport>`, unquoted and
+ * content-first. Every one of those is valid HTML, and the scan reported
+ * a missing viewport, a missing description and no structured data on a
+ * page that has all three. An instant scan that reads a site's HTML has
+ * to read HTML, not one house style of it.
+ */
+function attr(tag: string, name: string): string | null {
+  // Tokenise the attributes in order rather than searching the raw string:
+  // a search finds `name=viewport` inside content="name=viewport" too. Each
+  // match consumes one attribute (with its value, quoted or not), so a
+  // value can never be mistaken for a later attribute name.
+  const body = tag.replace(/^<\s*[a-z][^\s>/]*/i, "").replace(/\/?>\s*$/, "");
+  const re = /([^\s=/>"']+)(?:\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s"'>]+)))?/g;
+  const want = name.toLowerCase();
+  for (const m of body.matchAll(re)) {
+    if (m[1].toLowerCase() === want) return m[2] ?? m[3] ?? m[4] ?? "";
+  }
+  return null;
+}
+
+/** Every <meta …> tag whose `name` or `property` matches, by attribute, not by position. */
+function metaContent(body: string, key: string): string | null {
+  for (const m of body.matchAll(/<meta\b[^>]*>/gi)) {
+    const tag = m[0];
+    const n = attr(tag, "name") ?? attr(tag, "property");
+    if (n && n.toLowerCase() === key) return attr(tag, "content") ?? "";
+  }
+  return null;
+}
+
+export function extractPageFacts(result: Awaited<ReturnType<typeof safeFetch>>): PageFacts {
   if (!result.ok) {
     return { fetched: false, error: result.error, chain: result.chain, headers: {} };
   }
@@ -108,9 +144,11 @@ function extractPageFacts(result: Awaited<ReturnType<typeof safeFetch>>): PageFa
   const contentLength = result.headers["content-length"]
     ? Number(result.headers["content-length"]) || null
     : null;
-  const jsonLdBlocks = [
-    ...body.matchAll(/<script[^>]+type=["']application\/ld\+json["'][^>]*>([\s\S]*?)<\/script>/gi),
-  ];
+  // Matched on the type attribute's value, so `type=application/ld+json`
+  // (unquoted) counts exactly as `type="application/ld+json"` does.
+  const jsonLdBlocks = [...body.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)]
+    .filter((m) => (attr(m[1], "type") ?? "").trim().toLowerCase() === "application/ld+json")
+    .map((m) => [m[0], m[2]] as const);
   let jsonLdParses = false;
   for (const block of jsonLdBlocks) {
     try {
@@ -132,8 +170,8 @@ function extractPageFacts(result: Awaited<ReturnType<typeof safeFetch>>): PageFa
     chain: result.chain,
     headers: result.headers,
     title,
-    metaDescription: /<meta\s+name=["']description["']\s+content=["'][^"']+["']/i.test(body),
-    viewport: /<meta\s+name=["']viewport["']/i.test(body),
+    metaDescription: (metaContent(body, "description") ?? "").trim().length > 0,
+    viewport: metaContent(body, "viewport") !== null,
     h1Count: (body.match(/<h1[\s>]/gi) || []).length,
     hasContactPath:
       /href=["']tel:/i.test(body) ||
@@ -326,11 +364,33 @@ export async function collectObservations(domain: string, budget: Budget): Promi
         ? /^\s*(user-agent|allow|disallow|sitemap)\s*:/im.test(robotsRaw.body)
         : undefined,
   };
+  // /sitemap.xml is a convention, not a rule. The standard way to publish a
+  // sitemap is a `Sitemap:` line in robots.txt, and a site that does that
+  // (wpfoss.com: sitemap-index.xml, 22 Aug 2026) was being marked as having
+  // none. If the conventional path misses and robots.txt names one, fetch
+  // that instead — same host only, so robots.txt cannot send the scanner
+  // anywhere it would not have gone by itself.
+  let sitemapFetched = sitemapRaw;
+  const declared = robotsRaw.ok ? robotsRaw.body.match(/^\s*sitemap\s*:\s*(\S+)/im)?.[1] : undefined;
+  if (!(sitemapRaw.ok && sitemapRaw.status === 200) && declared) {
+    try {
+      const u = new URL(declared, `https://${domain}/`);
+      const sameSite = u.hostname === domain || u.hostname === twinHost;
+      if (sameSite && u.protocol === "https:") {
+        sitemapFetched = await safeFetch(u.toString(), budget, {
+          maxBytes: 256 * 1024,
+          accept: "application/xml, text/xml",
+        });
+      }
+    } catch {
+      /* a malformed Sitemap: line is the same as none */
+    }
+  }
   const sitemap: Observations["sitemap"] = {
-    ...extractPageFacts(sitemapRaw),
+    ...extractPageFacts(sitemapFetched),
     looksLikeSitemap:
-      sitemapRaw.ok && sitemapRaw.status === 200
-        ? /<(urlset|sitemapindex)[\s>]/i.test(sitemapRaw.body)
+      sitemapFetched.ok && sitemapFetched.status === 200
+        ? /<(urlset|sitemapindex)[\s>]/i.test(sitemapFetched.body)
         : undefined,
   };
 
