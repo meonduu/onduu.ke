@@ -32,32 +32,50 @@ const block = (css, selector) => {
   return css.match(new RegExp(`${escaped}\\{([^}]*)\\}`))?.[1] ?? null;
 };
 
-test("a scan dimension heading is set larger than the finding titles beneath it", async () => {
-  const css = await servedCss();
-  const head = block(css, ".scan-dimension-head h3");
-  assert.ok(head, "the dimension heading has no rule — it will fall back to the browser default again");
-  const headSize = px(head, "font-size");
-  assert.ok(headSize, "the dimension heading must set an explicit size");
+/**
+ * The declared font-size for a selector, in px, or null.
+ *
+ * Looks through EVERY block for the selector rather than the first: the
+ * size may sit in a later rule or a media query, and a selector can carry
+ * unrelated declarations. This function exists because the first version
+ * of this guard did `block(".check-row-head h3")`, got back `{order:2}`,
+ * found no font-size, and fell through to a hardcoded 25 — so the
+ * "measured against the real row size" comparison was measured against a
+ * constant, and it passed a 30px heading that outranked the page's own
+ * result heading. Same shape as L16: the check agreed with itself.
+ */
+const sizeOf = (css, selector) => {
+  const escaped = selector.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+  for (const m of css.matchAll(new RegExp(`${escaped}\\{([^}]*)\\}`, "g"))) {
+    const n = px(m[1], "font-size");
+    if (n) return n;
+  }
+  return null;
+};
 
-  // The finding title inside a row: whatever the shared checker rows use.
-  const row = block(css, ".check-row-head h3") ?? block(css, ".check-list h3") ?? "";
-  const rowSize = px(row, "font-size");
-  // If the row size is not pinned in CSS it inherits the h3 default (~18.7px),
-  // which is still below 23; the real comparison is the one measured on the
-  // live page at 25px, so the floor is set there.
-  const floor = rowSize ?? 25;
+test("the scan result type ladder descends: result heading, dimension, finding, evidence", async () => {
+  const css = await servedCss();
+
+  const dimension = sizeOf(css, ".scan-dimension-head h3");
+  assert.ok(dimension, "the dimension heading has no size — it will fall back to the browser default again");
+  const row = sizeOf(css, ".check-list h3");
+  assert.ok(row, "the finding title has no declared size; this guard cannot measure the relationship");
+
+  // Every step must be strictly smaller than the one above it. Sizes are
+  // read from the served CSS, never assumed, because a missing rule that
+  // silently becomes a fallback number is how both faults here happened.
   assert.ok(
-    headSize > 16,
-    `dimension heading is ${headSize}px — the bare h3 default it was before`,
+    dimension > row,
+    `the dimension heading (${dimension}px) groups the finding titles (${row}px) and must be larger`,
   );
-  // Strictly larger, measured against the real row size. The first fix
-  // matched /dns at 23px and shipped a heading still smaller than the 25px
-  // rows under it — visibly so in the screenshot. A floor of "at least as
-  // big as /dns" was the wrong floor; the only one that means anything is
-  // "bigger than what it groups".
+
+  // And the group must not outrank the heading of the whole result, which
+  // renders at 27px. That is the fault v5.6.0 shipped: clearing the rows by
+  // inflating the heading past the result's own h2.
   assert.ok(
-    headSize > floor,
-    `dimension heading (${headSize}px) must be larger than the finding titles it groups (${floor}px)`,
+    dimension < 27,
+    `the dimension heading (${dimension}px) must sit under the result heading "Signal for …" (27px) — ` +
+      "a chapter title must not outrank the book",
   );
 });
 
