@@ -1,6 +1,51 @@
 # Changelog
 
-CURRENT VERSION: v4.90.0 — 1145hrs:22nd August2026
+CURRENT VERSION: v4.91.0 — 1229hrs:22nd August2026
+
+## v4.91.0 — 1229hrs:22nd August2026
+
+**Roadmap drift corrected, branches pruned, and a flake caught doing it.**
+Found by the owner reviewing the project from a second session, which is
+worth noting: the drift was invisible from inside the work that caused it.
+
+**The living documents described a site that no longer exists**, and most
+of the staleness was from the last two days of my own changes.
+`ROADMAP.md` still listed `/kedomains` (renamed to `/domains` on 21 Aug),
+still named a "Paths" section in the architecture (the `/paths` index went
+on 21 Aug; its two children remain and are correctly referenced
+elsewhere), still described the legal pages as "published as marked
+drafts" (all four became v1.0 this morning), and still carried
+"storing nothing until migration 0007 is applied" — 0007 has been applied
+in production for days. `CLAUDE.md`, `README.md` and `OPERATIONS.md` each
+still said `/kedomains` too, including in a monthly checklist step.
+
+Phase 0 and 0.5 references to `/check` are left alone: they record what
+was found at the time, and rewriting them to today's vocabulary would
+falsify the baseline. The distinction applied throughout is present-tense
+claims about what exists now must be true; past-tense records of what
+happened then must not be edited.
+
+**Every branch pruned: 42 local, 4 remote.** `gh pr list` was no help —
+these predate the rebuild and matched no merged PR by name — and
+`git branch --merged` is blind to squash merges, so both of the obvious
+checks would have been wrong, one in each direction. What settled it was
+`git rev-list --count main..<branch>` returning **0 for every branch**:
+no commit on any of them is absent from `main`. Every deletion then used
+`git branch -d`, which refuses unmerged work, and none was refused. All
+146 ref tips were recorded first.
+
+**A flaky test, recorded as L15.** `tests/dashboard.test.mjs` failed once
+in a full-suite run, then passed standalone and on re-run. The cause was
+this repo's own: applying migrations before every worker spawn (21 Aug)
+made spawning materially more expensive while the readiness deadline
+stayed at the 60 seconds set before that cost existed. Twenty parallel
+spawns, one misses. The deadline is now 120s with the reasoning beside
+it. The lesson is not the timeout — it is that a green re-run looks
+exactly like a fix, and a suite you learn to re-run has stopped gating
+anything. Two consecutive clean full runs after the change.
+
+Lesson L15. `L8` was also moved into date order in the register, which
+claims "newest first" and had it sitting at the top.
 
 ## v4.90.0 — 1145hrs:22nd August2026
 
