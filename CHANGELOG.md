@@ -1,6 +1,41 @@
 # Changelog
 
-CURRENT VERSION: v5.9.0 — 2128hrs:22nd August2026
+CURRENT VERSION: v5.9.1 — 2148hrs:22nd August2026
+
+## v5.9.1 — 2148hrs:22nd August2026
+
+**The /dns tables no longer split hostnames on a phone.** At 375px they
+rendered `jose.ns.cloudfl / are.com` and `smtp.goog / le.com`. The cause
+was `word-break:break-word` on the cells, which splits a word wherever it
+runs out of room — and in three or four columns on a phone, it always
+ran out. A hostname cut down the middle is not just ugly; it reads as a
+different name.
+
+Two changes. The tables now sit in `.dns-table-wrap` with
+`overflow-x:auto` and a 520px `min-width`, so they scroll inside their
+own box exactly as the delegation diagram above them already did. And
+the `word-break` is gone, so cells wrap at spaces only: an address list
+still breaks between its items, while every item stays whole.
+
+Two wrong turns on the way, both caught by looking at the page. Scrolling
+alone left the columns crushed, because the address column still took the
+width. Then `white-space:nowrap` on the first column fixed the nameserver
+table and not the mail table, whose hostname is in the second column —
+targeting a position rather than the property that was doing the damage.
+Removing `word-break` fixes every table at once, and needs less CSS than
+either attempt.
+
+Verified at 375px across all six tables: **no cell splits a token**,
+measured by rendering every space-free value and counting its line boxes.
+The page still does not scroll sideways (`body.scrollWidth` 375 of 375).
+Desktop is untouched — the tables fill 794px and nothing scrolls.
+
+The guard asserts no `word-break` on the cells, that every table in the
+component is wrapped, and that the wrapper scrolls against a min-width.
+Proven by putting `break-word` back and watching it fail.
+
+No lesson: a responsive defect the owner found by looking at a phone, and
+neither wrong turn shipped.
 
 ## v5.9.0 — 2128hrs:22nd August2026
 
