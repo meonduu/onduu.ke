@@ -328,34 +328,55 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   }
 
-  /* ── Resilience (the /check analysers, reused unchanged) ── */
+  /* ── Resilience: email authentication, as one row ──
+   *
+   * Until 22 Aug 2026 this emitted four signals — spf, dkim, dmarc, mx —
+   * each carrying the /email-security analyser's own detail text, so the
+   * scan repeated that tool's result line for line. The scan is the
+   * overview; the email page is where someone goes to fix things. One row
+   * now says how many of the four are in order and links to the deep tool
+   * with the domain carried across (owner decision; rubric psr-v3, same
+   * Resilience weight as the four it replaces).
+   */
 
   const email = obs.email.result;
-  const emailCheck = (id: string, label: string, key: "spf" | "dkim" | "dmarc" | "mx") => {
-    const check = email?.checks?.[key];
-    if (!obs.email.fetched || !check) {
-      out.push(unobservable(id, "resilience", label, "The email-record check did not complete."));
-      return;
-    }
-    // /check statuses: pass | warn | fail | info. "info" is its
-    // not-observable state (e.g. DKIM selectors not found) — rule 2 applies.
+  const emailKeys = ["spf", "dkim", "dmarc", "mx"] as const;
+  const checks = email?.checks;
+  if (!obs.email.fetched || !checks || !emailKeys.every((k) => checks[k])) {
+    out.push(unobservable("email-auth", "resilience", "Email authentication", "The email-record check did not complete."));
+  } else {
+    const NAMES: Record<(typeof emailKeys)[number], string> = { spf: "SPF", dkim: "DKIM", dmarc: "DMARC", mx: "MX" };
+    const st = (k: (typeof emailKeys)[number]) => checks[k]!.status;
+    const inOrder = emailKeys.filter((k) => st(k) === "pass");
+    const needsWork = emailKeys.filter((k) => st(k) === "warn");
+    const missing = emailKeys.filter((k) => st(k) === "fail");
+    const unknown = emailKeys.filter((k) => !["pass", "warn", "fail"].includes(st(k)));
+
+    // The row's verdict is the worst of the four, which is also how a
+    // receiver treats the records: one failing control is the one that
+    // gets exploited. DMARC decides spoofability on its own, so a DMARC
+    // fail is a fail whatever the others say.
     const status: SignalStatus =
-      check.status === "pass" ? "pass" : check.status === "warn" ? "warn" : check.status === "fail" ? "fail" : "unobservable";
+      missing.length ? "fail" : needsWork.length ? "warn" : unknown.length === emailKeys.length ? "unobservable" : "pass";
+
+    const parts: string[] = [];
+    if (inOrder.length) parts.push(`${inOrder.map((k) => NAMES[k]).join(", ")} in order`);
+    if (needsWork.length) parts.push(`${needsWork.map((k) => NAMES[k]).join(", ")} ${needsWork.length === 1 ? "needs" : "need"} work`);
+    if (missing.length) parts.push(`${missing.map((k) => NAMES[k]).join(", ")} missing`);
+    if (unknown.length) parts.push(`${unknown.map((k) => NAMES[k]).join(", ")} not determinable from outside`);
+    const spoof = email?.spoofable ? " Mail claiming to be from this domain can currently be forged." : "";
+
     out.push(
       signal(
-        id,
+        "email-auth",
         "resilience",
-        label,
+        "Email authentication",
         status,
-        check.detail.slice(0, 300),
+        `${inOrder.length} of 4 records in order: ${parts.join("; ")}.${spoof}`,
         status === "unobservable" ? VERIFIED_NOTE : "Published DNS records only; mailbox security is not visible.",
       ),
     );
-  };
-  emailCheck("spf", "SPF", "spf");
-  emailCheck("dkim", "DKIM", "dkim");
-  emailCheck("dmarc", "DMARC", "dmarc");
-  emailCheck("mx", "MX", "mx");
+  }
 
   if (obs.dns.nsHosts.length === 0 || !email?.checks?.mx) {
     out.push(unobservable("dns-diversity", "resilience", "Provider diversity", "NS or MX records were not observable."));

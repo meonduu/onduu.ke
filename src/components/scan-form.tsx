@@ -210,6 +210,16 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
                         </span>
                       </div>
                       <p>{s.evidence}</p>
+                      {s.id === "email-auth" && s.status !== "unobservable" && (
+                        <p>
+                          <a
+                            className="text-link"
+                            href={`/email-security?domain=${encodeURIComponent(result.domain)}`}
+                          >
+                            Full email check for {result.domain} ↗
+                          </a>
+                        </p>
+                      )}
                     </li>
                   ))}
                 </ul>

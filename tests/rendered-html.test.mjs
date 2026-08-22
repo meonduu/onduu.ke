@@ -35,6 +35,30 @@ test("the hero question stays one readable sentence across its line break", asyn
   assert.match(h1, /class="pivot"[^>]*>is</, '"is" must be the coloured pivot word');
 });
 
+test("the scan hands off to the email check with the domain, and the check only prefills", async () => {
+  // psr-v3 (22 Aug 2026): the scan's four email rows became one, linking
+  // to /email-security?domain=… so nobody retypes. Two things must hold.
+  // The link must carry the domain encoded (a domain cannot break the
+  // URL), and the email page must PREFILL and stop — it sends DNS queries,
+  // and following a link must not fire them on someone's behalf.
+  const { readFileSync } = await import("node:fs");
+  const scan = readFileSync(new URL("../src/components/scan-form.tsx", import.meta.url), "utf8");
+  assert.match(scan, /\/email-security\?domain=\$\{encodeURIComponent\(result\.domain\)\}/, "the deep link must encode the domain");
+
+  const check = readFileSync(new URL("../src/components/check-form.tsx", import.meta.url), "utf8");
+  // Must be an effect, not a useState initialiser: the initialiser runs on
+  // the server where there is no URL, and hydration keeps the server's
+  // empty string — the first version prefilled nothing with every test
+  // green. This checks the shape that actually works in a browser.
+  const start = check.indexOf('get("domain")');
+  assert.ok(start >= 0, "the email check must read ?domain=");
+  const block = check.slice(check.lastIndexOf("useEffect(", start), check.indexOf("}, []);", start) + 7);
+  assert.ok(block.startsWith("useEffect("), "the prefill must live in an effect, not a useState initialiser");
+  assert.match(block, /setDomain\(/, "it prefills the box");
+  assert.doesNotMatch(block, /onSubmit|fetch\(|\.submit\(/, "it must not auto-run the check on page load");
+  assert.match(prefill, /\/\^\[a-z0-9.-\]/, "only a hostname-shaped value goes into the box");
+});
+
 test("insights index lists every migrated article", async () => {
   const response = await render("/insights");
   assert.equal(response.status, 200);

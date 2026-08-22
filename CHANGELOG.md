@@ -1,6 +1,61 @@
 # Changelog
 
-CURRENT VERSION: v5.2.0 — 1809hrs:22nd August2026
+CURRENT VERSION: v5.3.0 — 1858hrs:22nd August2026
+
+## v5.3.0 — 1858hrs:22nd August2026
+
+**The scan's four email rows are one, and it hands off to the email check
+with the domain carried across.** Owner decision (option B of three), 22
+August 2026, after asking why `/scan` and `/email-security` existed as
+two pages with the same results on both.
+
+They were not the same tool, and the answer to "why two pages" was a real
+one: `/email-security` serves a domain with email and no website — common
+among Kenyan businesses — where the scan's 23 signals are mostly "not
+observable" and the email check is fully useful. It also runs in two
+seconds with no Turnstile, against the scan's ten behind one. Merging
+them would have deleted the only tool that population can use. What was
+wrong was narrower: the scan *called* the email checker and copied its
+four result lines verbatim, so the overview repeated the deep tool.
+
+**Rubric psr-v3.** `spf`, `dkim`, `dmarc` and `mx` (weights 6, 4, 8, 4)
+become one `email-auth` signal at 22, so Resilience's share of the score
+is unchanged and only the row count moves: 24 signals → 21. The row reads
+"3 of 4 records in order: SPF, DKIM, MX in order; DMARC missing. Mail
+claiming to be from this domain can currently be forged." and links to
+`/email-security?domain=…`, which prefills the box and stops — the check
+sends DNS queries, and following a link must not fire them on someone's
+behalf. Cached psr-v2 results retire through the normal cache window.
+
+**One scoring consequence, chosen deliberately.** The row's verdict is the
+worst of the four. A missing DMARC used to cost its own 8 points; it now
+fails the whole 22-point row. That is the honest reading: a domain with
+no DMARC can be spoofed whatever SPF and DKIM say, so keeping 14 points
+for tidy housekeeping around the hole was lenient. Warn still earns half.
+One unknowable record (DKIM selectors that cannot be guessed) no longer
+makes the row unobservable — it says which record could not be
+determined and passes on the other three, rather than discarding three
+good observations because a fourth could not be made.
+
+**The prefill had to be an effect, and the lint rule said otherwise.** A
+`useState` initialiser runs on the server too, where there is no URL, and
+React's hydration keeps the server's empty string rather than re-running
+it — so the first version prefilled nothing while every test passed. The
+rule against `setState` in an effect is right in general; a one-time sync
+from the URL is the documented exception, and it is marked as such with
+the reason. The test for it now asserts the shape that works in a
+browser, not the one the linter preferred.
+
+Verified on the production build: a real scan of onduu.ke renders 21
+rows, the email row with its link, and the link lands on the email check
+with the box filled and nothing running.
+
+Not changed, and named so it is not mistaken for an oversight: the scan's
+DNS rows overlap `/dns` and `/domains` conceptually, but they are
+independent observations rather than copied output, so they stay.
+
+No lesson: L16's "verification that agrees with itself" covers the
+prefill that passed its test while doing nothing.
 
 ## v5.2.0 — 1809hrs:22nd August2026
 
