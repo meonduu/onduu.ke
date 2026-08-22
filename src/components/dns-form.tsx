@@ -388,7 +388,7 @@ export function DnsForm() {
 
           <Diagram result={result} />
 
-          {CATEGORIES.map(({ key, label }) => {
+          {CATEGORIES.map(({ key, label }, n) => {
             const items = result.findings.filter((f) => f.category === key);
             const table = <CategoryTable cat={key} detail={result.detail} />;
             if (items.length === 0 && table === null) return null;
@@ -398,7 +398,15 @@ export function DnsForm() {
             return (
               <section className="dns-cat" key={key}>
                 <div className="dns-cat-head">
-                  <h3>{label}</h3>
+                  {/* Numbered from CATEGORIES, not from render position, so
+                      DNSSEC is 06 on every domain — two reports of different
+                      domains line up. A category with nothing to report is
+                      skipped, so the sequence can carry a gap; that is the
+                      honest reading, and it matches /scan. */}
+                  <div className="dns-cat-title">
+                    <span>{String(n + 1).padStart(2, "0")}</span>
+                    <h3>{label}</h3>
+                  </div>
                   <div className="dns-counts">
                     {counts.map(([s, n]) => (
                       <span key={s} className={`check-${s}`}>

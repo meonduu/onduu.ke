@@ -1,6 +1,31 @@
 # Changelog
 
-CURRENT VERSION: v5.7.1 — 2038hrs:22nd August2026
+CURRENT VERSION: v5.8.0 — 2107hrs:22nd August2026
+
+## v5.8.0 — 2107hrs:22nd August2026
+
+**/dns categories are numbered, like the scan's dimensions.** Owner's
+instruction. `01 Parent & registry`, `02 Nameservers`, `03 Zone record
+(SOA)`, `04 Web addresses`, `05 Mail`, `06 DNSSEC` — the same copper 10px
+eyebrow beside the same 23px Georgia title used on `/scan` and the
+homepage dimension grid.
+
+The OK/OBSERVED counts still sit hard right. That needed the number and
+title wrapped together in `.dns-cat-title`, because `.dns-cat-head` is a
+`space-between` flex row: a third child would have spread number, title
+and counts evenly across it instead of keeping the counts at the edge. A
+test pins the wrapper for that reason.
+
+Numbered from the `CATEGORIES` array rather than render position, so
+DNSSEC is 06 on every domain and two reports can be read side by side. A
+category with nothing to report is skipped, so the sequence can carry a
+gap — that is the honest reading and it matches `/scan`.
+
+Checked at 375px as well: the head wraps without overflowing and the
+counts stay beside the title.
+
+No lesson: styling on the owner's instruction, following the pattern
+already tested for `/scan`.
 
 ## v5.7.1 — 2038hrs:22nd August2026
 
