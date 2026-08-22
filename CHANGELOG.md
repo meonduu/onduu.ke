@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v4.98.0 — 1702hrs:22nd August2026
+CURRENT VERSION: v4.99.0 — 1716hrs:22nd August2026
+
+## v4.99.0 — 1716hrs:22nd August2026
+
+**The scan result's opening paragraph is one sentence.** Owner's
+instruction. It now reads "A Verified Digital Fitness Score requires
+customer evidence, expert review and authorised testing." — replacing
+four sentences that covered the coverage figure, the observation window,
+the Public-Signal-versus-Fitness distinction and the Verified route.
+
+Most of what went was already said twice. The note at the foot of the
+same result still carries "This is a Public Signal Score, not a Digital
+Fitness Score", still explains that NOT PUBLIC items neither helped nor
+hurt, and still stamps the reference and the time the scan ran.
+
+**One thing is now said nowhere in the result: the Evidence Coverage
+figure.** It is still computed and still returned by the API; it is no
+longer displayed beside the score. Flagged rather than quietly accepted,
+because CLAUDE.md names Evidence Coverage as one of three things an
+instant scan may report, and a bare "62 / 100" is the number most likely
+to be read as a verdict. The owner has the sentence they asked for; a
+single line restoring the figure is a one-word change if wanted.
+
+**A guard that could not see what it was named for.** The test called
+"the score is never shown without its evidence coverage" passed
+unchanged through this release — it fetches the `/scan` HTML, and the
+result panel is a React island rendered in the browser, so the thing the
+name promises was never in scope. It is now called "the scan page
+explains Evidence Coverage before anyone runs one", which is what it
+does. Third instance today of a check that reads as protection and is
+not: the escaped-regex grep, the `utm_source=onduu` assertion matching
+inside `onduu.ke`, and this.
+
+No lesson: L16 already covers verification that agrees with itself; the
+renamed test is that lesson being applied.
 
 ## v4.98.0 — 1702hrs:22nd August2026
 

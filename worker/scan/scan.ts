@@ -43,10 +43,8 @@ export type ScanOutcome =
   | { ok: false; status: number; error: string; next?: { label: string; href: string } };
 
 const STATEMENT =
-  "Public observations only, made at the time shown. This is a Public Signal Score, not a " +
-  "Digital Fitness Score: items marked as not publicly observable neither helped nor hurt " +
-  "the score. A Verified Digital Fitness Score requires customer evidence, human review " +
-  "and separately authorised tests.";
+  "A Verified Digital Fitness Score requires customer evidence, expert review and " +
+  "authorised testing.";
 
 function shape(stored: StoredScan, cached: boolean): ScanResponseBody {
   return {
