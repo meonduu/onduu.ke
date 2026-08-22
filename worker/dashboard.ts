@@ -224,6 +224,15 @@ async function overview(
   keyed = true,
   accessDegraded = false,
 ): Promise<Response> {
+  // A deletion job nobody can see is indistinguishable from one that
+  // stopped running, and the second is only ever noticed later.
+  const lastCleanup = await safe(
+    db
+      .prepare("SELECT ran_at, throttle_deleted, optout_deleted FROM cleanup_runs ORDER BY ran_at DESC LIMIT 1")
+      .first<{ ran_at: string; throttle_deleted: number; optout_deleted: number }>(),
+    null,
+  );
+
   const notifyHealth = await safe(
     db
       .prepare("SELECT last_outcome, last_code, changed_at FROM notify_health WHERE id = 1")
@@ -305,6 +314,18 @@ checked signature. It should clear by itself; if it persists, the team domain or
 <code>worker/access-jwt.ts</code> no longer matches the Access application.</div>`
     : "";
 
+  // Deliberately quiet: a cleanup that deletes nothing is the normal case
+  // once it has caught up, so this states when it last ran rather than
+  // shouting about counts.
+  const cleanupNote = lastCleanup
+    ? `<div class="note">Cleanup last ran ${escape(eatDateTime(lastCleanup.ran_at))} EAT \u2014 removed
+${lastCleanup.throttle_deleted} spent throttle ${lastCleanup.throttle_deleted === 1 ? "row" : "rows"} and
+${lastCleanup.optout_deleted} expired opt-out ${lastCleanup.optout_deleted === 1 ? "request" : "requests"}.
+It touches nothing anyone sent: enquiries, analytics, scan results and the do-not-scan list are out of scope.</div>`
+    : `<div class="note">Cleanup has not run yet. It sweeps spent throttle counters and opt-out links that
+expired unconfirmed, at most once every six hours, and records each run here. Nothing until migration 0013
+is applied.</div>`;
+
   return page(
     "Dashboard",
     `<h1>Onduu dashboard</h1>
@@ -312,6 +333,7 @@ checked signature. It should clear by itself; if it persists, the team domain or
 ${light}
 ${keyLight}
 ${accessLight}
+${cleanupNote}
 
 <div class="cards">
   <div class="card"><b>${num(c !== null, c?.enquiries30)}</b><span>Enquiries, 30 days</span><a href="/go/enquiries">All ${num(c !== null, c?.enquiries)} →</a></div>
