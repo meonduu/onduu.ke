@@ -430,7 +430,17 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   };
   fileSignal("robots", "robots.txt", obs.robots, obs.robots.looksLikeRobots, "No robots.txt (crawlers and AI agents get no instructions).");
-  fileSignal("sitemap", "sitemap.xml", obs.sitemap, obs.sitemap.looksLikeSitemap, "No sitemap.xml.");
+  // Labelled "Sitemap", not "sitemap.xml": since 22 Aug 2026 the collector
+  // follows a `Sitemap:` line in robots.txt when /sitemap.xml is absent,
+  // so the file found may be sitemap-index.xml or anything else the site
+  // declared. The absence message names both places it looked.
+  fileSignal(
+    "sitemap",
+    "Sitemap",
+    obs.sitemap,
+    obs.sitemap.looksLikeSitemap,
+    "No sitemap at /sitemap.xml, and robots.txt does not declare one.",
+  );
 
   if (!home.fetched) {
     out.push(unobservable("structured-data", "agent-fitness", "Structured data", "The homepage fetch did not complete."));
