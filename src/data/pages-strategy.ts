@@ -110,7 +110,7 @@ export const strategyPages: Record<string, PageContent> = {
         links: [
           {
             label: "Explore the HOSTAFRICA Path",
-            href: "https://panel.hostafrica.com/?utm_source=onduu&utm_medium=referral&utm_campaign=infrastructure-path",
+            href: "https://hostafrica.com/?utm_source=onduu.ke&utm_medium=referral&utm_campaign=infrastructure-path",
             external: true,
           },
           { label: "Search Kenyan domains first", href: "/domains" },

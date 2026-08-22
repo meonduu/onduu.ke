@@ -16,8 +16,7 @@ export function ScanPage({ children }: { children?: ReactNode }) {
             <p className="eyebrow">ONDUU / INSTANT PUBLIC SCAN</p>
             <h1>See what your domain shows the public.</h1>
             <p className="lede">
-              Enter your domain. Onduu reports a Public Signal Score. It is a starting point, not
-              a verdict.
+              Enter your domain. Onduu reports a Public Signal Score. It is a starting point.
             </p>
           </div>
         </section>
