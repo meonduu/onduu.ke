@@ -445,11 +445,11 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "HOW LONG IT IS KEPT",
         "title": "Kept until deleted.",
         "body": [
-          "There is no automatic deletion schedule. Submissions stay in the database until they are deleted by hand, and no fixed retention period is currently set.",
+          "Enquiries are deleted on a schedule, decided 22 August 2026. The free-text answers \u2014 what prompted you to write, what you expect to happen, who looks after your systems \u2014 are cleared after 12 months: they are the most revealing thing you send, and once a reply or a report has gone out they have served their purpose. The rest of the enquiry, including your name and address, is deleted after 24 months. Both periods run from the last contact between us, not from the form. What is kept afterwards is a record that consent was given \u2014 the wording, its version, the date and the reference \u2014 with nothing in it that identifies you.",
           "The same applies to the counted page views and the engagement measurement: nothing prunes them on a timer, and they are removed by hand. They hold no name, address or identifier, so there is nothing in them to trace back to a person, but they do accumulate with every visit rather than only when somebody writes in.",
           "You can ask at any time for information about you to be deleted, and it will be. That is the practical control available to you, and it is honoured on request rather than on a timer."
         ],
-        "note": "Still to decide: whether a retention limit should be introduced later. Holding personal data indefinitely is a weaker position under the Data Protection Act than deleting it on a defined schedule."
+        "note": "Decided 22 August 2026, replacing an open question: enquiries were previously kept until deleted by hand. Page views, engagement measurement and tool results are still kept until removed by hand \u2014 they carry no name, address or identifier, so there is nothing in them to trace to a person, but they do accumulate. A domain owner can have every stored record of their domain deleted at any time through /do-not-scan."
       },
       {
         "eyebrow": "SECURITY",
@@ -611,7 +611,7 @@ export const briefPages: Record<string, PageContent> = {
         "eyebrow": "RETENTION AND CORRECTIONS",
         "title": "How long it is kept, and fixing what is wrong.",
         "body": [
-          "Information submitted through the request forms is kept until it is deleted; there is currently no automatic deletion schedule, as the privacy notice describes. You can ask at any time for it to be deleted, and it will be.",
+          "Information submitted through the request forms is cleared of its free-text answers after 12 months, and deleted in full after 24 months, both measured from the last contact between us, as the privacy notice describes. You can ask at any time for it to be deleted sooner, and it will be.",
           "If you believe a finding is wrong, say so and it will be re-examined. A finding based on a declaration you correct will be updated on the corrected basis."
         ]
       },
@@ -629,7 +629,7 @@ export const briefPages: Record<string, PageContent> = {
         "title": "Version and effective date.",
         "body": [
           "Version 1.0, effective 22 August 2026. Published on the owner's decision, replacing draft 0.5, which was prepared on 16 August 2026 and completed on 20 August 2026. Every open question on this page has been answered.",
-          "What changed in 1.0: the terms were published, and the evidence labels gained a ruling (21 August 2026) that agent assistance is never itself an evidence basis \u2014 \u0022Manually reviewed\u0022 continues to mean a person examined the evidence.",
+          "What changed after 1.0: enquiry retention was decided on 22 August 2026 \u2014 free-text answers cleared at 12 months, the rest deleted at 24, both from the last contact. Until then there was no schedule, which is what the 0.2 note below refers to. What changed in 1.0: the terms were published, and the evidence labels gained a ruling (21 August 2026) that agent assistance is never itself an evidence basis \u2014 \u0022Manually reviewed\u0022 continues to mean a person examined the evidence.",
           "What changed in 0.5: ownership is settled. The report and its findings are the client\u0027s to act on and to share with whoever helps them act on it; the scoring method, the six dimensions, the evidence labels and any blank template remain Onduu\u0027s, usable by the client for their own business but not to be repackaged or resold.",
           "What changed in 0.4: a new section states exactly what Onduu may publish without asking \u2014 patterns across at least ten assessments, no subdivision below five, identifying detail left out regardless \u2014 and confirms that anything narrower needs written consent against the exact wording proposed. Report delivery and sole readership moved into the body. (Version 0.3 was prepared on 20 August but its note was written to the wrong page and lost when that page was replaced; this is the corrected record.)",
           "What changed in 0.2: a retention claim was corrected — draft 0.1 stated a fixed two-year retention period and cited the privacy notice, which actually states there is no automatic deletion schedule; the terms now match the notice and the running code. The scope was narrowed to the human-reviewed assessment and separately agreed work, with the four free tools pointed at the tool limitations page that already governs them. The DKIM wording now matches the code (common selectors)."

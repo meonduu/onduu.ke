@@ -486,18 +486,29 @@ test("legal pages are still marked as drafts", async () => {
 });
 
 test("assessment terms match the privacy notice and the running code", async () => {
-  // Terms 0.2 (19 Aug 2026): the false two-year retention claim is gone —
-  // the privacy notice states there is no automatic deletion schedule — and
-  // the free tools are governed by the tool limitations page, not these terms.
+  // These two documents must describe retention identically, and both must
+  // describe what the code actually does. The claim has now been wrong in
+  // both directions: terms 0.1 promised a two-year deletion nothing
+  // performed (corrected 19 Aug 2026), and until 22 Aug both said there was
+  // no schedule at all — true then, false the moment worker/cleanup.ts
+  // began deleting. Whichever way it drifts, it drifts here first.
   const terms = await (await fetchPath("/legal/assessment-terms")).text();
-  assert.doesNotMatch(terms, /kept for two years/i, "the false retention claim is back");
-  assert.match(terms, /no automatic deletion schedule/i, "retention must match the privacy notice");
   assert.match(terms, /tool limitations page/i, "tools must be pointed at the tool limitations page");
   assert.doesNotMatch(terms, /where a selector can be guessed/i, "DKIM wording must match the code");
+  assert.doesNotMatch(
+    terms,
+    /kept until it is deleted; there is currently no automatic deletion schedule/i,
+    "the terms still claim nothing is deleted automatically, which stopped being true on 22 Aug 2026",
+  );
 
   const privacy = await (await fetchPath("/legal/privacy")).text();
-  assert.match(privacy, /no automatic deletion schedule|no fixed retention period/i,
-    "if the privacy notice gains a retention schedule, update the assessment terms with it");
+  // The periods in worker/cleanup.ts: free text at 12 months, the rest at
+  // 24, both from the last contact.
+  for (const [page, html] of [["assessment terms", terms], ["privacy notice", privacy]]) {
+    assert.match(html, /12 months/, `${page} must state when the free text is cleared`);
+    assert.match(html, /24 months/, `${page} must state when the enquiry is deleted`);
+    assert.match(html, /last contact/i, `${page} must say what the clock runs from`);
+  }
 });
 
 test("the homepage and the email checker carry canonical and Open Graph", async () => {

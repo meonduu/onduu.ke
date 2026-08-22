@@ -1,6 +1,62 @@
 # Changelog
 
-CURRENT VERSION: v4.95.0 — 1556hrs:22nd August2026
+CURRENT VERSION: v4.96.0 — 1622hrs:22nd August2026
+
+## v4.96.0 — 1622hrs:22nd August2026
+
+**Enquiries are now deleted on a schedule.** Owner decision, 22 August
+2026, closing the last open item from the security review. An enquiry is
+three things with different useful lives, so it goes in three steps
+rather than one.
+
+**Free text, cleared at 12 months.** What prompted them to write, what
+they expect if nothing changes, who looks after their systems. The most
+revealing thing anyone sends — "our backups have never been tested and
+the developer stopped replying" is commercially damaging material about
+the person who wrote it — and the shortest-lived, because a reply or a
+report supersedes it.
+
+**The rest, deleted at 24 months.** Name, address, company. This is the
+period `retain_until` has stamped on every submission since launch
+without anything ever acting on it.
+
+**The consent trail, kept.** Reference, wording, version, date — moved to
+`consent_records` before the submission is deleted. It is evidence, wanted
+for longer than the data it covers, and it identifies nobody once the
+enquiry it pointed at is gone.
+
+Both clocks run from the last contact rather than from the form, so
+someone who writes again after eighteen months is not deleted on a
+technicality. `last_contact_at` exists for that; nothing writes it yet, so
+in practice both currently run from the submission date, and the code says
+so rather than implying otherwise.
+
+**The order in the second tier is load-bearing.** The consent record is
+written first and the enquiry deleted only if that succeeded. Reversed, a
+failure between the two would destroy both the enquiry and the proof that
+consent was ever given for it. There is a test that drops the table
+mid-run and asserts the enquiry survives.
+
+**Both legal documents changed in the same release**, because they said
+the opposite: "There is no automatic deletion schedule" was true this
+morning and false the moment this shipped. That is L14 exactly, and an
+existing guard caught it — `tests/seo-and-gates.test.mjs` failed with "if
+the privacy notice gains a retention schedule, update the assessment terms
+with it", which is the sentence a previous session wrote for this day.
+
+Fifteen tests, most checking what survives: a three-month-old enquiry
+untouched, a redacted one keeping its name and address, an enquiry revived
+by recent contact escaping both clocks, a consent record carrying no
+personal data. Verified end to end through a real request on seeded rows —
+a January 2024 enquiry deleted with its consent kept, a June 2025 one
+cleared but intact, today's untouched.
+
+Still out of scope and asserted by a test that reads the source: page
+views, engagement events, scans, tool checks, the do-not-scan blocklist
+and consent records themselves.
+
+No lesson: L14 already covers a claim outliving what it describes, and
+here the guard it left behind did the work.
 
 ## v4.95.0 — 1556hrs:22nd August2026
 

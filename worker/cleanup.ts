@@ -48,6 +48,14 @@ const THROTTLE_TABLES = [
 /** Well beyond the longest window in use (one hour). */
 const THROTTLE_KEEP_MS = 2 * 24 * 60 * 60 * 1000;
 
+/**
+ * Enquiry retention (owner, 22 Aug 2026). Both clocks run from the last
+ * contact, falling back to the submission date — nothing writes
+ * last_contact_at yet, so today they are the same thing.
+ */
+const REDACT_AFTER_MS = 365 * 24 * 60 * 60 * 1000;   // 12 months: free text
+const DELETE_AFTER_MS = 730 * 24 * 60 * 60 * 1000;   // 24 months: the rest
+
 /** How long a record of a cleanup run is itself worth keeping. */
 const LOG_KEEP_MS = 30 * 24 * 60 * 60 * 1000;
 
@@ -57,6 +65,8 @@ const INTERVAL_MS = 6 * 60 * 60 * 1000;
 export interface CleanupResult {
   throttleDeleted: number;
   optoutDeleted: number;
+  redacted: number;
+  submissionsDeleted: number;
 }
 
 /**
@@ -96,17 +106,105 @@ export async function runCleanup(db: D1Database, now = Date.now()): Promise<Clea
     /* table absent */
   }
 
+  const { redacted, submissionsDeleted } = await sweepSubmissions(db, now);
+
   try {
     await db.prepare("DELETE FROM cleanup_runs WHERE ran_at < ?").bind(logCutoff).run();
     await db
-      .prepare("INSERT INTO cleanup_runs (ran_at, throttle_deleted, optout_deleted) VALUES (?, ?, ?)")
-      .bind(nowIso, throttleDeleted, optoutDeleted)
+      .prepare(
+        "INSERT INTO cleanup_runs (ran_at, throttle_deleted, optout_deleted, redacted, submissions_deleted) VALUES (?, ?, ?, ?, ?)",
+      )
+      .bind(nowIso, throttleDeleted, optoutDeleted, redacted, submissionsDeleted)
       .run();
   } catch {
     /* migration 0013 not applied; the deletions above still happened */
   }
 
-  return { throttleDeleted, optoutDeleted };
+  return { throttleDeleted, optoutDeleted, redacted, submissionsDeleted };
+}
+
+/**
+ * The two enquiry tiers. Separated from runCleanup because this is the
+ * only part that touches something a person chose to send, and it should
+ * be readable on its own.
+ *
+ * Order matters in the second tier: the consent record is written FIRST
+ * and the submission is deleted only if that succeeded. The reverse
+ * ordering would, on a failure between the two, destroy both the enquiry
+ * and the proof that consent was ever given for it.
+ */
+async function sweepSubmissions(
+  db: D1Database,
+  now: number,
+): Promise<{ redacted: number; submissionsDeleted: number }> {
+  const redactCutoff = new Date(now - REDACT_AFTER_MS).toISOString();
+  const deleteCutoff = new Date(now - DELETE_AFTER_MS).toISOString();
+  const nowIso = new Date(now).toISOString();
+
+  // "Since the last contact, or the submission if there has been none."
+  const age = "COALESCE(last_contact_at, created_at)";
+
+  let redacted = 0;
+  let submissionsDeleted = 0;
+
+  // Tier 1 — clear the free text, keep the enquiry. Bounded at both ends:
+  // a row already past 24 months is about to be deleted outright below,
+  // and redacting it first would do wasted work and report itself twice
+  // on /go. redacted_at records that it happened and stops the row being
+  // counted again.
+  try {
+    const res = await db
+      .prepare(
+        `UPDATE submissions SET
+           trigger_now = NULL, business_result = NULL,
+           current_manager = NULL, consequence_six_months = NULL,
+           redacted_at = ?
+         WHERE redacted_at IS NULL AND ${age} < ? AND ${age} >= ?`,
+      )
+      .bind(nowIso, redactCutoff, deleteCutoff)
+      .run();
+    redacted = res.meta?.changes ?? 0;
+  } catch {
+    /* migration 0014 not applied */
+  }
+
+  // Tier 2 — the enquiry goes; the consent trail stays, without a person
+  // in it. Done one row at a time so a single bad row cannot take the
+  // batch with it, and because the volume this runs at is tiny.
+  try {
+    const due = await db
+      .prepare(
+        `SELECT reference, kind, consent_version, consent_text, created_at
+           FROM submissions WHERE ${age} < ? LIMIT 200`,
+      )
+      .bind(deleteCutoff)
+      .all<{ reference: string; kind: string; consent_version: string; consent_text: string; created_at: string }>();
+
+    for (const row of due.results ?? []) {
+      try {
+        await db
+          .prepare(
+            `INSERT INTO consent_records
+               (reference, kind, consent_version, consent_text, consented_at, submission_deleted_at)
+             VALUES (?, ?, ?, ?, ?, ?)
+             ON CONFLICT(reference) DO NOTHING`,
+          )
+          .bind(row.reference, row.kind, row.consent_version, row.consent_text, row.created_at, nowIso)
+          .run();
+      } catch {
+        continue; // no consent record, so the enquiry stays
+      }
+      const gone = await db
+        .prepare("DELETE FROM submissions WHERE reference = ?")
+        .bind(row.reference)
+        .run();
+      submissionsDeleted += gone.meta?.changes ?? 0;
+    }
+  } catch {
+    /* migration 0014 not applied */
+  }
+
+  return { redacted, submissionsDeleted };
 }
 
 let lastAttempt = 0;
