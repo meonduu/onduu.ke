@@ -31,7 +31,10 @@ footer{background:#0b1117;color:#fff;padding:75px clamp(24px,7vw,110px) 55px;dis
    heads are 23px) and sat 2px under the result heading itself. Shared
    by /scan, /dns, /domains and /email-security, so the ladder is the
    same on all four: 27 result, 23 group, 19 row, 16 evidence. */
-.check-list h3{font-size:19px;margin:0}.check-list p{color:#3c4750;line-height:1.7;margin:12px 0 0;max-width:780px}.check-list code{display:block;margin-top:14px;background:var(--mist);padding:11px 14px;font:13px ui-monospace,Menlo,monospace;word-break:break-all;max-width:780px}
+.check-list h3{font-size:19px;margin:0}/* /domains has no result heading: each row is the top-level answer, so
+   its title leads instead of sitting under one. 19px left it 3px from
+   its own detail lines and the answer stopped reading as the answer. */
+.check-list--lead h3{font-size:23px}.check-list p{color:#3c4750;line-height:1.7;margin:12px 0 0;max-width:780px}.check-list code{display:block;margin-top:14px;background:var(--mist);padding:11px 14px;font:13px ui-monospace,Menlo,monospace;word-break:break-all;max-width:780px}
 /* Scan dimensions (22 Aug 2026). Until now .scan-dimension h3 had no rule
    at all — a bare 16px browser default sitting under 25px finding titles,
    so the group read smaller than its members. This is the /dns category

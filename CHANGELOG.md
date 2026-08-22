@@ -1,6 +1,39 @@
 # Changelog
 
-CURRENT VERSION: v5.7.0 — 2014hrs:22nd August2026
+CURRENT VERSION: v5.7.1 — 2038hrs:22nd August2026
+
+## v5.7.1 — 2038hrs:22nd August2026
+
+**/domains needed an exception to v5.7.0, not the shared value.** Owner
+asked for `/email-security` and `/domains` to be checked after the shared
+row size moved. `/email-security` was fine: its rows are SPF, DKIM, DMARC
+and MX under a verdict heading, so 19px sub-items under a 26px heading is
+the right ladder. `/domains` was not.
+
+On `/domains` there is no result heading. Each row **is** the answer —
+"wpfoss.co.ke is TAKEN." — with its registrar and expiry beneath it.
+Taking the shared row size to 19px left the answer 3px above its own
+detail lines, and the three read as one block instead of an answer with
+support. That was a regression introduced by v5.7.0, found by looking at
+the page rather than by the ladder test, which only knew about the scan.
+
+The row keeps its lead there via `.check-list--lead` at 23px: on the site
+scale, clear of the 16px detail, and near the 25px it had before v5.7.0
+without going back off-scale.
+
+The guard now covers the case it missed. `tests/scan-hierarchy.test.mjs`
+gained a `/domains` test asserting a leading row is set larger than a
+sub-item row and stands at least 6px clear of its detail lines, plus that
+the page actually opts in — a CSS exception nothing applies is the same
+as no exception. Proven by setting it back to 19px and watching it fail.
+
+The wider point, now stated in that file's header: `.check-list h3` is
+shared by four pages and a change for one moves all four. v5.7.0 was
+right for three of them.
+
+No lesson: caught within the release by the owner asking for the other
+two pages to be checked. [[L18]] already covers the guard that did not
+look where the change reached.
 
 ## v5.7.0 — 2014hrs:22nd August2026
 
