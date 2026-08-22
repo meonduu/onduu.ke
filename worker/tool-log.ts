@@ -94,7 +94,7 @@ interface DnsCheckBody {
   ok?: boolean;
   domain?: string;
   headline?: string;
-  summary?: { pass?: number; warn?: number; fail?: number; info?: number };
+  summary?: { pass?: number; warn?: number; fail?: number; info?: number; unchecked?: number };
   findings?: { code?: string; severity?: string }[];
 }
 
@@ -105,7 +105,7 @@ export function summariseDnsCheck(body: DnsCheckBody): ToolCheck | null {
     tool: "dns",
     query: body.domain,
     domains: [body.domain],
-    summary: `${s.pass ?? 0} pass · ${s.warn ?? 0} advisory · ${s.fail ?? 0} attention · ${s.info ?? 0} observed`,
+    summary: `${s.pass ?? 0} pass · ${s.warn ?? 0} advisory · ${s.fail ?? 0} attention · ${s.info ?? 0} observed · ${s.unchecked ?? 0} unchecked`,
     detail: (body.findings ?? []).map((f) => ({ code: f.code ?? null, severity: f.severity ?? null })),
   };
 }

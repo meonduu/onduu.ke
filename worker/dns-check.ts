@@ -13,7 +13,8 @@
  *
  * Severity vocabulary maps to the site's existing tool statuses:
  *   pass = spec "ok" · warn = spec "advisory" · fail = spec "warning"
- *   (rendered as ATTENTION, not FAIL) · info = observation/unobservable.
+ *   (rendered as ATTENTION, not FAIL) · info = an observation about the
+ *   domain · unchecked = the scan could not complete that query.
  */
 import {
   type Budget,
@@ -29,7 +30,16 @@ import { collectRdap } from "./scan/collect.ts";
 import { QTYPE } from "./dns-wire.ts";
 import { tcpDnsQuery, type TcpDnsQuery } from "./dns-tcp.ts";
 
-export type Severity = "pass" | "warn" | "fail" | "info";
+/**
+ * `unchecked` was split out of `info` on 22 Aug 2026 (owner decision).
+ * Seven findings meant "the query did not complete on this run" — a limit
+ * of the scan — and wore the same OBSERVED badge as real observations like
+ * "all your nameservers are one provider". One is a statement about the
+ * run, the other about the domain; a reader could not tell them apart.
+ * `unchecked` is deliberately left out of the summary tally: the counts
+ * should report what was determined, not what was attempted.
+ */
+export type Severity = "pass" | "warn" | "fail" | "info" | "unchecked";
 
 /** Presentation groups, LeafDNS-style (spec §6, Phase 1 rendering). */
 export type Category = "registry" | "nameservers" | "soa" | "web" | "mail" | "dnssec";
@@ -350,7 +360,7 @@ export async function runDnsCheck(
   if (ns === null) {
     findings.push({
       code: "NS_UNOBSERVABLE",
-      severity: "info",
+      severity: "unchecked",
       title: "Nameservers",
       detail: "The nameserver query did not complete, so nothing can be said about delegation on this run.",
       limitation: "A repeat check usually resolves this; it is a lookup failure, not a finding about the domain.",
@@ -405,7 +415,7 @@ export async function runDnsCheck(
   } else {
     findings.push({
       code: "DELEGATION_UNOBSERVABLE",
-      severity: "info",
+      severity: "unchecked",
       title: "Delegation",
       detail: registryNs.length
         ? "The registry lists nameservers but none could be observed answering on this run."
@@ -434,7 +444,7 @@ export async function runDnsCheck(
   if (soa === null) {
     findings.push({
       code: "SOA_UNOBSERVABLE",
-      severity: "info",
+      severity: "unchecked",
       title: "Zone record (SOA)",
       detail: "The SOA query did not complete on this run.",
     });
@@ -467,7 +477,7 @@ export async function runDnsCheck(
   if (a === null && aaaa === null) {
     findings.push({
       code: "APEX_UNOBSERVABLE",
-      severity: "info",
+      severity: "unchecked",
       title: "Domain address",
       detail: "Address queries did not complete on this run.",
     });
@@ -492,7 +502,7 @@ export async function runDnsCheck(
   if (wwwA === null) {
     findings.push({
       code: "WWW_UNOBSERVABLE",
-      severity: "info",
+      severity: "unchecked",
       title: "www",
       detail: "The www lookup did not complete on this run.",
     });
@@ -532,7 +542,7 @@ export async function runDnsCheck(
   if (mx === null) {
     findings.push({
       code: "MX_UNOBSERVABLE",
-      severity: "info",
+      severity: "unchecked",
       title: "Mail routing (MX)",
       detail: "The MX query did not complete on this run.",
     });
@@ -561,7 +571,7 @@ export async function runDnsCheck(
   if (ds === null) {
     findings.push({
       code: "DNSSEC_UNOBSERVABLE",
-      severity: "info",
+      severity: "unchecked",
       title: "DNSSEC",
       detail: "The DNSSEC queries did not complete on this run.",
     });
@@ -585,10 +595,14 @@ export async function runDnsCheck(
   } else {
     findings.push({
       code: "DNSSEC_ABSENT",
-      severity: "info",
+      // Advisory, not observation (owner, 22 Aug 2026) and not attention:
+      // signing is a real improvement, but most domains in this market do
+      // not sign, and an unsigned domain is not broken. ATTENTION stays for
+      // DNSSEC_BROKEN_CHAIN, where resolvers reject the domain outright.
+      severity: "warn",
       title: "DNSSEC",
       detail:
-        "DNSSEC is not enabled. Most domains in this market do not sign yet, so this is an observation, not a fault. Signing prevents a class of quiet DNS-tampering attacks, and is worth raising with your DNS provider when convenient.",
+        "DNSSEC is not enabled. Signing lets resolvers detect a forged answer, closing a class of quiet DNS-tampering attacks that send your visitors somewhere else. Most domains in this market do not sign yet, so you are in normal company — but this is a real improvement worth raising with your DNS provider.",
     });
   }
 
@@ -692,7 +706,7 @@ export async function runDnsCheck(
   } else {
     findings.push({
       code: "PARENT_UNOBSERVABLE",
-      severity: "info",
+      severity: "unchecked",
       title: "Parent delegation",
       detail:
         "The parent zone's nameservers could not be probed on this run, so the parent-side view of the delegation (and its glue) is unverified this time.",
@@ -739,7 +753,7 @@ export async function runDnsCheck(
               : "web";
   for (const f of findings) f.category = categoryOf(f.code);
 
-  const summary = { pass: 0, warn: 0, fail: 0, info: 0 };
+  const summary = { pass: 0, warn: 0, fail: 0, info: 0, unchecked: 0 };
   for (const f of findings) summary[f.severity] += 1;
 
   const headline =

@@ -123,16 +123,21 @@ test("a healthy domain reports coherent foundations", async () => {
   const report = await run(healthyConfig());
   assert.equal(report.ok, true);
   assert.equal(report.summary.fail, 0);
-  assert.equal(report.summary.warn, 0);
+  // One advisory: the fixture domain is unsigned. DNSSEC absence moved from
+  // observation to advisory on 22 Aug 2026 (owner) — worth doing, not broken.
+  assert.equal(report.summary.warn, 1);
   assert.equal(severityOf(report, "NS_OK"), "pass");
   assert.equal(severityOf(report, "DELEGATION_MATCH"), "pass");
   assert.equal(severityOf(report, "SOA_OK"), "pass");
   assert.equal(severityOf(report, "APEX_OK"), "pass");
   assert.equal(severityOf(report, "WWW_OK"), "pass");
   assert.equal(severityOf(report, "MX_PRESENT"), "pass");
-  // Single provider and unsigned zone are observations, never faults.
+  // One provider is an observation — a legitimate choice with a trade-off.
   assert.equal(severityOf(report, "NS_PROVIDER_SINGLE"), "info");
-  assert.equal(severityOf(report, "DNSSEC_ABSENT"), "info");
+  // An unsigned zone is an advisory, and must never escalate past it: the
+  // domain works, and most domains in this market do not sign. ATTENTION is
+  // reserved for DNSSEC_BROKEN_CHAIN, where resolvers reject the domain.
+  assert.equal(severityOf(report, "DNSSEC_ABSENT"), "warn");
   // Reverse DNS on the mail server passes; no dead nameserver names.
   assert.equal(severityOf(report, "MX_PTR_OK"), "pass");
   assert.equal(findingBy(report, "NS_HOST_UNRESOLVED"), undefined);
@@ -176,11 +181,13 @@ test("disagreeing zone serials across nameservers is an advisory", async () => {
   assert.equal(finding.evidence.length, 2);
 });
 
-test("an unreachable parent degrades to observed, never to a failure", async () => {
+test("an unreachable parent degrades to not-checked, never to a failure", async () => {
   const config = healthyConfig();
   config.tcp = {};
   const report = await run(config);
-  assert.equal(severityOf(report, "PARENT_UNOBSERVABLE"), "info");
+  // "unchecked", not "info": this says the run could not look, not that the
+  // domain has a property worth knowing (owner split, 22 Aug 2026).
+  assert.equal(severityOf(report, "PARENT_UNOBSERVABLE"), "unchecked");
   assert.equal(findingBy(report, "SOA_SYNC"), undefined);
   assert.equal(report.summary.fail, 0, "lookup limitations are not domain failures");
 });
@@ -343,7 +350,7 @@ test("delegation is unobservable, not failed, when the registry publishes nothin
   const config = healthyConfig();
   config.rdap = "missing";
   const report = await run(config);
-  assert.equal(severityOf(report, "DELEGATION_UNOBSERVABLE"), "info");
+  assert.equal(severityOf(report, "DELEGATION_UNOBSERVABLE"), "unchecked");
   const finding = findingBy(report, "DELEGATION_UNOBSERVABLE");
   assert.match(finding.limitation, /[Nn]ot a pass or a failure/);
 });
@@ -560,4 +567,63 @@ test("the /dns tables never split a hostname, and scroll rather than crush", asy
   // Without a min-width the columns collapse again on a narrow screen and
   // the wrapper never has anything to scroll.
   assert.match(css, /\.dns-table\{[^}]*min-width:\d+px/, "the table needs a min-width to scroll against");
+});
+
+/* ── the 22 Aug 2026 severity split (owner decisions) ────────────────── */
+
+test("DNSSEC absence is an advisory; only a broken chain is an attention finding", async () => {
+  // The owner asked whether an unsigned domain should be red. It should not:
+  // most domains in this market do not sign, the domain still works, and a
+  // red badge on the common case teaches readers to ignore red. What IS red
+  // is a published DS with no signing keys — validating resolvers reject the
+  // domain outright, which is worse than never having signed. This test
+  // pins both ends of that distinction so neither drifts into the other.
+  const absent = await run(healthyConfig());
+  assert.equal(severityOf(absent, "DNSSEC_ABSENT"), "warn");
+
+  const broken = healthyConfig();
+  broken.dns[`${DOMAIN} DS`] = { answers: [[T.DS, "2371 13 2 ABCDEF"]] };
+  const brokenReport = await run(broken);
+  assert.equal(severityOf(brokenReport, "DNSSEC_BROKEN_CHAIN"), "fail");
+});
+
+test("a scan limitation is never reported as an observation about the domain", async () => {
+  // "The query did not complete" and "all your nameservers are one provider"
+  // wore the same OBSERVED badge until 22 Aug 2026. One describes the run,
+  // the other the domain. Every *_UNOBSERVABLE finding must carry the
+  // severity that says so — checked against the source, so a newly added
+  // one cannot quietly default back to "info".
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../worker/dns-check.ts", import.meta.url), "utf8");
+
+  const codes = [...src.matchAll(/code: "([A-Z_]*UNOBSERVABLE)"/g)].map((m) => m[1]);
+  assert.ok(codes.length >= 8, `expected the unobservable findings, found ${codes.length}`);
+  for (const code of codes) {
+    const at = src.indexOf(`code: "${code}"`);
+    const near = src.slice(at, at + 200);
+    assert.match(
+      near,
+      /severity: "unchecked"/,
+      `${code} must be "unchecked" — it reports what the scan could not do, not a fact about the domain`,
+    );
+  }
+
+  // And the reverse: the two real observations keep their badge.
+  assert.equal(severityOf(await run(healthyConfig()), "NS_PROVIDER_SINGLE"), "info");
+});
+
+test("the summary counts what was determined, leaving scan limitations out of the tally", async () => {
+  // Owner's choice: NOT CHECKED gets its own badge but stays out of
+  // "8 OK · 1 ADVISORY · 1 OBSERVED", so the line reports findings rather
+  // than attempts. The count still exists on the summary for the dashboard.
+  const config = healthyConfig();
+  config.tcp = {};
+  const report = await run(config);
+  assert.ok(report.summary.unchecked > 0, "the fixture must produce a scan limitation");
+
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../src/components/dns-form.tsx", import.meta.url), "utf8");
+  const box = src.slice(src.indexOf('className={`check-score'), src.indexOf("</div>", src.indexOf('className={`check-score')));
+  assert.match(box, /\["fail", "warn", "info"\] as const/, "the tally lists exactly the three non-pass severities that count");
+  assert.doesNotMatch(box, /unchecked/, "NOT CHECKED must not appear in the summary tally");
 });

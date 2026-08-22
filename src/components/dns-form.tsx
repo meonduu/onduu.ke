@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 
-type Severity = "pass" | "warn" | "fail" | "info";
+type Severity = "pass" | "warn" | "fail" | "info" | "unchecked";
 type Category = "registry" | "nameservers" | "soa" | "web" | "mail" | "dnssec";
 
 type Finding = {
@@ -41,7 +41,7 @@ type Result = {
   ok: true;
   domain: string;
   headline: string;
-  summary: { pass: number; warn: number; fail: number; info: number };
+  summary: { pass: number; warn: number; fail: number; info: number; unchecked?: number };
   findings: Finding[];
   detail: Detail;
 };
@@ -53,6 +53,10 @@ const STATUS_WORD: Record<Severity, string> = {
   warn: "ADVISORY",
   fail: "ATTENTION",
   info: "OBSERVED",
+  // "The query did not complete", split from OBSERVED on 22 Aug 2026. It
+  // says something about the run, not about the domain, so it is worded as
+  // an absence of evidence and kept out of the summary tally.
+  unchecked: "NOT CHECKED",
 };
 
 const CATEGORIES: { key: Category; label: string }[] = [
@@ -71,6 +75,7 @@ const COLOR: Record<Severity, string> = {
   warn: "#B8643B",
   fail: "#a8342a",
   info: "#60707C",
+  unchecked: "#98A2A8", // lighter than info: nothing was learned here
 };
 
 function worstIn(findings: Finding[], category: Category): Severity {
@@ -78,7 +83,10 @@ function worstIn(findings: Finding[], category: Category): Severity {
   if (list.some((f) => f.severity === "fail")) return "fail";
   if (list.some((f) => f.severity === "warn")) return "warn";
   if (list.some((f) => f.severity === "pass")) return "pass";
-  return "info";
+  // An observation still tells the reader something; "not checked" is the
+  // last resort, used only when nothing at all was determined here.
+  if (list.some((f) => f.severity === "info")) return "info";
+  return "unchecked";
 }
 
 /**
@@ -393,10 +401,24 @@ export function DnsForm() {
             </div>
             <div>
               <h2>{result.headline}</h2>
+              {/* Glosses only the words actually on screen. It used to
+                  explain OBSERVED on every clean report, including ones
+                  with no OBSERVED row, and after the 22 Aug split it would
+                  have left NOT CHECKED unexplained. */}
               <p>
-                {result.summary.fail > 0
-                  ? "Findings marked ATTENTION affect whether this domain works reliably; advisories are worth a look when convenient."
-                  : "Nothing observed here blocks the domain from working. Items marked OBSERVED are facts worth knowing, not faults."}
+                {[
+                  result.summary.fail > 0
+                    ? "Findings marked ATTENTION affect whether this domain works reliably."
+                    : "Nothing here blocks the domain from working.",
+                  result.summary.warn > 0 &&
+                    "ADVISORY items are improvements worth making, not faults.",
+                  result.summary.info > 0 &&
+                    "OBSERVED items are facts worth knowing, not faults.",
+                  (result.summary.unchecked ?? 0) > 0 &&
+                    "NOT CHECKED means a query did not complete on this run, so nothing is claimed either way.",
+                ]
+                  .filter(Boolean)
+                  .join(" ")}
               </p>
             </div>
           </div>
@@ -407,7 +429,10 @@ export function DnsForm() {
             const items = result.findings.filter((f) => f.category === key);
             const table = <CategoryTable cat={key} detail={result.detail} />;
             if (items.length === 0 && table === null) return null;
-            const counts = (["pass", "warn", "fail", "info"] as const)
+            // Includes "unchecked", unlike the summary tally: these chips
+            // account for the rows in this section, so a category holding
+            // only an incomplete query should not look empty.
+            const counts = (["pass", "warn", "fail", "info", "unchecked"] as const)
               .map((s) => [s, items.filter((f) => f.severity === s).length] as const)
               .filter(([, n]) => n > 0);
             return (

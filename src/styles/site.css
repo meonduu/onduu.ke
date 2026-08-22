@@ -29,7 +29,9 @@ footer{background:#0b1117;color:#fff;padding:75px clamp(24px,7vw,110px) 55px;dis
    stays slate on purpose — it is neither good nor bad, and a louder
    colour would argue with the word. */
 .check-score span em{font-style:normal}.check-score span .check-pass{color:var(--green)}.check-score span .check-warn{color:var(--copper)}.check-score span .check-fail{color:#a8342a}.check-score span .check-info{color:var(--slate)}.check-score.check-fail{border-color:#a8342a;color:#8d2b22}.check-score.check-pass{border-color:var(--green);color:var(--green)}.check-headline h2{font-size:clamp(26px,3vw,40px);line-height:1.1;margin:0}.check-headline p{color:var(--slate);line-height:1.65;margin:14px 0 0}
-.check-list{list-style:none;padding:0;margin:34px 0 0}.check-list li{padding:26px 0 26px 22px;border-top:1px solid #c5cac7;border-left:3px solid transparent}.check-list li:before{display:none}.check-list li.check-pass{border-left-color:var(--green)}.check-list li.check-warn{border-left-color:var(--copper)}.check-list li.check-fail{border-left-color:#a8342a}.check-list li.check-info{border-left-color:#9fa9a4}.check-row-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap}/* 19px, not the 25px it was until 22 Aug 2026. A finding title is a row
+.check-list{list-style:none;padding:0;margin:34px 0 0}.check-list li{padding:26px 0 26px 22px;border-top:1px solid #c5cac7;border-left:3px solid transparent}.check-list li:before{display:none}.check-list li.check-pass{border-left-color:var(--green)}.check-list li.check-warn{border-left-color:var(--copper)}.check-list li.check-fail{border-left-color:#a8342a}.check-list li.check-info{border-left-color:#9fa9a4}/* Dashed, and lighter: nothing was determined on this row, so it should
+   not read with the same solid weight as a finding. */
+.check-list li.check-unchecked{border-left-color:#c2cac6;border-left-style:dashed}.check-row-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;flex-wrap:wrap}/* 19px, not the 25px it was until 22 Aug 2026. A finding title is a row
    in a list, under a group heading, under the result heading — but at
    25px it outranked every group heading on the site (/dns category
    heads are 23px) and sat 2px under the result heading itself. Shared
@@ -65,7 +67,7 @@ footer{background:#0b1117;color:#fff;padding:75px clamp(24px,7vw,110px) 55px;dis
 .dns-cat-title{display:flex;align-items:baseline;gap:12px}.dns-cat-title span{font-size:10px;color:var(--copper);font-weight:800;letter-spacing:.08em}.dns-cat-head h3{font-size:23px;margin:0}
 .dns-counts{display:flex;gap:6px;flex-wrap:wrap}
 .dns-counts span{font:800 9px Arial;letter-spacing:.1em;padding:5px 9px;border:1px solid currentColor;white-space:nowrap}
-.dns-counts .check-pass{color:var(--green)}.dns-counts .check-warn{color:var(--copper)}.dns-counts .check-fail{color:#a8342a}.dns-counts .check-info{color:var(--slate)}
+.dns-counts .check-pass{color:var(--green)}.dns-counts .check-warn{color:var(--copper)}.dns-counts .check-fail{color:#a8342a}.dns-counts .check-info{color:var(--slate)}.dns-counts .check-unchecked{color:#6b767d}
 /* On a 375px phone the three-column tables crushed their columns until
    hostnames broke mid-word — "jose.ns.cl / oudflare.c / om" across three
    lines. The table now scrolls inside its own box, like the delegation
@@ -146,7 +148,7 @@ footer .wordmark .track{stroke:#28323C}footer .wordmark .arc{stroke:#CD7A50}foot
 .check-badge.check-pass{color:#1f5346;background:#e7f0ec}
 .check-badge.check-warn{color:#8a4526;background:#f6ece5}
 .check-badge.check-fail{color:#8c2b22;background:#f7e6e3}
-.check-badge.check-info{color:#4a5860;background:#eceff0}
+.check-badge.check-info{color:#4a5860;background:#eceff0}.check-badge.check-unchecked{color:#5b666d;background:#f2f4f4;border-style:dashed}
 /* The fixed status column earns its alignment on a wide screen. On a
    phone it only forces the heading onto its own line, so let the badge
    size to its text there. */

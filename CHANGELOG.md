@@ -1,6 +1,63 @@
 # Changelog
 
-CURRENT VERSION: v5.9.2 — 2202hrs:22nd August2026
+CURRENT VERSION: v5.10.0 — 2249hrs:22nd August2026
+
+## v5.10.0 — 2249hrs:22nd August2026
+
+**OBSERVED was doing three jobs; it now does one.** Owner asked whether
+OBSERVED findings like DNSSEC should be red, on the grounds that they are
+critical. Three decisions came out of it.
+
+**DNSSEC absence is an advisory, not an observation — and not red.** It
+was `info`; it is now `warn`, rendered ADVISORY in copper, with wording
+that matches: signing closes a class of quiet DNS-tampering attacks, most
+domains in this market do not sign, and it is worth raising with a
+provider. Red was declined on the evidence: an unsigned domain still
+works, very few Kenyan domains sign, and a red badge on the common case
+teaches readers to ignore red — the same credibility problem as the
+"9 of 10" counter, inverted. **The genuinely critical DNSSEC case was
+already red** and stays there: `DNSSEC_BROKEN_CHAIN`, where the registry
+publishes a fingerprint but the zone returns no keys, makes validating
+resolvers reject the domain outright. A test now pins both ends so
+neither drifts into the other.
+
+**"The query did not complete" is no longer an observation.** Eight of
+the findings that produced an OBSERVED badge meant the scan could not
+look — a fact about the run, not the domain — and sat in the same grey
+badge as "all your nameservers are one provider". They now carry a new
+`unchecked` severity, rendered **NOT CHECKED** on a dashed badge with a
+dashed row edge, so an absence of evidence looks like one. (Eight, not
+the seven first reported: the single-provider finding sets its severity
+through a ternary and did not show up in the first count.)
+
+**NOT CHECKED stays out of the summary tally,** by the owner's choice, so
+`8 OK · 1 ADVISORY · 1 OBSERVED` reports what was determined rather than
+what was attempted. It does appear in the per-category chips, which
+account for the rows in their own section — a category holding only an
+incomplete query should not look empty. The count is still carried on the
+summary object and in the tool log.
+
+**No mail routing stays OBSERVED,** also the owner's choice: harmless for
+a domain never meant to receive email, serious if customers are writing
+to it, and the tool cannot know which. The detail text already says both.
+
+**The lede now glosses only the words on screen.** It previously
+explained OBSERVED on every clean report, including reports with no
+OBSERVED row, and would have left NOT CHECKED unexplained. It is composed
+from the summary instead.
+
+Two OBSERVED findings remain, both genuine: single-provider nameservers,
+and no mail routing.
+
+Verified on the production build against standardmedia.co.ke, which
+exercises all three at once — `8 OK · 1 ADVISORY · 1 OBSERVED` with a
+NOT CHECKED parent-delegation row excluded from the tally, DNSSEC in
+copper, single-provider still slate.
+
+No lesson: a deliberate vocabulary change on owner decisions. Three
+existing tests encoded the old grades and were updated to the new ones
+rather than worked around; the new guards were proven by reverting the
+severities and watching them fail.
 
 ## v5.9.2 — 2202hrs:22nd August2026
 
