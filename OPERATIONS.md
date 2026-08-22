@@ -69,6 +69,11 @@ checked as written, that is itself a finding.
    own associated domain), `NOTIFY_TO` (optional destination; defaults to
    the sender),
    `SLACK_WEBHOOK_URL` (second notification channel, wired v4.52.0),
+   `CLIENT_KEY_SECRET` (HMAC key for the abuse-counter client identifier,
+   v4.92.0 — **nothing outside the Worker knows this value and nothing
+   verifies it**, so it needs no backup: losing it costs one reset of every
+   throttle counter and nothing else. Rotate freely. If it is ever missing,
+   /go shows a red panel rather than degrading quietly),
    `SCAN_ENABLED`, `DNS_CHECK_ENABLED` — and nothing unexplained. `VBOUT_API_KEY` is
    **parked, not orphaned** (owner, 20 Aug 2026): it is for a future email
    marketing consent integration. Nothing may wire it in without a
