@@ -20,7 +20,7 @@
   "devDependencies": {
     "@astrojs/cloudflare": "^14.2.1",
     "@astrojs/react": "^6.0.2",
-    "@cloudflare/workers-types": "^5.20260818.1",
+    "@cloudflare/workers-types": "^5.20260819.1",
     "@eslint/js": "9.39.4",
     "@tailwindcss/postcss": "4.2.1",
     "@types/node": "22.19.19",
