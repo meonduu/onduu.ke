@@ -1,6 +1,39 @@
 # Changelog
 
-CURRENT VERSION: v4.96.1 — 1630hrs:22nd August2026
+CURRENT VERSION: v4.97.0 — 1643hrs:22nd August2026
+
+## v4.97.0 — 1643hrs:22nd August2026
+
+**The HOSTAFRICA path points at the website, not the client area, and the
+scan lede loses its last clause.** Both on the owner's instruction.
+
+The outbound CTA on `/paths/hostafrica-infrastructure` went to
+`panel.hostafrica.com` — the customer client area — and is now
+`hostafrica.com`, with `utm_source` corrected from `onduu` to `onduu.ke`.
+It appeared in exactly one place. Checked before shipping: the new
+address 301s to `www.hostafrica.com` and the UTM parameters survive the
+redirect, so attribution still arrives.
+
+`/scan` now reads "Enter your domain. Onduu reports a Public Signal
+Score. It is a starting point." The "not a verdict" half is dropped; the
+page's first section is titled "A public signal, not a verdict" and says
+it at length, so the lede was making the point twice before the reader
+had seen anything.
+
+A test pinned the old URL and failed, which is what it is for. Worth
+recording how it was nearly missed: the search that should have found it
+first was `grep "panel.hostafrica"`, and the test source reads
+`panel\.hostafrica\.com` — an escaped regex, so the unescaped dot matched
+one character where two stood. The test caught what the grep did not.
+
+**Not changed, and worth naming:** the domain search sends an available
+name to `panel.hostafrica.com/checkout/0?aff=916&ident=keha`, which is a
+different link with a different job — it must reach the checkout with the
+name prefilled, and it carries the affiliate identifier. It still uses
+`utm_source=onduu` rather than `onduu.ke`, so the two outbound links now
+disagree about how this site names itself.
+
+No lesson: two copy changes on the owner's instruction.
 
 ## v4.96.1 — 1630hrs:22nd August2026
 

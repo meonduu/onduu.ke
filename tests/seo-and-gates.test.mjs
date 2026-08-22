@@ -307,8 +307,15 @@ test("the footer identifies the operator", async () => {
 });
 
 test("the approved HOSTAFRICA destination is UTM-tagged with no affiliate parameter", async () => {
+  // Destination changed on the owner's instruction, 22 Aug 2026:
+  // panel.hostafrica.com (the client area) → hostafrica.com (the site),
+  // and utm_source=onduu → onduu.ke. The 301 to www keeps the parameters.
   const paths = await (await fetchPath("/paths/hostafrica-infrastructure")).text();
-  assert.match(paths, /panel\.hostafrica\.com\/\?utm_source=onduu/, "outbound CTA missing");
+  assert.match(
+    paths,
+    /https:\/\/hostafrica\.com\/\?utm_source=onduu\.ke/,
+    "outbound CTA missing, or no longer tagged with the agreed source",
+  );
   assert.doesNotMatch(paths, /aff=/, "affiliate parameters are not approved");
   assert.match(paths, /Managing Director of HOSTAFRICA Kenya/, "disclosure at the decision point");
 
