@@ -485,3 +485,43 @@ test("the per-connection limit holds at 30 checks per hour", () => {
   assert.equal(withinDnsCheckLimit("198.51.100.7"), false);
   assert.equal(withinDnsCheckLimit("198.51.100.8"), true);
 });
+
+test("the /dns score box tallies each severity in its own colour, worst first", async () => {
+  // Owner, 22 Aug 2026: the box read "9 of 10 checks OK" for a domain with
+  // nine OK and one OBSERVED, and they asked which check was missing. None
+  // was — OBSERVED is a fact, not a fault, as the lede beside it says. The
+  // counter was arguing with its own copy. It now reads "9 OK · 1 OBSERVED".
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../src/components/dns-form.tsx", import.meta.url), "utf8");
+
+  assert.doesNotMatch(
+    src,
+    /of \{result\.findings\.length\} checks OK/,
+    'the box must not report a total that counts OBSERVED items as shortfalls',
+  );
+  assert.doesNotMatch(src, /need attention/, "superseded by the per-severity tallies");
+
+  // Worst first, so a reader meets ATTENTION before ADVISORY before OBSERVED.
+  const order = src.match(/\(\["fail", "warn", "info"\] as const\)/);
+  assert.ok(order, "the tallies must be listed worst-first from an explicit array");
+
+  // Each severity needs its own colour rule, and it must out-specify
+  // `.check-score span`, which sets the caption to slate for all of them.
+  const css = readFileSync(new URL("../src/styles/site.css", import.meta.url), "utf8");
+  for (const sev of ["pass", "warn", "fail", "info"]) {
+    assert.match(
+      css,
+      new RegExp(`\\.check-score span \\.check-${sev}\\{color:`),
+      `the ${sev} tally needs a rule specific enough to beat .check-score span`,
+    );
+  }
+
+  // OBSERVED stays slate deliberately: it is neither good nor bad, and a
+  // louder colour would contradict the word. If this ever fails, that was a
+  // decision to make on purpose, not a tidy-up.
+  assert.match(
+    css,
+    /\.check-score span \.check-info\{color:var\(--slate\)\}/,
+    "OBSERVED keeps the neutral slate it carries everywhere else on the site",
+  );
+});
