@@ -67,6 +67,15 @@ export interface RdapFacts {
 export interface DnsFacts {
   nsHosts: string[];
   dsPresent: boolean | null; // null: query failed → unobservable
+  /**
+   * Signing keys in the zone itself. Added 22 Aug 2026 so the scan can tell
+   * an unsigned domain (no DS, an advisory) from a broken chain (DS at the
+   * registry, no keys in the zone — validating resolvers reject the domain
+   * outright). Without it the scan called a broken chain a pass, which is
+   * the worst of the three answers. Runs in parallel with NS and DS, so it
+   * costs one subrequest of forty and no wall-clock time.
+   */
+  dnskeyPresent: boolean | null;
 }
 
 export interface EmailFacts {
@@ -308,9 +317,10 @@ async function collectRdapFrom(
 }
 
 async function collectDns(domain: string, budget: Budget): Promise<DnsFacts> {
-  const [ns, ds] = await Promise.all([
+  const [ns, ds, dnskey] = await Promise.all([
     dohQuery(domain, "NS", budget),
     dohQuery(domain, "DS", budget),
+    dohQuery(domain, "DNSKEY", budget),
   ]);
   return {
     nsHosts: (ns?.Answer || [])
@@ -318,6 +328,7 @@ async function collectDns(domain: string, budget: Budget): Promise<DnsFacts> {
       .map((r) => r.data.trim().toLowerCase().replace(/\.$/, ""))
       .slice(0, 13),
     dsPresent: ds === null ? null : Boolean(ds.Answer?.some((r) => r.type === 43)),
+    dnskeyPresent: dnskey === null ? null : Boolean(dnskey.Answer?.some((r) => r.type === 48)),
   };
 }
 

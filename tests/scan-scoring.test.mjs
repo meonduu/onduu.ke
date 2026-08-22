@@ -41,7 +41,7 @@ function healthyObservations() {
       eppStatuses: ["clientTransferProhibited"],
       registrar: "Example Registrar",
     },
-    dns: { nsHosts: ["ns1.cloudflare.com", "ns2.cloudflare.com"], dsPresent: true },
+    dns: { nsHosts: ["ns1.cloudflare.com", "ns2.cloudflare.com"], dsPresent: true, dnskeyPresent: true },
     homepage: page,
     httpProbe: {
       ...page,
@@ -209,4 +209,62 @@ test("unknown rubric versions and unknown signals are hard errors, never silent"
     () => scoreSignals([...signals, { ...signals[0], id: "made-up" }]),
     /not in rubric/,
   );
+});
+
+/* ── DNSSEC, aligned with /dns (owner decision, 22 Aug 2026) ─────────── */
+
+test("the scan grades DNSSEC in three ways, matching the DNS checker", () => {
+  // Until psr-v4 the scan graded on DS alone: no DS was "MISSING" in red,
+  // and a broken chain — DS at the registry, no keys in the zone — was
+  // called a pass. So /scan showed red for the safe-but-unsigned case and
+  // green for the one that makes resolvers reject the domain. Both ends
+  // were wrong, and no test noticed, because the only fixture had DS
+  // present. These cover all four outcomes.
+  const dnssecOf = (dns) => {
+    const obs = healthyObservations();
+    obs.dns = { ...obs.dns, ...dns };
+    return evaluateSignals(obs).find((s) => s.id === "dnssec");
+  };
+
+  assert.equal(dnssecOf({ dsPresent: true, dnskeyPresent: true }).status, "pass");
+
+  // Unsigned: an advisory, never red. The domain works, and most domains
+  // in this market do not sign.
+  const absent = dnssecOf({ dsPresent: false, dnskeyPresent: false });
+  assert.equal(absent.status, "warn");
+  assert.match(absent.evidence, /not enabled/);
+  assert.doesNotMatch(absent.evidence, /No DS record/, "the old red wording must not survive the grade change");
+
+  // Broken chain: the one that genuinely breaks resolution.
+  const broken = dnssecOf({ dsPresent: true, dnskeyPresent: false });
+  assert.equal(broken.status, "fail");
+  assert.match(broken.evidence, /reject this domain/);
+
+  // A failed query is still unobservable, not a verdict either way.
+  assert.equal(dnssecOf({ dsPresent: null, dnskeyPresent: null }).status, "unobservable");
+});
+
+test("an unsigned domain scores above one with a broken chain", () => {
+  // The point of the split: half credit for unsigned, none for broken.
+  // dnssec carries weight 4, so the gap is 2 points on a 100 scale.
+  const scoreWith = (dns) => {
+    const obs = healthyObservations();
+    obs.dns = { ...obs.dns, ...dns };
+    return scoreSignals(evaluateSignals(obs)).score;
+  };
+  const signed = scoreWith({ dsPresent: true, dnskeyPresent: true });
+  const unsigned = scoreWith({ dsPresent: false, dnskeyPresent: false });
+  const broken = scoreWith({ dsPresent: true, dnskeyPresent: false });
+
+  assert.equal(signed, 100);
+  assert.equal(unsigned, 98, "half of the 4-point dnssec weight");
+  assert.equal(broken, 96, "none of it");
+  assert.ok(unsigned > broken, "an unsigned domain must not score below a broken chain");
+});
+
+test("the rubric version bumped so cached scans re-run under the new grading", () => {
+  // Same weights as psr-v3; the version exists because the same domain now
+  // scores differently. A cached v3 result must not be served under v4.
+  assert.equal(CURRENT_RUBRIC, "psr-v4");
+  assert.deepEqual(RUBRICS["psr-v4"].weights, RUBRICS["psr-v3"].weights);
 });

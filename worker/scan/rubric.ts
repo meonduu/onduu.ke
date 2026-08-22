@@ -85,6 +85,12 @@ export const RUBRICS: Record<string, Rubric> = {
   "psr-v1": { version: "psr-v1", weights: PSR_V1_WEIGHTS },
   "psr-v2": { version: "psr-v2", weights: PSR_V1_WEIGHTS },
   "psr-v3": { version: "psr-v3", weights: PSR_V3_WEIGHTS },
+  // psr-v4: identical weights to v3. The version bumps because the same
+  // domain now scores differently — an unsigned zone grades warn (half
+  // credit) rather than fail (none), and a broken chain grades fail rather
+  // than pass. Cached v3 results must re-run rather than report the old
+  // verdict under the new wording.
+  "psr-v4": { version: "psr-v4", weights: PSR_V3_WEIGHTS },
 };
 
 // psr-v2 is psr-v1 with one dimension renamed: agent-readiness became
@@ -95,7 +101,7 @@ export const RUBRICS: Record<string, Rubric> = {
 // The version is therefore bumped and the cache lookup pinned to it below,
 // which retires v1 rows within the normal cache window instead of
 // rewriting stored history.
-export const CURRENT_RUBRIC = "psr-v3";
+export const CURRENT_RUBRIC = "psr-v4";
 
 const POINTS: Record<Exclude<SignalStatus, "unobservable">, number> = {
   pass: 1,
