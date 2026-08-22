@@ -128,28 +128,38 @@ Newest first. Format: what happened → root cause → the guard now standing.
 Add an entry whenever a defect recurs or a check above fails; an entry may
 be closed only by pointing at its guard.
 
-**L16 — 22 Aug 2026 · A verdict that contradicted its own sentence.** The
-email checker marked an SPF record at 10 of 10 DNS lookups NEEDS WORK,
-directly beside the words "This is correct." Ten is the maximum RFC 7208
-*allows*, so ten is compliant and working; eleven is the failure. The
-cause was one array: a remark about having no headroom left was pushed
-into the same list as real defects, and `status = notes.length ? warn :
-pass` read the list without caring what was in it. Advice and faults are
-now separate arrays and only faults set the status.
+**L16 — 22 Aug 2026 · Severity computed from a count, not a judgement.**
+The email checker marked an SPF record at 10 of 10 DNS lookups NEEDS
+WORK, beside the words "This is correct." Ten is the maximum RFC 7208
+*allows*, so ten is compliant; eleven is the failure. A clean record at
+the limit scored 90 instead of 100 and raised a "Tighten your SPF record"
+action for something that was not broken.
 
-It was not cosmetic. A clean record at the limit scored **90 instead of
-100** and generated a "Tighten your SPF record" action telling the
-customer to fix something that was not broken — on the free tool most
-likely to be a stranger's first contact with Onduu.
+The cause was one line: `status = notes.length ? 'warn' : 'pass'`. That
+asks "how many things did I have to say?" and answers "how bad is it?" —
+different questions. The list could not tell a defect from a useful
+remark, so whoever added the headroom note turned it into an accusation
+without touching the status logic at all. **A verdict must come from what
+the remarks are, never from how many there are.** Faults and advice are
+now separate arrays.
 
-The tell was visible on the page and had been for months: **a badge
-disagreeing with the sentence next to it.** Nobody read them together,
-because the badge comes from a status field and the sentence from a
-detail field, and the two are only assembled in the browser. Guard:
-`tests/email-check.test.mjs` pins 8, 9 and 10 as passing, 11 as failing,
-and a defect at 10 as still warning. Rule: **when a check explains itself
-in prose, the prose and the verdict are one claim and must be read
-together** — if the words say "correct", the badge may not say otherwise.
+Why it survived: this file had twenty-seven tests and none caught it,
+because they were written from the implementation. A test asserting
+`warn` at ten lookups would have passed and cemented the bug as intended.
+Catching it needed the RFC, not more coverage — and in the end it took
+the owner reading the tool's output the way a customer would.
+
+Two tells, both cheap:
+  1. **A badge disagreeing with the sentence beside it.** Visible on the
+     page for months. Nobody read them as one claim because the badge
+     comes from a status field and the prose from a detail field, and
+     they only meet in the browser. When a check explains itself, the
+     verdict and the explanation are one statement.
+  2. **Any status derived from `.length`.** Worth grepping for.
+
+Guard: `tests/email-check.test.mjs` pins 8, 9 and 10 as passing, 11 as
+failing, and a defect at 10 as still warning — the last so a future fix
+cannot turn the limit into a blanket pass (v4.98.0).
 
 **L15 — 22 Aug 2026 · A flaky test, and the fix that looks like pressing
 run again.** `tests/dashboard.test.mjs` failed once in a full-suite run
