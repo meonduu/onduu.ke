@@ -165,3 +165,24 @@ test("the production config never carries the test bypass", async () => {
     assert.doesNotMatch(text, /ACCESS_DEV_BYPASS/, `${file} must not carry the test bypass`);
   }
 });
+
+test("the dev bypass cannot work off a loopback address, flag or no flag", async () => {
+  // Two independent conditions guard it: the flag is absent from the
+  // deployed config (above), and the request must have arrived at
+  // localhost. This is the second one — so even a production Worker that
+  // somehow had ACCESS_DEV_BYPASS set would still refuse an email header,
+  // because its requests arrive at onduu.ke.
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../worker/dashboard.ts", import.meta.url), "utf8");
+  assert.match(
+    src,
+    /devBypass && email && isLoopback\(request\)/,
+    "the bypass must require a loopback request as well as the flag",
+  );
+  const guard = src.match(/function isLoopback[\s\S]{0,320}?\n}/)?.[0] ?? "";
+  for (const local of ["localhost", "127.0.0.1", "::1"]) {
+    assert.ok(guard.includes(local), `isLoopback must recognise ${local}`);
+  }
+  assert.doesNotMatch(guard, /includes\(|startsWith\(|endsWith\(/,
+    "hostnames must be compared exactly; a substring match would accept onduu.ke.localhost.example");
+});

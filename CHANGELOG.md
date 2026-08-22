@@ -1,6 +1,31 @@
 # Changelog
 
-CURRENT VERSION: v4.96.0 — 1622hrs:22nd August2026
+CURRENT VERSION: v4.96.1 — 1630hrs:22nd August2026
+
+## v4.96.1 — 1630hrs:22nd August2026
+
+**The dashboard's dev bypass now needs two independent things, not one.**
+Owner's question: is `ACCESS_DEV_BYPASS` permanently in the code? The
+branch is, and honestly it should be — the test harness runs the real
+built Worker and cannot mint a Cloudflare-signed assertion, so something
+has to let it in. What was wrong was that a single misconfigured variable
+would have armed it.
+
+It now also requires the request to have arrived at a loopback address.
+Production requests arrive at onduu.ke, so setting the flag there — by
+accident, or by someone who found it in the source — still opens nothing.
+Cloudflare routes on the real hostname, and a forged `Host` header does
+not reach a Worker that is not routed for it.
+
+The hostnames are compared exactly, and a test asserts they are: a
+substring match would have accepted `onduu.ke.localhost.example`, which is
+the same mistake the outbound-click origin check avoided in v4.93.0.
+
+Still true and still asserted: the flag appears in no deployed config, and
+is not set on the Worker.
+
+No lesson: a question from the owner, answered by narrowing the thing they
+were right to ask about.
 
 ## v4.96.0 — 1622hrs:22nd August2026
 
