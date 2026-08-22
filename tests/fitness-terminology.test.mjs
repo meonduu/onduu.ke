@@ -135,9 +135,15 @@ test("no page claims a certification or declares a business digitally fit", asyn
   }
 });
 
-test("the score is never shown without its evidence coverage", async () => {
-  // The scan page is where a number is most likely to be read as a verdict,
-  // so the coverage caveat has to be on the page itself, not only in terms.
+test("the scan page explains Evidence Coverage before anyone runs one", async () => {
+  // Renamed 22 Aug 2026 to say what it actually checks. It was called "the
+  // score is never shown without its evidence coverage", which reads as a
+  // guarantee about the RESULT — and it never tested the result at all.
+  // The result panel is a React island rendered in the browser, so it is
+  // absent from this HTML, and the test passed unchanged on the day the
+  // coverage figure was removed from that panel (owner's instruction). A
+  // guard named for something it cannot see is worse than no guard: it
+  // occupies the space where a real one would go.
   const html = await (await fetchPath("/scan")).text();
   assert.match(html, /Evidence Coverage/i, "/scan must name Evidence Coverage");
   assert.match(

@@ -185,10 +185,7 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
             </div>
             <div>
               <h2>What the public signals show for {result.domain}.</h2>
-              <p>
-                Evidence coverage {result.evidenceCoverage}%. The share of the fitness picture
-                that is publicly observable. {result.statement}
-              </p>
+              <p>{result.statement}</p>
             </div>
           </div>
 
