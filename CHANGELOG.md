@@ -1,6 +1,38 @@
 # Changelog
 
-CURRENT VERSION: v4.99.1 — 1723hrs:22nd August2026
+CURRENT VERSION: v5.0.0 — 1737hrs:22nd August2026
+
+## v5.0.0 — 1737hrs:22nd August2026
+
+**The small-print caveat under every scan finding is gone.** Owner's
+instruction. Nineteen lines like "Public registry data; renewal settings
+and billing are not visible." and "Shows the registry flag only, not who
+can change it." no longer render.
+
+Read together they were all the same hedge — "presence only", "one
+request", "not tested", "syntax check only" — repeated under nearly every
+row, on a page that already makes the point twice: section 01 explains
+that the scan reports only what is publicly observable, and the note
+under the result says the score is not a Digital Fitness Score and that
+NOT PUBLIC items neither helped nor hurt it. Said three times, the caveat
+stopped being read at all.
+
+The field is still carried on each signal and stored with the scan. It
+records what a given check actually examined, which is what to reach for
+if a finding is ever disputed — it is simply not shown. A comment at
+`signal()` says so, so nobody later finds nineteen unused strings and
+deletes them as dead.
+
+**`/dns` keeps its equivalents, deliberately.** They look the same —
+small italic text under a finding — but several are load-bearing rather
+than hedging: "A repeat check usually resolves this; it is a lookup
+failure, not a finding about the domain" tells a visitor that a warning
+is Onduu's problem and not theirs. Removing those would turn a transient
+lookup failure into an apparent fault on their domain. Three of the six
+are of that kind, three are scope hedges like the scan's; say the word
+and the hedges alone can go.
+
+No lesson: a copy removal on the owner's instruction.
 
 ## v4.99.1 — 1723hrs:22nd August2026
 

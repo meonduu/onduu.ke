@@ -15,6 +15,13 @@ import type { SignalResult, SignalStatus, Dimension } from "./rubric.ts";
 
 const VERIFIED_NOTE = "Covered by the Verified Digital Fitness Assessment.";
 
+// `limitation` is no longer shown to visitors (owner, 22 Aug 2026): the
+// per-signal caveats were all scope hedges — "presence only", "one
+// request", "not tested" — and /scan already says all of it twice, in
+// section 01 and in the note under the result. It is still carried on the
+// signal and stored with the scan, because it records what a given check
+// actually examined, which is the thing to reach for if a finding is ever
+// disputed.
 function signal(
   id: string,
   dimension: Dimension,
