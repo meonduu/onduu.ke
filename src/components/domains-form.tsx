@@ -123,7 +123,11 @@ export function DomainsForm() {
 
       {results && (
         <div className="check-result" tabIndex={-1} ref={outcomeRef}>
-          <ul className="check-list">
+          {/* --lead: on this page a row IS the answer ("wpfoss.co.ke is
+              TAKEN"), with no heading above it to carry the verdict. The
+              other checkers put rows under a result heading and a group
+              heading, so their titles are sub-items and set smaller. */}
+          <ul className="check-list check-list--lead">
             {results.map((r) => (
               <li
                 key={r.domain}

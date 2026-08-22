@@ -13,6 +13,11 @@ import { fetchPath } from "./helpers/server.mjs";
 // larger than the rows it groups, and numbered from the fixed dimension
 // order. Measured from the served CSS and the built island, the two places
 // the rendered page is actually assembled from.
+//
+// Scope grew on 22 Aug 2026 beyond the scan: `.check-list h3` is shared by
+// /scan, /dns, /domains and /email-security, so a change for one moves all
+// four. The last test here covers /domains, where the rule needed an
+// exception rather than the shared value.
 
 const px = (decl, prop) => {
   const m = decl.match(new RegExp(`(?:^|;)\\s*${prop}\\s*:\\s*([0-9.]+)px`));
@@ -102,4 +107,34 @@ test("dimensions are numbered from the fixed order, not from what happened to re
     /filter\([^)]*\)\.map\(\(dim, n\)/,
     "numbering after a filter would renumber whenever a dimension is skipped",
   );
+});
+
+test("on /domains, where a row is the answer, the row title leads its own detail", async () => {
+  // /domains has no result heading — each row IS the top-level answer
+  // ("wpfoss.co.ke is TAKEN"), unlike the other checkers where rows are
+  // sub-items under both a result heading and a group heading. Taking the
+  // shared row size down to 19px left it 3px above its own registrar and
+  // expiry lines, and the answer stopped reading as the answer.
+  const css = await servedCss();
+  const shared = sizeOf(css, ".check-list h3");
+  const lead = sizeOf(css, ".check-list--lead h3");
+  assert.ok(shared, "the shared row size is not declared");
+  assert.ok(lead, "/domains rows must set their own size; without it they inherit the sub-item size");
+  assert.ok(
+    lead > shared,
+    `a leading row (${lead}px) must be set larger than a sub-item row (${shared}px)`,
+  );
+
+  // And it must clear the detail lines beneath it by more than a hair.
+  const detail = sizeOf(css, ".check-list p") ?? 16;
+  assert.ok(
+    lead - detail >= 6,
+    `a leading row (${lead}px) must stand clear of its detail lines (${detail}px); ` +
+      `${lead - detail}px apart reads as one block`,
+  );
+
+  // The exception must actually be applied on the page that needs it.
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../src/components/domains-form.tsx", import.meta.url), "utf8");
+  assert.match(src, /className="check-list check-list--lead"/, "/domains must opt into the leading-row size");
 });
