@@ -364,7 +364,6 @@ export const strategyPages: Record<string, PageContent> = {
     title: "Tool limitations.",
     intro:
       "What each of the four free tools on this site reads, what it stores, and, most importantly, what its results do and do not prove. If a statement here ever conflicts with a marketing sentence elsewhere, this page wins.",
-    gate: "Draft for professional review, maintained against the code that runs the tools.",
     sections: [
       {
         eyebrow: "EMAIL SECURITY CHECK",
@@ -428,6 +427,14 @@ export const strategyPages: Record<string, PageContent> = {
           "Anything stored about a domain is deleted on request through the contact form",
         ],
         links: [{ label: "Read the privacy notice", href: "/legal/privacy" }],
+      },
+      {
+        eyebrow: "VERSION",
+        title: "Version and effective date.",
+        body: [
+          "Version 1.0, effective 22 August 2026. Published on the owner's decision. A lawyer has not reviewed this page; publishing it records that Onduu stands behind the facts on it, not that anyone has certified them.",
+          "This page is maintained against the code that runs the tools rather than against an intention, which is the only reason it can be relied on: where a limit is described here, a test in the repository fails if the tool stops behaving that way. Where this page and the privacy notice appear to disagree about what is stored, the notice governs.",
+        ],
       },
     ],
   },

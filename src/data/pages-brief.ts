@@ -258,7 +258,6 @@ export const briefPages: Record<string, PageContent> = {
     "eyebrow": "ONDUU / LEGAL",
     "title": "Commercial relationships.",
     "intro": "Onduu, Ujiajiri and HOSTAFRICA have distinct roles. This page explains who is responsible for advice, introductions, products, contracts, payments and customer information.",
-    "gate": "Draft for professional review. This page describes current practice accurately and has not yet been checked by a lawyer.",
     "sections": [
       {
         "eyebrow": "ONDUU AND UJIAJIRI",
@@ -304,6 +303,14 @@ export const briefPages: Record<string, PageContent> = {
           "Questions about an Ujiajiri introduction, provider conduct or these commercial relationships may be sent to info@ujiajiri.ke."
         ],
         "note": "Questions about your own information held by Onduu — access, correction, deletion or a complaint — go through the contact form on this site instead, which reaches Ujiajiri Enterprises Limited only."
+      },
+      {
+        "eyebrow": "VERSION",
+        "title": "Version and effective date.",
+        "body": [
+          "Version 1.0, effective 22 August 2026. Published on the owner\u0027s decision. A lawyer has not reviewed this page; publishing it records that Onduu stands behind the facts on it, not that anyone has certified them.",
+          "This is the one page that carries the mechanics of any commercial benefit \u2014 the affiliate identifier, what it does and does not pay, and how clicks are counted. That was an owner decision of 21 August 2026, taken after the same detail, repeated across three pages, had to be corrected in one go. If you find those mechanics stated anywhere else on this site, this page is the one to trust and the other is a mistake."
+        ]
       }
     ]
   },

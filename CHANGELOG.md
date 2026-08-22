@@ -1,6 +1,33 @@
 # Changelog
 
-CURRENT VERSION: v4.89.0 — 1135hrs:22nd August2026
+CURRENT VERSION: v4.90.0 — 1145hrs:22nd August2026
+
+## v4.90.0 — 1145hrs:22nd August2026
+
+**The last two legal pages are published.** Owner's instruction, completing
+what v4.88.0 started. `/legal/commercial-relationships` and
+`/legal/tool-limitations` lose their PREVIEW / APPROVAL GATE banners and
+gain a VERSION section: v1.0, effective 22 August 2026. All four legal
+pages now carry the same treatment, so a reader no longer meets two that
+are dated and two that are not.
+
+Each says plainly that a lawyer has not reviewed it, and what publishing
+therefore means: that Onduu stands behind the facts on the page, not that
+anyone has certified them. That is a smaller claim than an effective date
+usually implies, and it is the true one.
+
+The version notes carry the fact each page most needs kept:
+commercial-relationships records that it is the single home of the
+affiliate mechanics (owner, 21 August 2026) and that any copy elsewhere is
+the mistake; tool-limitations records that it is maintained against the
+code rather than an intention, which is why a test fails when a tool stops
+behaving as the page describes, and that the privacy notice governs where
+the two appear to disagree.
+
+No `gate` value remains in the page data. The renderer keeps its support
+for one, since a future page may need it.
+
+No lesson: an owner instruction, no defect involved.
 
 ## v4.89.0 — 1135hrs:22nd August2026
 
