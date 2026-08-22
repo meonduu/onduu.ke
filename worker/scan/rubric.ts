@@ -66,9 +66,25 @@ export interface Rubric {
   weights: Record<string, { dimension: Dimension; weight: number }>;
 }
 
+// psr-v3: the four email signals (spf 6, dkim 4, dmarc 8, mx 4) become one
+// "email-auth" signal at their combined weight of 22, so Resilience's share
+// of the score is unchanged and only its row count moves. Owner decision,
+// 22 Aug 2026: those four rows were the /email-security result copied
+// verbatim onto the scan, and the scan is the overview — it should say
+// "email authentication: 3 of 4 in order, go deeper here", not repeat the
+// deep tool's output. Anything in PSR_V1_WEIGHTS that is not an email key
+// is carried over as-is.
+const PSR_V3_WEIGHTS: Record<string, { dimension: Dimension; weight: number }> = {
+  ...Object.fromEntries(
+    Object.entries(PSR_V1_WEIGHTS).filter(([k]) => !["spf", "dkim", "dmarc", "mx"].includes(k)),
+  ),
+  "email-auth": { dimension: "resilience", weight: 22 },
+};
+
 export const RUBRICS: Record<string, Rubric> = {
   "psr-v1": { version: "psr-v1", weights: PSR_V1_WEIGHTS },
   "psr-v2": { version: "psr-v2", weights: PSR_V1_WEIGHTS },
+  "psr-v3": { version: "psr-v3", weights: PSR_V3_WEIGHTS },
 };
 
 // psr-v2 is psr-v1 with one dimension renamed: agent-readiness became
@@ -79,7 +95,7 @@ export const RUBRICS: Record<string, Rubric> = {
 // The version is therefore bumped and the cache lookup pinned to it below,
 // which retires v1 rows within the normal cache window instead of
 // rewriting stored history.
-export const CURRENT_RUBRIC = "psr-v2";
+export const CURRENT_RUBRIC = "psr-v3";
 
 const POINTS: Record<Exclude<SignalStatus, "unobservable">, number> = {
   pass: 1,

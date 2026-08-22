@@ -44,6 +44,28 @@ const STATUS_WORD: Record<Status, string> = {
 
 export function CheckForm() {
   const [domain, setDomain] = useState("");
+
+  // Arriving from the scan's "Email authentication" row carries the domain
+  // across (?domain=…) so nobody retypes it.
+  //
+  // This has to be an effect, not a useState initialiser. The initialiser
+  // runs on the server too, where there is no URL, and React's hydration
+  // keeps the server's "" rather than re-running it in the browser — so
+  // the first version of this prefilled nothing while every test passed.
+  // The lint rule against setState-in-effect is right in general; this is
+  // the documented exception (syncing from an external source, once), and
+  // a single setState on mount costs one extra render of a four-field form.
+  //
+  // Prefilled, never auto-submitted: the check sends DNS queries, and
+  // following a link must not fire them on someone's behalf. One
+  // hostname-shaped value only; anything else is ignored.
+  useEffect(() => {
+    const q = new URLSearchParams(window.location.search).get("domain")?.trim().toLowerCase() ?? "";
+    if (/^[a-z0-9.-]{3,253}$/.test(q) && q.includes(".")) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect -- one-time sync from the URL; see above
+      setDomain(q);
+    }
+  }, []);
   const [state, setState] = useState<"idle" | "loading">("idle");
   const [error, setError] = useState<string | null>(null);
   const [result, setResult] = useState<Result | null>(null);
@@ -55,6 +77,7 @@ export function CheckForm() {
   useEffect(() => {
     if (result || error) outcomeRef.current?.focus();
   }, [result, error]);
+
 
   async function onSubmit(event: React.FormEvent) {
     event.preventDefault();

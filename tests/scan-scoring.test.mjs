@@ -73,10 +73,13 @@ test("psr-v1 weights sum to exactly 100", () => {
   assert.equal(total, 100);
 });
 
-test("a fully healthy domain scores 100 at 100% coverage, over all 24 signals", () => {
+test("a fully healthy domain scores 100 at 100% coverage, over all 21 signals", () => {
   const signals = evaluateSignals(healthyObservations());
-  assert.equal(signals.length, 24);
-  assert.equal(new Set(signals.map((s) => s.id)).size, 24, "signal ids are unique");
+  // 21 since psr-v3 (22 Aug 2026): spf, dkim, dmarc and mx became one
+  // "email-auth" row at their combined weight, so Resilience's share of
+  // the score is unchanged and only the row count moved.
+  assert.equal(signals.length, 21);
+  assert.equal(new Set(signals.map((s) => s.id)).size, 21, "signal ids are unique");
   for (const s of signals) assert.equal(s.status, "pass", `${s.id} should pass: ${s.evidence}`);
   const { score, coverage } = scoreSignals(signals);
   assert.equal(score, 100);
@@ -90,27 +93,68 @@ test("every signal id maps to a rubric weight and vice versa", () => {
   assert.equal(signals.length, rubricIds.size, "every rubric row is evaluated");
 });
 
-test("unobservable signals leave both the score and the coverage (rule 2)", () => {
+test("one unknowable email record does not make the whole row unobservable", () => {
   const obs = healthyObservations();
-  // DKIM selectors not found → /check reports "info" → unobservable.
+  // DKIM selectors not found → /check reports "info". Under psr-v2 that
+  // made a 4-point signal unobservable and cost 4 points of coverage. As
+  // one row, throwing away three good observations because a fourth
+  // could not be made would be the wrong trade: the row stays observed,
+  // says which record could not be determined, and passes on the three
+  // that could.
   obs.email.result.checks.dkim = { status: "info", detail: "No DKIM key found at common selectors." };
   const signals = evaluateSignals(obs);
-  const dkim = signals.find((s) => s.id === "dkim");
-  assert.equal(dkim.status, "unobservable");
+  const email = signals.find((s) => s.id === "email-auth");
+  assert.equal(email.status, "pass");
+  assert.match(email.evidence, /3 of 4 records in order/);
+  assert.match(email.evidence, /DKIM not determinable from outside/);
 
   const { score, coverage } = scoreSignals(signals);
-  assert.equal(score, 100, "everything observed still passes, so the score stays 100");
-  assert.equal(coverage, 96, "coverage drops by exactly DKIM's weight (4)");
+  assert.equal(score, 100);
+  assert.equal(coverage, 100);
+});
+
+test("only when every email record is unknowable does the row leave the score (rule 2)", () => {
+  const obs = healthyObservations();
+  for (const k of ["spf", "dkim", "dmarc", "mx"]) obs.email.result.checks[k] = { status: "info", detail: "x" };
+  const signals = evaluateSignals(obs);
+  assert.equal(signals.find((s) => s.id === "email-auth").status, "unobservable");
+  const { score, coverage } = scoreSignals(signals);
+  assert.equal(score, 100, "what remains observable still passes");
+  assert.equal(coverage, 78, "coverage drops by the row's full weight (22)");
 });
 
 test("failures and warnings move the score deterministically", () => {
   const obs = healthyObservations();
-  obs.email.result.checks.dmarc = { status: "fail", detail: "No DMARC record." }; // weight 8 → 0
+  obs.email.result.checks.dmarc = { status: "fail", detail: "No DMARC record." };
   obs.homepage.timingMs = 1200; // ttfb warn, weight 4 → 2
   const { score, coverage } = scoreSignals(evaluateSignals(obs));
-  // 100 - 8 - 2 = 90 points of 100 observed weight.
-  assert.equal(score, 90);
+  // Under psr-v2 a missing DMARC cost its own 8 points. Under psr-v3 it
+  // fails the whole 22-point email row, because the row's verdict is the
+  // worst of the four — which is also how a receiver treats the records.
+  // A domain with no DMARC can be spoofed whatever SPF and DKIM say, so
+  // keeping 14 points for tidy housekeeping around the hole was the
+  // lenient reading. 100 - 22 - 2 = 76.
+  assert.equal(score, 76);
   assert.equal(coverage, 100);
+});
+
+test("the email row grades pass, warn and fail like the single records it replaced", () => {
+  const at = (dmarc) => {
+    const obs = healthyObservations();
+    obs.email.result.checks.dmarc = { status: dmarc, detail: "x" };
+    return scoreSignals(evaluateSignals(obs)).score;
+  };
+  assert.equal(at("pass"), 100);
+  assert.equal(at("warn"), 89, "warn earns half the row's weight: 100 - 11");
+  assert.equal(at("fail"), 78, "fail earns none of it: 100 - 22");
+});
+
+test("the email row names spoofability when the tool reports it", () => {
+  const obs = healthyObservations();
+  obs.email.result.checks.dmarc = { status: "fail", detail: "x" };
+  obs.email.result.spoofable = true;
+  const email = evaluateSignals(obs).find((s) => s.id === "email-auth");
+  assert.match(email.evidence, /can currently be forged/);
 });
 
 test("an unreachable site keeps DNS-side observations and never fakes web signals", () => {

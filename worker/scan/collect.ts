@@ -78,6 +78,8 @@ export interface EmailFacts {
     checks?: Record<string, { status: string; detail: string; record?: string }>;
     provider?: string | null;
     mailConfigured?: boolean;
+    /** DMARC not enforcing — the email tool's headline verdict. */
+    spoofable?: boolean;
   };
 }
 
