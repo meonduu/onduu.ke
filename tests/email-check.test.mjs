@@ -53,6 +53,73 @@ test("a clean -all record passes", () => {
   assert.equal(result.status, "pass");
 });
 
+// Owner, 22 Aug 2026: ten lookups is the maximum RFC 7208 ALLOWS, so a
+// record using ten is valid and working. The checker was marking 8, 9 and
+// 10 as NEEDS WORK while printing "This is correct" beside the badge —
+// the headroom remark shared an array with the real faults, and anything
+// in that array set the status. Advice must not be scored as a defect.
+
+test("a record at exactly 10 of 10 lookups passes — the limit is allowed, not exceeded", () => {
+  const result = analyseSpf(["v=spf1 include:_spf.google.com -all"], {
+    total: 10,
+    duplicates: [],
+    unresolved: [],
+  });
+  assert.equal(result.status, "pass", "ten lookups is compliant; the record works");
+  assert.equal(result.lookups, 10);
+  assert.match(result.detail, /This is correct/, "and the wording must agree with the badge");
+  assert.match(result.detail, /no room left/, "the headroom is still worth saying");
+});
+
+test("8 and 9 lookups pass too, with the warning kept as advice", () => {
+  for (const total of [8, 9]) {
+    const result = analyseSpf(["v=spf1 include:_spf.google.com -all"], {
+      total,
+      duplicates: [],
+      unresolved: [],
+    });
+    assert.equal(result.status, "pass", `${total} lookups is under the limit`);
+    assert.match(result.detail, /Close to the limit/, `${total} should still carry the caution`);
+  }
+});
+
+test("11 lookups is a fail, because the record actually stops working", () => {
+  // The line that matters: at eleven the record permerrors, so nothing is
+  // authenticated. That is a different thing from being at the limit.
+  const result = analyseSpf(["v=spf1 include:_spf.google.com -all"], {
+    total: 11,
+    duplicates: [],
+    unresolved: [],
+  });
+  assert.equal(result.status, "fail");
+  assert.match(result.detail, /permanent error/);
+});
+
+test("real faults still mark the record as needing work, at any lookup count", () => {
+  const dupes = analyseSpf(["v=spf1 include:a.com include:a.com -all"], {
+    total: 4,
+    duplicates: ["a.com"],
+    unresolved: [],
+  });
+  assert.equal(dupes.status, "warn", "a duplicated include is a genuine defect");
+
+  const dead = analyseSpf(["v=spf1 include:gone.example -all"], {
+    total: 3,
+    duplicates: [],
+    unresolved: ["gone.example"],
+  });
+  assert.equal(dead.status, "warn", "an include resolving to nothing is a genuine defect");
+
+  // And a fault at the limit is still a fault — the fix must not have
+  // made 10 lookups a blanket pass.
+  const both = analyseSpf(["v=spf1 include:a.com include:a.com -all"], {
+    total: 10,
+    duplicates: ["a.com"],
+    unresolved: [],
+  });
+  assert.equal(both.status, "warn");
+});
+
 test("~all passes, with -all stated as the recommendation", () => {
   const result = analyseSpf(["v=spf1 include:_spf.google.com ~all"], {
     total: 3,

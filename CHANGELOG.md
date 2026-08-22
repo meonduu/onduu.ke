@@ -1,6 +1,42 @@
 # Changelog
 
-CURRENT VERSION: v4.97.1 — 1651hrs:22nd August2026
+CURRENT VERSION: v4.98.0 — 1702hrs:22nd August2026
+
+## v4.98.0 — 1702hrs:22nd August2026
+
+**An SPF record at 10 of 10 lookups now passes, because it is correct.**
+Reported by the owner. Ten is the maximum RFC 7208 *allows*; a record
+using ten is compliant and working. Eleven is the failure, and that was
+already handled.
+
+The checker said so and marked it NEEDS WORK anyway. The badge and the
+sentence beside it disagreed — "This is correct" under a warning — and
+the sentence was right.
+
+One array caused it. A remark about having no headroom left was pushed
+into the same list as genuine defects (an include listed twice, an
+include resolving to nothing), and the status was `notes.length ? warn :
+pass`, which reads the list without caring what is in it. Advice and
+faults are now separate; only faults set the status. The headroom remark
+still appears, and at exactly ten it says what it means: valid, but no
+room to add another sender.
+
+**It cost more than a badge.** `warn` scores 15 where `pass` scores 25, so
+a clean record at the limit came out at **90 instead of 100**, and
+`buildFixes` raised "Tighten your SPF record" — an instruction to repair
+something that was not broken, on the free tool most likely to be a
+stranger's first contact with Onduu.
+
+Checked sitewide, as asked. Every other verdict holds: the DMARC warnings
+(`p=none`, `pct<100`) describe real gaps in protection; the scan's graded
+thresholds (800–2500ms load, 30–60 days to expiry) are middling rather
+than at-a-limit; and no other check anywhere derives its status from an
+accumulated list. This was the only instance.
+
+Lesson L16, on the tell rather than the arithmetic: a badge that
+contradicts the sentence next to it was visible on the page for months,
+because the badge comes from a status field and the sentence from a
+detail field and the two only meet in the browser.
 
 ## v4.97.1 — 1651hrs:22nd August2026
 
