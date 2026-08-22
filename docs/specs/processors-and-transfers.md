@@ -98,16 +98,37 @@ being checked — never anything about the visitor who asked.
   Kenya. This is not an arm's-length processor, and the privacy notice
   says so at the point it names HOSTAFRICA. The commercial mechanics stay
   on `/legal/commercial-relationships` (CLAUDE.md, one page only).
-- **OWNER**: confirm whether the agents call any external model API from
-  those servers. "Runs on HOSTAFRICA servers" answers where the compute
-  is, not which model sees the text; if a hosted model API is called, that
-  provider is a further processor and must be added here and to the notice
-  in the same release. Recorded as open rather than assumed either way —
-  the notice deliberately makes no claim that nobody else receives it.
+- **Answered 22 Aug 2026 (owner):** the agents do call external model APIs.
+  See the section below. The question was left open rather than assumed on
+  21 August, and the answer changed the disclosure — which is the argument
+  for leaving such questions open.
 - **LAWYER**: whether a processing agreement exists between Ujiajiri
   Enterprises Limited and HOSTAFRICA, and what it says about
   confidentiality, retention and sub-processing. A directorship is not a
   substitute for one.
+
+### Anthropic (Anthropic PBC) and OpenAI (OpenAI, L.L.C.)
+- **Role**: operate the language models Hermes and Buzz call from the
+  HOSTAFRICA servers. Named 22 August 2026 (owner).
+- **Receives**: the substance of an assessment — declared answers, the
+  domain, public evidence — without name, email address or company name.
+  **This is not anonymous data.** The domain identifies the business that
+  owns it, so the removal protects the individual, not the company, and
+  the notice now says so rather than claiming de-identification it cannot
+  deliver.
+- **Location**: both outside Kenya. This widens section 3 beyond
+  Cloudflare's EEUR region.
+- **Basis**: performance of the assessment the customer requested.
+- **OWNER**: DeepSeek and OpenRouter were in use on 22 August 2026 and the
+  owner decided to drop DeepSeek and limit the models to Anthropic and
+  OpenAI. This register and the notice describe the limited arrangement;
+  they are accurate only once it is actually in force. If OpenRouter
+  remains in the path as a broker it is a further processor — it chooses
+  which provider serves a request — and must be named too.
+- **LAWYER**: confirm each provider's API terms on training and retention.
+  Business API tiers commonly exclude training by default, but "commonly"
+  is not a record, and nothing here has been verified against the
+  contracts.
 
 ### Explicitly not processors
 No analytics company. No advertising network. Cloudflare Web Analytics

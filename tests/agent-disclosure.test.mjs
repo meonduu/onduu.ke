@@ -55,6 +55,51 @@ test("the privacy notice names where the agents run, and the relationship", asyn
     /director of HOSTAFRICA Kenya/i,
     "the notice must disclose that the processor is not arm's length",
   );
+  for (const provider of ["Anthropic", "OpenAI"]) {
+    assert.match(text, new RegExp(provider), `the notice must name ${provider}`);
+  }
+});
+
+test("the notice does not call the model data anonymous, because it is not", async () => {
+  // Written on 21 Aug and wrong from the start: the sentence listed "the
+  // domain" among what is sent and then said "nothing that identifies you
+  // or your business goes with it". A domain identifies the company that
+  // owns it more precisely than the company-name field does. Removing the
+  // name, email and company protects the person, not the business, and
+  // saying otherwise is a false assurance about personal data.
+  const text = (await (await fetchPath("/legal/privacy")).text())
+    .replace(/<[^>]+>/g, " ")
+    .replace(/&#x27;/g, "'")
+    .replace(/\s+/g, " ");
+  assert.doesNotMatch(
+    text,
+    /nothing that identifies you or your business goes with it/i,
+    "the notice must not claim the assessment data sent to the models is unidentifying",
+  );
+  assert.match(
+    text,
+    /a domain identifies the company that owns it/i,
+    "the notice must say plainly what the removal does not achieve",
+  );
+});
+
+test("no page claims third parties get nothing without asking, now that they do", async () => {
+  // The processors named in the notice receive assessment content as a
+  // matter of course. An unqualified "nothing goes to any other third
+  // party without asking you first" reads over them.
+  const text = (await (await fetchPath("/legal/privacy")).text())
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ");
+  const claim = /none is passed to an infrastructure supplier[^.]*without asking you first/i;
+  const match = text.match(claim);
+  if (match) {
+    const runUp = text.slice(Math.max(0, match.index - 90), match.index);
+    assert.match(
+      runUp,
+      /processors named above|Apart from the processors/i,
+      "the promise must exclude the processors the site actually uses",
+    );
+  }
 });
 
 // Identifiers are stripped before anything reaches a third-party service

@@ -1,6 +1,47 @@
 # Changelog
 
-CURRENT VERSION: v4.88.0 — 1115hrs:22nd August2026
+CURRENT VERSION: v4.89.0 — 1135hrs:22nd August2026
+
+## v4.89.0 — 1135hrs:22nd August2026
+
+**The model providers are named, and two false sentences come out.**
+The agents call external model APIs — the question v4.88.0 deliberately
+left open rather than assuming, which was the right call, because the
+answer changed the disclosure. The owner has dropped DeepSeek and limited
+the models to **Anthropic** and **OpenAI**; both now have a card beside
+Cloudflare, HOSTAFRICA, ZeptoMail and Slack, and the transfers section
+says assessment content leaves Kenya for them.
+
+**A contradiction that was published for a day, and it was ours.** The
+notice said what reaches the models is "your declared answers, **the
+domain** and the public evidence — with your name, email address and
+company name removed... so **nothing that identifies you or your
+business** goes with it". It listed an identifier and then denied sending
+one. A domain identifies the company that owns it more precisely than the
+company-name field does. The notice now says the removal takes out the
+person, not the business, and that this is not anonymous data — a weaker
+claim and a true one.
+
+**A denial that the processors themselves falsified.** "None is passed to
+an infrastructure supplier, an implementation provider or any other third
+party without asking you first" was already untrue when HOSTAFRICA was
+named yesterday, and plainly untrue with two model providers. It now
+reads "apart from the processors named above".
+
+DeepSeek and OpenRouter appear nowhere in visitor-facing copy. They are
+recorded in `docs/specs/processors-and-transfers.md` as what was in use
+and what the owner decided, with the accuracy of the published notice
+made conditional on the limit actually being in force, and a note that
+OpenRouter would be a further processor if it stays in the path as a
+broker.
+
+Three new guards in `tests/agent-disclosure.test.mjs`: the notice must
+name both providers, must not call the model data unidentifying, and must
+not carry an unqualified no-third-party promise.
+
+No lesson: L14 already covers a claim outliving the arrangement it
+describes, and this is that lesson being applied rather than relearned —
+the open question was left open, and it paid.
 
 ## v4.88.0 — 1115hrs:22nd August2026
 
