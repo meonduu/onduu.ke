@@ -1,6 +1,55 @@
 # Changelog
 
-CURRENT VERSION: v4.94.0 — 1514hrs:22nd August2026
+CURRENT VERSION: v4.95.0 — 1556hrs:22nd August2026
+
+## v4.95.0 — 1556hrs:22nd August2026
+
+**The spent machinery is swept; nothing anyone sent is touched.** Owner
+decision, 22 August 2026, taking the narrow half of the security review's
+retention recommendation and deliberately leaving the rest.
+
+That recommendation covers two unlike things. **How long to keep an
+enquiry** is a business judgement with a real cost for getting it wrong,
+and it stays open. **Throttle counters and dead opt-out links** are
+machinery: nothing reads them again, nothing references them, and their
+window has closed. Only the second is deleted.
+
+Two things made it worth doing now rather than later. An opt-out request
+that expired unconfirmed still holds a real person's email address for
+something that can never happen again — keeping it is not caution. And
+the daily-rotating client key (v4.92.0) leaves every returning visitor's
+previous row orphaned, so those tables now grow without bound by a design
+that is ours. Thirty-six rows today, but unbounded.
+
+The earlier argument against — that deletion cannot be tested against an
+empty table — turned out to cut the other way. Building this at
+thirty-six rows means a mistake costs nothing; building it in six months
+means exercising it for the first time against enquiries.
+
+Explicitly out of scope, and asserted by a test that reads the source:
+submissions, page views, events, scans, tool checks, the do-not-scan
+blocklist, and **confirmed** opt-out requests — the last being the record
+of who asked to be left alone.
+
+Scheduling: the Astro Cloudflare adapter exports only a fetch handler, so
+a cron trigger would mean patching build output and re-patching it on
+every adapter upgrade. It runs in `waitUntil` behind a six-hour
+per-isolate timer instead, the pattern already used for page views. Every
+statement is idempotent, so two isolates racing costs a no-op.
+
+`/go` states when it last ran and what it removed, because a deletion job
+nobody can see is indistinguishable from one that stopped.
+
+Nine tests, most of which check what **survives**: a counter still in
+force, a request whose link still works, a confirmed request ten days
+past expiry. Verified end to end on a real request — a row from 10 August
+went, today's stayed.
+
+**Needs the owner:** `npx wrangler d1 migrations apply onduu-leads --remote`
+for migration 0013. Until then the deletions still run; only the record of
+them is missing, and /go says so.
+
+No lesson: an owner decision acting on external review.
 
 ## v4.94.0 — 1514hrs:22nd August2026
 

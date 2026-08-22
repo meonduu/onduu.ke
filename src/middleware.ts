@@ -5,6 +5,7 @@ import { env } from "cloudflare:workers";
 import { clearStaleCookies } from "../worker/stale-cookies";
 import { withSecurityHeaders } from "../worker/security-headers";
 import { recordPageView, shouldRecord } from "../worker/pageviews";
+import { cleanupIsDue, runCleanup } from "../worker/cleanup";
 
 // Route history, each old URL 301ing to its successor: the checker began
 // life at /email-security (v8.8), moved to /check in the rebuild, and moved
@@ -60,6 +61,14 @@ export const onRequest = defineMiddleware(async (context, next) => {
   // Recorded after the response is ready, so it never delays the page.
   if (shouldRecord(context.request, response)) {
     context.locals.cfContext.waitUntil(recordPageView(context.request, env as never));
+
+    // And, at most once every six hours per isolate, sweep the spent
+    // machinery (worker/cleanup.ts). Also after the response, so a
+    // visitor never waits for it, and never throwing into their request.
+    const db = (env as { onduu_leads?: D1Database }).onduu_leads;
+    if (db && cleanupIsDue()) {
+      context.locals.cfContext.waitUntil(runCleanup(db).catch(() => {}));
+    }
   }
 
   // Expire analytics cookies left by the previous site before handing the
