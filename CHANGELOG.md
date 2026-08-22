@@ -1,6 +1,50 @@
 # Changelog
 
-CURRENT VERSION: v4.87.0 — 1032hrs:22nd August2026
+CURRENT VERSION: v4.88.0 — 1115hrs:22nd August2026
+
+## v4.88.0 — 1115hrs:22nd August2026
+
+**The privacy notice and assessment terms are published, and the agents
+are named.** Both on the owner's instruction.
+
+**Published as v1.0, effective 22 August 2026.** Both documents carried
+"It has no effective date until a legal professional has reviewed it",
+and both carried a PREVIEW / APPROVAL GATE banner saying no lawyer had
+checked the page. All four are gone. The owner decided to publish without
+waiting for the review, and that decision is recorded rather than
+disguised: nothing now claims a lawyer read these documents, the
+`LAWYER` markers in `docs/specs/processors-and-transfers.md` are
+untouched, and the register carries a note saying a published notice that
+turns out to be wrong is wrong in public rather than in draft.
+`/legal/commercial-relationships` and `/legal/tool-limitations` keep
+their draft gates — they were not part of the instruction.
+
+**HOSTAFRICA is named as a processor, and the relationship with it.** The
+notice said assessment content reaches "third-party AI services", which
+was as much as was known on 21 August. The agents are **Hermes** and
+**Buzz**, and they run on **HOSTAFRICA** servers.
+
+A processor card exists to tell a data subject which *organisation* holds
+their information, so naming the agents alone would have looked like a
+disclosure while disclosing nothing — "Hermes and Buzz" answers a
+different question than the one a reader is asking. HOSTAFRICA now has a
+card beside Cloudflare, ZeptoMail and Slack, the agents are named where
+the method is described, and the notice states that Onduu's operator is a
+director of HOSTAFRICA Kenya, because this processor is not arm's length
+and a reader deciding whether to submit deserves that fact. The
+commercial mechanics stay on `/legal/commercial-relationships` alone
+(CLAUDE.md).
+
+**What the notice deliberately does not say.** It makes no claim that
+nobody else receives assessment content. "Runs on HOSTAFRICA servers"
+answers where the compute is, not which model reads the text: if the
+agents call a hosted model API from those servers, that provider is a
+further processor. Recorded as an open **OWNER** question in the register
+rather than assumed either way — a denial written on an assumption is
+exactly what L14 is about, and the last one stayed published for a day.
+
+No lesson: an owner instruction and a disclosure correction, neither
+caused by a defect here.
 
 ## v4.87.0 — 1032hrs:22nd August2026
 
