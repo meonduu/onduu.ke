@@ -150,12 +150,38 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   }
 
+  /**
+   * Cloudflare answers 520–527 when its own edge is reachable but the
+   * origin behind it is not. The page was never served, so there is
+   * nothing to read — and that is an absence of evidence, never a finding
+   * about the site.
+   *
+   * Found 22 Aug 2026 scanning onduu.ke itself. It runs as a Worker with
+   * no origin server behind it, so the scan fetched its own zone, the edge
+   * had no origin to reach, and returned 522. Eleven signals then reported
+   * MISSING — no title, no h1, no robots.txt, a 0 KiB homepage — about a
+   * site that serves perfectly from anywhere else. The guard is written
+   * for any 52x rather than for our own domain, because a customer's site
+   * can 52x mid-scan for the same reason and deserves the same answer.
+   */
+  const originUnreachable = (p: { fetched: boolean; status?: number }) =>
+    p.fetched && p.status != null && p.status >= 520 && p.status <= 527;
+
+  /** A page whose content can actually be read. */
+  const readable = (p: { fetched: boolean; status?: number }) => p.fetched && !originUnreachable(p);
+
+  /** Says why nothing could be read, naming the status when there is one. */
+  const whyUnread = (p: { fetched: boolean; status?: number }, fallback: string) =>
+    originUnreachable(p)
+      ? `The site answered ${p.status}: Cloudflare could not reach an origin, so no page was served to read.`
+      : fallback;
+
   /* ── Trust ── */
 
   // https homepage fetch succeeding at all proves a presentable certificate;
   // workerd refuses invalid TLS, so a TLS-level failure surfaces as a
   // network error with the http probe still answering.
-  if (home.fetched) {
+  if (home.fetched && (home.status ?? 0) < 400) {
     out.push(
       signal(
         "https-certificate",
@@ -164,6 +190,18 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
         "pass",
         `https://${obs.domain}/ served over a valid TLS connection (status ${home.status}).`,
         "Validity at scan time; expiry monitoring is not visible.",
+      ),
+    );
+  } else if (home.fetched) {
+    // TLS negotiated, but the site did not serve a page. Passing here put a
+    // green badge beside "status 522" — the certificate may be perfect, and
+    // the scan still cannot say the site is serving.
+    out.push(
+      unobservable(
+        "https-certificate",
+        "trust",
+        "HTTPS",
+        `The TLS connection succeeded but the site answered ${home.status}, so its certificate could not be judged against a served page.`,
       ),
     );
   } else if (home.error === "network" || home.error === "timeout") {
@@ -181,8 +219,8 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     out.push(unobservable("https-certificate", "trust", "HTTPS", `The homepage fetch did not complete (${home.error ?? "unknown"}).`));
   }
 
-  if (!obs.httpProbe.fetched && obs.httpProbe.chain.length === 0) {
-    out.push(unobservable("http-to-https", "trust", "http → https redirect", "The plain-http probe did not complete."));
+  if ((!obs.httpProbe.fetched && obs.httpProbe.chain.length === 0) || originUnreachable(obs.httpProbe)) {
+    out.push(unobservable("http-to-https", "trust", "http → https redirect", whyUnread(obs.httpProbe, "The plain-http probe did not complete.")));
   } else {
     const firstHop = obs.httpProbe.chain[0];
     const redirected = Boolean(firstHop?.location?.startsWith("https://"));
@@ -201,7 +239,7 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   }
 
-  if (!obs.twin.page.fetched && obs.twin.page.chain.length === 0) {
+  if ((!obs.twin.page.fetched && obs.twin.page.chain.length === 0) || originUnreachable(obs.twin.page)) {
     out.push(
       unobservable("apex-www-coherence", "trust", "apex ↔ www coherence", `https://${obs.twin.host}/ did not resolve or complete.`),
     );
@@ -226,10 +264,11 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   }
 
-  if (!home.fetched) {
-    out.push(unobservable("hsts", "trust", "HSTS", "The homepage fetch did not complete."));
-    out.push(unobservable("security-headers", "trust", "Baseline security headers", "The homepage fetch did not complete."));
-    out.push(unobservable("title-meta", "trust", "Title and description", "The homepage fetch did not complete."));
+  if (!readable(home)) {
+    const why = whyUnread(home, "The homepage fetch did not complete.");
+    out.push(unobservable("hsts", "trust", "HSTS", why));
+    out.push(unobservable("security-headers", "trust", "Baseline security headers", why));
+    out.push(unobservable("title-meta", "trust", "Title and description", why));
   } else {
     out.push(
       signal(
@@ -272,10 +311,11 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
 
   /* ── Speed ── */
 
-  if (!home.fetched || home.timingMs == null) {
-    out.push(unobservable("ttfb-band", "speed", "Response time", "The homepage fetch did not complete."));
-    out.push(unobservable("html-weight", "speed", "HTML weight", "The homepage fetch did not complete."));
-    out.push(unobservable("viewport", "speed", "Mobile viewport", "The homepage fetch did not complete."));
+  if (!readable(home) || home.timingMs == null) {
+    const why = whyUnread(home, "The homepage fetch did not complete.");
+    out.push(unobservable("ttfb-band", "speed", "Response time", why));
+    out.push(unobservable("html-weight", "speed", "HTML weight", why));
+    out.push(unobservable("viewport", "speed", "Mobile viewport", why));
   } else {
     out.push(
       signal(
@@ -313,9 +353,10 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
 
   /* ── Conversion ── */
 
-  if (!home.fetched) {
-    out.push(unobservable("contact-path", "conversion", "Contact path", "The homepage fetch did not complete."));
-    out.push(unobservable("single-h1", "conversion", "Clear headline", "The homepage fetch did not complete."));
+  if (!readable(home)) {
+    const why = whyUnread(home, "The homepage fetch did not complete.");
+    out.push(unobservable("contact-path", "conversion", "Contact path", why));
+    out.push(unobservable("single-h1", "conversion", "Clear headline", why));
   } else {
     out.push(
       signal(
@@ -341,8 +382,8 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   }
 
-  if (!obs.missingProbe.fetched && obs.missingProbe.chain.length === 0) {
-    out.push(unobservable("missing-page-handling", "conversion", "Missing-page handling", "The probe request did not complete."));
+  if ((!obs.missingProbe.fetched && obs.missingProbe.chain.length === 0) || originUnreachable(obs.missingProbe)) {
+    out.push(unobservable("missing-page-handling", "conversion", "Missing-page handling", whyUnread(obs.missingProbe, "The probe request did not complete.")));
   } else {
     const st = obs.missingProbe.status ?? 0;
     out.push(
@@ -439,8 +480,11 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     looksRight: boolean | undefined,
     absentMsg: string,
   ) => {
-    if (!page.fetched && page.chain.length === 0) {
-      out.push(unobservable(id, "agent-fitness", label, "The request did not complete."));
+    if ((!page.fetched && page.chain.length === 0) || originUnreachable(page)) {
+      // Without the 52x arm, robots.txt and the sitemap fell through to the
+      // status check below and were reported absent on a site that serves
+      // both.
+      out.push(unobservable(id, "agent-fitness", label, whyUnread(page, "The request did not complete.")));
       return;
     }
     if (page.status !== 200) {
@@ -471,8 +515,8 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     "No sitemap at /sitemap.xml, and robots.txt does not declare one.",
   );
 
-  if (!home.fetched) {
-    out.push(unobservable("structured-data", "agent-fitness", "Structured data", "The homepage fetch did not complete."));
+  if (!readable(home)) {
+    out.push(unobservable("structured-data", "agent-fitness", "Structured data", whyUnread(home, "The homepage fetch did not complete.")));
   } else {
     out.push(
       signal(
