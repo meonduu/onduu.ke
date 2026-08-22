@@ -156,3 +156,28 @@ test("/dns categories carry the same numbered head as the scan's dimensions", as
   assert.match(src, /CATEGORIES\.map\(\(\{ key, label \}, n\)/, "the number comes from the CATEGORIES index");
   assert.match(src, /String\(n \+ 1\)\.padStart\(2, "0"\)/, "two digits, as on /scan");
 });
+
+test("record blocks wrap at spaces, breaking a token only when it cannot fit", async () => {
+  // Owner, 22 Aug 2026, checking /email-security on a phone: an SPF record
+  // rendered as "include:zep / tomail.net" — `word-break:break-all` on
+  // `.check-list code` breaks at any character, even with spaces available.
+  // A split domain is unreadable and reads as a different domain. Same fault
+  // as the /dns tables in v5.9.1, in the element beside them.
+  //
+  // `overflow-wrap:break-word` is the wanted behaviour, not the absence of
+  // any rule: a DKIM public key is one space-free token far wider than a
+  // phone, and must still break rather than overflow.
+  const css = await servedCss();
+  const rule = block(css, ".check-list code");
+  assert.ok(rule, "the .check-list code rule moved; this guard needs repointing");
+  assert.doesNotMatch(
+    rule,
+    /word-break:break-all/,
+    "break-all splits records mid-token: SPF and DMARC values have spaces to break at",
+  );
+  assert.match(
+    rule,
+    /overflow-wrap:break-word/,
+    "a space-free value wider than the screen (a DKIM key) must still break rather than overflow",
+  );
+});

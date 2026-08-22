@@ -38,7 +38,14 @@ footer{background:#0b1117;color:#fff;padding:75px clamp(24px,7vw,110px) 55px;dis
 .check-list h3{font-size:19px;margin:0}/* /domains has no result heading: each row is the top-level answer, so
    its title leads instead of sitting under one. 19px left it 3px from
    its own detail lines and the answer stopped reading as the answer. */
-.check-list--lead h3{font-size:23px}.check-list p{color:#3c4750;line-height:1.7;margin:12px 0 0;max-width:780px}.check-list code{display:block;margin-top:14px;background:var(--mist);padding:11px 14px;font:13px ui-monospace,Menlo,monospace;word-break:break-all;max-width:780px}
+.check-list--lead h3{font-size:23px}.check-list p{color:#3c4750;line-height:1.7;margin:12px 0 0;max-width:780px}/* `break-all` split records mid-token on a phone — an SPF record wrapped
+   as "include:zep / tomail.net", which is not a domain anyone can read
+   or copy. These records have spaces between their mechanisms, so they
+   wrap cleanly at those. `overflow-wrap:break-word` keeps the safety
+   net for the values that genuinely have no spaces and are wider than
+   the box — a DKIM public key — by breaking only a token that cannot
+   fit a line on its own. Same fault as the /dns tables, v5.9.1. */
+.check-list code{display:block;margin-top:14px;background:var(--mist);padding:11px 14px;font:13px ui-monospace,Menlo,monospace;overflow-wrap:break-word;max-width:780px}
 /* Scan dimensions (22 Aug 2026). Until now .scan-dimension h3 had no rule
    at all — a bare 16px browser default sitting under 25px finding titles,
    so the group read smaller than its members. This is the /dns category

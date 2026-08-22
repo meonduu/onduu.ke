@@ -1,6 +1,40 @@
 # Changelog
 
-CURRENT VERSION: v5.9.1 — 2148hrs:22nd August2026
+CURRENT VERSION: v5.9.2 — 2202hrs:22nd August2026
+
+## v5.9.2 — 2202hrs:22nd August2026
+
+**The same mid-token break, in the element beside the one v5.9.1
+fixed.** Owner asked for `/email-security` and `/domains` on a phone.
+`/domains` was clean. `/email-security` was not: the SPF record rendered
+`include:zep / tomail.net` and `inc / lude:sparkpostmail.com`. The cause
+was `word-break:break-all` on `.check-list code` — the harsher sibling of
+the `break-word` removed from the tables an hour earlier, breaking at any
+character even when spaces were available.
+
+Now `overflow-wrap:break-word`, which is the wanted behaviour rather than
+the absence of a rule: an SPF or DMARC record has spaces between its
+mechanisms and wraps there, one `include:` per line, while a value that
+genuinely has no spaces and is wider than the screen — a DKIM public key
+— still breaks rather than overflowing.
+
+Two DMARC `mailto:` URIs still break, at 41 characters against 34 that
+fit. Nothing can be done about a token wider than the line, and the
+safety net catching them is the rule working.
+
+`.check-list code` is shared by all four checkers, so `/scan` and `/dns`
+record blocks get this too.
+
+Measured at 375px on the built site rather than eyeballed: every
+space-free run of four or more characters in every code block was
+rendered and its line boxes counted. `/email-security` is down to the two
+oversized URIs; `/domains` splits nothing at all, scrolls nothing
+sideways, and keeps its 23px answer over 16px detail.
+
+No lesson: same fault as v5.9.1, found the same way, one page over. The
+pair is a reminder that a fix to a shared stylesheet is worth grepping
+for siblings — `break-all` was one line away from `break-word` and was
+missed on the first pass.
 
 ## v5.9.1 — 2148hrs:22nd August2026
 
