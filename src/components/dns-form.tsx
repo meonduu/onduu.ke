@@ -371,9 +371,24 @@ export function DnsForm() {
           <div className="check-headline">
             <div className={`check-score check-${result.summary.fail > 0 ? "fail" : "pass"}`}>
               <b>{result.summary.pass}</b>
+              {/* Reads "9 OK · 1 OBSERVED" down the box. It used to read
+                  "9 of 10 checks OK", which implied a shortfall when the
+                  tenth was an OBSERVED item — a fact, not a fault. The owner
+                  asked which check was missing; nothing was. Each tally
+                  carries its own severity colour, and OBSERVED keeps the
+                  neutral slate it has everywhere else: colouring it louder
+                  would contradict the word. Worst first. */}
               <span>
-                of {result.findings.length} checks OK
-                {result.summary.fail > 0 ? ` · ${result.summary.fail} need attention` : ""}
+                <em className="check-pass">OK</em>
+                {(["fail", "warn", "info"] as const)
+                  .map((sev) => [sev, result.summary[sev]] as const)
+                  .filter(([, n]) => n > 0)
+                  .map(([sev, n]) => (
+                    <em key={sev} className={`check-${sev}`}>
+                      {" · "}
+                      {n} {STATUS_WORD[sev]}
+                    </em>
+                  ))}
               </span>
             </div>
             <div>

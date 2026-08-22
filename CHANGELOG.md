@@ -1,6 +1,39 @@
 # Changelog
 
-CURRENT VERSION: v5.8.0 — 2107hrs:22nd August2026
+CURRENT VERSION: v5.9.0 — 2128hrs:22nd August2026
+
+## v5.9.0 — 2128hrs:22nd August2026
+
+**The /dns score box counts each severity instead of implying a
+shortfall.** It read "9 OF 10 CHECKS OK" for onduu.ke and the owner asked
+which check was missing. None was. The tenth was an OBSERVED item — all
+nameservers on one provider (cloudflare.com), a single point of
+dependency worth knowing rather than a fault. The counter was arguing
+with the sentence beside it, which says in as many words that OBSERVED
+items are facts, not faults.
+
+It now reads **`9 OK · 1 OBSERVED`**, and generalises: a domain with
+problems reads `6 OK · 3 ATTENTION · 2 ADVISORY · 1 OBSERVED`, worst
+first, so the reader meets the serious count before the neutral one.
+
+**Colour.** Each tally takes its own: OK green, ATTENTION red, ADVISORY
+copper, OBSERVED slate — the same colours those words carry on the badges
+and the category counts. This needed a more specific rule than expected:
+`.check-score span` already sets the whole caption to slate, which would
+have beaten a bare `.check-info` and left every tally the same colour.
+
+OBSERVED stays slate on purpose. It is neither good nor bad, and giving
+it a louder colour to make it visible would contradict the word. The
+distinction comes from OK being green beside it. The test says this is a
+decision, so a later tidy-up does not quietly change the meaning.
+
+Verified on the production build with a real check and with a stubbed
+summary carrying all four severities, confirming order, wording and the
+four computed colours.
+
+No lesson: the counter and its caption disagreeing is [[L16]]'s tell — a
+badge disagreeing with the sentence beside it — and it was found the same
+way, by the owner reading the page as a customer would.
 
 ## v5.8.0 — 2107hrs:22nd August2026
 
