@@ -85,6 +85,14 @@ checked as written, that is itself a finding.
 
 7. **Access still guards /go.** Open https://onduu.ke/go in a private
    browser window. Good: the Cloudflare Access login, never the dashboard.
+   Then sign in. Good: the dashboard, with **no red "Access assertions are
+   not being verified" panel** — since v4.94.0 the assertion is checked
+   cryptographically (signature, issuer, audience, expiry) and the identity
+   comes from the verified payload, so that panel means the check is
+   falling back to the header alone. If it persists, the Access application
+   has been recreated and the team domain or audience pinned in
+   `worker/access-jwt.ts` no longer matches; `tests/access-jwt.test.mjs`
+   compares both against the live redirect and fails when they drift.
 
 ## Open incident
 

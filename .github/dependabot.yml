@@ -1,0 +1,25 @@
+# Pinning the workflow's actions to commit SHAs (22 Aug 2026) stops a tag
+# being repointed under us — but a pin nobody updates is just an old
+# dependency with extra steps. This is the half that keeps them moving:
+# Dependabot raises a PR when a pinned action or an npm package has a newer
+# release, and the weekly suite gates whether it merges.
+version: 2
+updates:
+  - package-ecosystem: github-actions
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "ci"
+
+  - package-ecosystem: npm
+    directory: "/"
+    schedule:
+      interval: weekly
+    commit-message:
+      prefix: "deps"
+    # Astro, Wrangler and React move fast and their majors carry breaking
+    # changes; those are read and taken deliberately, not merged on sight.
+    ignore:
+      - dependency-name: "*"
+        update-types: ["version-update:semver-major"]
