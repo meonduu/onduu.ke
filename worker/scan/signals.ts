@@ -90,16 +90,45 @@ export function evaluateSignals(obs: Observations): SignalResult[] {
     );
   }
 
+  // Three outcomes, matching /dns (owner decision, 22 Aug 2026). Until then
+  // the scan graded on DS alone: absence was MISSING in red, and a broken
+  // chain — DS at the registry, no keys in the zone — was called a pass,
+  // which is the worst of the three answers. An unsigned domain still
+  // works and most domains in this market do not sign, so absence is an
+  // advisory; a broken chain makes validating resolvers reject the domain
+  // outright, so that is the failure.
   if (obs.dns.dsPresent === null) {
     out.push(unobservable("dnssec", "control", "DNSSEC", "The DS record query did not complete."));
+  } else if (obs.dns.dsPresent && obs.dns.dnskeyPresent === false) {
+    out.push(
+      signal(
+        "dnssec",
+        "control",
+        "DNSSEC",
+        "fail",
+        "The registry publishes a DNSSEC fingerprint but the zone returned no signing keys. Validating resolvers can reject this domain entirely.",
+        "Detection only; the chain is not cryptographically validated.",
+      ),
+    );
+  } else if (obs.dns.dsPresent) {
+    out.push(
+      signal(
+        "dnssec",
+        "control",
+        "DNSSEC",
+        "pass",
+        "A DS record is published: DNS answers are signed.",
+        "Presence only; key management is not visible.",
+      ),
+    );
   } else {
     out.push(
       signal(
         "dnssec",
         "control",
         "DNSSEC",
-        obs.dns.dsPresent ? "pass" : "fail",
-        obs.dns.dsPresent ? "A DS record is published: DNS answers are signed." : "No DS record: DNS answers are not signed.",
+        "warn",
+        "DNSSEC is not enabled, so a forged DNS answer cannot be detected. Most domains in this market do not sign yet; it is worth raising with your DNS provider.",
         "Presence only; key management is not visible.",
       ),
     );

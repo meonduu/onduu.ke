@@ -1,6 +1,51 @@
 # Changelog
 
-CURRENT VERSION: v5.10.0 — 2249hrs:22nd August2026
+CURRENT VERSION: v5.11.0 — 2318hrs:22nd August2026
+
+## v5.11.0 — 2318hrs:22nd August2026
+
+**/scan now grades DNSSEC the way /dns does.** Found while checking the
+tools on a phone: `/dns` called standardmedia.co.ke's missing DNSSEC an
+ADVISORY, and `/scan` called the same fact MISSING in red. Two Onduu
+tools, one domain, opposite verdicts — v5.10.0 changed the decision in
+one place only.
+
+**Both ends were wrong in the scan, not one.** It graded on the DS record
+alone: no DS was a failure, and a DS with no signing keys in the zone —
+a broken chain, which makes validating resolvers reject the domain
+outright — was called a **pass**. So the scan showed red for the
+safe-but-unsigned case and green for the genuinely broken one. It now
+queries DNSKEY alongside NS and DS (in the same `Promise.all`, so one
+subrequest of forty and no wall-clock cost) and grades three ways,
+matching the DNS checker: signed passes, unsigned is an advisory, a
+broken chain fails.
+
+**Rubric psr-v4.** Weights are identical to psr-v3; the version bumps
+because the same domain now scores differently. An unsigned zone takes
+half credit of the 4-point DNSSEC weight instead of none, so it scores
+**2 points higher**, and a broken chain now scores 2 lower than it used
+to. Cached psr-v3 results retire through the normal cache window rather
+than being served under the new wording.
+
+**The change was invisible to the test suite, which is the part worth
+recording.** All 344 tests passed against it before a single new test was
+written, because the only observation fixture had `dsPresent: true` —
+the branch that changed was never executed. A scoring change with no test
+covering it is the shape [[L18]] warns about, reached from the other
+side: not a check measuring a constant, but no check at all. The fixture
+now states both DNSSEC facts explicitly, and three tests cover all four
+outcomes, the score gap between unsigned and broken, and the rubric bump.
+Proven by putting the old `fail` back and watching two of them fail.
+
+Vocabulary still differs between the tools by design — `/scan` says
+NEEDS WORK where `/dns` says ADVISORY — but both now render copper and
+mean the same thing. Aligning the words is a separate decision.
+
+Verified on the production build: standardmedia.co.ke scores 87 with
+DNSSEC NEEDS WORK in copper; onduu.ke still passes at 98.
+
+No lesson: the grading gap was a consequence of v5.10.0 landing in one
+tool, caught the same day by the owner's own mobile check.
 
 ## v5.10.0 — 2249hrs:22nd August2026
 
