@@ -147,6 +147,29 @@ failed where a checklist was the control, and the fix is to stop trusting
 a result older than the working tree. `git status` before shipping should
 show nothing newer than the last `npm test`.
 
+**L18 — 22 Aug 2026 · A measurement that silently became a constant.**
+The guard shipped in v5.6.0 claimed to hold a type hierarchy — "the
+dimension heading must be larger than the finding titles it groups" —
+measured from the served stylesheet. It read `.check-row-head h3`, which
+declares only `order:2`, found no `font-size`, and fell through to
+`?? 25`, a number typed from a screenshot. So the comparison was against
+a literal, and it passed a 30px heading that outranked the page's own
+result heading (27px). One release later the sizes moved and the
+hardcoded 25 would have been wrong in the other direction too.
+
+The tell is in the code shape, not the outcome: **a fallback on a
+measured value turns a measurement into an assumption.** `?? 25` reads as
+prudence and is the opposite — it guarantees the assertion runs even when
+the thing it meant to measure was never found.
+
+Guard: `sizeOf()` in `tests/scan-hierarchy.test.mjs` searches every block
+for the selector and returns null if none declares a size; the test then
+**fails on the null** rather than substituting for it. Any check of the
+form "read a value, compare it" must assert the read succeeded before
+comparing. This is [[L16]]'s family — verification that agrees with
+itself — reached by a different route: L16's tests were written from the
+implementation, this one was written from a screenshot.
+
 **L16 — 22 Aug 2026 · Severity computed from a count, not a judgement.**
 The email checker marked an SPF record at 10 of 10 DNS lookups NEEDS
 WORK, beside the words "This is correct." Ten is the maximum RFC 7208

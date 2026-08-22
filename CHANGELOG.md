@@ -1,6 +1,46 @@
 # Changelog
 
-CURRENT VERSION: v5.6.0 — 1959hrs:22nd August2026
+CURRENT VERSION: v5.7.0 — 2014hrs:22nd August2026
+
+## v5.7.0 — 2014hrs:22nd August2026
+
+**The finding title was the oversized element all along; v5.6.0 fixed the
+symptom.** Owner asked what the fonts were and said one should be
+smaller. Measured live, the scan result read: 56px score, **30px
+dimension heading**, 27px result heading, **25px finding title**, 16px
+evidence. Two faults in one ladder — the dimension outranked the heading
+of the whole result, and the rows sat only 5px below the heading that
+groups them.
+
+Both trace to `.check-list h3` at 25px, a rule shared by `/scan`, `/dns`,
+`/domains` and `/email-security`. A finding title is a row in a list, and
+at 25px it was larger than every group heading on the site — `/dns` has
+carried the same inversion, its 23px category heads sitting under 25px
+rows, since those pages were built. v5.6.0 cleared it on the scan by
+inflating the dimension heading to 30px, which fixed the local
+comparison and broke a higher one.
+
+The rows are 19px now and the dimension is back to the house 23px, so all
+four checker pages read the same ladder: **27 result, 23 group, 19 row,
+16 evidence, 10 badge.** Each step strictly smaller than the one above.
+
+**Lesson L18 — the guard was measuring a constant.** v5.6.0's test said
+it compared the heading against "the real row size", read from the served
+CSS. It read `.check-row-head h3`, which declares only `order:2`, found
+no font-size, and fell through to `?? 25` — a number typed from a
+screenshot. The assertion ran against a literal and passed the 30px
+heading. A fallback on a measured value turns a measurement into an
+assumption; the reader can no longer tell whether the value was found.
+`sizeOf()` now searches every block for the selector and the test fails
+on a null rather than substituting for it.
+
+The rewritten guard was proven against both faults before shipping: it
+fails at 30px ("must sit under the result heading") and at 25px rows
+("the dimension heading groups the finding titles and must be larger").
+
+Verified on the production build: the scan ladder measures
+56/27.15/23/19/16/10, and `/dns` now reads 27/23/19/16 where it read
+27/23/25/16 this morning.
 
 ## v5.6.0 — 1959hrs:22nd August2026
 
