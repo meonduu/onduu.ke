@@ -1,6 +1,54 @@
 # Changelog
 
-CURRENT VERSION: v5.11.0 — 2318hrs:22nd August2026
+CURRENT VERSION: v5.12.0 — 2346hrs:22nd August2026
+
+## v5.12.0 — 2346hrs:22nd August2026
+
+**The scan reported its own site as broken in eleven ways.** Owner asked
+for a scan of onduu.ke. It came back 62, with MISSING against robots.txt,
+the sitemap, the title, the h1, the viewport, the contact path, structured
+data and more — every one of them false. robots.txt serves 200 in 93
+bytes; the sitemap serves 2,980 bytes and 35 URLs; the homepage is 15 KiB
+with a title and one h1.
+
+Two rows carried the cause in plain sight: **status 522**. Cloudflare
+answers 52x when its edge is reachable but the origin behind it is not.
+onduu.ke has no origin — it *is* the Worker — so the scan, running inside
+that Worker, fetched its own zone, the edge found no origin, and every
+content-derived signal read an empty page. External `curl` gets 200; the
+local dev build scanning onduu.ke scores 98; wpfoss.com, also on
+Cloudflare, scans fine from production. Only the deployed Worker calling
+its own zone fails.
+
+**A 52x is now an absence of evidence, never a finding.** Every
+content-derived signal — page facts, the http probe, the apex/www twin,
+the missing-page probe, robots.txt and the sitemap — reports unobservable
+and names the status it got. Coverage drops honestly and the score leaves
+them out, instead of counting eleven inventions against the site. The
+guard is written for any 52x rather than for our own domain: a customer's
+site can 52x mid-scan and deserves the same answer. Registry- and
+DNS-side signals are untouched, because they never needed the page.
+
+**HTTPS no longer passes while the site is erroring.** It graded on
+whether TLS negotiated, so a green PASS sat beside "status 522". It now
+passes on 2xx/3xx and reports unobservable otherwise, naming the status:
+the certificate may be perfect, and the scan still cannot say the site is
+serving. Owner decision.
+
+Both were caught the same way as the SPF bug in v4.98.0 — the owner
+reading a result the way a customer would, and noticing a badge that
+disagreed with the sentence beside it.
+
+Not fixed, and worth stating: **onduu.ke still cannot scan itself.** It
+now says so honestly rather than inventing failures, but a visitor
+scanning the domain they are standing on gets a low-coverage report.
+Making the self-fetch work needs a different route into the Worker and is
+a separate decision.
+
+No lesson: [[L16]] already names the tell — a badge disagreeing with the
+sentence beside it — and it is what found this. Two new tests cover the
+52x path across every content signal and the HTTPS status bands; both
+proven by reverting the guards.
 
 ## v5.11.0 — 2318hrs:22nd August2026
 

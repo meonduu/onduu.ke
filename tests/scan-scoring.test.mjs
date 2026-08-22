@@ -268,3 +268,53 @@ test("the rubric version bumped so cached scans re-run under the new grading", (
   assert.equal(CURRENT_RUBRIC, "psr-v4");
   assert.deepEqual(RUBRICS["psr-v4"].weights, RUBRICS["psr-v3"].weights);
 });
+
+/* ── a 52x is an absence of evidence, not a failure ──────────────────── */
+
+test("a Cloudflare origin error reports unobservable, never MISSING", () => {
+  // Found 22 Aug 2026 by scanning onduu.ke on production. It runs as a
+  // Worker with no origin behind it, so the scan fetched its own zone, got
+  // 522, and reported eleven signals as MISSING — no title, no h1, no
+  // robots.txt, a 0 KiB homepage — about a site serving perfectly to
+  // everyone else. Written for any 52x, not for our own domain: a
+  // customer's site can 52x mid-scan and deserves the same answer.
+  const obs = healthyObservations();
+  const dead = (page) => ({ ...page, status: 522, bodyBytes: 0, title: null, h1Count: 0,
+    metaDescription: false, viewport: false, hasContactPath: false, hasJsonLd: false, jsonLdParses: false });
+  obs.homepage = dead(obs.homepage);
+  obs.httpProbe = dead(obs.httpProbe);
+  obs.twin = { ...obs.twin, page: dead(obs.twin.page) };
+  obs.missingProbe = dead(obs.missingProbe);
+  obs.robots = { ...dead(obs.robots), looksLikeRobots: undefined };
+  obs.sitemap = { ...dead(obs.sitemap), looksLikeSitemap: undefined };
+
+  const signals = evaluateSignals(obs);
+  const wrongly = signals.filter((s) => s.status === "fail").map((s) => `${s.id}: ${s.evidence}`);
+  assert.deepEqual(wrongly, [], "a 52x must not produce a single failure");
+
+  // The content signals go unobservable and say why, naming the status.
+  for (const id of ["title-meta", "single-h1", "viewport", "contact-path", "robots", "sitemap", "structured-data"]) {
+    const s = signals.find((x) => x.id === id);
+    assert.equal(s.status, "unobservable", `${id} should be unobservable on a 522`);
+    assert.match(s.evidence, /522/, `${id} should name the status it got`);
+  }
+
+  // DNS- and registry-side signals are untouched: they never needed the page.
+  assert.equal(signals.find((s) => s.id === "dnssec").status, "pass");
+  assert.equal(signals.find((s) => s.id === "expiry-buffer").status, "pass");
+});
+
+test("HTTPS does not pass while the site is answering with an error", () => {
+  // It used to pass on any status, so a green badge sat beside "status 522".
+  // TLS negotiating is not the same as the site serving.
+  const withStatus = (status) => {
+    const obs = healthyObservations();
+    obs.homepage = { ...obs.homepage, status };
+    return evaluateSignals(obs).find((s) => s.id === "https-certificate");
+  };
+  assert.equal(withStatus(200).status, "pass");
+  assert.equal(withStatus(301).status, "pass");
+  assert.equal(withStatus(522).status, "unobservable");
+  assert.match(withStatus(522).evidence, /522/);
+  assert.equal(withStatus(503).status, "unobservable");
+});
