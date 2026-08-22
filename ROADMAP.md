@@ -369,10 +369,12 @@ an understated roadmap is how five guides sat unclickable for weeks.
     **Storing nothing in production until migration 0007 is applied.**
   - `/go/analytics`: date ranges, previous-period comparison, coverage
     panel, CSV export and a stated basis on every metric (v4.48.0).
-  - Still to build: clicks by page and element, engagement per page, entry
-    and estimated exit pages, conversions — specified as the second slice
-    of analytics Phase 2, and best built once there is data to build
-    against.
+  - Second slice — clicks by page and element, engagement per page, entry
+    and estimated exit pages, conversions — **shipped v4.53.0**. This line
+    read "still to build" until 22 Aug 2026, four dozen releases after it
+    was built; verified on the live dashboard, where all four panels render
+    with data and each states its basis. Nothing in analytics Phase 2 is
+    outstanding.
 - [ ] Improve from evidence; do not add offers to fill navigation.
 
 **Acceptance:** every published number traces to first-party data; metrics

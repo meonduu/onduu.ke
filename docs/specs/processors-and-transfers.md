@@ -130,12 +130,11 @@ being checked — never anything about the visitor who asked.
 - **Location**: both outside Kenya. This widens section 3 beyond
   Cloudflare's EEUR region.
 - **Basis**: performance of the assessment the customer requested.
-- **OWNER**: DeepSeek and OpenRouter were in use on 22 August 2026 and the
-  owner decided to drop DeepSeek and limit the models to Anthropic and
-  OpenAI. This register and the notice describe the limited arrangement;
-  they are accurate only once it is actually in force. If OpenRouter
-  remains in the path as a broker it is a further processor — it chooses
-  which provider serves a request — and must be named too.
+- **Answered 22 Aug 2026 (owner): OpenRouter has been removed.** Anthropic
+  and OpenAI are called directly, so no broker chooses which provider
+  serves a request and there is no further processor to name. DeepSeek was
+  dropped in the same decision; the register and the notice describe that
+  limited arrangement, and they are accurate once it is in force.
 - **LAWYER**: confirm each provider's API terms on training and retention.
   Business API tiers commonly exclude training by default, but "commonly"
   is not a record, and nothing here has been verified against the
