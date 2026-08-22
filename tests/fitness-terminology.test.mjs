@@ -135,6 +135,28 @@ test("no page claims a certification or declares a business digitally fit", asyn
   }
 });
 
+test("the score is never rendered without its coverage beside it", async () => {
+  // The guard the renamed test below only appeared to be. The result is a
+  // React island, so it is absent from any server HTML and no fetch can
+  // see it — which is how the figure was removed on 22 Aug 2026 with the
+  // whole suite green. This reads the component instead.
+  //
+  // Why it matters enough to test: a bare "62 / 100" is the number a
+  // reader turns into a verdict, and CLAUDE.md permits an instant scan to
+  // report a Public Signal Score only alongside its Evidence Coverage.
+  const { readFileSync } = await import("node:fs");
+  const src = readFileSync(new URL("../src/components/scan-form.tsx", import.meta.url), "utf8");
+
+  const headline = src.match(/<div className="check-headline">[\s\S]*?\n {10}<\/div>/)?.[0] ?? "";
+  assert.ok(headline, "the result headline block moved; this guard needs repointing");
+  assert.match(headline, /publicSignalScore/, "the score is in the headline");
+  assert.match(
+    headline,
+    /evidenceCoverage/,
+    "the score must not be shown without its coverage: CLAUDE.md allows the pair, not the number alone",
+  );
+});
+
 test("the scan page explains Evidence Coverage before anyone runs one", async () => {
   // Renamed 22 Aug 2026 to say what it actually checks. It was called "the
   // score is never shown without its evidence coverage", which reads as a
