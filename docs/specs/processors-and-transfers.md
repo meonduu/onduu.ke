@@ -30,11 +30,22 @@ notice is the promise, this is the evidence.
 | Page views: path, referrer host, country, device class | Server-side, every HTML response | D1 `page_views` | No identifier stored |
 | Engagement events: path, label, tab-scoped session id, engaged ms | Browser tracker (`/api/event`) | D1 `events` | No identifier that outlives a tab |
 | Tool results: domain checked, observations, score | The four tools | D1 `scans`, `tool_checks` | About domains, not people |
-| Abuse counters: short-lived SHA-256 client key | Derived from connection address, never stored with a result | D1 `*_throttle` | Pseudonymous, short-lived |
+| Abuse counters: HMAC-SHA-256 client key, per purpose, daily bucket | Derived from connection address with `CLIENT_KEY_SECRET`, never stored with a result | D1 `*_throttle` | Pseudonymous — genuinely so since 22 Aug 2026 |
 | Notification health: outcome, provider code, timestamp | Each notification attempt | D1 `notify_health` | No |
 
 Verify: `migrations/*.sql`, `worker/submissions.ts`, `worker/events.ts`,
 `worker/pageviews.ts`.
+
+> **Correction, 22 August 2026.** Until this date the counter key was an
+> unkeyed SHA-256 of the address truncated to 64 bits. IPv4 is a 2^32
+> space, so anyone holding the database could walk it and recover every
+> address exactly — which made "pseudonymous" in the row above untrue as
+> written, not merely optimistic. It is now HMAC-SHA-256 under a Worker
+> secret, with a per-purpose prefix so the four tables cannot be joined on
+> one visitor, and a daily bucket so identifiers stop matching by
+> construction. Found by an external security review (OWASP A04). If
+> `CLIENT_KEY_SECRET` is unset the old behaviour returns, so `/go` shows a
+> red light while that is the case.
 
 ## 2. Processors
 

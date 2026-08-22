@@ -28,6 +28,7 @@ import { eatDateTime } from "../src/lib/datetime.ts";
 
 interface Env {
   onduu_leads?: D1Database;
+  CLIENT_KEY_SECRET?: string;
 }
 
 /**
@@ -176,7 +177,7 @@ const rowsOf = <T>(r: { results?: unknown[] }) => (r.results ?? []) as T[];
 
 /* ── sections ────────────────────────────────────────────────────────── */
 
-async function overview(db: D1Database, identity: string): Promise<Response> {
+async function overview(db: D1Database, identity: string, keyed = true): Promise<Response> {
   const notifyHealth = await safe(
     db
       .prepare("SELECT last_outcome, last_code, changed_at FROM notify_health WHERE id = 1")
@@ -239,11 +240,21 @@ async function overview(db: D1Database, identity: string): Promise<Response> {
           ? `<div class="note" style="border-left-color:#2F6B5B;background:#e4ece9">Notifications delivering — last sent ${escape(eatDateTime(notifyHealth.changed_at))} EAT.</div>`
           : `<div class="note" style="border-left-color:#a8342a;background:#f6e3e0"><b>Enquiry notifications ${escape(notifyHealth.last_outcome)}</b> since ${escape(eatDateTime(notifyHealth.changed_at))} EAT UTC${notifyHealth.last_code ? ` (${escape(notifyHealth.last_code)})` : ""}. Enquiries are still stored — check /go/enquiries and the Worker log, then re-run OPERATIONS.md checklist item 1.</div>`;
 
+  // A control that is quietly absent looks exactly like one that works,
+  // which is why this is a light and not a log line (22 Aug 2026).
+  const keyLight = keyed
+    ? ""
+    : `<div class="note" style="border-left-color:#a8342a;background:#f6e3e0"><b>Abuse counters are not keyed.</b>
+<code>CLIENT_KEY_SECRET</code> is not set, so client identifiers are an unkeyed digest of the address —
+reversible by anyone holding this database, and the processing register calls them pseudonymous.
+Set it: <code>npx wrangler secret put CLIENT_KEY_SECRET</code></div>`;
+
   return page(
     "Dashboard",
     `<h1>Onduu dashboard</h1>
 <p class="sub">Signed in via Cloudflare Access as ${escape(identity)}. Nothing here is shared with a third party.</p>
 ${light}
+${keyLight}
 
 <div class="cards">
   <div class="card"><b>${num(c !== null, c?.enquiries30)}</b><span>Enquiries, 30 days</span><a href="/go/enquiries">All ${num(c !== null, c?.enquiries)} →</a></div>
@@ -1086,7 +1097,7 @@ export async function handleDashboard(
   const db = env.onduu_leads;
   switch (section.replace(/\/$/, "")) {
     case "":
-      return overview(db, identity);
+      return overview(db, identity, Boolean(env.CLIENT_KEY_SECRET));
     case "enquiries":
       return enquiries(db);
     case "scans":

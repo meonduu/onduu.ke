@@ -1,6 +1,6 @@
 {
   "name": "onduu-ke",
-  "version": "4.91.0",
+  "version": "4.92.0",
   "private": true,
   "engines": {
     "node": ">=22.13.0"
@@ -9,7 +9,7 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "test": "npm run build && node --test \"tests/*.test.mjs\"",
+    "test": "npm run build && node --experimental-sqlite --test \"tests/*.test.mjs\"",
     "lint": "eslint . --ignore-pattern dist --ignore-pattern .astro",
     "check:live": "node scripts/check-live.mjs"
   },

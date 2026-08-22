@@ -3,6 +3,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { readFileSync } from "node:fs";
+import { throttleDb, brokenDb } from "./helpers/throttle-db.mjs";
 import { makeBudget } from "../worker/scan/net.ts";
 import {
   candidatesFor,
@@ -292,34 +293,11 @@ test("the per-connection search limit refuses after the cap and resets", () => {
 // moment — the busiest public tool carrying the weakest limit. These pin
 // the durable half (migration 0012).
 
-function throttleDb() {
-  const rows = new Map();
-  return {
-    rows,
-    prepare(sql) {
-      return {
-        bind(...args) {
-          return {
-            async first() {
-              return rows.get(args[0]) ?? null;
-            },
-            async run() {
-              if (sql.startsWith("INSERT INTO search_throttle")) {
-                rows.set(args[0], { window_start: args[1], count: 1 });
-              } else if (sql.startsWith("UPDATE search_throttle")) {
-                rows.get(args[0]).count += 1;
-              }
-              return { meta: { changes: 1 } };
-            },
-          };
-        },
-      };
-    },
-  };
-}
+// Real SQLite (tests/helpers/throttle-db.mjs). The local stub here
+// modelled the read-then-write limiter that the security review replaced.
 
 test("the durable search limit survives the isolate and refuses after the cap", async () => {
-  const db = throttleDb();
+  const db = throttleDb("search_throttle");
   const t0 = Date.parse("2026-08-22T10:00:00Z");
   for (let i = 0; i < 30; i++) {
     assert.equal(await withinSearchLimitDurable(db, "hashed-key", t0 + i), true, `call ${i + 1}`);
@@ -342,8 +320,7 @@ test("the search stays open when the counter cannot be reached", async () => {
   // (migration 0012 not yet applied on a given environment) and a throwing
   // query fail open.
   assert.equal(await withinSearchLimitDurable(undefined, "hashed-key"), true);
-  const broken = { prepare() { throw new Error("no such table: search_throttle"); } };
-  assert.equal(await withinSearchLimitDurable(broken, "hashed-key"), true);
+  assert.equal(await withinSearchLimitDurable(brokenDb("no such table: search_throttle"), "hashed-key"), true);
 });
 
 test("the limiter never keys on a raw IP address", async () => {
@@ -354,9 +331,15 @@ test("the limiter never keys on a raw IP address", async () => {
   assert.doesNotMatch(
     src,
     /withinSearchLimit\w*\(\s*(?:db,\s*)?ip\b/,
-    "the rate limiter must be keyed on the hashed client key, not the address",
+    "the rate limiter must be keyed on the derived client key, not the address",
   );
-  assert.match(src, /clientKeyOf\(request\)/, "the handler must derive the hashed key");
+  // Keyed with a secret since 22 Aug 2026: an unkeyed digest of an IPv4
+  // address is reversible by walking the whole 2^32 space.
+  assert.match(
+    src,
+    /clientKeyOf\(request,\s*"search",\s*clientKeySecret\)/,
+    "the handler must derive the key with the purpose and the secret",
+  );
 });
 
 // The link and the promise about the link must not drift apart, and the

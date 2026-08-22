@@ -4,6 +4,7 @@
  * re-fetching a third party) and the per-client rate limit, mirroring the
  * submission_throttle pattern.
  */
+import { withinLimit } from "../rate-limit.ts";
 import type { Observations } from "./collect.ts";
 import { CURRENT_RUBRIC, type SignalResult } from "./rubric.ts";
 
@@ -163,25 +164,5 @@ export async function withinScanRateLimit(
   clientKey: string,
   now = Date.now(),
 ): Promise<boolean> {
-  const windowStart = new Date(now - 60 * 60 * 1000).toISOString();
-  const row = await db
-    .prepare("SELECT count, window_start FROM scan_throttle WHERE client_key = ?")
-    .bind(clientKey)
-    .first<{ count: number; window_start: string }>();
-
-  if (!row || row.window_start < windowStart) {
-    await db
-      .prepare(
-        "INSERT INTO scan_throttle (client_key, window_start, count) VALUES (?, ?, 1)" +
-          " ON CONFLICT(client_key) DO UPDATE SET window_start = excluded.window_start, count = 1",
-      )
-      .bind(clientKey, new Date(now).toISOString())
-      .run();
-    return true;
-  }
-
-  if (row.count >= SCANS_PER_HOUR) return false;
-
-  await db.prepare("UPDATE scan_throttle SET count = count + 1 WHERE client_key = ?").bind(clientKey).run();
-  return true;
+  return withinLimit(db, "scan_throttle", clientKey, SCANS_PER_HOUR, 60 * 60 * 1000, now);
 }

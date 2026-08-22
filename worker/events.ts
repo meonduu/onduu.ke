@@ -1,3 +1,4 @@
+import { withinLimit } from "./rate-limit.ts";
 /**
  * Client engagement events: validation, sanitisation and recording.
  *
@@ -118,29 +119,14 @@ export async function withinEventRateLimit(
   now = Date.now(),
 ): Promise<boolean> {
   try {
-    const row = await db
-      .prepare("SELECT count, window_start FROM event_throttle WHERE client_key = ?")
-      .bind(clientKey)
-      .first<{ count: number; window_start: string }>();
-    if (!row || now - Date.parse(row.window_start) >= 60_000) {
-      await db
-        .prepare(
-          "INSERT INTO event_throttle (client_key, window_start, count) VALUES (?, ?, 1)" +
-            " ON CONFLICT(client_key) DO UPDATE SET window_start = excluded.window_start, count = 1",
-        )
-        .bind(clientKey, new Date(now).toISOString())
-        .run();
-      return true;
-    }
-    if (row.count >= EVENTS_PER_MINUTE) return false;
-    await db
-      .prepare("UPDATE event_throttle SET count = count + 1 WHERE client_key = ?")
-      .bind(clientKey)
-      .run();
-    return true;
+    return await withinLimit(db, "event_throttle", clientKey, EVENTS_PER_MINUTE, 60 * 1000, now);
   } catch {
-    // Rate limiting is protection, not a product feature: fail open so a
-    // missing table (fresh local database) never blocks recording.
+    // Fail open, and only here. Engagement measurement is best-effort: an
+    // unreachable counter must not cost a page view, and there is nothing
+    // to abuse but a statistics table. The enquiry, opt-out and scan
+    // limiters deliberately do the opposite and let the error reach the
+    // caller, because those write state or send mail (security review,
+    // 22 Aug 2026, A10).
     return true;
   }
 }

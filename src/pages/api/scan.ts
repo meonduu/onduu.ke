@@ -20,6 +20,7 @@ import { runScan } from "../../../worker/scan/scan";
 interface ScanEnv {
   SCAN_ENABLED?: string;
   TURNSTILE_SECRET?: string;
+  CLIENT_KEY_SECRET?: string;
   onduu_leads?: D1Database;
 }
 
@@ -56,7 +57,7 @@ export const ALL: APIRoute = async ({ request }) => {
   );
   if (!passed) return json({ ok: false, error: "Please complete the check." }, 403);
 
-  const clientKey = await clientKeyOf(request);
+  const clientKey = await clientKeyOf(request, "scan", e.CLIENT_KEY_SECRET);
   if (!(await withinScanRateLimit(e.onduu_leads, clientKey))) {
     return json({ ok: false, error: "Too many scans from this connection. Please try again later." }, 429);
   }

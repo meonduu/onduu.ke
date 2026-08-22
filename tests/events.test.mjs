@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { throttleDb, brokenDb } from "./helpers/throttle-db.mjs";
 import {
   EVENT_NAMES,
   ENGAGED_MS_CAP,
@@ -121,24 +122,11 @@ test("every allowlisted name is accepted", () => {
 
 /* ── rate limit ──────────────────────────────────────────────────────── */
 
-function stubThrottleDb() {
-  const rows = new Map();
-  const api = (sql) => ({
-    bind: (...args) => ({
-      async first() {
-        return rows.get(args[0]) ?? null;
-      },
-      async run() {
-        if (sql.startsWith("INSERT")) rows.set(args[0], { window_start: args[1], count: 1 });
-        else rows.get(args[0]).count++;
-      },
-    }),
-  });
-  return { prepare: api };
-}
+// Real SQLite (tests/helpers/throttle-db.mjs) since the limiter became a
+// single atomic upsert; the old stub modelled the read-then-write shape.
 
 test("sliding window admits a burst, blocks the excess, resets next window", async () => {
-  const db = stubThrottleDb();
+  const db = throttleDb("event_throttle");
   const t0 = Date.parse("2026-08-19T12:00:00Z");
   for (let i = 0; i < EVENTS_PER_MINUTE; i++) {
     assert.equal(await withinEventRateLimit(db, "k", t0 + i * 100), true, `event ${i}`);
@@ -148,8 +136,9 @@ test("sliding window admits a burst, blocks the excess, resets next window", asy
 });
 
 test("rate limiting fails open when the table is missing", async () => {
-  const broken = { prepare: () => ({ bind: () => ({ first: () => Promise.reject(new Error("no table")) }) }) };
-  assert.equal(await withinEventRateLimit(broken, "k"), true);
+  // Analytics is the one surface that fails open — see the comment in
+  // worker/events.ts. The enquiry, opt-out and scan limiters must not.
+  assert.equal(await withinEventRateLimit(brokenDb("no such table: event_throttle"), "k"), true);
 });
 
 /* ── engaged-time timer ──────────────────────────────────────────────── */
