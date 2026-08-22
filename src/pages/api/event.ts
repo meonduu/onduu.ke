@@ -7,8 +7,8 @@ import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import { BOT } from "../../../worker/pageviews";
 import { clientKeyOf } from "../../../worker/submissions";
+import { readJsonLimited, BODY_LIMITS } from "../../../worker/body-limit";
 import {
-  MAX_BODY_BYTES,
   bumpHealth,
   parseEvents,
   recordEvents,
@@ -39,14 +39,15 @@ export const POST: APIRoute = async ({ request, locals }) => {
   const userAgent = request.headers.get("user-agent") || "";
   if (BOT.test(userAgent)) return new Response(null, { status: 204 });
 
-  const body = await request.text();
-  if (body.length > MAX_BODY_BYTES) return new Response(null, { status: 413 });
-  let json: unknown;
-  try {
-    json = JSON.parse(body);
-  } catch {
-    return new Response(null, { status: 400 });
+  // Was: read the whole body, then measure it. That paid the cost of a
+  // hostile payload before refusing it, and counted UTF-16 units rather
+  // than bytes. readJsonLimited checks Content-Length first and otherwise
+  // cuts the stream off at the ceiling (security review, 22 Aug 2026).
+  const parsed = await readJsonLimited(request, BODY_LIMITS.event);
+  if (!parsed.ok) {
+    return new Response(null, { status: parsed.reason === "too_large" ? 413 : 400 });
   }
+  const json: unknown = parsed.value;
 
   if (db && !(await withinEventRateLimit(db, await clientKeyOf(request, "event", (env as { CLIENT_KEY_SECRET?: string }).CLIENT_KEY_SECRET)))) {
     return new Response(null, { status: 429 });

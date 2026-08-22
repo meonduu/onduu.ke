@@ -9,6 +9,7 @@
  */
 
 import { withinLimit, clientKeyOf } from "./rate-limit.ts";
+import { readJsonLimited, BODY_LIMITS } from "./body-limit.ts";
 
 export interface SubmissionEnv {
   onduu_leads?: D1Database;
@@ -413,7 +414,13 @@ export async function handleSubmit(request: Request, env: SubmissionEnv): Promis
 
   let body: Record<string, unknown>;
   try {
-    body = (await request.json()) as Record<string, unknown>;
+    const parsed = await readJsonLimited(request, BODY_LIMITS.submit);
+    if (!parsed.ok) {
+      return parsed.reason === "too_large"
+        ? json({ ...GENERIC_ERROR, fields: { form: "That request was too large." } }, 413)
+        : json({ ...GENERIC_ERROR, fields: { form: "The request was not readable." } }, 400);
+    }
+    body = parsed.value as Record<string, unknown>;
   } catch {
     return json(GENERIC_ERROR, 400);
   }

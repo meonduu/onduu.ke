@@ -1,6 +1,57 @@
 # Changelog
 
-CURRENT VERSION: v4.92.0 — 1337hrs:22nd August2026
+CURRENT VERSION: v4.93.0 — 1450hrs:22nd August2026
+
+## v4.93.0 — 1450hrs:22nd August2026
+
+**The click counter can no longer be forged from anywhere, and every
+endpoint has a body ceiling.** Recommendations 7 and 8 of the security
+review.
+
+**`/api/out` had no origin check, no content-type check and no rate
+limit.** Anyone could POST to it from any machine, repeatedly. Nothing
+leaks that way, which is why it reads as minor — but the number it feeds
+is the strategy's measure of how much demand this site routes onward, the
+figure on `/go/routing` that decisions get made from. A metric anyone can
+inflate is worse than no metric, because it still looks like evidence. It
+now requires a same-origin request and `application/json`, is capped at
+1KB, and is rate-limited to 20 an hour per client under its own key space.
+
+A determined forger with many addresses is still not stopped by any of
+that. The durable fix is a server-controlled redirect, where being counted
+requires actually being sent onward — that changes how the outbound links
+work and is deliberately left for a decision rather than taken here.
+
+**One trap avoided, and only because the codebase had already hit it.**
+The obvious origin check — demand `Origin: https://onduu.ke` — would have
+silently stopped counting real clicks, because the caller is
+`navigator.sendBeacon` and a same-origin beacon may send no `Origin`
+header at all. `/api/event` carries a comment recording exactly this, from
+whenever it was learned there. The rule is: refuse a *wrong* origin,
+allow a *missing* one. Verified afterwards by firing the real beacon from
+a real page and watching the row appear.
+
+**Body ceilings, enforced before reading.** Every endpoint parsed whatever
+arrived. `/api/event` came closest to safe and still did
+
+    const body = await request.text();
+    if (body.length > MAX_BODY_BYTES) return 413;
+
+which pays the full cost of a hostile body before refusing it, and counts
+UTF-16 units rather than bytes — so 600 three-byte characters measured as
+600 against an 8192 ceiling while weighing 1800. `worker/body-limit.ts`
+checks `Content-Length` before a byte is read, and otherwise cuts the
+stream off at the ceiling. Applied to submit (32KB), scan and opt-out
+(4KB), events (8KB, unchanged) and out (1KB). Field validation afterwards
+is untouched; this only decides whether a body is worth parsing.
+
+Twelve new tests in `tests/body-and-out.test.mjs`, including the three
+that matter: a truthful ceiling refuses a lying `Content-Length` before
+reading, a body with no declared length is still cut off mid-stream, and
+bytes are counted rather than characters.
+
+No lesson: found by external review, and the sendBeacon trap was caught
+by reading the neighbouring endpoint rather than by shipping it twice.
 
 ## v4.92.0 — 1337hrs:22nd August2026
 

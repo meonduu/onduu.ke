@@ -14,6 +14,7 @@
 import type { APIRoute } from "astro";
 import { env } from "cloudflare:workers";
 import { verifyTurnstile, clientKeyOf } from "../../../worker/submissions";
+import { readJsonLimited, BODY_LIMITS } from "../../../worker/body-limit";
 import { withinScanRateLimit } from "../../../worker/scan/store";
 import { runScan } from "../../../worker/scan/scan";
 
@@ -39,12 +40,13 @@ export const ALL: APIRoute = async ({ request }) => {
     return new Response("Method not allowed", { status: 405, headers: { Allow: "POST" } });
   }
 
-  let body: { domain?: unknown; "cf-turnstile-response"?: unknown };
-  try {
-    body = (await request.json()) as typeof body;
-  } catch {
-    return json({ ok: false, error: "Send JSON with a domain field." }, 400);
+  const parsed = await readJsonLimited(request, BODY_LIMITS.scan);
+  if (!parsed.ok) {
+    return parsed.reason === "too_large"
+      ? json({ ok: false, error: "That request was too large." }, 413)
+      : json({ ok: false, error: "Send JSON with a domain field." }, 400);
   }
+  const body = (parsed.value ?? {}) as { domain?: unknown; "cf-turnstile-response"?: unknown };
 
   // Fail closed, exactly like /api/submit: no secret, no scans.
   if (!e.TURNSTILE_SECRET || !e.onduu_leads) {

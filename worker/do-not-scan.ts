@@ -24,6 +24,7 @@
  */
 import { normaliseHost, isScannableHost } from "./scan/net.ts";
 import { withinLimit, clientKeyOf } from "./rate-limit.ts";
+import { readJsonLimited, BODY_LIMITS } from "./body-limit.ts";
 import { optOutDomain, isDomainBlocklisted } from "./scan/store.ts";
 import {
   type SubmissionEnv,
@@ -176,7 +177,13 @@ export async function handleOptOutRequest(request: Request, env: SubmissionEnv):
 
   let body: Record<string, unknown>;
   try {
-    body = (await request.json()) as Record<string, unknown>;
+    const parsed = await readJsonLimited(request, BODY_LIMITS.optOut);
+    if (!parsed.ok) {
+      return parsed.reason === "too_large"
+        ? json({ ...GENERIC, error: "That request was too large." }, 413)
+        : json({ ...GENERIC, fields: { form: "The request was not readable." } }, 400);
+    }
+    body = parsed.value as Record<string, unknown>;
   } catch {
     return json({ ...GENERIC, fields: { form: "The request was not readable." } }, 400);
   }

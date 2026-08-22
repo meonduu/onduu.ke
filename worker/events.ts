@@ -22,6 +22,9 @@ export const EVENT_NAMES = new Set([
 ]);
 
 export const MAX_BATCH = 10;
+/** @deprecated The body ceiling moved to BODY_LIMITS.event in
+ *  worker/body-limit.ts (22 Aug 2026), which enforces it before reading
+ *  rather than after. Kept only for tests that still name it. */
 export const MAX_BODY_BYTES = 8_192;
 /** One heartbeat's worth of engaged time, with slack for a slow flush. */
 export const ENGAGED_MS_CAP = 120_000;

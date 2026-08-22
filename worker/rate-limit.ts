@@ -39,7 +39,7 @@
  * accumulate forever.
  */
 
-export type KeyPurpose = "submission" | "scan" | "search" | "event";
+export type KeyPurpose = "submission" | "scan" | "search" | "event" | "out";
 
 export type ThrottleTable =
   | "submission_throttle"
