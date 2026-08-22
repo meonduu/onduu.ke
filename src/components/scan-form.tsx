@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { eatDateTime } from "../lib/datetime";
 
 // Mirrors the response shape of worker/scan/scan.ts (ScanResponseBody). Kept
 // as a local type so the island has no server import.
@@ -191,6 +190,10 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
             </div>
           </div>
 
+          {/* The result no longer prints the reference, the run time or the
+              cached marker: the note carrying them was removed on the owner's
+              instruction, 22 Aug 2026. All three are still returned by the
+              API and recorded against the scan, so /go/scans is unchanged. */}
           {DIMENSION_ORDER.map((dim) => {
             const items = result.signals.filter((s) => s.dimension === dim);
             if (items.length === 0) return null;
@@ -214,13 +217,6 @@ export function ScanForm({ siteKey }: { siteKey?: string }) {
             );
           })}
 
-          <div className="note">
-            This is a Public Signal Score, not a Digital Fitness Score. Items marked NOT PUBLIC
-            could not be seen from outside and neither helped nor hurt the score. They are exactly
-            what the human-reviewed Verified assessment covers. Scan reference {result.reference},
-            run {eatDateTime(result.scannedAt)} EAT
-            {result.cached ? " (a recent result for this domain)." : "."}
-          </div>
         </div>
       )}
     </>

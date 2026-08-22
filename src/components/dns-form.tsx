@@ -436,13 +436,6 @@ export function DnsForm() {
             );
           })}
 
-          <div className="note">
-            Resolved over public DNS and RDAP, plus direct read-only questions to the parent zone
-            and your own nameservers (standard DNS queries. The same ones every resolver sends).
-            DNSSEC is detected, not cryptographically validated; reverse DNS covers the first few
-            mail addresses only. A clean result means the public records are coherent. It does not
-            prove the domain, the website or the business behind them are secure.
-          </div>
         </div>
       )}
     </>

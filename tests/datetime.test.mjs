@@ -47,16 +47,28 @@ test("an unparseable value returns empty rather than Invalid Date", () => {
   assert.equal(eatDate(""), "");
 });
 
-test("the /scan result timestamp is labelled EAT in the rendered bundle", async () => {
-  // The formatter runs in the browser there, so this checks the built
-  // client bundle rather than the server response.
+test("no client bundle formats a time in the browser's own zone", async () => {
+  // Was "the /scan result timestamp is labelled EAT". The scan result
+  // stopped printing a time on 22 Aug 2026 (owner removed the note that
+  // carried it), so requiring Africa/Nairobi to appear in that bundle
+  // became a requirement for a timestamp to exist — which is not what the
+  // rule is. The rule is that a time shown to a visitor is EAT, never
+  // whatever zone their laptop is set to. Stated as the prohibition, it
+  // holds whether or not any given island prints a date.
   const { readFileSync, readdirSync } = await import("node:fs");
   const dir = "dist/client/_astro";
-  const scan = readdirSync(dir).find((f) => f.startsWith("scan-form") && f.endsWith(".js"));
-  assert.ok(scan, "scan-form bundle not found — has the island been renamed?");
-  const js = readFileSync(`${dir}/${scan}`, "utf8");
-  assert.match(js, /Africa\/Nairobi/, "the scan result must format in EAT");
-  assert.doesNotMatch(js, /toLocaleString\(\)/, "the unqualified toLocaleString must be gone");
+  const bundles = readdirSync(dir).filter((f) => f.endsWith(".js"));
+  assert.ok(bundles.length, "no client bundles found — has the build layout changed?");
+  for (const file of bundles) {
+    const js = readFileSync(`${dir}/${file}`, "utf8");
+    assert.doesNotMatch(js, /toLocaleString\(\)/, `${file} formats a date in the visitor's zone`);
+    assert.doesNotMatch(js, /toLocaleDateString\(\)/, `${file} formats a date in the visitor's zone`);
+    // And where a zone IS named, it must be the right one.
+    const zones = [...js.matchAll(/timeZone:\s*"([^"]+)"/g)].map((m) => m[1]);
+    for (const zone of zones) {
+      assert.equal(zone, "Africa/Nairobi", `${file} formats in ${zone}`);
+    }
+  }
 });
 
 // Article dates were a second copy of the same fact: every entry carried
