@@ -128,6 +128,29 @@ Newest first. Format: what happened → root cause → the guard now standing.
 Add an entry whenever a defect recurs or a check above fails; an entry may
 be closed only by pointing at its guard.
 
+**L16 — 22 Aug 2026 · A verdict that contradicted its own sentence.** The
+email checker marked an SPF record at 10 of 10 DNS lookups NEEDS WORK,
+directly beside the words "This is correct." Ten is the maximum RFC 7208
+*allows*, so ten is compliant and working; eleven is the failure. The
+cause was one array: a remark about having no headroom left was pushed
+into the same list as real defects, and `status = notes.length ? warn :
+pass` read the list without caring what was in it. Advice and faults are
+now separate arrays and only faults set the status.
+
+It was not cosmetic. A clean record at the limit scored **90 instead of
+100** and generated a "Tighten your SPF record" action telling the
+customer to fix something that was not broken — on the free tool most
+likely to be a stranger's first contact with Onduu.
+
+The tell was visible on the page and had been for months: **a badge
+disagreeing with the sentence next to it.** Nobody read them together,
+because the badge comes from a status field and the sentence from a
+detail field, and the two are only assembled in the browser. Guard:
+`tests/email-check.test.mjs` pins 8, 9 and 10 as passing, 11 as failing,
+and a defect at 10 as still warning. Rule: **when a check explains itself
+in prose, the prose and the verdict are one claim and must be read
+together** — if the words say "correct", the badge may not say otherwise.
+
 **L15 — 22 Aug 2026 · A flaky test, and the fix that looks like pressing
 run again.** `tests/dashboard.test.mjs` failed once in a full-suite run
 and passed standalone and on re-run. Nothing was wrong with the code: the

@@ -270,25 +270,43 @@ export function analyseSpf(txtRecords, expansion) {
     };
   }
 
-  const notes = [];
+  // Two different kinds of remark, and they must not share a list.
+  //
+  // FAULTS are things wrong with the record: an include listed twice, an
+  // include that resolves to nothing. Those set the status to "needs work".
+  //
+  // ADVICE is true and useful and describes nothing wrong. Being at 10 of
+  // 10 lookups is the clearest case: RFC 7208 permits ten, so ten is
+  // compliant and working. Until 22 Aug 2026 the headroom remark sat in the
+  // same array as the faults, so any record at 8, 9 or 10 lookups was
+  // marked NEEDS WORK while the sentence beside the badge read "This is
+  // correct." The badge was wrong, not the sentence (owner).
+  const faults = [];
   if (duplicates.length) {
-    notes.push(
+    faults.push(
       `${duplicates.join(' and ')} ${duplicates.length > 1 ? 'are' : 'is'} included more than once, wasting ${duplicates.length} of your 10 lookups.`
     );
   }
   if (unresolved.length) {
-    notes.push(
+    faults.push(
       `${unresolved.join(', ')} did not return an SPF record. Each dead include still costs a lookup, and more than two is itself a permanent error.`
     );
   }
+
+  const advice = [];
   if (lookups >= 8) {
-    notes.push(`You are at ${lookups} of 10 lookups. Close enough that adding one more service could break the record.`);
+    advice.push(
+      lookups === 10
+        ? 'You are at 10 of 10 lookups, which is the maximum the standard allows. The record is valid, but it has no room left: adding one more sender would push it over and break it.'
+        : `You are at ${lookups} of 10 lookups. Close to the limit, so adding one or two more senders could break the record.`
+    );
   }
+  const notes = [...faults, ...advice];
 
   // Both "-all" and "~all" are valid, working configurations. Softfail is a
   // deliberate, common stance (unauthorised mail is flagged, not refused), so
   // it passes — with "-all" stated as the recommended endpoint, not a defect.
-  const healthy = !notes.length;
+  const healthy = !faults.length;
   return {
     status: healthy ? 'pass' : 'warn',
     record,
